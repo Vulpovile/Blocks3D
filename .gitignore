@@ -41,3 +41,6 @@
 *.res
 *.ilk
 *.dep
+
+/Debug
+/Release
