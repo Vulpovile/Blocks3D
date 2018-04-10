@@ -44,3 +44,6 @@
 
 /Debug
 /Release
+stdout.txt
+log.txt
+*.suo
