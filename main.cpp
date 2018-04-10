@@ -12,8 +12,8 @@
  */
 #include <G3DAll.h>
 
-#if G3D_VER < 60800
-    #error Requires G3D 6.08
+#if G3D_VER < 61000
+    #error Requires G3D 6.10
 #endif
 static const float VNUM = 0.01F;
 static const std::string VERSION = "PRE-ALPHA ";
