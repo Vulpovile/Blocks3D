@@ -103,7 +103,7 @@ void Demo::onInit()  {
 
 void OnError(int err, std::string msg = "")
 {
-	std::string emsg = "An unexpected error has occured and Dynamica has to quit. We're sorry!" + msg;
+	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
@@ -199,7 +199,7 @@ std::string GetFileInPath(std::string file)
         return name;
     }
 	else
-		OnError(202, "\r\nFile not found: " + name);
+		OnError(202, " \r\nFile not found: " + name);
 		return NULL;
 		
 	
