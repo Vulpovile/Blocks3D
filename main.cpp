@@ -20,6 +20,12 @@ static const std::string VERSION = "PRE-ALPHA ";
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
 static bool democ = true;
+static std::string message = "";
+static G3D::RealTime messageTime = 0;
+static int FPSVal[7] = {10, 20, 30, 60, 120, 240, INT_MAX};
+static int index = 2;
+static float TIMERVAL = 60.0F;
+static int SCOREVAL = 0;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -82,6 +88,7 @@ std::string Convert (float number){
 
 void Demo::onInit()  {
     // Called before Demo::run() beings
+	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
 	std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
@@ -125,12 +132,23 @@ void Demo::onUserInput(UserInput* ui) {
 	{
 		app->debugController.setActive(false);
 	}
-	if(ui->keyPressed('d'))
+	if(ui->keyDown(SDLK_LCTRL))
 	{
-		if(ui->keyDown(SDLK_LCTRL))
+		if(ui->keyPressed('d'))
 		{
 			app->setDebugMode(!app->debugMode());
 		}
+	}
+	if(ui->keyPressed(SDLK_F8))
+	{
+		index++;
+		if(index >= 7)
+		{
+			index = 0;
+		}
+		messageTime = System::time();
+		message = "FPS has been set to " + Convert(FPSVal[index]);
+		setDesiredFrameRate(FPSVal[index]);
 	}
 
 	// Add other key handling here
@@ -176,18 +194,24 @@ void Demo::onGraphics(RenderDevice* rd) {
 	int offset2 = 0;
 	if(app->debugMode())
 	{
-		offset = 50;
-		offset2 = 70;
+		offset = 30;
+		offset2 = 50;
 		fntlighttrek->draw2D(rd, "Debug Mode Enabled", Vector2(0,30 + offset), 15, Color3::white(), Color3::black());
 	}
 
-	fntdominant->draw2D(rd, "Dynamica 2004-2005 Simulation Client version " + VERSION + Convert(VNUM), Vector2(0,0 + offset), 20, Color3::white(), Color3::black());
+	if(System::time() - 3 < messageTime)
+	{
+		fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
+	}
+
+	fntdominant->draw2D(rd, "Timer: " + Convert(TIMERVAL), Vector2(rd->getWidth() - 120, 20+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
+	fntdominant->draw2D(rd, "Score: " + Convert(SCOREVAL), Vector2(rd->getWidth() - 120, 50+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
 	//fntlighttrek->draw2D(rd, "Button: " + button, Vector2(10,30 + offset), 15, Color3::white(), Color3::black());
 	
-
-	Draw::box(G3D::Box(Vector3(0,40 + offset2,0),Vector3(80,330+offset2+40,0)),rd,Color4(0.5F,0.5F,0.5F,0.2F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.5F,0.5F,0.5F,0.4F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.5F,0.5F,0.5F,0.4F), Color4(0,0,0,0));
+	//GUI Boxes
+	Draw::box(G3D::Box(Vector3(0,40 + offset2,0),Vector3(80,330+offset2+40,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
+	Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
+	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	//G3D::GFont::draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
