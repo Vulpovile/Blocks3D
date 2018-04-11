@@ -11,12 +11,17 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
+#include "Instance.h"
+#include "PhysicalInstance.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
 static const float VNUM = 0.01F;
+static std::string title = "";
 static const std::string VERSION = "PRE-ALPHA ";
+static std::vector<Instance*> instances;
+static Instance* dataModel;
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
 static bool democ = true;
@@ -88,29 +93,125 @@ std::string Convert (float number){
     return buff.str();   
 }
 
+
+PhysicalInstance* makePart()
+{
+	PhysicalInstance* part = new PhysicalInstance();
+	instances.push_back(part);
+	return part;
+}
+
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
+	dataModel = new Instance();
+	//dataModel->name = "undefined";
+	dataModel->parent = NULL;
+	
+	PhysicalInstance* test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(0.2F,0.3F,1);
+	test->size = Vector3(24,1,24);
+	
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(10,1,0);
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-10,1,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-7,2,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(7,2,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-4,3,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(5,3,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-1,4,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(3,4,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(2,5,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(0,6,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-2,7,0);
+
+
+
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
 	//std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
-	std::string str = "Game \"undefined\"";
-	app->renderDevice->setCaption(str);
+	//title = dataModel->name;
+	
+	
+	
     GApplet::onInit();
 }
 
+
+
+void clearInstances()
+{
+	for(size_t i = 0; i < instances.size(); i++)
+		delete instances.at(i);
+	delete dataModel;
+}
 void OnError(int err, std::string msg = "")
 {
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
+	clearInstances();
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
 void Demo::onCleanup() {
-    // Called when Demo::run() exits
-	
+    clearInstances();
 }
+
 
 
 void Demo::onLogic() {
@@ -124,7 +225,11 @@ void Demo::onNetwork() {
 
 
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-	
+	if(dataModel->name != title)
+	{
+		title = dataModel->name;
+		app->renderDevice->setCaption("Game \"" + title + "\"");
+	}
 }
 
 
@@ -244,16 +349,27 @@ void Demo::onGraphics(RenderDevice* rd) {
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
 
-		makeFlag(Vector3(1, 0.5, 0.5), rd);
+		//makeFlag(Vector3(1, 0.5, 0.5), rd);
 		
 		
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
 
-		Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
-		
-		Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
+		//Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			Instance* instance = instances.at(i);
+			if(instance->className == "Part" && instance->parent != NULL)
+			{
+				PhysicalInstance* part = (PhysicalInstance*)instance;
+				Vector3 size = part->size;
+				Vector3 pos = part->position;
+				Draw::box(Box(Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2),Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2)), app->renderDevice, part->color, Color4::clear());
+			}
+			
+		}
+		//Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
 		
 		
 
