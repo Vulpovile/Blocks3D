@@ -12,6 +12,7 @@
  */
 #include <G3DAll.h>
 #include "Instance.h"
+#include "PhysicalInstance.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -19,6 +20,7 @@
 static const float VNUM = 0.01F;
 static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance> Instances;
+static Instance* dataModel;
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
 static bool democ = true;
@@ -93,11 +95,17 @@ std::string Convert (float number){
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
+	dataModel = new Instance();
+	//dataModel->name = "undefined";
+	dataModel->parent = NULL;
+	
+	PhysicalInstance* test = new PhysicalInstance();
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
 	//std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
-	std::string str = "Game \"undefined\"";
+	std::string str = "Game \"" + dataModel->name + "\"";
+	
 	app->renderDevice->setCaption(str);
     GApplet::onInit();
 }

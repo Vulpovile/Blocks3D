@@ -233,6 +233,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\PhysicalInstance.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -240,6 +244,10 @@
 			>
 			<File
 				RelativePath=".\Instance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PhysicalInstance.h"
 				>
 			</File>
 		</Filter>
