@@ -3,9 +3,7 @@
 
 std::string name;
 Instance* parent;
-static const int BASE_INSTANCE = 0;
-static const int PHYSICAL_INSTANCE = 1;
-static const int type = BASE_INSTANCE;
+static const std::string className = "Instance";
 
 Instance::Instance(void)
 {
@@ -16,10 +14,7 @@ Instance::~Instance(void)
 {
 	name = "Default Game Instance";
 }
-int getType()
-{
-	return type;
-}
+
 
 
 

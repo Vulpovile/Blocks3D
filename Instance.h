@@ -10,4 +10,5 @@ public:
 	Instance* parent;  // Another pointer.
 	static const int BASE_INSTANCE;
 	static const int PHYSICAL_INSTANCE;
+	static int type;
 };

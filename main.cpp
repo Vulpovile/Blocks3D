@@ -99,7 +99,7 @@ void Demo::onInit()  {
 	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
 	
-	PhysicalInstance* test = new PhysicalInstance();
+	Instance* test = new PhysicalInstance();
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
