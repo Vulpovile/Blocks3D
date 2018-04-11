@@ -44,3 +44,9 @@
 
 /Debug
 /Release
+stdout.txt
+log.txt
+*.suo
+*.suo
+G3DTest.suo
+G3DTest.suo

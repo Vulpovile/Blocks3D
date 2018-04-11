@@ -12,8 +12,8 @@
  */
 #include <G3DAll.h>
 
-#if G3D_VER < 60800
-    #error Requires G3D 6.08
+#if G3D_VER < 61000
+	#error Requires G3D 6.10
 #endif
 static const float VNUM = 0.01F;
 static const std::string VERSION = "PRE-ALPHA ";
@@ -77,8 +77,7 @@ public:
 
     ~App();
 };
-
-
+ 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
 }
 
@@ -101,9 +100,10 @@ void Demo::onInit()  {
     GApplet::onInit();
 }
 
-void OnError(int err)
+void OnError(int err, std::string msg = "")
 {
-	MessageBox(NULL, "An unexpected error has occured and Dynamica has to quit. We're sorry!","Dynamica Crash", MB_OK);
+	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
+	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
@@ -187,6 +187,21 @@ std::string ExePath() {
     GetModuleFileName( NULL, buffer, MAX_PATH );
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	return std::string( buffer ).substr( 0, pos);
+}
+
+std::string GetFileInPath(std::string file)
+{
+	std::string name = ExePath() + file;
+	struct stat buf;
+    if (stat(name.c_str(), &buf) != -1)
+    {
+        return name;
+    }
+	else
+		OnError(202, " \r\nFile not found: " + name);
+		return NULL;
+		
+	
 }
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
@@ -338,11 +353,10 @@ void App::main() {
 	setDebugMode(false);
 	debugController.setActive(false);
     // Load objects here
-	go = Texture::fromFile(ExePath() + "/content/images/Run.png");
-	fntdominant = GFont::fromFile(ExePath() + "\\content\\font\\dominant.fnt");
-	fntlighttrek = GFont::fromFile(ExePath() + "\\content\\font\\lighttrek.fnt");
+	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
+	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
+	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
-	
     applet->run();
 }
 
@@ -363,7 +377,7 @@ int main(int argc, char** argv) {
     //settings.useNetwork = false;
 	//settings.window.width = 1024;
 	//settings.window.height = 768;
-	settings.window.defaultIconFilename = ExePath() + "/content/images/rico.png";
+	settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
 	settings.window.resizable = true;
 
 	App app = App(settings);
