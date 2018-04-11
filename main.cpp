@@ -19,7 +19,7 @@
 #endif
 static const float VNUM = 0.01F;
 static const std::string VERSION = "PRE-ALPHA ";
-static std::vector<Instance> Instances;
+static std::vector<Instance*> instances;
 static Instance* dataModel;
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
@@ -109,18 +109,24 @@ void Demo::onInit()  {
 	app->renderDevice->setCaption(str);
     GApplet::onInit();
 }
-
+void clearInstances()
+{
+	for(size_t i = 0; i < instances.size(); i++)
+		delete instances.at(i);
+	delete dataModel;
+}
 void OnError(int err, std::string msg = "")
 {
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
+	clearInstances();
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
 void Demo::onCleanup() {
-    // Called when Demo::run() exits
-	
+    clearInstances();
 }
+
 
 
 void Demo::onLogic() {
