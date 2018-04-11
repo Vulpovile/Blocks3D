@@ -77,8 +77,7 @@ public:
 
     ~App();
 };
-
-
+ 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
 }
 
