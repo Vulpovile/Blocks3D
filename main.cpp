@@ -11,6 +11,7 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
+#include "resource.h"
 #include "Instance.h"
 #include "PhysicalInstance.h"
 
@@ -204,6 +205,7 @@ void OnError(int err, std::string msg = "")
 {
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
+	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
@@ -254,6 +256,7 @@ void Demo::onUserInput(UserInput* ui) {
 		spacing--;
 		messageTime = System::time();
 		message = "Spacing set to " + Convert(spacing);
+	
 		OnError(3423);
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
