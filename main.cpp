@@ -18,6 +18,7 @@
 	#error Requires G3D 6.10
 #endif
 static const float VNUM = 0.01F;
+static std::string title = "";
 static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance*> instances;
 static Instance* dataModel;
@@ -116,9 +117,10 @@ void Demo::onInit()  {
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
 	//std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
-	std::string str = "Game \"" + dataModel->name + "\"";
+	//title = dataModel->name;
 	
-	app->renderDevice->setCaption(str);
+	
+	
     GApplet::onInit();
 }
 
@@ -155,7 +157,11 @@ void Demo::onNetwork() {
 
 
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-	
+	if(dataModel->name != title)
+	{
+		title = dataModel->name;
+		app->renderDevice->setCaption("Game \"" + title + "\"");
+	}
 }
 
 
