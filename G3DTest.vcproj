@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="G3DTest"
 	ProjectGUID="{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
+	RootNamespace="G3DTest"
 	>
 	<Platforms>
 		<Platform
@@ -209,6 +210,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\Instance.cpp"
+				>
+			</File>
+			<File
 				RelativePath="main.cpp"
 				>
 				<FileConfiguration
@@ -233,6 +238,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\Instance.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
