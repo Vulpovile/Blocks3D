@@ -3,11 +3,12 @@
 
 std::string name;
 Instance* parent;
-static const std::string className = "Instance";
+static std::string className = "Instance";
 
 Instance::Instance(void)
 {
 	name = "Default Game Instance";
+	className = "Part";
 }
 
 Instance::~Instance(void)

@@ -92,6 +92,14 @@ std::string Convert (float number){
     return buff.str();   
 }
 
+
+PhysicalInstance* makePart()
+{
+	PhysicalInstance* part = new PhysicalInstance();
+	instances.push_back(part);
+	return part;
+}
+
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
@@ -99,7 +107,11 @@ void Demo::onInit()  {
 	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
 	
-	Instance* test = new PhysicalInstance();
+	PhysicalInstance* test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(0.2,0.7,0.3);
+	test->size = Vector3(128,1,128);
+	
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
@@ -109,6 +121,9 @@ void Demo::onInit()  {
 	app->renderDevice->setCaption(str);
     GApplet::onInit();
 }
+
+
+
 void clearInstances()
 {
 	for(size_t i = 0; i < instances.size(); i++)
@@ -260,16 +275,27 @@ void Demo::onGraphics(RenderDevice* rd) {
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
 
-		makeFlag(Vector3(1, 0.5, 0.5), rd);
+		//makeFlag(Vector3(1, 0.5, 0.5), rd);
 		
 		
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
 
-		Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
-		
-		Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
+		//Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			Instance* instance = instances.at(i);
+			if(instance->className == "Part" && instance->parent != NULL)
+			{
+				PhysicalInstance* part = (PhysicalInstance*)instance;
+				Vector3 size = part->size;
+				Vector3 pos = part->position;
+				Draw::box(Box(Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2),Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2)), app->renderDevice, part->color, Color4::clear());
+			}
+			
+		}
+		//Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
 		
 		
 
