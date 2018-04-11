@@ -144,14 +144,14 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="2"
 				PrecompiledHeaderFile=".\Debug/G3DTest.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -203,6 +203,26 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<AssemblyReference
+			RelativePath="System.dll"
+			AssemblyName="System, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.Data.dll"
+			AssemblyName="System.Data, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=x86"
+		/>
+		<AssemblyReference
+			RelativePath="System.Drawing.dll"
+			AssemblyName="System.Drawing, Version=2.0.0.0, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.Windows.Forms.dll"
+			AssemblyName="System.Windows.Forms, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.XML.dll"
+			AssemblyName="System.Xml, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
 	</References>
 	<Files>
 		<Filter
