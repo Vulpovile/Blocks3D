@@ -27,7 +27,7 @@ static GFontRef fntlighttrek = NULL;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
-static int FPSVal[7] = {10, 20, 30, 60, 120, 240, INT_MAX};
+static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
@@ -260,6 +260,17 @@ void Demo::onUserInput(UserInput* ui) {
 	{
 		app->debugController.setActive(false);
 	}
+
+
+	if(ui->keyPressed(SDLK_LSHIFT))
+	{
+		app->debugController.setMoveRate(20);
+	}
+	else if(ui->keyReleased(SDLK_LSHIFT))
+	{
+		app->debugController.setMoveRate(10);
+	}
+
 	if(ui->keyDown(SDLK_LCTRL))
 	{
 		if(ui->keyPressed('d'))
