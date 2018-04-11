@@ -110,9 +110,77 @@ void Demo::onInit()  {
 	
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
-	test->color = Color3(0.2,0.7,0.3);
-	test->size = Vector3(128,1,128);
+	test->color = Color3(0.2F,0.3F,1);
+	test->size = Vector3(24,1,24);
 	
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(10,1,0);
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-10,1,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-7,2,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(7,2,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-4,3,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(5,3,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-1,4,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(3,4,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(2,5,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(0,6,0);
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->position = Vector3(-2,7,0);
+
+
+
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
