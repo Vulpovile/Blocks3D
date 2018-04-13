@@ -235,6 +235,11 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 }
 
 
+void readMouseGUIInput()
+{
+	
+}
+
 void Demo::onUserInput(UserInput* ui) {
     if (ui->keyPressed(SDLK_ESCAPE)) {
         // Even when we aren't in debug mode, quit on escape.
@@ -299,9 +304,11 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been set to " + Convert(FPSVal[index]);
 		setDesiredFrameRate(FPSVal[index]);
 	}
-
+	readMouseGUIInput();
 	// Add other key handling here
 }
+
+
 
 std::string ExePath() {
     char buffer[MAX_PATH];

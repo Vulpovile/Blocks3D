@@ -6,9 +6,18 @@ Color4 textColor;
 Color4 textOutlineColor;
 Color4 boxColor;
 Color4 boxOutlineColor;
+Color4 textColorOvr;
+Color4 textOutlineColorOvr;
+Color4 boxColorOvr;
+Color4 boxOutlineColorOvr;
+Color4 textColorDn;
+Color4 textOutlineColorDn;
+Color4 boxColorDn;
+Color4 boxOutlineColorDn;
 bool centeredWithinBox;
 std::string title;
 G3D::GFontRef font;
+int textSize;
 
 
 TextButtonInstance::TextButtonInstance(void)
@@ -22,6 +31,8 @@ TextButtonInstance::TextButtonInstance(void)
 	textOutlineColor = Color4(0, 0, 0, 0);
 	boxColor = Color4(0.6F,0.6F,0.6F,0.4F);
 	boxOutlineColor = Color4(0, 0, 0, 0);
+	textSize = 12;
+	
 }
 
 TextButtonInstance::~TextButtonInstance(void)
