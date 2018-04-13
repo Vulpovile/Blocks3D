@@ -46,6 +46,55 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TOOLBOX DIALOGEX 0, 0, 368, 72
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_AXBROWSER1,"{A8F8E829-06DA-11D2-8D70-00A0C98B28E2}",WS_TABSTOP,7,7,354,58
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_TOOLBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 361
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 65
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_TOOLBOX DLGINIT
+BEGIN
+    IDC_AXBROWSER1, 0x376, 76, 0
+0x0000, 0x0000, 0xb293, 0x0000, 0x0048, 0x0000, 0x0003, 0x0008, 0xf20b, 
+0x4757, 0x0020, 0x0000, 0x005f, 0x0065, 0x0078, 0x0074, 0x0065, 0x006e, 
+0x0074, 0x0078, 0x36e1, 0x0000, 0x0003, 0x0008, 0xf20a, 0x4757, 0xffe0, 
+0xffff, 0x005f, 0x0065, 0x0078, 0x0074, 0x0065, 0x006e, 0x0074, 0x0079, 
+0x09b7, 0x0000, 
+    0
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
