@@ -268,6 +268,8 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDLK_LSHIFT))
 	{
 		app->debugController.setMoveRate(20);
+		
+		
 	}
 	else if(ui->keyReleased(SDLK_LSHIFT))
 	{

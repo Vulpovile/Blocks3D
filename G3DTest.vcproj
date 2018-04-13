@@ -262,6 +262,10 @@
 				RelativePath=".\PhysicalInstance.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TextButtonInstance.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -279,6 +283,10 @@
 				RelativePath=".\resource.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TextButtonInstance.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -287,5 +295,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Dialogs.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
