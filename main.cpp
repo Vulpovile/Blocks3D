@@ -455,12 +455,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 
 
-	//rd->pushState();
+	rd->pushState();
 	
-	//rd->setTexture(0, go);
+	rd->setTexture(0, go);
 
 
-	/*rd->enableAlphaWrite();
+	rd->enableAlphaWrite();
 	rd->setTexCoord(0, Vector2(0.0F, 0.0F));
 	rd->setTexCoord(0, Vector2(1.0F, 0.0F));
 	rd->setTexCoord(0, Vector2(0.0F, 1.0F));
@@ -473,7 +473,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	rd->sendVertex(Vector2(10,85));
 	rd->endPrimitive();
 	rd->setTexture(0, NULL);
-	//rd->popState();*/
+	rd->popState();
 
 
 	app->renderDevice->pop2D();

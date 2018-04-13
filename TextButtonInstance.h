@@ -7,4 +7,9 @@ class TextButtonInstance :
 public:
 	TextButtonInstance(void);
 	~TextButtonInstance(void);
+	Vector2 boxBegin;
+	Vector2 boxEnd;
+	Vector2 fontLocationRelativeTo;
+	bool centeredWithinBox;
+	std::string title;
 };
