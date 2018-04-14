@@ -14,6 +14,7 @@
 #include "resource.h"
 #include "Instance.h"
 #include "PhysicalInstance.h"
+#include "TextButtonInstance.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -22,6 +23,7 @@ static const float VNUM = 0.01F;
 static std::string title = "";
 static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance*> instances;
+static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
@@ -99,6 +101,14 @@ PhysicalInstance* makePart()
 {
 	PhysicalInstance* part = new PhysicalInstance();
 	instances.push_back(part);
+	return part;
+}
+
+TextButtonInstance* makeTextButton()
+{
+	TextButtonInstance* part = new TextButtonInstance();
+	instances.push_back(part);
+	instances_2D.push_back(part);
 	return part;
 }
 

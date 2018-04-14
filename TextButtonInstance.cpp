@@ -16,9 +16,11 @@ Color4 boxColorDn;
 Color4 boxOutlineColorDn;
 bool centeredWithinBox;
 std::string title;
-G3D::GFontRef font;
+G3D::GFontRef* font;
 int textSize;
-
+bool floatBottom;
+bool floatRight;
+bool visible;
 
 TextButtonInstance::TextButtonInstance(void)
 {
@@ -32,6 +34,9 @@ TextButtonInstance::TextButtonInstance(void)
 	boxColor = Color4(0.6F,0.6F,0.6F,0.4F);
 	boxOutlineColor = Color4(0, 0, 0, 0);
 	textSize = 12;
+	floatBottom = false;
+	floatRight = false;
+	visible = true;
 	
 }
 

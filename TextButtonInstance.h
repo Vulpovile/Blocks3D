@@ -25,4 +25,8 @@ public:
 	bool centeredWithinBox;
 	std::string title;
 	G3D::GFontRef font;
+	bool floatBottom;
+	bool floatRight;
+	bool visible;
+
 };
