@@ -321,7 +321,7 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
-	readMouseGUIInput();
+	//readMouseGUIInput();
 	// Add other key handling here
 }
 
