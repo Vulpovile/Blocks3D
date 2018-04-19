@@ -380,7 +380,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
-
+		Draw::sphere(G3D::Sphere(Vector3(0,0,0),3), rd, Color3::red(), Color4::clear());
 
 		//makeFlag(Vector3(1, 0.5, 0.5), rd);
 		
@@ -470,26 +470,54 @@ void Demo::onGraphics(RenderDevice* rd) {
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 
-
+	
 
 	rd->pushState();
 	
-	rd->setTexture(0, go);
-
+	/*rd->setTexture(0, go);
+	
 
 	rd->enableAlphaWrite();
-	rd->setTexCoord(0, Vector2(0.0F, 0.0F));
-	rd->setTexCoord(0, Vector2(1.0F, 0.0F));
-	rd->setTexCoord(0, Vector2(0.0F, 1.0F));
-	rd->setTexCoord(0, Vector2(1.0F, 1.0F));
-	rd->setTextureCombineMode(0, RenderDevice::CombineMode::TEX_ADD);
+	//rd->setTexCoord(0, Vector2(0.0F, 0.0F));
+	//rd->setTexCoord(0, Vector2(1.0F, 0.0F));
+	//rd->setTexCoord(0, Vector2(0.0F, 1.0F));
+	//rd->setTexCoord(0, Vector2(1.0F, 1.0F));
+	//rd->setTextureCombineMode(0, RenderDevice::CombineMode::TEX_ADD);
+	
 	rd->beginPrimitive(RenderDevice::QUADS);
 	rd->sendVertex(Vector2(10,25));
 	rd->sendVertex(Vector2(70,25));
 	rd->sendVertex(Vector2(70,85));
 	rd->sendVertex(Vector2(10,85));
 	rd->endPrimitive();
-	rd->setTexture(0, NULL);
+	rd->setTexture(0, NULL);*/
+
+	
+		int texid = go->getOpenGLID();
+		rd->beforePrimitive();
+
+		//glColor3d(255,255,255);
+		
+		glEnable( GL_TEXTURE_2D );
+		glEnable(GL_BLEND);// you enable blending function
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		glBindTexture( GL_TEXTURE_2D, texid);
+		//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		glBegin( GL_QUADS );
+		glTexCoord2d(0.0,0.0);
+		glVertex2f( 10, 25 );
+		glTexCoord2d( 1.0,0.0 );
+		glVertex2f( 70, 25 );
+		glTexCoord2d( 1.0,1.0 );
+		glVertex2f( 70, 85 );
+		glTexCoord2d( 0.0,1.0 );
+		glVertex2f( 10, 85 );
+		glEnd();
+
+		glDisable( GL_TEXTURE_2D );
+
+		rd->afterPrimitive();
+
 	rd->popState();
 
 
