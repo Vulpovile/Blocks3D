@@ -37,6 +37,11 @@ static int SCOREVAL = 0;
 static int sep = 125;
 static int spacing = 25;
 static G3D::TextureRef go = NULL;
+static G3D::TextureRef go_ovr = NULL;
+static float mousex = 0;
+static float mousey = 0;
+static int go_id = 0;
+static int go_ovr_id;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -314,6 +319,8 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been set to " + Convert(FPSVal[index]);
 		setDesiredFrameRate(FPSVal[index]);
 	}
+	mousex = ui->getMouseX();
+	mousey = ui->getMouseY();
 	readMouseGUIInput();
 	// Add other key handling here
 }
@@ -359,6 +366,22 @@ void makeFlag(Vector3 &vec, RenderDevice* &rd)
 	//	rd->sendVertex(Vector3(up.x, up.y-2, up.z));
 	//rd->endPrimitive();
 	//rd->popState();
+}
+
+
+
+bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
+{
+	
+
+	if(mousex >= point1x && mousey >= point1y)
+	{
+		if(mousex < point2x && mousey < point2y)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
@@ -492,16 +515,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 	rd->endPrimitive();
 	rd->setTexture(0, NULL);*/
 
-	
-		int texid = go->getOpenGLID();
+
 		rd->beforePrimitive();
 
-		//glColor3d(255,255,255);
+		
 		
 		glEnable( GL_TEXTURE_2D );
 		glEnable(GL_BLEND);// you enable blending function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-		glBindTexture( GL_TEXTURE_2D, texid);
+		
+		if(mouseInArea(10,25,70,85))
+			glBindTexture( GL_TEXTURE_2D, go_ovr_id);
+		else
+			glBindTexture( GL_TEXTURE_2D, go_id);
+
 		//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 		glBegin( GL_QUADS );
 		glTexCoord2d(0.0,0.0);
@@ -531,6 +558,9 @@ void App::main() {
 	debugController.setActive(false);
     // Load objects here
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
+	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
+	go_id = go->getOpenGLID();
+	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
