@@ -313,7 +313,7 @@ void Demo::onUserInput(UserInput* ui) {
 		if(ui->keyPressed('v'))
 		{
 			messageTime = System::time();
-			message = convert(getOSVersion());
+			message = Convert(getOSVersion());
 		}
 	}
 	if(ui->keyPressed(SDLK_F8))
@@ -600,7 +600,7 @@ int main(int argc, char** argv) {
     //settings.useNetwork = false;
 	//settings.window.width = 1024;
 	//settings.window.height = 768;
-	if(getOSVersion > 5.0)
+	if(getOSVersion() > 5.0)
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
 	else
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
