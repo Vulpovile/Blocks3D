@@ -258,6 +258,17 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	
 //}
 
+double getOSVersion() {
+    OSVERSIONINFO osvi;
+
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    GetVersionEx(&osvi);
+	std::string version = Convert(osvi.dwMajorVersion) + "." + Convert(osvi.dwMinorVersion);
+	return ::atof(version.c_str());
+}
+
 void Demo::onUserInput(UserInput* ui) {
     if (ui->keyPressed(SDLK_ESCAPE)) {
         // Even when we aren't in debug mode, quit on escape.
@@ -295,6 +306,14 @@ void Demo::onUserInput(UserInput* ui) {
 			else
 				message = "Debug Mode Enabled";
 			app->setDebugMode(!app->debugMode());
+		}
+	}
+	if(ui->keyDown(SDLK_LCTRL))
+	{
+		if(ui->keyPressed('v'))
+		{
+			messageTime = System::time();
+			message = convert(getOSVersion());
 		}
 	}
 	if(ui->keyPressed(SDLK_F8))
@@ -581,7 +600,10 @@ int main(int argc, char** argv) {
     //settings.useNetwork = false;
 	//settings.window.width = 1024;
 	//settings.window.height = 768;
-	settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
+	if(getOSVersion > 5.0)
+		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
+	else
+		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 
 	App app = App(settings);
