@@ -38,10 +38,13 @@ static int sep = 125;
 static int spacing = 25;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
+static G3D::TextureRef go_dn = NULL;
 static float mousex = 0;
 static float mousey = 0;
 static int go_id = 0;
-static int go_ovr_id;
+static int go_ovr_id = 0;
+static int go_dn_id = 0;
+static bool mouseButton1Down = false;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -250,10 +253,10 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 }
 
 
-void readMouseGUIInput()
-{
+//void readMouseGUIInput()
+//{
 	
-}
+//}
 
 void Demo::onUserInput(UserInput* ui) {
     if (ui->keyPressed(SDLK_ESCAPE)) {
@@ -264,20 +267,6 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
 		app->debugController.setActive(true);
-	}
-	if(ui->keyPressed(SDLK_KP_PLUS))
-	{
-		spacing++;
-		messageTime = System::time();
-		message = "Spacing set to " + Convert(spacing);
-	}
-	if(ui->keyPressed(SDLK_KP_MINUS))
-	{
-		spacing--;
-		messageTime = System::time();
-		message = "Spacing set to " + Convert(spacing);
-	
-		OnError(3423);
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
@@ -321,6 +310,7 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
+	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
 	//readMouseGUIInput();
 	// Add other key handling here
 }
@@ -525,7 +515,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 		
 		if(mouseInArea(10,25,70,85))
-			glBindTexture( GL_TEXTURE_2D, go_ovr_id);
+		{
+			if(mouseButton1Down)
+				glBindTexture( GL_TEXTURE_2D, go_dn_id);
+			else
+				glBindTexture( GL_TEXTURE_2D, go_ovr_id);
+		}
 		else
 			glBindTexture( GL_TEXTURE_2D, go_id);
 
@@ -559,7 +554,9 @@ void App::main() {
     // Load objects here
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
+	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
 	go_id = go->getOpenGLID();
+	go_dn_id = go_dn->getOpenGLID();
 	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
