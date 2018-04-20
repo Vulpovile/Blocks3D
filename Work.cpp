@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "Work.h"
 
-
 // Work dialog
 
 IMPLEMENT_DYNAMIC(Work, CDialog)
