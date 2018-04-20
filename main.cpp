@@ -11,9 +11,9 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
-#include "resource.h"
 #include "Instance.h"
 #include "PhysicalInstance.h"
+#include "TextButtonInstance.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -22,6 +22,7 @@ static const float VNUM = 0.01F;
 static std::string title = "";
 static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance*> instances;
+static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
 static GFontRef fntdominant = NULL;
 static GFontRef fntlighttrek = NULL;
@@ -32,9 +33,16 @@ static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
-static int sep = 125;
-static int spacing = 25;
 static G3D::TextureRef go = NULL;
+static G3D::TextureRef go_ovr = NULL;
+static G3D::TextureRef go_dn = NULL;
+static float mousex = 0;
+static float mousey = 0;
+static int go_id = 0;
+static int go_ovr_id = 0;
+static int go_dn_id = 0;
+static bool mouseButton1Down = false;
+static bool running = true;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -102,17 +110,149 @@ PhysicalInstance* makePart()
 	return part;
 }
 
+TextButtonInstance* makeTextButton()
+{
+	TextButtonInstance* part = new TextButtonInstance();
+	instances.push_back(part);
+	instances_2D.push_back(part);
+	return part;
+}
+
+
+void initGUI()
+{
+	TextButtonInstance* button = makeTextButton();
+	button->boxBegin = Vector2(0, -24);
+	button->boxEnd = Vector2(80, 0);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Hopper";
+	button->fontLocationRelativeTo = Vector2(10, 3);
+	
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -48);
+	button->boxEnd = Vector2(80, -24);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Controller";
+	button->fontLocationRelativeTo = Vector2(10, 3);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -72);
+	button->boxEnd = Vector2(80, -48);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Color";
+	button->fontLocationRelativeTo = Vector2(10, 3);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -96);
+	button->boxEnd = Vector2(80, -72);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Surface";
+	button->fontLocationRelativeTo = Vector2(10, 3);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -120);
+	button->boxEnd = Vector2(80, -96);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->boxOutlineColor = Color3(0,255,255);
+	button->title = "Model";
+	button->fontLocationRelativeTo = Vector2(10, 3);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, 0);
+	button->boxEnd = Vector2(125, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "File";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(125, 0);
+	button->boxEnd = Vector2(250, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Edit";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(250, 0);
+	button->boxEnd = Vector2(375, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "View";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(375, 0);
+	button->boxEnd = Vector2(500, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Insert";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(500, 0);
+	button->boxEnd = Vector2(625, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Format";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+}
+
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
+	
+	
 	dataModel = new Instance();
 	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
 	
+	initGUI();
+
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
 	test->size = Vector3(24,1,24);
+
 	
 
 	test = makePart();
@@ -185,12 +325,12 @@ void Demo::onInit()  {
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
-	//std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
-	//title = dataModel->name;
 	
 	
 	
+
     GApplet::onInit();
+	
 }
 
 
@@ -206,7 +346,7 @@ void OnError(int err, std::string msg = "")
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
-	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
+	MessageBoxA(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
@@ -235,7 +375,24 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 }
 
 
+//void readMouseGUIInput()
+//{
+	
+//}
+
+double getOSVersion() {
+    OSVERSIONINFO osvi;
+
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    GetVersionEx(&osvi);
+	std::string version = Convert(osvi.dwMajorVersion) + "." + Convert(osvi.dwMinorVersion);
+	return ::atof(version.c_str());
+}
+
 void Demo::onUserInput(UserInput* ui) {
+	
     if (ui->keyPressed(SDLK_ESCAPE)) {
         // Even when we aren't in debug mode, quit on escape.
         endApplet = true;
@@ -244,20 +401,6 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
 		app->debugController.setActive(true);
-	}
-	if(ui->keyPressed(SDLK_KP_PLUS))
-	{
-		spacing++;
-		messageTime = System::time();
-		message = "Spacing set to " + Convert(spacing);
-	}
-	if(ui->keyPressed(SDLK_KP_MINUS))
-	{
-		spacing--;
-		messageTime = System::time();
-		message = "Spacing set to " + Convert(spacing);
-	
-		OnError(3423);
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
@@ -268,6 +411,8 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDLK_LSHIFT))
 	{
 		app->debugController.setMoveRate(20);
+		
+		
 	}
 	else if(ui->keyReleased(SDLK_LSHIFT))
 	{
@@ -282,8 +427,16 @@ void Demo::onUserInput(UserInput* ui) {
 			if(app->debugMode())
 				message = "Debug Mode Disabled";
 			else
-				message = "Debug Mode Enabled";
+				message = "Debug Mode Enabled, Soon to be depricated";
 			app->setDebugMode(!app->debugMode());
+		}
+	}
+	if(ui->keyDown(SDLK_LCTRL))
+	{
+		if(ui->keyPressed('v'))
+		{
+			messageTime = System::time();
+			message = Convert(getOSVersion());
 		}
 	}
 	if(ui->keyPressed(SDLK_F8))
@@ -297,13 +450,18 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been set to " + Convert(FPSVal[index]);
 		setDesiredFrameRate(FPSVal[index]);
 	}
-
+	mousex = ui->getMouseX();
+	mousey = ui->getMouseY();
+	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
+	//readMouseGUIInput();
 	// Add other key handling here
 }
 
+
+
 std::string ExePath() {
     char buffer[MAX_PATH];
-    GetModuleFileName( NULL, buffer, MAX_PATH );
+	GetModuleFileNameA( NULL, buffer, MAX_PATH );
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	return std::string( buffer ).substr( 0, pos);
 }
@@ -332,14 +490,37 @@ void makeFlag(Vector3 &vec, RenderDevice* &rd)
 	parray.push(Vector2(up.x-1, up.y-.5));
 	parray.push(Vector2(up.x, up.y-1));
 	Draw::poly2D(parray, rd, Color3::blue());
-	//rd->pushState();
-	//rd->beginPrimitive(RenderDevice::QUADS);
-	//rd->setColor(Color4(0,0,1,1));
-	//	rd->sendVertex(up);
-	//	rd->sendVertex(Vector3(up.x-1, up.y-1, up.z));
-	//	rd->sendVertex(Vector3(up.x, up.y-2, up.z));
-	//rd->endPrimitive();
-	//rd->popState();
+	//I know how i will approach this now
+}
+
+
+
+bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
+{
+	
+
+	if(mousex >= point1x && mousey >= point1y)
+	{
+		if(mousex < point2x && mousey < point2y)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
+void drawButtons(RenderDevice* rd)
+{
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			Instance* instance = instances_2D.at(i);
+			if(instance->className == "TextButton" && instance->parent == dataModel)
+			{
+				TextButtonInstance* tbi = (TextButtonInstance*)instance;
+				tbi->drawObj(rd);				
+			}
+		}
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
@@ -362,7 +543,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
-
 		//makeFlag(Vector3(1, 0.5, 0.5), rd);
 		
 		
@@ -370,7 +550,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
 
-		//Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
@@ -383,8 +562,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			}
 			
 		}
-		//Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
-		
+	
 		
 
     app->renderDevice->disableLighting();
@@ -409,14 +587,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	fntdominant->draw2D(rd, "Timer: " + Convert(TIMERVAL), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
 	fntdominant->draw2D(rd, "Score: " + Convert(SCOREVAL), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
-	//fntlighttrek->draw2D(rd, "Button: " + button, Vector2(10,30 + offset), 15, Color3::white(), Color3::black());
 	
 	//GUI Boxes
 
 	
 	Draw::box(G3D::Box(Vector3(0,offset,0),Vector3(80,330+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-
+	//Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	
 
@@ -427,19 +603,14 @@ void Demo::onGraphics(RenderDevice* rd) {
 	fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
 
+	/*
 	fntlighttrek->draw2D(rd, "Model", Vector2(10,rd->getHeight() - (120 - spacing*0)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Surface", Vector2(10,rd->getHeight() - (120 - spacing*1)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Color", Vector2(10,rd->getHeight() - (120 - spacing*2)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Controller", Vector2(10,rd->getHeight() - (120 - spacing*3)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Hopper", Vector2(10,rd->getHeight() - (120 - spacing*4)), 12, Color3(0,255,255), Color4(0,0,0,0));
+	*/
 
-
-	//Top menu
-	fntlighttrek->draw2D(rd,"File", Vector2(10+0*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Edit", Vector2(10+1*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"View", Vector2(10+2*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Insert", Vector2(10+3*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Format", Vector2(10+4*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
 	//Tools menu
 	Draw::box(G3D::Box(Vector3(5, 165+offset,0),Vector3(75, 165+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
@@ -451,28 +622,45 @@ void Demo::onGraphics(RenderDevice* rd) {
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 
-
-
-	//rd->pushState();
 	
-	//rd->setTexture(0, go);
 
+	rd->pushState();
+		rd->beforePrimitive();
 
-	/*rd->enableAlphaWrite();
-	rd->setTexCoord(0, Vector2(0.0F, 0.0F));
-	rd->setTexCoord(0, Vector2(1.0F, 0.0F));
-	rd->setTexCoord(0, Vector2(0.0F, 1.0F));
-	rd->setTexCoord(0, Vector2(1.0F, 1.0F));
-	rd->setTextureCombineMode(0, RenderDevice::CombineMode::TEX_ADD);
-	rd->beginPrimitive(RenderDevice::QUADS);
-	rd->sendVertex(Vector2(10,25));
-	rd->sendVertex(Vector2(70,25));
-	rd->sendVertex(Vector2(70,85));
-	rd->sendVertex(Vector2(10,85));
-	rd->endPrimitive();
-	rd->setTexture(0, NULL);
-	//rd->popState();*/
+		
+		
+		glEnable( GL_TEXTURE_2D );
+		glEnable(GL_BLEND);// you enable blending function
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		
+		if(mouseInArea(10,25,70,85))
+		{
+			if(mouseButton1Down)
+				glBindTexture( GL_TEXTURE_2D, go_dn_id);
+			else
+				glBindTexture( GL_TEXTURE_2D, go_ovr_id);
+		}
+		else
+			glBindTexture( GL_TEXTURE_2D, go_id);
 
+		glBegin( GL_QUADS );
+		glTexCoord2d(0.0,0.0);
+		glVertex2f( 10, 0+offset );
+		glTexCoord2d( 1.0,0.0 );
+		glVertex2f( 70, 0+offset );
+		glTexCoord2d( 1.0,1.0 );
+		glVertex2f( 70, 60+offset );
+		glTexCoord2d( 0.0,1.0 );
+		glVertex2f( 10, 60+offset );
+		glEnd();
+
+		glDisable( GL_TEXTURE_2D );
+
+		rd->afterPrimitive();
+
+	rd->popState();
+
+	drawButtons(rd);
 
 	app->renderDevice->pop2D();
 }
@@ -484,6 +672,11 @@ void App::main() {
 	debugController.setActive(false);
     // Load objects here
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
+	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
+	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
+	go_id = go->getOpenGLID();
+	go_dn_id = go_dn->getOpenGLID();
+	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
@@ -503,13 +696,12 @@ App::~App() {
 
 int main(int argc, char** argv) {
     GAppSettings settings;
-	//settings.debugFontName = "lighttrek.fnt";
-    //settings.useNetwork = false;
-	//settings.window.width = 1024;
-	//settings.window.height = 768;
-	settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
+	if(getOSVersion() > 5.0)
+		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
+	else
+		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
-
+	settings.writeLicenseFile = false;
 	App app = App(settings);
 	//app.window()->setIcon(ExePath() + "/content/images/rico.png");
 	app.run();

@@ -1,3 +1,4 @@
+#include <G3DAll.h>
 #pragma once
 
 class Instance

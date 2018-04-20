@@ -1,4 +1,3 @@
-#include <G3DAll.h>
 #include "PhysicalInstance.h"
 
 bool canCollide = true;
@@ -25,5 +24,7 @@ PhysicalInstance::PhysicalInstance(void)
 PhysicalInstance::~PhysicalInstance(void)
 {
 }
+
+
 
 

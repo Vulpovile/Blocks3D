@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "G3D_New", "G3D_New.vcproj", "{583B17DE-1A0C-4070-801A-021DC0C84B0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{583B17DE-1A0C-4070-801A-021DC0C84B0C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{583B17DE-1A0C-4070-801A-021DC0C84B0C}.Debug|Win32.Build.0 = Debug|Win32
+		{583B17DE-1A0C-4070-801A-021DC0C84B0C}.Release|Win32.ActiveCfg = Release|Win32
+		{583B17DE-1A0C-4070-801A-021DC0C84B0C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
