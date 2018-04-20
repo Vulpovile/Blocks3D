@@ -120,17 +120,81 @@ TextButtonInstance* makeTextButton()
 	return part;
 }
 
+
+void initGUI()
+{
+	TextButtonInstance* button = makeTextButton();
+	button->boxBegin = Vector2(0, -24);
+	button->boxEnd = Vector2(80, 0);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Hopper";
+	button->fontLocationRelativeTo = Vector2(10, 5);
+	
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -48);
+	button->boxEnd = Vector2(80, -24);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Controller";
+	button->fontLocationRelativeTo = Vector2(10, 5);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -72);
+	button->boxEnd = Vector2(80, -48);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Color";
+	button->fontLocationRelativeTo = Vector2(10, 5);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -96);
+	button->boxEnd = Vector2(80, -72);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Surface";
+	button->fontLocationRelativeTo = Vector2(10, 5);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, -120);
+	button->boxEnd = Vector2(80, -96);
+	button->floatBottom = true;
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->title = "Model";
+	button->fontLocationRelativeTo = Vector2(10, 5);
+}
+
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
+	
+	
 	dataModel = new Instance();
 	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
 	
+	initGUI();
+
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
 	test->size = Vector3(24,1,24);
+
 	
 
 	test = makePart();
@@ -208,7 +272,9 @@ void Demo::onInit()  {
 	
 	
 	
+
     GApplet::onInit();
+	
 }
 
 
@@ -270,6 +336,7 @@ double getOSVersion() {
 }
 
 void Demo::onUserInput(UserInput* ui) {
+	
     if (ui->keyPressed(SDLK_ESCAPE)) {
         // Even when we aren't in debug mode, quit on escape.
         endApplet = true;
@@ -393,6 +460,36 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 	return false;
 }
 
+
+void drawButtons(RenderDevice* rd)
+{
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			Instance* instance = instances_2D.at(i);
+			if(instance->className == "TextButtonInstance" && instance->parent == dataModel)
+			{
+				TextButtonInstance* tbi = (TextButtonInstance*)instance;
+				Vector3 point1;
+				Vector3 point2;
+				if(tbi->floatBottom)
+				{
+					point1 = Vector3(tbi->boxBegin.x, rd->getHeight() + tbi->boxBegin.y,0);
+					point2 = Vector3(tbi->boxEnd.x, rd->getHeight() + tbi->boxEnd.y,0);
+					
+				}
+				else
+				{
+					point1 = Vector3(tbi->boxBegin.x, tbi->boxBegin.y,0);
+					point2 = Vector3(tbi->boxEnd.x, tbi->boxEnd.y,0);
+				}
+				Draw::box(Box(point1, point2), rd, tbi->boxColor, tbi->boxOutlineColor);
+				Vector2 RelativeTo = Vector2(point1.x + tbi->fontLocationRelativeTo.x, point1.y + tbi->fontLocationRelativeTo.y);
+				tbi->font->draw2D(rd, tbi->title, RelativeTo, tbi->textSize, tbi->textColor, tbi->textOutlineColor);
+				
+			}
+		}
+}
+
 void Demo::onGraphics(RenderDevice* rd) {
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
@@ -412,7 +509,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
-		Draw::sphere(G3D::Sphere(Vector3(0,0,0),3), rd, Color3::red(), Color4::clear());
 
 		//makeFlag(Vector3(1, 0.5, 0.5), rd);
 		
@@ -421,7 +517,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
 
-		//Draw::box(G3D::Box(Vector3(4.0/2,1.0/2,2.0/2),Vector3(0,0,0)), rd, Color3::gray(), Color4(0,0,0,0));
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
@@ -434,8 +529,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			}
 			
 		}
-		//Draw::cylinder(G3D::Cylinder::Cylinder(Vector3(0,5,0),Vector3(0,10,0),1),app->renderDevice,Color4(0,0,1,0.5),Color4(0,0,0,0));
-		
+	
 		
 
     app->renderDevice->disableLighting();
@@ -460,14 +554,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	fntdominant->draw2D(rd, "Timer: " + Convert(TIMERVAL), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
 	fntdominant->draw2D(rd, "Score: " + Convert(SCOREVAL), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
-	//fntlighttrek->draw2D(rd, "Button: " + button, Vector2(10,30 + offset), 15, Color3::white(), Color3::black());
 	
 	//GUI Boxes
 
 	
 	Draw::box(G3D::Box(Vector3(0,offset,0),Vector3(80,330+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-
+	//Draw::box(G3D::Box(Vector3(0,rd->getHeight() - 120,0),Vector3(80,rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	
 
@@ -478,12 +570,13 @@ void Demo::onGraphics(RenderDevice* rd) {
 	fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
 
+	/*
 	fntlighttrek->draw2D(rd, "Model", Vector2(10,rd->getHeight() - (120 - spacing*0)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Surface", Vector2(10,rd->getHeight() - (120 - spacing*1)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Color", Vector2(10,rd->getHeight() - (120 - spacing*2)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Controller", Vector2(10,rd->getHeight() - (120 - spacing*3)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	fntlighttrek->draw2D(rd, "Hopper", Vector2(10,rd->getHeight() - (120 - spacing*4)), 12, Color3(0,255,255), Color4(0,0,0,0));
-
+	*/
 
 	//Top menu
 	fntlighttrek->draw2D(rd,"File", Vector2(10+0*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
@@ -561,6 +654,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	rd->popState();
 
+	drawButtons(rd);
 
 	app->renderDevice->pop2D();
 }
@@ -605,9 +699,13 @@ int main(int argc, char** argv) {
 	else
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
-
+	settings.writeLicenseFile = false;
+	
+	//SDLWindow wind = SDLWindow(settings.window);
 	App app = App(settings);
 	//app.window()->setIcon(ExePath() + "/content/images/rico.png");
+	messageTime = System::time();
+	message = app.window()->getAPIName();
 	app.run();
     return 0;
 }

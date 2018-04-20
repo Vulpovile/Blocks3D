@@ -28,5 +28,6 @@ public:
 	bool floatBottom;
 	bool floatRight;
 	bool visible;
+	int textSize;
 
 };

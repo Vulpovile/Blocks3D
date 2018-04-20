@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ImageButtonInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Instance.cpp"
 				>
 			</File>
@@ -271,6 +275,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\ImageButtonInstance.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Instance.h"
 				>

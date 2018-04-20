@@ -20,6 +20,7 @@ G3D::GFontRef* font;
 int textSize;
 bool floatBottom;
 bool floatRight;
+bool floatCenter;
 bool visible;
 
 TextButtonInstance::TextButtonInstance(void)
@@ -36,7 +37,9 @@ TextButtonInstance::TextButtonInstance(void)
 	textSize = 12;
 	floatBottom = false;
 	floatRight = false;
+	floatCenter = false;
 	visible = true;
+	className = "TextButtonInstance";
 	
 }
 
