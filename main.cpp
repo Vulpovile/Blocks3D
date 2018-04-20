@@ -659,16 +659,15 @@ void Demo::onGraphics(RenderDevice* rd) {
 		else
 			glBindTexture( GL_TEXTURE_2D, go_id);
 
-		//glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 		glBegin( GL_QUADS );
 		glTexCoord2d(0.0,0.0);
-		glVertex2f( 10, 25 );
+		glVertex2f( 10, 0+offset );
 		glTexCoord2d( 1.0,0.0 );
-		glVertex2f( 70, 25 );
+		glVertex2f( 70, 0+offset );
 		glTexCoord2d( 1.0,1.0 );
-		glVertex2f( 70, 85 );
+		glVertex2f( 70, 65+offset );
 		glTexCoord2d( 0.0,1.0 );
-		glVertex2f( 10, 85 );
+		glVertex2f( 10, 65+offset );
 		glEnd();
 
 		glDisable( GL_TEXTURE_2D );
