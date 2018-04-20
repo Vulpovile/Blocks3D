@@ -59,6 +59,16 @@ BEGIN
     CONTROL         "",IDC_AXBROWSER1,"{A8F8E829-06DA-11D2-8D70-00A0C98B28E2}",WS_TABSTOP,7,7,354,63
 END
 
+IDD_PROPPAGE_SMALL DIALOGEX 0, 0, 81, 56
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "File"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Save",IDC_SAVE,7,7,67,14,BS_LEFT | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "Load",IDC_LOAD,7,21,67,14,BS_LEFT | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "Cancel",IDC_LOAD2,7,35,67,14,BS_LEFT | BS_VCENTER | BS_FLAT
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -74,6 +84,14 @@ BEGIN
         RIGHTMARGIN, 361
         TOPMARGIN, 7
         BOTTOMMARGIN, 70
+    END
+
+    IDD_PROPPAGE_SMALL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 74
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 49
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -140,6 +158,21 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "Save",                        ID_FILE_SAVE40004
+        MENUITEM "Quit",                        ID_FILE_QUIT
+    END
+END
 
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////

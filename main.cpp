@@ -43,6 +43,7 @@ static int go_id = 0;
 static int go_ovr_id = 0;
 static int go_dn_id = 0;
 static bool mouseButton1Down = false;
+static bool running = true;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
