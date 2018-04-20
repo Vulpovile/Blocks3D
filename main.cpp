@@ -428,7 +428,7 @@ void Demo::onUserInput(UserInput* ui) {
 			if(app->debugMode())
 				message = "Debug Mode Disabled";
 			else
-				message = "Debug Mode Enabled";
+				message = "Debug Mode Enabled, Soon to be depricated";
 			app->setDebugMode(!app->debugMode());
 		}
 	}
