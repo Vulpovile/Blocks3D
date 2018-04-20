@@ -34,8 +34,6 @@ static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
-static int sep = 125;
-static int spacing = 25;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
@@ -132,7 +130,7 @@ void initGUI()
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
 	button->title = "Hopper";
-	button->fontLocationRelativeTo = Vector2(10, 5);
+	button->fontLocationRelativeTo = Vector2(10, 3);
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -143,7 +141,7 @@ void initGUI()
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
 	button->title = "Controller";
-	button->fontLocationRelativeTo = Vector2(10, 5);
+	button->fontLocationRelativeTo = Vector2(10, 3);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -154,7 +152,7 @@ void initGUI()
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
 	button->title = "Color";
-	button->fontLocationRelativeTo = Vector2(10, 5);
+	button->fontLocationRelativeTo = Vector2(10, 3);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -165,7 +163,7 @@ void initGUI()
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
 	button->title = "Surface";
-	button->fontLocationRelativeTo = Vector2(10, 5);
+	button->fontLocationRelativeTo = Vector2(10, 3);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -174,9 +172,69 @@ void initGUI()
 	button->parent = dataModel;
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
-	button->textOutlineColor = Color4::clear();
+	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
-	button->fontLocationRelativeTo = Vector2(10, 5);
+	button->fontLocationRelativeTo = Vector2(10, 3);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0, 0);
+	button->boxEnd = Vector2(125, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "File";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(125, 0);
+	button->boxEnd = Vector2(250, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Edit";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(250, 0);
+	button->boxEnd = Vector2(375, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "View";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(375, 0);
+	button->boxEnd = Vector2(500, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Insert";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(500, 0);
+	button->boxEnd = Vector2(625, 25);
+	button->parent = dataModel;
+	button->font = fntlighttrek;
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->title = "Format";
+	button->textSize = 16;
+	button->fontLocationRelativeTo = Vector2(10, 0);
 }
 
 void Demo::onInit()  {
@@ -434,14 +492,7 @@ void makeFlag(Vector3 &vec, RenderDevice* &rd)
 	parray.push(Vector2(up.x-1, up.y-.5));
 	parray.push(Vector2(up.x, up.y-1));
 	Draw::poly2D(parray, rd, Color3::blue());
-	//rd->pushState();
-	//rd->beginPrimitive(RenderDevice::QUADS);
-	//rd->setColor(Color4(0,0,1,1));
-	//	rd->sendVertex(up);
-	//	rd->sendVertex(Vector3(up.x-1, up.y-1, up.z));
-	//	rd->sendVertex(Vector3(up.x, up.y-2, up.z));
-	//rd->endPrimitive();
-	//rd->popState();
+	//I know how i will approach this now
 }
 
 
@@ -578,12 +629,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 	fntlighttrek->draw2D(rd, "Hopper", Vector2(10,rd->getHeight() - (120 - spacing*4)), 12, Color3(0,255,255), Color4(0,0,0,0));
 	*/
 
-	//Top menu
-	fntlighttrek->draw2D(rd,"File", Vector2(10+0*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Edit", Vector2(10+1*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"View", Vector2(10+2*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Insert", Vector2(10+3*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Format", Vector2(10+4*sep,0), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
 	//Tools menu
 	Draw::box(G3D::Box(Vector3(5, 165+offset,0),Vector3(75, 165+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
@@ -598,26 +643,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
 
 	rd->pushState();
-	
-	/*rd->setTexture(0, go);
-	
-
-	rd->enableAlphaWrite();
-	//rd->setTexCoord(0, Vector2(0.0F, 0.0F));
-	//rd->setTexCoord(0, Vector2(1.0F, 0.0F));
-	//rd->setTexCoord(0, Vector2(0.0F, 1.0F));
-	//rd->setTexCoord(0, Vector2(1.0F, 1.0F));
-	//rd->setTextureCombineMode(0, RenderDevice::CombineMode::TEX_ADD);
-	
-	rd->beginPrimitive(RenderDevice::QUADS);
-	rd->sendVertex(Vector2(10,25));
-	rd->sendVertex(Vector2(70,25));
-	rd->sendVertex(Vector2(70,85));
-	rd->sendVertex(Vector2(10,85));
-	rd->endPrimitive();
-	rd->setTexture(0, NULL);*/
-
-
 		rd->beforePrimitive();
 
 		
