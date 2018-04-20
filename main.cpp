@@ -325,8 +325,6 @@ void Demo::onInit()  {
 	setDesiredFrameRate(FPSVal[index]);
     app->debugCamera.setPosition(Vector3(0, 2, 10));
     app->debugCamera.lookAt(Vector3(0, 2, 0));
-	//std::string str = "Dynamica Duomillenium 5 Version " + VERSION + Convert(VNUM);
-	//title = dataModel->name;
 	
 	
 	
@@ -715,22 +713,14 @@ App::~App() {
 
 int main(int argc, char** argv) {
     GAppSettings settings;
-	//settings.debugFontName = "lighttrek.fnt";
-    //settings.useNetwork = false;
-	//settings.window.width = 1024;
-	//settings.window.height = 768;
 	if(getOSVersion() > 5.0)
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
 	else
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-	
-	//SDLWindow wind = SDLWindow(settings.window);
 	App app = App(settings);
 	//app.window()->setIcon(ExePath() + "/content/images/rico.png");
-	messageTime = System::time();
-	message = app.window()->getAPIName();
 	app.run();
     return 0;
 }
