@@ -29,5 +29,6 @@ public:
 	bool floatRight;
 	bool visible;
 	int textSize;
-
+	void drawObj(G3D::RenderDevice*);
+	
 };

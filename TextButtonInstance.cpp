@@ -46,3 +46,24 @@ TextButtonInstance::TextButtonInstance(void)
 TextButtonInstance::~TextButtonInstance(void)
 {
 }
+
+void TextButtonInstance::drawObj(RenderDevice* rd)
+{
+	Vector3 point1;
+	Vector3 point2;
+	if(floatBottom)
+	{
+		point1 = Vector3(boxBegin.x, rd->getHeight() + boxBegin.y,0);
+		point2 = Vector3(boxEnd.x, rd->getHeight() + boxEnd.y,0);
+		
+	}
+	else
+	{
+		point1 = Vector3(boxBegin.x, boxBegin.y,0);
+		point2 = Vector3(boxEnd.x, boxEnd.y,0);
+	}
+	Draw::box(Box(point1, point2), rd, boxColor, boxOutlineColor);
+	Vector2 RelativeTo = Vector2(point1.x + fontLocationRelativeTo.x, point1.y + fontLocationRelativeTo.y);
+	font->draw2D(rd, title, RelativeTo, textSize, textColor, textOutlineColor);
+
+}

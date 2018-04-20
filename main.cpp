@@ -519,23 +519,7 @@ void drawButtons(RenderDevice* rd)
 			if(instance->className == "TextButton" && instance->parent == dataModel)
 			{
 				TextButtonInstance* tbi = (TextButtonInstance*)instance;
-				Vector3 point1;
-				Vector3 point2;
-				if(tbi->floatBottom)
-				{
-					point1 = Vector3(tbi->boxBegin.x, rd->getHeight() + tbi->boxBegin.y,0);
-					point2 = Vector3(tbi->boxEnd.x, rd->getHeight() + tbi->boxEnd.y,0);
-					
-				}
-				else
-				{
-					point1 = Vector3(tbi->boxBegin.x, tbi->boxBegin.y,0);
-					point2 = Vector3(tbi->boxEnd.x, tbi->boxEnd.y,0);
-				}
-				Draw::box(Box(point1, point2), rd, tbi->boxColor, tbi->boxOutlineColor);
-				Vector2 RelativeTo = Vector2(point1.x + tbi->fontLocationRelativeTo.x, point1.y + tbi->fontLocationRelativeTo.y);
-				tbi->font->draw2D(rd, tbi->title, RelativeTo, tbi->textSize, tbi->textColor, tbi->textOutlineColor);
-				
+				tbi->drawObj(rd);				
 			}
 		}
 }
@@ -666,9 +650,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 		glTexCoord2d( 1.0,0.0 );
 		glVertex2f( 70, 0+offset );
 		glTexCoord2d( 1.0,1.0 );
-		glVertex2f( 70, 65+offset );
+		glVertex2f( 70, 60+offset );
 		glTexCoord2d( 0.0,1.0 );
-		glVertex2f( 10, 65+offset );
+		glVertex2f( 10, 60+offset );
 		glEnd();
 
 		glDisable( GL_TEXTURE_2D );
