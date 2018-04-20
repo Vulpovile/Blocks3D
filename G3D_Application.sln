@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "G3D_New", "G3D_New.vcproj", "{583B17DE-1A0C-4070-801A-021DC0C84B0C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "G3D_Application", "G3D_Application.vcproj", "{583B17DE-1A0C-4070-801A-021DC0C84B0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
