@@ -39,7 +39,7 @@ TextButtonInstance::TextButtonInstance(void)
 	floatRight = false;
 	floatCenter = false;
 	visible = true;
-	className = "TextButtonInstance";
+	className = "TextButton";
 	
 }
 

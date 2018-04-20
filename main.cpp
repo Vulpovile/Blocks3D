@@ -466,7 +466,7 @@ void drawButtons(RenderDevice* rd)
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
-			if(instance->className == "TextButtonInstance" && instance->parent == dataModel)
+			if(instance->className == "TextButton" && instance->parent == dataModel)
 			{
 				TextButtonInstance* tbi = (TextButtonInstance*)instance;
 				Vector3 point1;
