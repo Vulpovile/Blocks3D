@@ -11,7 +11,6 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
-#include "resource.h"
 #include "Instance.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
@@ -347,7 +346,7 @@ void OnError(int err, std::string msg = "")
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
-	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
+	MessageBoxA(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
@@ -462,7 +461,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 std::string ExePath() {
     char buffer[MAX_PATH];
-    GetModuleFileName( NULL, buffer, MAX_PATH );
+	GetModuleFileNameA( NULL, buffer, MAX_PATH );
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	return std::string( buffer ).substr( 0, pos);
 }
