@@ -10,6 +10,8 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
+//Compile for 95 and higher
+#define WINVER	0x0400
 #include <G3DAll.h>
 #include "Instance.h"
 #include "PhysicalInstance.h"
