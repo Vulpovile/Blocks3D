@@ -340,7 +340,9 @@ void Demo::onInit()  {
 void clearInstances()
 {
 	for(size_t i = 0; i < instances.size(); i++)
+	{
 		delete instances.at(i);
+	}
 	delete dataModel;
 }
 void OnError(int err, std::string msg = "")
@@ -354,7 +356,12 @@ void OnError(int err, std::string msg = "")
 
 void Demo::onCleanup() {
     clearInstances();
+	go->~Texture();
+	go_ovr->~Texture();
+	go_dn->~Texture();
+	app->sky->~Sky();
 }
+
 
 
 
@@ -704,8 +711,6 @@ int main(int argc, char** argv) {
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-	App app = App(settings);
-	//app.window()->setIcon(ExePath() + "/content/images/rico.png");
-	app.run();
+	App(settings).run();
     return 0;
 }
