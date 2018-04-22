@@ -274,10 +274,6 @@
 				RelativePath=".\TextButtonInstance.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Work.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -304,15 +300,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
 				RelativePath=".\TextButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Work.h"
 				>
 			</File>
 		</Filter>

@@ -10,12 +10,11 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
-//Compile for 95 and higher
-#define WINVER	0x0400
 #include <G3DAll.h>
 #include "Instance.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
+
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -26,8 +25,8 @@ static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance*> instances;
 static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
-static GFontRef fntdominant = NULL;
-static GFontRef fntlighttrek = NULL;
+GFontRef fntdominant = NULL;
+GFontRef fntlighttrek = NULL;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
@@ -250,6 +249,7 @@ void Demo::onInit()  {
 	
 	initGUI();
 
+	
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
@@ -257,6 +257,7 @@ void Demo::onInit()  {
 
 	
 
+	
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
@@ -321,6 +322,7 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
 	test->position = Vector3(-2,7,0);
+	
 
 
 
@@ -359,6 +361,12 @@ void Demo::onCleanup() {
 	go->~Texture();
 	go_ovr->~Texture();
 	go_dn->~Texture();
+	go_dn.~ReferenceCountedPointer();
+	delete go_dn.pointer();
+	go.~ReferenceCountedPointer();
+	delete go.pointer();
+	go_ovr.~ReferenceCountedPointer();
+	delete go_ovr.pointer();
 	app->sky->~Sky();
 }
 
@@ -470,7 +478,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 std::string ExePath() {
     char buffer[MAX_PATH];
-	GetModuleFileNameA( NULL, buffer, MAX_PATH );
+	GetModuleFileName( NULL, buffer, MAX_PATH );
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	return std::string( buffer ).substr( 0, pos);
 }
@@ -704,6 +712,8 @@ App::~App() {
 }
 
 int main(int argc, char** argv) {
+	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	//_CrtSetBreakAlloc(1279);
     GAppSettings settings;
 	if(getOSVersion() > 5.0)
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
