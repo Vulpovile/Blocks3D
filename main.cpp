@@ -514,12 +514,27 @@ std::string GetFileInPath(std::string file)
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
 	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
-	Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue());
-	G3D::Array<Vector2> parray;
-	parray.push(Vector2(up.x, up.y));
-	parray.push(Vector2(up.x-1, up.y-.5));
-	parray.push(Vector2(up.x, up.y-1));
-	Draw::poly2D(parray, rd, Color3::blue());
+	//Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue(), 3);
+	rd->setColor(Color3::blue());
+	rd->beforePrimitive();
+
+		glBegin(GL_LINES);
+		glVertex3f(vec.x, vec.y, vec.z);
+		glVertex3f(up.x, up.y, up.z);
+		glEnd();
+
+		glBegin( GL_TRIANGLES );
+		glVertex3f(up.x, up.y-1, up.z);
+		glVertex3f(up.x, up.y-0.5, up.z-1);
+		glVertex3f(up.x, up.y, up.z);
+		
+		glVertex3f(up.x, up.y, up.z);
+		glVertex3f(up.x, up.y-0.5, up.z-1);
+		glVertex3f(up.x, up.y-1, up.z);
+
+		glEnd();
+	rd->afterPrimitive();
+	rd->setColor(Color3::white());
 	//I know how i will approach this now
 }
 
@@ -588,7 +603,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
-		//makeFlag(Vector3(1, 0.5, 0.5), rd);
+		makeFlag(Vector3(-1, 3.5, 0), rd);
 		
 		
 
