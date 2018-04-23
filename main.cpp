@@ -14,6 +14,7 @@
 #define WINVER	0x0400
 #include <G3DAll.h>
 #include "Instance.h"
+#include "resource.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 
@@ -348,7 +349,7 @@ void OnError(int err, std::string msg = "")
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
-	MessageBoxA(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
+	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
 	exit(err);
 }
 
@@ -452,6 +453,10 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been set to " + Convert(FPSVal[index]);
 		setDesiredFrameRate(FPSVal[index]);
 	}
+	if(ui->keyPressed('u'))
+	{
+		DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT_DIALOG), NULL, NULL);
+	}
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
 	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
@@ -463,7 +468,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 std::string ExePath() {
     char buffer[MAX_PATH];
-	GetModuleFileNameA( NULL, buffer, MAX_PATH );
+	GetModuleFileName( NULL, buffer, MAX_PATH );
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	return std::string( buffer ).substr( 0, pos);
 }
