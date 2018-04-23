@@ -1,6 +1,8 @@
 #pragma once
 #include "instance.h"
-
+#pragma once
+#include "ButtonListener.h"
+class ButtonListener;
 class TextButtonInstance :
 	public Instance
 {
@@ -30,5 +32,6 @@ public:
 	bool visible;
 	int textSize;
 	void drawObj(G3D::RenderDevice*);
-	
+	void setButtonListener(ButtonListener*);
+	void onClick();
 };

@@ -22,6 +22,7 @@ bool floatBottom;
 bool floatRight;
 bool floatCenter;
 bool visible;
+ButtonListener* buttonListener;
 
 TextButtonInstance::TextButtonInstance(void)
 {
@@ -40,11 +41,24 @@ TextButtonInstance::TextButtonInstance(void)
 	floatCenter = false;
 	visible = true;
 	className = "TextButton";
-	
 }
 
 TextButtonInstance::~TextButtonInstance(void)
 {
+	delete buttonListener;
+}
+
+void TextButtonInstance::setButtonListener(ButtonListener* listener)
+{
+	buttonListener = listener;
+}
+
+void TextButtonInstance::onClick()
+{
+	if(buttonListener != NULL)
+	{
+		buttonListener->onButton1MouseClick(this);
+	}
 }
 
 void TextButtonInstance::drawObj(RenderDevice* rd)

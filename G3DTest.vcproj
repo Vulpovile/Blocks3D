@@ -231,6 +231,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\ButtonListener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
 				>
 			</File>
@@ -270,15 +274,15 @@
 				RelativePath=".\TextButtonInstance.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Work.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\ButtonListener.h"
+				>
+			</File>
 			<File
 				RelativePath=".\ImageButtonInstance.h"
 				>
@@ -296,15 +300,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
 				RelativePath=".\TextButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Work.h"
 				>
 			</File>
 		</Filter>

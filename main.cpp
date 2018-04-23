@@ -10,25 +10,25 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
-//Compile for 95 and higher
-#define WINVER	0x0400
 #include <G3DAll.h>
 #include "Instance.h"
 #include "resource.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 
+
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
+HWND hwnd;
 static const float VNUM = 0.01F;
 static std::string title = "";
 static const std::string VERSION = "PRE-ALPHA ";
 static std::vector<Instance*> instances;
 static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
-static GFontRef fntdominant = NULL;
-static GFontRef fntlighttrek = NULL;
+GFontRef fntdominant = NULL;
+GFontRef fntlighttrek = NULL;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
@@ -44,8 +44,12 @@ static float mousey = 0;
 static int go_id = 0;
 static int go_ovr_id = 0;
 static int go_dn_id = 0;
+static int cursorid = 0;
+static G3D::TextureRef cursor = NULL;
 static bool mouseButton1Down = false;
 static bool running = true;
+static bool mouseMovedBeginMotion = false;
+static bool showMouse = true;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -90,7 +94,7 @@ public:
 
     Demo*               applet;
 
-    App(const GAppSettings& settings);
+    App(const GAppSettings& settings, GWindow* wnd);
 
     ~App();
 };
@@ -246,11 +250,12 @@ void Demo::onInit()  {
 	
 	
 	dataModel = new Instance();
-	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
+	dataModel->name = "undefined";
 	
 	initGUI();
 
+	
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
@@ -258,6 +263,7 @@ void Demo::onInit()  {
 
 	
 
+	
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
@@ -322,6 +328,7 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
 	test->position = Vector3(-2,7,0);
+	
 
 
 
@@ -341,7 +348,9 @@ void Demo::onInit()  {
 void clearInstances()
 {
 	for(size_t i = 0; i < instances.size(); i++)
+	{
 		delete instances.at(i);
+	}
 	delete dataModel;
 }
 void OnError(int err, std::string msg = "")
@@ -355,7 +364,18 @@ void OnError(int err, std::string msg = "")
 
 void Demo::onCleanup() {
     clearInstances();
+	go->~Texture();
+	go_ovr->~Texture();
+	go_dn->~Texture();
+	go_dn.~ReferenceCountedPointer();
+	delete go_dn.pointer();
+	go.~ReferenceCountedPointer();
+	delete go.pointer();
+	go_ovr.~ReferenceCountedPointer();
+	delete go_ovr.pointer();
+	app->sky->~Sky();
 }
+
 
 
 
@@ -401,15 +421,23 @@ void Demo::onUserInput(UserInput* ui) {
         endApplet = true;
         app->endProgram = true;
     }
+	if(mouseMovedBeginMotion)
+	{
+		mouseMovedBeginMotion = false;
+		app->debugController.setActive(true);
+	}
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
-		app->debugController.setActive(true);
+		showMouse = false;
+		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
+		mouseMovedBeginMotion = true;
+		
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
+		showMouse = true;
 		app->debugController.setActive(false);
 	}
-
 
 	if(ui->keyPressed(SDLK_LSHIFT))
 	{
@@ -491,12 +519,27 @@ std::string GetFileInPath(std::string file)
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
 	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
-	Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue());
-	G3D::Array<Vector2> parray;
-	parray.push(Vector2(up.x, up.y));
-	parray.push(Vector2(up.x-1, up.y-.5));
-	parray.push(Vector2(up.x, up.y-1));
-	Draw::poly2D(parray, rd, Color3::blue());
+	//Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue(), 3);
+	rd->setColor(Color3::blue());
+	rd->beforePrimitive();
+
+		glBegin(GL_LINES);
+		glVertex3f(vec.x, vec.y, vec.z);
+		glVertex3f(up.x, up.y, up.z);
+		glEnd();
+
+		glBegin( GL_TRIANGLES );
+		glVertex3f(up.x, up.y-1, up.z);
+		glVertex3f(up.x, up.y-0.5, up.z-1);
+		glVertex3f(up.x, up.y, up.z);
+		
+		glVertex3f(up.x, up.y, up.z);
+		glVertex3f(up.x, up.y-0.5, up.z-1);
+		glVertex3f(up.x, up.y-1, up.z);
+
+		glEnd();
+	rd->afterPrimitive();
+	rd->setColor(Color3::white());
 	//I know how i will approach this now
 }
 
@@ -531,6 +574,21 @@ void drawButtons(RenderDevice* rd)
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
+	Vector2 mousepos = Vector2(0,0);
+	G3D::uint8 num = 0;
+	rd->window()->getRelativeMouseState(mousepos, num);
+	bool mouseOnScreen = true;
+	if(mousepos.x < 5 || mousepos.y < 5 || mousepos.x > rd->getViewport().width()-5 || mousepos.y > rd->getViewport().height()-5)
+	{
+		mouseOnScreen = false;
+		rd->window()->setInputCaptureCount(0);
+	}
+	else
+	{
+		mouseOnScreen = true;
+		rd->window()->setInputCaptureCount(1);
+	}
+	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
 
@@ -550,7 +608,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
-		//makeFlag(Vector3(1, 0.5, 0.5), rd);
+		makeFlag(Vector3(-1, 3.5, 0), rd);
 		
 		
 
@@ -565,13 +623,26 @@ void Demo::onGraphics(RenderDevice* rd) {
 				PhysicalInstance* part = (PhysicalInstance*)instance;
 				Vector3 size = part->size;
 				Vector3 pos = part->position;
-				Draw::box(Box(Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2),Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2)), app->renderDevice, part->color, Color4::clear());
+				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
+				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
+				Draw::box(Box(pos2 ,pos3), app->renderDevice, part->color, Color4::clear());
+				
 			}
 			
 		}
 	
 		
 
+		Vector3 gamepoint = Vector3(0, 5, 0);
+		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+		if(distance < 50 && distance > -50)
+		
+		{
+			if(distance < 0)
+			distance = distance*-1;
+			fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+		}
     app->renderDevice->disableLighting();
 
     if (app->sky.notNull()) {
@@ -663,9 +734,41 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		glDisable( GL_TEXTURE_2D );
 
+
+		
+
+		if(showMouse && mouseOnScreen)
+		{
+		glEnable( GL_TEXTURE_2D );
+		glEnable(GL_BLEND);// you enable blending function
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		
+		
+		glBindTexture( GL_TEXTURE_2D, cursorid);
+
+		
+		glBegin( GL_QUADS );
+		glTexCoord2d(0.0,0.0);
+		glVertex2f(mousepos.x-40, mousepos.y-40);
+		glTexCoord2d( 1.0,0.0 );
+		glVertex2f(mousepos.x+40, mousepos.y-40);
+		glTexCoord2d(1.0,1.0 );
+		glVertex2f(mousepos.x+40, mousepos.y+40 );
+		glTexCoord2d( 0.0,1.0 );
+		glVertex2f( mousepos.x-40, mousepos.y+40 );
+		glEnd();
+
+		glDisable( GL_TEXTURE_2D );
+		}
+
 		rd->afterPrimitive();
 
 	rd->popState();
+
+
+
+	
+
 
 	drawButtons(rd);
 
@@ -681,18 +784,20 @@ void App::main() {
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/cursor.png"));
 	go_id = go->getOpenGLID();
 	go_dn_id = go_dn->getOpenGLID();
 	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
+	cursorid = cursor->openGLID();
     applet->run();
 }
 
 
 
-App::App(const GAppSettings& settings) : GApp(settings) {
+App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
     applet = new Demo(this);
 }
 
@@ -701,7 +806,27 @@ App::~App() {
     delete applet;
 }
 
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch(msg)
+    {
+        case WM_CLOSE:
+            DestroyWindow(hwnd);
+        break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+        break;
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
 int main(int argc, char** argv) {
+	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	//_CrtSetBreakAlloc(1279);
+
     GAppSettings settings;
 	if(getOSVersion() > 5.0)
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
@@ -709,8 +834,14 @@ int main(int argc, char** argv) {
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-	App app = App(settings);
-	//app.window()->setIcon(ExePath() + "/content/images/rico.png");
+
+	//Using the damned SDL window now
+	SDLWindow* wnd = new SDLWindow(settings.window);
+	//wnd->setInputCaptureCount(200);
+	wnd->setMouseVisible(false);
+	App app = App(settings, wnd);
+	HWND hwnd = wnd->win32HWND();
+	
 	app.run();
     return 0;
 }
