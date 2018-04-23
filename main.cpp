@@ -249,8 +249,8 @@ void Demo::onInit()  {
 	
 	
 	dataModel = new Instance();
-	//dataModel->name = "undefined";
 	dataModel->parent = NULL;
+	dataModel->name = "undefined";
 	
 	initGUI();
 
