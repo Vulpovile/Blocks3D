@@ -749,6 +749,7 @@ int main(int argc, char** argv) {
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
+
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	App app = App(settings, wnd);
