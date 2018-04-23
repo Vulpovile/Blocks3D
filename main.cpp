@@ -603,7 +603,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 				PhysicalInstance* part = (PhysicalInstance*)instance;
 				Vector3 size = part->size;
 				Vector3 pos = part->position;
-				Draw::box(Box(Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2),Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2)), app->renderDevice, part->color, Color4::clear());
+				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
+				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
+				Draw::box(Box(pos2 ,pos3), app->renderDevice, part->color, Color4::clear());
+				fntdominant->draw3D(rd, "Testing", G3D::CoordinateFrame((Matrix3)Vector3(rd->getCameraToWorldMatrix().lookVector().directionOrZero().x*3.14,rd->getCameraToWorldMatrix().lookVector().directionOrZero().y*3.14,rd->getCameraToWorldMatrix().lookVector().directionOrZero().z*3.14), pos2), 10);
 			}
 			
 		}
