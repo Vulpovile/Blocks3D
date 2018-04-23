@@ -606,13 +606,23 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
 				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
 				Draw::box(Box(pos2 ,pos3), app->renderDevice, part->color, Color4::clear());
-				fntdominant->draw3D(rd, "Testing", G3D::CoordinateFrame((Matrix3)Vector3(rd->getCameraToWorldMatrix().lookVector().directionOrZero().x*3.14,rd->getCameraToWorldMatrix().lookVector().directionOrZero().y*3.14,rd->getCameraToWorldMatrix().lookVector().directionOrZero().z*3.14), pos2), 10);
+				
 			}
 			
 		}
 	
 		
 
+		Vector3 gamepoint = Vector3(0, 5, 0);
+		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+		if(distance < 50 && distance > -50)
+		
+		{
+			if(distance < 0)
+			distance = distance*-1;
+			fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+		}
     app->renderDevice->disableLighting();
 
     if (app->sky.notNull()) {
