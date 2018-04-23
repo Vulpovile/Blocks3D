@@ -45,6 +45,7 @@ static int go_ovr_id = 0;
 static int go_dn_id = 0;
 static bool mouseButton1Down = false;
 static bool running = true;
+static bool mouseMovedBeginMotion = false;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -89,7 +90,7 @@ public:
 
     Demo*               applet;
 
-    App(const GAppSettings& settings);
+    App(const GAppSettings& settings, GWindow* wnd);
 
     ~App();
 };
@@ -416,15 +417,23 @@ void Demo::onUserInput(UserInput* ui) {
         endApplet = true;
         app->endProgram = true;
     }
+	if(mouseMovedBeginMotion)
+	{
+		mouseMovedBeginMotion = false;
+		app->debugController.setActive(true);
+	}
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
-		app->debugController.setActive(true);
+		ui->window()->setMouseVisible(false);
+		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
+		mouseMovedBeginMotion = true;
+		
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
+		ui->window()->setMouseVisible(true);
 		app->debugController.setActive(false);
 	}
-
 
 	if(ui->keyPressed(SDLK_LSHIFT))
 	{
@@ -703,7 +712,7 @@ void App::main() {
 
 
 
-App::App(const GAppSettings& settings) : GApp(settings) {
+App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
     applet = new Demo(this);
 }
 
@@ -733,44 +742,6 @@ int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
 
-
-	//Create container window
-	char className[] = "classContainerHWND";
-	WNDCLASSEX wc;
-	HINSTANCE hInstance = GetModuleHandle(NULL);
-    wc.cbSize        = sizeof(WNDCLASSEX);
-    wc.style         = 0;
-    wc.lpfnWndProc   = WndProc;
-    wc.cbClsExtra    = 0;
-    wc.cbWndExtra    = 0;
-    wc.hInstance     = hInstance;
-    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-    wc.lpszMenuName  = NULL;
-    wc.lpszClassName = className;
-    wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-
-	if (!RegisterClassEx (&wc))
-	{
-		MessageBox(NULL, "Window registration failed! Please make sure your computer supports Win32 graphical components!", "Error! Cannot start Dynamica!", MB_ICONEXCLAMATION | MB_OK);
-        return -1;
-	}
-
-	hwnd = CreateWindowEx(
-    WS_EX_CLIENTEDGE,
-    className,
-    "Container Window",
-    WS_OVERLAPPEDWINDOW,    
-	CW_USEDEFAULT, CW_USEDEFAULT, 240, 120,NULL, NULL, hInstance, NULL);
-	if(hwnd == NULL)
-    {
-        MessageBox(NULL, "Window Creation Failed! Please make sure your computer supports Win32 graphical components!", "Error! Cannot start Dynamica!", MB_ICONEXCLAMATION | MB_OK);
-        return -2;
-    }
-	ShowWindow(hwnd, SW_SHOW);
-    UpdateWindow(hwnd);
-
     GAppSettings settings;
 	if(getOSVersion() > 5.0)
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
@@ -778,6 +749,11 @@ int main(int argc, char** argv) {
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-	App(settings).run();
+	//Using the damned SDL window now
+	SDLWindow* wnd = new SDLWindow(settings.window);
+	App app = App(settings, wnd);
+	HWND hwnd = wnd->win32HWND();
+	
+	app.run();
     return 0;
 }
