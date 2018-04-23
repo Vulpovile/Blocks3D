@@ -43,9 +43,12 @@ static float mousey = 0;
 static int go_id = 0;
 static int go_ovr_id = 0;
 static int go_dn_id = 0;
+static int cursorid = 0;
+static G3D::TextureRef cursor = NULL;
 static bool mouseButton1Down = false;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
+static bool showMouse = true;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -424,14 +427,14 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
-		ui->window()->setMouseVisible(false);
+		showMouse = false;
 		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
 		mouseMovedBeginMotion = true;
 		
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
-		ui->window()->setMouseVisible(true);
+		showMouse = true;
 		app->debugController.setActive(false);
 	}
 
@@ -551,6 +554,21 @@ void drawButtons(RenderDevice* rd)
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
+	Vector2 mousepos = Vector2(0,0);
+	G3D::uint8 num = 0;
+	rd->window()->getRelativeMouseState(mousepos, num);
+	bool mouseOnScreen = true;
+	if(mousepos.x < 5 || mousepos.y < 5 || mousepos.x > rd->getViewport().width()-5 || mousepos.y > rd->getViewport().height()-5)
+	{
+		mouseOnScreen = false;
+		rd->window()->setInputCaptureCount(0);
+	}
+	else
+	{
+		mouseOnScreen = true;
+		rd->window()->setInputCaptureCount(1);
+	}
+	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
 
@@ -683,9 +701,41 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		glDisable( GL_TEXTURE_2D );
 
+
+		
+
+		if(showMouse && mouseOnScreen)
+		{
+		glEnable( GL_TEXTURE_2D );
+		glEnable(GL_BLEND);// you enable blending function
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		
+		
+		glBindTexture( GL_TEXTURE_2D, cursorid);
+
+		
+		glBegin( GL_QUADS );
+		glTexCoord2d(0.0,0.0);
+		glVertex2f(mousepos.x-40, mousepos.y-40);
+		glTexCoord2d( 1.0,0.0 );
+		glVertex2f(mousepos.x+40, mousepos.y-40);
+		glTexCoord2d(1.0,1.0 );
+		glVertex2f(mousepos.x+40, mousepos.y+40 );
+		glTexCoord2d( 0.0,1.0 );
+		glVertex2f( mousepos.x-40, mousepos.y+40 );
+		glEnd();
+
+		glDisable( GL_TEXTURE_2D );
+		}
+
 		rd->afterPrimitive();
 
 	rd->popState();
+
+
+
+	
+
 
 	drawButtons(rd);
 
@@ -701,12 +751,14 @@ void App::main() {
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/cursor.png"));
 	go_id = go->getOpenGLID();
 	go_dn_id = go_dn->getOpenGLID();
 	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
+	cursorid = cursor->openGLID();
     applet->run();
 }
 
@@ -752,6 +804,8 @@ int main(int argc, char** argv) {
 
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
+	//wnd->setInputCaptureCount(200);
+	wnd->setMouseVisible(false);
 	App app = App(settings, wnd);
 	HWND hwnd = wnd->win32HWND();
 	
