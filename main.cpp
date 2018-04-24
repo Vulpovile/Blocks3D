@@ -57,6 +57,7 @@ static bool backwards = false;
 static bool left = false;
 static bool right = false;
 Vector3 cameraPos = Vector3(0,2,10);
+Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 /**
  This simple demo applet uses the debug mode as the regular
@@ -457,6 +458,7 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
+		oldMouse = ui->getMouseXY();
 		showMouse = false;
 		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
 		mouseMovedBeginMotion = true;
@@ -464,6 +466,7 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
 	{
+		ui->setMouseXY(oldMouse);
 		showMouse = true;
 		app->debugController.setActive(false);
 	}
