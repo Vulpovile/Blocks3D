@@ -32,6 +32,7 @@ GFontRef fntlighttrek = NULL;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
+static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static float TIMERVAL = 60.0F;
@@ -50,6 +51,13 @@ static bool mouseButton1Down = false;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static bool showMouse = true;
+//Controller
+static bool forwards = false;
+static bool backwards = false;
+static bool left = false;
+static bool right = false;
+Vector3 cameraPos = Vector3(0,2,10);
+float moveRate = 0.5;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -248,7 +256,7 @@ void Demo::onInit()  {
 	
     // Called before Demo::run() beings
 	
-	
+
 	dataModel = new Instance();
 	dataModel->parent = NULL;
 	dataModel->name = "undefined";
@@ -333,8 +341,6 @@ void Demo::onInit()  {
 
 
 	setDesiredFrameRate(FPSVal[index]);
-    app->debugCamera.setPosition(Vector3(0, 2, 10));
-    app->debugCamera.lookAt(Vector3(0, 2, 0));
 	
 	
 	
@@ -395,6 +401,29 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		title = dataModel->name;
 		app->renderDevice->setCaption("Game \"" + title + "\"");
 	}
+
+	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+	if(forwards)
+	{
+		forwards = false;
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*moveRate;
+	}
+	else if(backwards)
+	{
+		backwards = false;
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*moveRate;
+	}
+	if(left)
+	{
+		left = false;
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.leftVector()*moveRate;
+	}
+	else if(right)
+	{
+		right = false;
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
+	}
+	app->debugCamera.setPosition(cameraPos);
 }
 
 
@@ -439,15 +468,24 @@ void Demo::onUserInput(UserInput* ui) {
 		app->debugController.setActive(false);
 	}
 
-	if(ui->keyPressed(SDLK_LSHIFT))
+	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
 	{
-		app->debugController.setMoveRate(20);
-		
-		
+		moveRate = 1;
 	}
-	else if(ui->keyReleased(SDLK_LSHIFT))
+	else if(ui->keyReleased(SDLK_LSHIFT) || ui->keyReleased(SDLK_RSHIFT))
 	{
-		app->debugController.setMoveRate(10);
+		moveRate = 0.5;
+	}
+
+	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
+	{
+		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		cameraPos = cameraPos + frame.lookVector()*2;
+	}
+	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
+	{
+		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 
 	if(ui->keyDown(SDLK_LCTRL))
@@ -472,14 +510,14 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	if(ui->keyPressed(SDLK_F8))
 	{
-		index++;
-		if(index >= 7)
-		{
-			index = 0;
-		}
+		//index++;
+		//if(index >= 7)
+		//{
+		//	index = 0;
+		//}
 		messageTime = System::time();
-		message = "FPS has been set to " + Convert(FPSVal[index]);
-		setDesiredFrameRate(FPSVal[index]);
+		message = "FPS has been locked at " + Convert(FPSVal[index]);
+		//setDesiredFrameRate(FPSVal[index]);
 	}
 	if(ui->keyPressed('u'))
 	{
@@ -488,6 +526,26 @@ void Demo::onUserInput(UserInput* ui) {
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
 	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
+	messageTime = System::time();
+	if(ui->keyDown(SDLK_UP))
+	{
+		forwards = true;
+	}
+	else if(ui->keyDown(SDLK_DOWN))
+	{
+		backwards = true;
+	}
+	if(ui->keyDown(SDLK_LEFT))
+	{
+		left = true;
+	}
+	else if(ui->keyDown(SDLK_RIGHT))
+	{
+		right = true;
+	}
+	
+
+
 	//readMouseGUIInput();
 	// Add other key handling here
 }
@@ -574,9 +632,13 @@ void drawButtons(RenderDevice* rd)
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
+
+	
+
 	Vector2 mousepos = Vector2(0,0);
 	G3D::uint8 num = 0;
 	rd->window()->getRelativeMouseState(mousepos, num);
+	
 	bool mouseOnScreen = true;
 	if(mousepos.x < 5 || mousepos.y < 5 || mousepos.x > rd->getViewport().width()-5 || mousepos.y > rd->getViewport().height()-5)
 	{
@@ -592,6 +654,9 @@ void Demo::onGraphics(RenderDevice* rd) {
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
 
+
+	
+	
     // Cyan background
     app->renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
 
@@ -773,6 +838,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 	drawButtons(rd);
 
 	app->renderDevice->pop2D();
+
+
+	
 }
 
 
