@@ -7,7 +7,7 @@ G3D::TextureRef image_dn = NULL;
 int openGLID_dn = 0;
 Vector2 size;
 Vector2 position;
-ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL)
+ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	
 	image = newImage;
@@ -32,8 +32,20 @@ ImageButtonInstance::~ImageButtonInstance(void)
 void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown)
 {
 	Vector2 positionRelative = position;
+	if(floatRight && floatBottom)
+	{
+	    positionRelative = Vector2(rd->getWidth() + position.x, rd->getHeight() + position.y);
+	}
+	else if(floatBottom)
+	{
+	    positionRelative = Vector2(position.x, rd->getHeight() + position.y);
+	}
+	else if(floatRight)
+	{
+		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
+	}
 	int renderimage = openGLID;
-	if(mouseInArea(position.x, position.y, position.x + size.x, position.y + size.y, mousePos.x, mousePos.y))
+	if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
 	{
 		if(mouseDown && openGLID_dn != 0)
 		{

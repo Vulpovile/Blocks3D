@@ -43,9 +43,6 @@ static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
 static float mousex = 0;
 static float mousey = 0;
-static int go_id = 0;
-static int go_ovr_id = 0;
-static int go_dn_id = 0;
 static int cursorid = 0;
 static G3D::TextureRef cursor = NULL;
 static bool mouseButton1Down = false;
@@ -181,9 +178,9 @@ TextButtonInstance* makeTextButton()
 	return part;
 }
 
-ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL)
+ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
-	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage);
+	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage, disableImage);
 	instances.push_back(part);
 	instances_2D.push_back(part);
 	return part;
@@ -318,8 +315,144 @@ void initGUI()
 	button->setAllColorsSame();
 
 	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
-	instance->size = Vector2(60,60);
-	instance->position = Vector2(10, 25);
+	instance->size = Vector2(65,65);
+	instance->position = Vector2(6.5, 25);
+	instance->parent = dataModel;
+
+	
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_dn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ds.png")));
+	instance->size = Vector2(50,50);
+	instance->position = Vector2(15, 90);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_dn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ds.png")));
+	instance->size = Vector2(40,40);
+	instance->position = Vector2(0, 140);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/MoveTool.png")),
+		Texture::fromFile(GetFileInPath("/content/images/MoveTool_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/MoveTool_dn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/MoveTool_ds.png")));
+	instance->size = Vector2(40,40);
+	instance->position = Vector2(40, 140);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ds.png")));
+	instance->size = Vector2(30,30);
+	instance->position = Vector2(10, 175);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ds.png")));
+	instance->size = Vector2(30,30);
+	instance->position = Vector2(40, 175);
+	instance->parent = dataModel;
+
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/Delete.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_dn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
+	instance->size = Vector2(40,46);
+	instance->position = Vector2(20, 284);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/Delete.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_dn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
+	instance->size = Vector2(40,46);
+	instance->position = Vector2(20, 284);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn_dn.png")));
+	instance->size = Vector2(34,25);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-77, -90);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut_dn.png")));
+	instance->size = Vector2(34,26);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-77, -31);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft_dn.png")));
+	instance->size = Vector2(34,34);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-110, -50);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight_dn.png")));
+	instance->size = Vector2(34,34);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-45, -50);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraCenter.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraCenter_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraCenter_dn.png")));
+	instance->size = Vector2(34,20);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-77, -60);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp_dn.png")));
+	instance->size = Vector2(24,24);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-105, -75);
+	instance->parent = dataModel;
+
+	instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown_dn.png")));
+	instance->size = Vector2(24,24);
+	instance->floatBottom = true;
+	instance->floatRight = true;
+	instance->position = Vector2(-40, -75);
 	instance->parent = dataModel;
 }
 
@@ -867,11 +1000,11 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 
 	//Tools menu
-	Draw::box(G3D::Box(Vector3(5, 165+offset,0),Vector3(75, 165+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
-	fntlighttrek->draw2D(rd,"Group", Vector2(10,170+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"UnGroup", Vector2(10,195+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Duplicate", Vector2(10,220+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"MENU", Vector2(10,305+offset), 16, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	Draw::box(G3D::Box(Vector3(5, 185+offset,0),Vector3(75, 185+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
+	fntlighttrek->draw2D(rd,"Group", Vector2(10,190+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	fntlighttrek->draw2D(rd,"UnGroup", Vector2(10,215+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	fntlighttrek->draw2D(rd,"Duplicate", Vector2(10,240+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	fntlighttrek->draw2D(rd,"MENU", Vector2(10,307+offset), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	//G3D::GFont::draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
@@ -932,9 +1065,6 @@ void App::main() {
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor.png"));
-	go_id = go->getOpenGLID();
-	go_dn_id = go_dn->getOpenGLID();
-	go_ovr_id = go_ovr->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
