@@ -330,14 +330,11 @@ void initGUI()
 	instance->position = Vector2(15, 90);
 	instance->parent = dataModel;
 
-	instance = makeImageButton(
-		Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),
-		Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),
-		Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
+	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
 	instance->parent = dataModel;
+	
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/MoveTool.png")),

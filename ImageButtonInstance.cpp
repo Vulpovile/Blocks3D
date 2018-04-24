@@ -54,8 +54,8 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 	int renderimage = openGLID;
 	if(disabled)
 	{
-		if(openGLID_ds != 0)
-			renderimage = openGLID;
+		if(!image_ds.isNull())
+			renderimage = openGLID_ds;
 	}
 	else if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
 	{

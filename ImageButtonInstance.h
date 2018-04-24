@@ -4,9 +4,9 @@
 class ImageButtonInstance : public BaseButtonInstance
 {
 public:
-	ImageButtonInstance(G3D::TextureRef);
-	ImageButtonInstance(G3D::TextureRef,G3D::TextureRef);
-	ImageButtonInstance(G3D::TextureRef,G3D::TextureRef,G3D::TextureRef);
+	//ImageButtonInstance(G3D::TextureRef);
+	//ImageButtonInstance(G3D::TextureRef,G3D::TextureRef);
+	//ImageButtonInstance(G3D::TextureRef,G3D::TextureRef,G3D::TextureRef);
 	ImageButtonInstance(G3D::TextureRef,G3D::TextureRef,G3D::TextureRef,G3D::TextureRef);
 	~ImageButtonInstance(void);
 	void drawObj(RenderDevice*, Vector2, bool);
@@ -18,4 +18,6 @@ public:
 	int openGLID_ovr;
 	G3D::TextureRef image_dn;
 	int openGLID_dn;
+	G3D::TextureRef image_ds;
+	int openGLID_ds;
 };
