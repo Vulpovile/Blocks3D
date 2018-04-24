@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseButtonInstance.h"
-
 class ImageButtonInstance : public BaseButtonInstance
 {
 public:
@@ -20,4 +19,5 @@ public:
 	int openGLID_dn;
 	G3D::TextureRef image_ds;
 	int openGLID_ds;
+	bool mouseInButton(float, float, RenderDevice*);
 };

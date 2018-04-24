@@ -34,10 +34,51 @@ ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureR
 
 ImageButtonInstance::~ImageButtonInstance(void)
 {
+	//Delete everything on destruction
+	image.~ReferenceCountedPointer();
+	delete image.getPointer();
+	image_ovr.~ReferenceCountedPointer();
+	delete image_ovr.getPointer();
+	image_ds.~ReferenceCountedPointer();
+	delete image_ds.getPointer();
+	image_dn.~ReferenceCountedPointer();
+	delete image_dn.getPointer();
+	image = NULL;
+	image_ovr = NULL;
+	image_ds = NULL;
+	image_dn = NULL;
+	delete listener;
+	listener = NULL;
+}
+
+bool ImageButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd)
+{
+	Vector2 positionRelative = position;
+	if(floatRight && floatBottom)
+	{
+	    positionRelative = Vector2(rd->getWidth() + position.x, rd->getHeight() + position.y);
+	}
+	else if(floatBottom)
+	{
+	    positionRelative = Vector2(position.x, rd->getHeight() + position.y);
+	}
+	else if(floatRight)
+	{
+		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
+	}
+	if(mousex >= positionRelative.x && mousey >= positionRelative.y)
+	{
+		if(mousex < positionRelative.x + size.x && mousey < positionRelative.y + size.y)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown)
 {
+	bool drawDisabledBox = false;
 	Vector2 positionRelative = position;
 	if(floatRight && floatBottom)
 	{
@@ -56,6 +97,8 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 	{
 		if(!image_ds.isNull())
 			renderimage = openGLID_ds;
+		else
+			drawDisabledBox = true;
 	}
 	else if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
 	{
@@ -89,4 +132,8 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 		glDisable( GL_TEXTURE_2D );
 		rd->afterPrimitive();
 	rd->popState();
+	if(drawDisabledBox)
+	{
+		Draw::box(Box(Vector3(positionRelative.x, positionRelative.y, 0), Vector3(positionRelative.x+size.x, positionRelative.y+size.y, 0)), rd, Color4(0.7,0.7,0.7,0.3), Color4::clear());
+	}
 }

@@ -20,7 +20,6 @@ G3D::GFontRef* font;
 int textSize;
 
 bool visible;
-ButtonListener* buttonListener;
 
 TextButtonInstance::TextButtonInstance(void)
 {
@@ -57,20 +56,6 @@ void TextButtonInstance::setAllColorsSame()
 
 TextButtonInstance::~TextButtonInstance(void)
 {
-	delete buttonListener;
-}
-
-void TextButtonInstance::setButtonListener(ButtonListener* listener)
-{
-	buttonListener = listener;
-}
-
-void TextButtonInstance::onClick()
-{
-	if(buttonListener != NULL)
-	{
-		buttonListener->onButton1MouseClick(this);
-	}
 }
 
 void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown)

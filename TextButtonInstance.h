@@ -1,14 +1,11 @@
 #pragma once
 #include "BaseButtonInstance.h"
-#pragma once
-#include "ButtonListener.h"
-class ButtonListener;
 class TextButtonInstance : public BaseButtonInstance
 {
 public:
 	TextButtonInstance(void);
 	~TextButtonInstance(void);
-	void setAllColorsSame(void);
+	void setAllColorsSame();
 	Vector2 boxBegin;
 	Vector2 boxEnd;
 	Vector2 fontLocationRelativeTo;
@@ -30,6 +27,4 @@ public:
 	bool visible;
 	int textSize;
 	void drawObj(RenderDevice*, Vector2, bool);
-	void setButtonListener(ButtonListener*);
-	void onClick();
 };

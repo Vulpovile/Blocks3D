@@ -391,6 +391,7 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
 	instance->parent = dataModel;
+	instance->disabled = true;
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
@@ -737,6 +738,20 @@ void Demo::onUserInput(UserInput* ui) {
 		right = true;
 	}
 	
+	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
+	{
+		for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			{
+				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
+				{
+					button->onMouseClick();
+				}
+			}
+		}
+	}
 
 
 	//readMouseGUIInput();
@@ -806,9 +821,9 @@ void drawButtons(RenderDevice* rd)
 
 void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos)
 {
-	rd->setLight(0, NULL);
-	rd->setAmbientLightColor(Color3(1,1,1));
-	Color3 outline = Color3(0.098F,0.6F,1.0F);
+	//rd->setLight(0, NULL);
+	//rd->setAmbientLightColor(Color3(1,1,1));
+	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
 	float offsetSize = 0.05F;
 	//X
 	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
@@ -831,6 +846,8 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	
 	if(mode == ARROWS)
 	{
+		rd->setLight(0, NULL);
+		rd->setAmbientLightColor(Color3(1,1,1));
 		float max = size.x;
 		if(abs(size.y) > max)
 			max = size.y;
@@ -843,30 +860,35 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		Draw::arrow(pos, Vector3(0, (-1)-max, 0), rd);
 		Draw::arrow(pos, Vector3((-1)-max, 0, 0), rd);
 		Draw::arrow(pos, Vector3(0, 0, (-1)-max), rd);
+		rd->setAmbientLightColor(lighting.ambient);
+		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
 	else if(mode == RESIZE)
 	{
+		
+		rd->setLight(0, NULL);
+		rd->setAmbientLightColor(Color3(1,1,1));
 		Vector3 gamepoint = pos;
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 200)
 		{
-		Color3 sphereColor = outline;
-		float multiplier = distance * 0.025F/2;
-		if(multiplier < 0.25F)
-			multiplier = 0.25F;
-		
-		Draw::sphere(Sphere(Vector3(pos.x, pos.y + (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-		Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-		Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-		Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-		Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+			Color3 sphereColor = outline;
+			float multiplier = distance * 0.025F/2;
+			if(multiplier < 0.25F)
+				multiplier = 0.25F;
+			
+			Draw::sphere(Sphere(Vector3(pos.x, pos.y + (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+			Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+			Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
 		Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
 		}
+		rd->setAmbientLightColor(lighting.ambient);
+		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
-
-	rd->setAmbientLightColor(lighting.ambient);
-	rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+	
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
@@ -1108,7 +1130,8 @@ int main(int argc, char** argv) {
 		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-
+	settings.window.width = 841;
+	settings.window.height = 639;
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
