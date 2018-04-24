@@ -18,9 +18,7 @@ bool centeredWithinBox;
 std::string title;
 G3D::GFontRef* font;
 int textSize;
-bool floatBottom;
-bool floatRight;
-bool floatCenter;
+
 bool visible;
 ButtonListener* buttonListener;
 
@@ -35,12 +33,25 @@ TextButtonInstance::TextButtonInstance(void)
 	textOutlineColor = Color4(0, 0, 0, 0);
 	boxColor = Color4(0.6F,0.6F,0.6F,0.4F);
 	boxOutlineColor = Color4(0, 0, 0, 0);
+	setAllColorsSame();
 	textSize = 12;
 	floatBottom = false;
 	floatRight = false;
 	floatCenter = false;
 	visible = true;
 	className = "TextButton";
+}
+
+void TextButtonInstance::setAllColorsSame()
+{
+	textColorOvr = textColor;
+	textOutlineColorOvr = textOutlineColor;
+	boxColorOvr = boxColor;
+	boxOutlineColorOvr = boxOutlineColor;
+	textColorDn = textColor;
+	textOutlineColorDn = textOutlineColor;
+	boxColorDn = boxColor;
+	boxOutlineColorDn = boxOutlineColor;
 }
 
 TextButtonInstance::~TextButtonInstance(void)
@@ -61,7 +72,7 @@ void TextButtonInstance::onClick()
 	}
 }
 
-void TextButtonInstance::drawObj(RenderDevice* rd)
+void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown)
 {
 	Vector3 point1;
 	Vector3 point2;
@@ -76,8 +87,24 @@ void TextButtonInstance::drawObj(RenderDevice* rd)
 		point1 = Vector3(boxBegin.x, boxBegin.y,0);
 		point2 = Vector3(boxEnd.x, boxEnd.y,0);
 	}
-	Draw::box(Box(point1, point2), rd, boxColor, boxOutlineColor);
 	Vector2 RelativeTo = Vector2(point1.x + fontLocationRelativeTo.x, point1.y + fontLocationRelativeTo.y);
-	font->draw2D(rd, title, RelativeTo, textSize, textColor, textOutlineColor);
+	if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y) && mouseDown)
+	{
+		Draw::box(Box(point1, point2), rd, boxColorDn, boxOutlineColorDn);
+		font->draw2D(rd, title, RelativeTo, textSize, textColorDn, textOutlineColorDn);
+	}
+	else if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y))
+	{
+		Draw::box(Box(point1, point2), rd, boxColorOvr, boxOutlineColorOvr);
+		font->draw2D(rd, title, RelativeTo, textSize, textColorOvr, textOutlineColorOvr);
+	}
+	else
+	{
+		Draw::box(Box(point1, point2), rd, boxColor, boxOutlineColor);
+		font->draw2D(rd, title, RelativeTo, textSize, textColor, textOutlineColor);
+	}
+}
 
+void doNullCheck()
+{
 }

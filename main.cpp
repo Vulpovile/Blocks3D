@@ -15,6 +15,7 @@
 #include "resource.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
+#include "ImageButtonInstance.h"
 
 
 #if G3D_VER < 61000
@@ -139,6 +140,14 @@ TextButtonInstance* makeTextButton()
 	return part;
 }
 
+ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL)
+{
+	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage);
+	instances.push_back(part);
+	instances_2D.push_back(part);
+	return part;
+}
+
 
 void initGUI()
 {
@@ -152,6 +161,7 @@ void initGUI()
 	button->textOutlineColor = Color4::clear();
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -163,6 +173,7 @@ void initGUI()
 	button->textOutlineColor = Color4::clear();
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -174,6 +185,7 @@ void initGUI()
 	button->textOutlineColor = Color4::clear();
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -185,6 +197,7 @@ void initGUI()
 	button->textOutlineColor = Color4::clear();
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -196,6 +209,7 @@ void initGUI()
 	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
 	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
@@ -208,6 +222,7 @@ void initGUI()
 	button->title = "File";
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -220,6 +235,7 @@ void initGUI()
 	button->title = "Edit";
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -232,6 +248,7 @@ void initGUI()
 	button->title = "View";
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -244,6 +261,7 @@ void initGUI()
 	button->title = "Insert";
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setAllColorsSame();
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -256,6 +274,12 @@ void initGUI()
 	button->title = "Format";
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setAllColorsSame();
+
+	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
+	instance->size = Vector2(60,60);
+	instance->position = Vector2(10, 25);
+	instance->parent = dataModel;
 }
 
 void Demo::onInit()  {
@@ -635,10 +659,10 @@ void drawButtons(RenderDevice* rd)
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
-			if(instance->className == "TextButton" && instance->parent == dataModel)
+			if((instance->className == "TextButton" || instance->className == "ImageButton") && instance->parent == dataModel)
 			{
-				TextButtonInstance* tbi = (TextButtonInstance*)instance;
-				tbi->drawObj(rd);				
+				BaseButtonInstance* tbi = (BaseButtonInstance*)instance;
+				tbi->drawObj(rd, Vector2(mousex, mousey), mouseButton1Down);				
 			}
 		}
 }
@@ -717,7 +741,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	rd->window()->getRelativeMouseState(mousepos, num);
 	
 	bool mouseOnScreen = true;
-	if(mousepos.x < 5 || mousepos.y < 5 || mousepos.x > rd->getViewport().width()-5 || mousepos.y > rd->getViewport().height()-5)
+	if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
 	{
 		mouseOnScreen = false;
 		rd->window()->setInputCaptureCount(0);
@@ -846,41 +870,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 	//app->debugFont->draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 
 	
-
+	drawButtons(rd);
 	rd->pushState();
 		rd->beforePrimitive();
-
-		
-		
-		glEnable( GL_TEXTURE_2D );
-		glEnable(GL_BLEND);// you enable blending function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-		
-		if(mouseInArea(10,25,70,85))
-		{
-			if(mouseButton1Down)
-				glBindTexture( GL_TEXTURE_2D, go_dn_id);
-			else
-				glBindTexture( GL_TEXTURE_2D, go_ovr_id);
-		}
-		else
-			glBindTexture( GL_TEXTURE_2D, go_id);
-
-		glBegin( GL_QUADS );
-		glTexCoord2d(0.0,0.0);
-		glVertex2f( 10, 0+offset );
-		glTexCoord2d( 1.0,0.0 );
-		glVertex2f( 70, 0+offset );
-		glTexCoord2d( 1.0,1.0 );
-		glVertex2f( 70, 60+offset );
-		glTexCoord2d( 0.0,1.0 );
-		glVertex2f( 10, 60+offset );
-		glEnd();
-
-		glDisable( GL_TEXTURE_2D );
-
-
-		
 
 		if(showMouse && mouseOnScreen)
 		{
@@ -915,7 +907,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
 
 
-	drawButtons(rd);
+	
 
 	app->renderDevice->pop2D();
 

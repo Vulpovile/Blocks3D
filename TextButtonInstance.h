@@ -1,14 +1,14 @@
 #pragma once
-#include "instance.h"
+#include "BaseButtonInstance.h"
 #pragma once
 #include "ButtonListener.h"
 class ButtonListener;
-class TextButtonInstance :
-	public Instance
+class TextButtonInstance : public BaseButtonInstance
 {
 public:
 	TextButtonInstance(void);
 	~TextButtonInstance(void);
+	void setAllColorsSame(void);
 	Vector2 boxBegin;
 	Vector2 boxEnd;
 	Vector2 fontLocationRelativeTo;
@@ -27,11 +27,9 @@ public:
 	bool centeredWithinBox;
 	std::string title;
 	G3D::GFontRef font;
-	bool floatBottom;
-	bool floatRight;
 	bool visible;
 	int textSize;
-	void drawObj(G3D::RenderDevice*);
+	void drawObj(RenderDevice*, Vector2, bool);
 	void setButtonListener(ButtonListener*);
 	void onClick();
 };
