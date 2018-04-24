@@ -3,6 +3,7 @@
 bool floatBottom;
 bool floatRight;
 bool floatCenter;
+bool disabled;
 
 BaseButtonInstance::BaseButtonInstance(void)
 {

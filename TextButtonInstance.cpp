@@ -40,6 +40,7 @@ TextButtonInstance::TextButtonInstance(void)
 	floatCenter = false;
 	visible = true;
 	className = "TextButton";
+	disabled = false;
 }
 
 void TextButtonInstance::setAllColorsSame()

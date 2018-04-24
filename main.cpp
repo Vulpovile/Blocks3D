@@ -351,7 +351,7 @@ void initGUI()
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate.png")),
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ovr.png")),
+		NULL,
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
@@ -360,7 +360,7 @@ void initGUI()
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt.png")),
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ovr.png")),
+		NULL,
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);

@@ -5,23 +5,30 @@ G3D::TextureRef image_ovr = NULL;
 int openGLID_ovr = 0;
 G3D::TextureRef image_dn = NULL;
 int openGLID_dn = 0;
+G3D::TextureRef image_ds = NULL;
+int openGLID_ds = 0;
 Vector2 size;
 Vector2 position;
-ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
+ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	
 	image = newImage;
 	openGLID = image->getOpenGLID();
 	image_ovr = overImage;
+	if(!image_ovr.isNull())
 	openGLID_ovr = image_ovr->getOpenGLID();
 	image_dn = downImage;
-	openGLID_dn = image_dn->getOpenGLID();
+	if(!image_dn.isNull())
+		openGLID_dn = image_dn->getOpenGLID();
+	image_ds = disableImage;
+	if(!image_ds.isNull())
+		openGLID_ds = image_ds->getOpenGLID();
 	Vector2 size = Vector2(0,0);
 	Vector2 position = Vector2(0,0);
 	floatCenter = false;
 	floatBottom = false;
 	floatRight = false;
-	
+	disabled = false;
 	className = "ImageButton";
 }
 
@@ -45,13 +52,18 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
 	}
 	int renderimage = openGLID;
-	if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
+	if(disabled)
 	{
-		if(mouseDown && openGLID_dn != 0)
+		if(openGLID_ds != 0)
+			renderimage = openGLID;
+	}
+	else if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
+	{
+		if(mouseDown && !image_dn.isNull())
 		{
 			renderimage = openGLID_dn;
 		}
-		else if(openGLID_ovr != 0)
+		else if(!image_ovr.isNull())
 		{
 			renderimage = openGLID_ovr;
 		}

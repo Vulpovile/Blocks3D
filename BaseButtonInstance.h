@@ -10,6 +10,7 @@ public:
 	bool floatBottom;
 	bool floatRight;
 	bool floatCenter;
+	bool disabled;
 protected:
 	bool mouseInArea(float, float, float, float, float, float);
 };
