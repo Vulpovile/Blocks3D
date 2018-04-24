@@ -56,9 +56,14 @@ static bool forwards = false;
 static bool backwards = false;
 static bool left = false;
 static bool right = false;
+static const int CURSOR = 0;
+static const int ARROWS = 1;
+static const int RESIZE = 2;
+static int mode = CURSOR;
 Vector3 cameraPos = Vector3(0,2,10);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
+Instance* selectedInstance = NULL;
 /**
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
@@ -326,6 +331,8 @@ void Demo::onInit()  {
 	test->size = Vector3(4,1,2);
 	test->position = Vector3(2,5,0);
 
+	selectedInstance = test;
+
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
@@ -337,6 +344,8 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
 	test->position = Vector3(-2,7,0);
+
+	
 	
 
 
@@ -634,6 +643,71 @@ void drawButtons(RenderDevice* rd)
 		}
 }
 
+void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos)
+{
+	rd->setLight(0, NULL);
+	rd->setAmbientLightColor(Color3(1,1,1));
+	Color3 outline = Color3(0.098F,0.6F,1.0F);
+	float offsetSize = 0.05F;
+	//X
+	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	//Y
+	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+
+	//Z
+	Draw::box(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
+
+	mode = RESIZE;
+	
+	if(mode == ARROWS)
+	{
+		float max = size.x;
+		if(abs(size.y) > max)
+			max = size.y;
+		if(abs(size.z) > max)
+			max = size.z;
+		max = max / 2;
+		Draw::arrow(pos, Vector3(0, 1+max, 0), rd);
+		Draw::arrow(pos, Vector3(1+max, 0, 0), rd);
+		Draw::arrow(pos, Vector3(0, 0, 1+max), rd);
+		Draw::arrow(pos, Vector3(0, (-1)-max, 0), rd);
+		Draw::arrow(pos, Vector3((-1)-max, 0, 0), rd);
+		Draw::arrow(pos, Vector3(0, 0, (-1)-max), rd);
+	}
+	else if(mode == RESIZE)
+	{
+		Vector3 gamepoint = pos;
+		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+		if(distance < 200)
+		{
+		Color3 sphereColor = outline;
+		float multiplier = distance * 0.025F/2;
+		if(multiplier < 0.25F)
+			multiplier = 0.25F;
+		
+		Draw::sphere(Sphere(Vector3(pos.x, pos.y + (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+		Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+		Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+		Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+		Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+		Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+		}
+	}
+
+	rd->setAmbientLightColor(lighting.ambient);
+	rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+}
+
 void Demo::onGraphics(RenderDevice* rd) {
 
 	
@@ -678,7 +752,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		makeFlag(Vector3(-1, 3.5, 0), rd);
 		
-		
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
@@ -694,6 +767,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
 				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
 				Draw::box(Box(pos2 ,pos3), app->renderDevice, part->color, Color4::clear());
+				if(selectedInstance == part)
+				{
+					drawOutline(pos2, pos3, rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2));
+				}
 				
 			}
 			
