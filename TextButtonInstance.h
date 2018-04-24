@@ -27,4 +27,5 @@ public:
 	bool visible;
 	int textSize;
 	void drawObj(RenderDevice*, Vector2, bool);
+	bool mouseInButton(float, float, RenderDevice*);
 };

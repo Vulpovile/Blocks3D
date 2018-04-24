@@ -42,6 +42,31 @@ TextButtonInstance::TextButtonInstance(void)
 	disabled = false;
 }
 
+bool TextButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd)
+{
+	Vector3 point1;
+	Vector3 point2;
+	if(floatBottom)
+	{
+		point1 = Vector3(boxBegin.x, rd->getHeight() + boxBegin.y,0);
+		point2 = Vector3(boxEnd.x, rd->getHeight() + boxEnd.y,0);
+		
+	}
+	else
+	{
+		point1 = Vector3(boxBegin.x, boxBegin.y,0);
+		point2 = Vector3(boxEnd.x, boxEnd.y,0);
+	}
+	if(mousex >= point1.x && mousey >= point1.y)
+	{
+		if(mousex < point2.x && mousey < point2.y)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void TextButtonInstance::setAllColorsSame()
 {
 	textColorOvr = textColor;
