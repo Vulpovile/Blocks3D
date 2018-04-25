@@ -251,6 +251,35 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 }
 
 
+class ModeSelectionListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	
+
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->name == "Cursor" || instances_2D.at(i)->name == "Resize" || instances_2D.at(i)->name == "Arrows")
+			{
+				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+				button->selected = false;
+			}
+		}
+
+	button->selected = true;
+	if(button->name == "Cursor")
+		mode = CURSOR;
+	else if(button->name == "Resize")
+		mode = RESIZE;
+	else if(button->name == "Arrows")
+		mode = ARROWS;
+}
+
+
 void initGUI()
 {
 	TextButtonInstance* button = makeTextButton();
@@ -394,11 +423,15 @@ void initGUI()
 	instance->size = Vector2(50,50);
 	instance->position = Vector2(15, 90);
 	instance->parent = dataModel;
+	instance->name = "Cursor";
+	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
 	instance->parent = dataModel;
+	instance->name = "Resize";
+	instance->setButtonListener(new ModeSelectionListener());
 	
 
 	instance = makeImageButton(
@@ -409,6 +442,8 @@ void initGUI()
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(40, 140);
 	instance->parent = dataModel;
+	instance->name = "Arrows";
+	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate.png")),
@@ -935,8 +970,6 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-
-	mode = RESIZE;
 	
 	if(mode == ARROWS)
 	{

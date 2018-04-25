@@ -11,6 +11,7 @@ public:
 	void drawObj(RenderDevice*, Vector2, bool);
 	Vector2 size;
 	Vector2 position;
+	
 	G3D::TextureRef image;
 	int openGLID;
 	G3D::TextureRef image_ovr;

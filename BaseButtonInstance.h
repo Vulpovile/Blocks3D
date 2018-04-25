@@ -16,6 +16,7 @@ public:
 	bool floatRight;
 	bool floatCenter;
 	bool disabled;
+	bool selected;
 protected:
 	bool mouseInArea(float, float, float, float, float, float);
 	class ButtonListener* listener;
