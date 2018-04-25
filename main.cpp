@@ -631,7 +631,8 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
 	{
 		title = dataModel->name;
-		app->renderDevice->setCaption("Game \"" + title + "\"");
+		std::string text = "Game \"" + title + "\"";
+		SetWindowText(app->getMainHWND(), text.c_str());
 	}
 
 	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
@@ -1214,14 +1215,8 @@ int main(int argc, char** argv) {
 	//_CrtSetBreakAlloc(1279);
 
     GAppSettings settings;
-	if(getOSVersion() > 5.0)
-		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
-	else
-		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
 	settings.writeLicenseFile = false;
-	settings.window.width = 841;
-	settings.window.height = 639;
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
@@ -1290,6 +1285,10 @@ int main(int argc, char** argv) {
 	
 	//SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
 	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
+
+	HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
+	SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
+
 	app.run();
     return 0;
 }
