@@ -481,10 +481,6 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been set to " + Convert(FPSVal[index]);
 		setDesiredFrameRate(FPSVal[index]);
 	}
-	if(ui->keyPressed('u'))
-	{
-		DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT_DIALOG), NULL, NULL);
-	}
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
 	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
