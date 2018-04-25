@@ -812,7 +812,6 @@ void Demo::onUserInput(UserInput* ui) {
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
 	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	messageTime = System::time();
 	if(ui->keyDown(SDLK_UP))
 	{
 		forwards = true;
@@ -914,28 +913,28 @@ void drawButtons(RenderDevice* rd)
 		}
 }
 
-void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos)
+void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
 {
 	//rd->setLight(0, NULL);
 	//rd->setAmbientLightColor(Color3(1,1,1));
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
 	float offsetSize = 0.05F;
 	//X
-	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	//Y
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
 
 	//Z
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 
 	mode = RESIZE;
 	
@@ -1057,7 +1056,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
-					drawOutline(pos2, pos3, rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2));
+					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), c);
 				}
 				
 			}
@@ -1189,7 +1188,7 @@ void App::main() {
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
-	cursor = Texture::fromFile(GetFileInPath("/content/cursor.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
@@ -1341,10 +1340,22 @@ int main(int argc, char** argv) {
 	
 	//SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
 	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
-
 	HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
 	SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
+	
+	
+	
 	SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
+	HMONITOR monitor = MonitorFromWindow(hwndMain, MONITOR_DEFAULTTONEAREST);
+	MONITORINFO lpmi;
+	GetMonitorInfo( monitor, &lpmi);
+	
+	int widthMON = lpmi.rcMonitor.bottom;
+	int heightMON = lpmi.rcMonitor.right;
+
+	//message = Convert(widthMON) + ", " + Convert(heightMON);
+	//messageTime = G3D::System::time();
+
 	app.run();
     return 0;
 }
