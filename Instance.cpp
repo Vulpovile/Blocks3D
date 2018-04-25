@@ -4,12 +4,12 @@
 
 std::string name;
 Instance* parent;
-static std::string className = "Instance";
+static std::string className = "DataModel";
 
 Instance::Instance(void)
 {
 	name = "Default Game Instance";
-	className = "Part";
+	className = "DataModel";
 }
 
 Instance::~Instance(void)
