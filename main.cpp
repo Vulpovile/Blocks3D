@@ -1199,17 +1199,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				  height = rect.bottom - rect.top;
 				}
 				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
-				SetActiveWindow(g3DWind);
 			}
 		break;
         default:
 		{
-			if(app != 0)
-			{
-				HWND g3DWind = app->getHWND();
-				
-				SetActiveWindow(g3DWind);
-			}
             return DefWindowProc(hwnd, msg, wParam, lParam);
 		}
     }
@@ -1286,7 +1279,16 @@ int main(int argc, char** argv) {
 	  height = rect.bottom - rect.top;
 	}
 	SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
-	SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
+	
+	LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
+	lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
+	SetWindowLong(hwnd, GWL_STYLE, lStyle);
+
+	LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+	lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+	SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
+	
+	//SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
 	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
 	app.run();
     return 0;
