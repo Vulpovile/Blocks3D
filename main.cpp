@@ -66,6 +66,11 @@ Instance* selectedInstance = NULL;
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
  */
+
+
+
+
+
 class Demo : public GApplet {
 
 public:
@@ -134,6 +139,8 @@ class App : public GApp {
         HWND propertyHWnd;
         HWND mainHWnd;
 };
+
+App *usableApp = NULL;
 
 HWND App::getHWND()
 {
@@ -222,6 +229,20 @@ ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::Textu
 	instances.push_back(part);
 	instances_2D.push_back(part);
 	return part;
+}
+
+
+
+class ForwardButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void ForwardButtonListener::onButton1MouseClick(BaseButtonInstance*)
+{
+	
+	CoordinateFrame frame = usableApp->renderDevice->getCameraToWorldMatrix();
+	cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
 }
 
 
@@ -353,6 +374,7 @@ void initGUI()
 	button->setAllColorsSame();
 
 	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
+	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
 	instance->parent = dataModel;
@@ -429,7 +451,7 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
 	instance->parent = dataModel;
-	instance->disabled = true;
+	instance->setButtonListener(new ForwardButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
@@ -1130,6 +1152,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 
 void App::main() {
+	usableApp = this;
 	setDebugMode(false);
 	debugController.setActive(false);
     // Load objects here
@@ -1262,6 +1285,7 @@ int main(int argc, char** argv) {
 	if(hwndMain == NULL)
 	{
 		MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
+		return 0;
 	}
     SetParent(hwnd, hwndMain);
 	App app = App(settings, wnd, hwndMain, wnd);

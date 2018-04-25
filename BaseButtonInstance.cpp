@@ -16,6 +16,11 @@ BaseButtonInstance::~BaseButtonInstance(void)
 	delete listener;
 }
 
+void BaseButtonInstance::setButtonListener(ButtonListener* buttonListener)
+{
+	listener = buttonListener;
+}
+
 void BaseButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown){}
 
 bool BaseButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd){return false;}

@@ -134,6 +134,6 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 	rd->popState();
 	if(drawDisabledBox)
 	{
-		Draw::box(Box(Vector3(positionRelative.x, positionRelative.y, 0), Vector3(positionRelative.x+size.x, positionRelative.y+size.y, 0)), rd, Color4(0.7,0.7,0.7,0.3), Color4::clear());
+		Draw::box(Box(Vector3(positionRelative.x, positionRelative.y, 0), Vector3(positionRelative.x+size.x, positionRelative.y+size.y, 0)), rd, Color4(0.7F,0.7F,0.7F,0.3F), Color4::clear());
 	}
 }
