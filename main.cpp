@@ -1111,6 +1111,8 @@ App::~App() {
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	
     switch(msg)
     {
         case WM_CLOSE:
@@ -1143,8 +1145,51 @@ int main(int argc, char** argv) {
 	//wnd->setInputCaptureCount(200);
 	wnd->setMouseVisible(false);
 	App app = App(settings, wnd);
-	HWND hwnd = wnd->win32HWND();
+
+
+	WNDCLASSEX wc;
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+    wc.cbSize        = sizeof(WNDCLASSEX);
+    wc.style         = 0;
+    wc.lpfnWndProc   = WndProc;
+    wc.cbClsExtra    = 0;
+    wc.cbWndExtra    = 0;
+    wc.hInstance     = hInstance;
+    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wc.lpszMenuName  = NULL;
+    wc.lpszClassName = "containerHWND";
+    wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 	
+	if (!RegisterClassEx (&wc))
+            return false;
+
+	HMODULE hThisInstance = GetModuleHandle(NULL);
+	HWND hwnd = wnd->win32HWND();
+	    HWND hwndMain = CreateWindowEx(
+        WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
+        "containerHWND",
+        "Main test",
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        800,
+        800,
+        NULL, // parent
+        NULL, // menu
+        hThisInstance,
+        NULL
+    );
+	ShowWindow(hwndMain, SW_SHOW);
+	if(hwndMain == NULL)
+	{
+		MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
+	}
+    SetParent(hwnd, hwndMain);
+	SetWindowPos(hwnd, NULL, 0, 0, 640, 480, NULL);
+	SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD | WS_BORDER);
+	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
 	app.run();
     return 0;
 }
