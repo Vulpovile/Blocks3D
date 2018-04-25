@@ -49,6 +49,7 @@ ImageButtonInstance::~ImageButtonInstance(void)
 	image_dn = NULL;
 	delete listener;
 	listener = NULL;
+	selected = false;
 }
 
 bool ImageButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd)
@@ -93,7 +94,11 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
 	}
 	int renderimage = openGLID;
-	if(disabled)
+	if(selected == true && !image_dn.isNull())
+	{
+		renderimage = openGLID_dn;
+	}
+	else if(disabled)
 	{
 		if(!image_ds.isNull())
 			renderimage = openGLID_ds;
@@ -134,6 +139,6 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 	rd->popState();
 	if(drawDisabledBox)
 	{
-		Draw::box(Box(Vector3(positionRelative.x, positionRelative.y, 0), Vector3(positionRelative.x+size.x, positionRelative.y+size.y, 0)), rd, Color4(0.7,0.7,0.7,0.3), Color4::clear());
+		Draw::box(Box(Vector3(positionRelative.x, positionRelative.y, 0), Vector3(positionRelative.x+size.x, positionRelative.y+size.y, 0)), rd, Color4(0.7F,0.7F,0.7F,0.3F), Color4::clear());
 	}
 }

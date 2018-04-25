@@ -4,6 +4,7 @@ bool floatBottom = false;
 bool floatRight = false;
 bool floatCenter = false;
 bool disabled = false;
+bool selected = false;
 ButtonListener* listener = NULL;
 
 BaseButtonInstance::BaseButtonInstance(void)
@@ -14,6 +15,11 @@ BaseButtonInstance::BaseButtonInstance(void)
 BaseButtonInstance::~BaseButtonInstance(void)
 {
 	delete listener;
+}
+
+void BaseButtonInstance::setButtonListener(ButtonListener* buttonListener)
+{
+	listener = buttonListener;
 }
 
 void BaseButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown){}

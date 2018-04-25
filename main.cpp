@@ -54,6 +54,7 @@ static bool forwards = false;
 static bool backwards = false;
 static bool left = false;
 static bool right = false;
+static bool centerCam = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
@@ -66,6 +67,11 @@ Instance* selectedInstance = NULL;
  This simple demo applet uses the debug mode as the regular
  rendering mode so you can fly around the scene.
  */
+
+
+
+
+
 class Demo : public GApplet {
 
 public:
@@ -75,6 +81,8 @@ public:
     // state, put it in the App.
 
     class App*          app;
+
+	virtual void exitApplication();
 
     Demo(App* app);
 
@@ -98,7 +106,7 @@ public:
 
 
 
-class App : public GApp {
+/*class App : public GApp {
 protected:
     void main();
 public:
@@ -109,7 +117,44 @@ public:
     App(const GAppSettings& settings, GWindow* wnd);
 
     ~App();
+};*/
+
+class App : public GApp {
+    protected:
+        void main();
+    public:
+        SkyRef              sky;
+
+        Demo*               applet;
+
+        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow*);
+		
+
+        ~App();
+        HWND getHWND();
+        HWND getPropertyHWND();
+        HWND getMainHWND();
+        //void addHWND(HWND hwnd);
+    private:
+        HWND hwnd;
+        HWND propertyHWnd;
+        HWND mainHWnd;
 };
+
+App *usableApp = NULL;
+
+HWND App::getHWND()
+{
+    return hwnd;
+}
+HWND App::getPropertyHWND()
+{
+    return propertyHWnd;
+}
+HWND App::getMainHWND()
+{
+    return mainHWnd;
+}
  
 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
@@ -185,6 +230,53 @@ ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::Textu
 	instances.push_back(part);
 	instances_2D.push_back(part);
 	return part;
+}
+
+
+
+class CameraButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	if(button->name == "CenterCam")
+		centerCam = true;
+	else if(button->name == "ZoomIn")
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
+	else if(button->name == "ZoomOut")
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
+}
+
+
+class ModeSelectionListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	
+
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->name == "Cursor" || instances_2D.at(i)->name == "Resize" || instances_2D.at(i)->name == "Arrows")
+			{
+				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+				button->selected = false;
+			}
+		}
+
+	button->selected = true;
+	if(button->name == "Cursor")
+		mode = CURSOR;
+	else if(button->name == "Resize")
+		mode = RESIZE;
+	else if(button->name == "Arrows")
+		mode = ARROWS;
 }
 
 
@@ -316,6 +408,7 @@ void initGUI()
 	button->setAllColorsSame();
 
 	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
+	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
 	instance->parent = dataModel;
@@ -330,11 +423,15 @@ void initGUI()
 	instance->size = Vector2(50,50);
 	instance->position = Vector2(15, 90);
 	instance->parent = dataModel;
+	instance->name = "Cursor";
+	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
 	instance->parent = dataModel;
+	instance->name = "Resize";
+	instance->setButtonListener(new ModeSelectionListener());
 	
 
 	instance = makeImageButton(
@@ -345,6 +442,8 @@ void initGUI()
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(40, 140);
 	instance->parent = dataModel;
+	instance->name = "Arrows";
+	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate.png")),
@@ -392,7 +491,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
 	instance->parent = dataModel;
-	instance->disabled = true;
+	instance->name = "ZoomIn";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
@@ -403,6 +503,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -31);
 	instance->parent = dataModel;
+	instance->name = "ZoomOut";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft.png")),
@@ -413,6 +515,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-110, -50);
 	instance->parent = dataModel;
+	instance->name = "PanLeft";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight.png")),
@@ -423,6 +527,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-45, -50);
 	instance->parent = dataModel;
+	instance->name = "PanRight";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraCenter.png")),
@@ -433,6 +539,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -60);
 	instance->parent = dataModel;
+	instance->name = "CenterCam";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp.png")),
@@ -443,6 +551,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-105, -75);
 	instance->parent = dataModel;
+	instance->name = "TiltUp";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown.png")),
@@ -453,6 +563,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-40, -75);
 	instance->parent = dataModel;
+	instance->name = "TiltDown";
+	instance->setButtonListener(new CameraButtonListener());
 }
 
 
@@ -594,7 +706,8 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
 	{
 		title = dataModel->name;
-		app->renderDevice->setCaption("Game \"" + title + "\"");
+		std::string text = "Game \"" + title + "\"";
+		SetWindowText(app->getMainHWND(), text.c_str());
 	}
 
 	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
@@ -619,6 +732,17 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
 	}
 	app->debugCamera.setPosition(cameraPos);
+	if(centerCam)
+	{
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
+		if(selectedInstance == NULL)
+			frame.lookAt(Vector3(0,0,0));
+		else
+			frame.lookAt(((PhysicalInstance*)selectedInstance)->getPosition());
+		app->debugController.setCoordinateFrame(frame);
+		centerCam = false;
+	}
+		
 }
 
 
@@ -723,7 +847,6 @@ void Demo::onUserInput(UserInput* ui) {
 	mousex = ui->getMouseX();
 	mousey = ui->getMouseY();
 	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	messageTime = System::time();
 	if(ui->keyDown(SDLK_UP))
 	{
 		forwards = true;
@@ -738,11 +861,13 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	else if(ui->keyDown(SDLK_RIGHT))
 	{
+		
 		right = true;
 	}
 	
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
+		
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
@@ -767,6 +892,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
+
 	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
 	//Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue(), 3);
 	rd->setColor(Color3::blue());
@@ -822,30 +948,28 @@ void drawButtons(RenderDevice* rd)
 		}
 }
 
-void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos)
+void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
 {
 	//rd->setLight(0, NULL);
 	//rd->setAmbientLightColor(Color3(1,1,1));
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
 	float offsetSize = 0.05F;
 	//X
-	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	//Y
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, from.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y - offsetSize, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize, to.z - offsetSize)), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
 
 	//Z
-	Draw::box(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-	Draw::box(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize)), rd, outline, Color4::clear()); 
-
-	mode = RESIZE;
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	
 	if(mode == ARROWS)
 	{
@@ -894,6 +1018,12 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	
 }
 
+void Demo::exitApplication()
+{
+	endApplet = true;
+    app->endProgram = true;
+}
+
 void Demo::onGraphics(RenderDevice* rd) {
 
 	
@@ -916,6 +1046,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
+	
 
 
 	
@@ -958,7 +1089,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
-					drawOutline(pos2, pos3, rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2));
+					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), c);
 				}
 				
 			}
@@ -1083,13 +1214,14 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 
 void App::main() {
+	usableApp = this;
 	setDebugMode(false);
 	debugController.setActive(false);
     // Load objects here
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
-	cursor = Texture::fromFile(GetFileInPath("/content/cursor.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
@@ -1099,8 +1231,21 @@ void App::main() {
 
 
 
-App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
+//App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
+//    applet = new Demo(this);
+//}
+
+App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
     applet = new Demo(this);
+    hwnd = wndSDL->win32HWND();
+    mainHWnd = tempMainHWnd;
+    propertyHWnd = CreateWindowEx(
+        WS_EX_TOOLWINDOW,
+        "ToolWindowClass", "ToolWindow",
+        WS_SYSMENU | WS_THICKFRAME | WS_VISIBLE | WS_CHILD,
+        200, 700, 400, 64,
+        mainHWnd, NULL, GetModuleHandle(0), NULL
+    );
 }
 
 
@@ -1111,16 +1256,41 @@ App::~App() {
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
     switch(msg)
     {
         case WM_CLOSE:
-            DestroyWindow(hwnd);
+        if (app != 0)
+        {
+			
+            HWND g3DWind = app->getHWND();
+			app->applet->exitApplication();
+            //DestroyWindow(hwnd);
+        }
+        //DestroyWindow(hwnd);
         break;
         case WM_DESTROY:
             PostQuitMessage(0);
         break;
+		case WM_SIZE:
+			if(app != 0)
+			{
+				HWND g3DWind = app->getHWND();
+				int width = 640;
+				int height = 480;
+				RECT rect;
+				if(GetClientRect(hwnd, &rect))
+				{
+				  width = rect.right - rect.left;
+				  height = rect.bottom - rect.top;
+				}
+				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
+			}
+		break;
         default:
+		{
             return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
     }
     return 0;
 }
@@ -1130,21 +1300,95 @@ int main(int argc, char** argv) {
 	//_CrtSetBreakAlloc(1279);
 
     GAppSettings settings;
-	if(getOSVersion() > 5.0)
-		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico.png");
-	else
-		settings.window.defaultIconFilename = GetFileInPath("/content/images/rico256c.png");
 	settings.window.resizable = true;
+	settings.window.fsaaSamples = 8;
 	settings.writeLicenseFile = false;
-	settings.window.width = 841;
-	settings.window.height = 639;
+	settings.window.center = true;
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
 	wnd->setMouseVisible(false);
-	App app = App(settings, wnd);
-	HWND hwnd = wnd->win32HWND();
 	
+
+
+	WNDCLASSEX wc;
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+    wc.cbSize        = sizeof(WNDCLASSEX);
+    wc.style         = 0;
+    wc.lpfnWndProc   = WndProc;
+    wc.cbClsExtra    = 0;
+    wc.cbWndExtra    = 0;
+    wc.hInstance     = hInstance;
+    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wc.lpszMenuName  = NULL;
+    wc.lpszClassName = "containerHWND";
+    wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
+	
+	if (!RegisterClassEx (&wc))
+            return false;
+
+	HMODULE hThisInstance = GetModuleHandle(NULL);
+	HWND hwnd = wnd->win32HWND();
+	    HWND hwndMain = CreateWindowEx(
+        WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
+        "containerHWND",
+        "Main test",
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        800,
+        600,
+        NULL, // parent
+        NULL, // menu
+        hThisInstance,
+        NULL
+    );
+	ShowWindow(hwndMain, SW_SHOW);
+	if(hwndMain == NULL)
+	{
+		MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
+		return 0;
+	}
+    SetParent(hwnd, hwndMain);
+	App app = App(settings, wnd, hwndMain, wnd);
+	RECT rect;
+	int width = 640;
+	int height = 480;
+	if(GetClientRect(hwndMain, &rect))
+	{
+	  width = rect.right - rect.left;
+	  height = rect.bottom - rect.top;
+	}
+	SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
+	
+	LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
+	lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
+	SetWindowLong(hwnd, GWL_STYLE, lStyle);
+
+	LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+	lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+	SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
+	
+	//SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
+	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
+	HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
+	SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
+	
+	
+	
+	SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
+	HMONITOR monitor = MonitorFromWindow(hwndMain, MONITOR_DEFAULTTONEAREST);
+	MONITORINFO lpmi;
+	GetMonitorInfo( monitor, &lpmi);
+	
+	int widthMON = lpmi.rcMonitor.bottom;
+	int heightMON = lpmi.rcMonitor.right;
+
+	//message = Convert(widthMON) + ", " + Convert(heightMON);
+	//messageTime = G3D::System::time();
+
 	app.run();
     return 0;
 }
