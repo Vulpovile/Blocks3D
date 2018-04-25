@@ -115,6 +115,7 @@ public:
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
 }
 
+
 void clearInstances()
 {
 	for(size_t i = 0; i < instances.size(); i++)
@@ -454,6 +455,7 @@ void initGUI()
 	instance->parent = dataModel;
 }
 
+
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
@@ -470,76 +472,77 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
 	test->size = Vector3(24,1,24);
-
-	
-
-	
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(10,1,0);
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(-10,1,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(-7,2,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(7,2,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(-4,3,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(5,3,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(-1,4,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(3,4,0);
-
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->position = Vector3(2,5,0);
-
+	test->setCFrame(CoordinateFrame(Matrix3::fromEulerAnglesXYZ(toRadians(90),toRadians(45),toRadians(45)), Vector3(0,0,0)));
 	selectedInstance = test;
+	
+
+	
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(10,1,0));
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3(.5F,1,.5F);
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-10,1,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->position = Vector3(0,6,0);
+	test->setPosition(Vector3(-7,2,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->position = Vector3(-2,7,0);
+	test->setPosition(Vector3(7,2,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-4,3,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(5,3,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-1,4,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(3,4,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(2,5,0));
+
+	
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(0,6,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-2,7,0));
 
 	
 	
@@ -946,10 +949,13 @@ void Demo::onGraphics(RenderDevice* rd) {
 			{
 				PhysicalInstance* part = (PhysicalInstance*)instance;
 				Vector3 size = part->size;
-				Vector3 pos = part->position;
+				Vector3 pos = part->getCFrame().translation;
+				rd->setObjectToWorldMatrix(CoordinateFrame());
 				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
 				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
-				Draw::box(Box(pos2 ,pos3), app->renderDevice, part->color, Color4::clear());
+				Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
+				CoordinateFrame c = CoordinateFrame(part->getCFrame().rotation,Vector3(part->getCFrame().translation.x/2, part->getCFrame().translation.y/2, part->getCFrame().translation.z/2));
+				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
 					drawOutline(pos2, pos3, rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2));

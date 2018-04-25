@@ -6,6 +6,7 @@ Vector3 size;
 Vector3 position;
 Vector3 velocity;
 Vector3 rotVelocity;
+CoordinateFrame cFrame;
 Color3 color;
 
 PhysicalInstance::PhysicalInstance(void)
@@ -16,10 +17,31 @@ PhysicalInstance::PhysicalInstance(void)
 	anchored = true;
 	size = Vector3(2,1,4);
 	position = Vector3(0,0,0);
+	cFrame = CoordinateFrame(position);
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
 }
+
+Vector3 PhysicalInstance::getPosition()
+{
+	return position;
+}
+void PhysicalInstance::setPosition(Vector3 pos)
+{
+	position = pos;
+	cFrame = CoordinateFrame(pos);
+}
+CoordinateFrame PhysicalInstance::getCFrame()
+{
+	return cFrame;
+}
+void PhysicalInstance::setCFrame(CoordinateFrame coordinateFrame)
+{
+	cFrame = coordinateFrame;
+	position = coordinateFrame.translation;
+}
+
 
 PhysicalInstance::~PhysicalInstance(void)
 {
