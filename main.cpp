@@ -98,7 +98,7 @@ public:
 
 
 
-class App : public GApp {
+/*class App : public GApp {
 protected:
     void main();
 public:
@@ -109,7 +109,41 @@ public:
     App(const GAppSettings& settings, GWindow* wnd);
 
     ~App();
+};*/
+
+class App : public GApp {
+    protected:
+        void main();
+    public:
+        SkyRef              sky;
+
+        Demo*               applet;
+
+        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd);
+
+        ~App();
+        HWND getHWND();
+        HWND getPropertyHWND();
+        HWND getMainHWND();
+        //void addHWND(HWND hwnd);
+    private:
+        HWND hwnd;
+        HWND propertyHWnd;
+        HWND mainHWnd;
 };
+
+HWND App::getHWND()
+{
+    return hwnd;
+}
+HWND App::getPropertyHWND()
+{
+    return propertyHWnd;
+}
+HWND App::getMainHWND()
+{
+    return mainHWnd;
+}
  
 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
@@ -1099,8 +1133,22 @@ void App::main() {
 
 
 
-App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
+//App::App(const GAppSettings& settings, GWindow* wnd) : GApp(settings, wnd) {
+//    applet = new Demo(this);
+//}
+
+App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd) : GApp(settings, wnd) {
     applet = new Demo(this);
+    SDLWindow* sdlWnd = new SDLWindow(settings.window);
+    hwnd = sdlWnd->win32HWND();
+    mainHWnd = tempMainHWnd;
+    propertyHWnd = CreateWindowEx(
+        WS_EX_TOOLWINDOW,
+        "ToolWindowClass", "ToolWindow",
+        WS_SYSMENU | WS_THICKFRAME | WS_VISIBLE | WS_CHILD,
+        200, 700, 400, 64,
+        mainHWnd, NULL, GetModuleHandle(0), NULL
+    );
 }
 
 
@@ -1111,12 +1159,17 @@ App::~App() {
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
-	
+    App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
     switch(msg)
     {
         case WM_CLOSE:
-            DestroyWindow(hwnd);
+        if (app != 0)
+        {
+            HWND g3DWind = app->getHWND();
+            app->endProgram = true;
+            //DestroyWindow(hwnd);
+        }
+        DestroyWindow(hwnd);
         break;
         case WM_DESTROY:
             PostQuitMessage(0);
@@ -1144,7 +1197,7 @@ int main(int argc, char** argv) {
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
 	wnd->setMouseVisible(false);
-	App app = App(settings, wnd);
+	
 
 
 	WNDCLASSEX wc;
@@ -1175,7 +1228,7 @@ int main(int argc, char** argv) {
         CW_USEDEFAULT,
         CW_USEDEFAULT,
         800,
-        800,
+        600,
         NULL, // parent
         NULL, // menu
         hThisInstance,
@@ -1187,9 +1240,19 @@ int main(int argc, char** argv) {
 		MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 	}
     SetParent(hwnd, hwndMain);
-	SetWindowPos(hwnd, NULL, 0, 0, 640, 480, NULL);
+	App app = App(settings, wnd, hwndMain);
+	RECT rect;
+	int width = 640;
+	int height = 480;
+	if(GetWindowRect(hwndMain, &rect))
+	{
+	  width = rect.right - rect.left;
+	  height = rect.bottom - rect.top;
+	}
+	SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
 	SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD | WS_BORDER);
 	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
+	
 	app.run();
     return 0;
 }
