@@ -1174,6 +1174,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             PostQuitMessage(0);
         break;
+		case WM_SIZE:
+			if(app != 0)
+			{
+				HWND g3DWind = app->getHWND();
+				int width = 640;
+				int height = 480;
+				RECT rect;
+				if(GetClientRect(hwnd, &rect))
+				{
+				  width = rect.right - rect.left;
+				  height = rect.bottom - rect.top;
+				}
+				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
+			}
+		break;
         default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
     }
@@ -1244,7 +1259,7 @@ int main(int argc, char** argv) {
 	RECT rect;
 	int width = 640;
 	int height = 480;
-	if(GetWindowRect(hwndMain, &rect))
+	if(GetClientRect(hwndMain, &rect))
 	{
 	  width = rect.right - rect.left;
 	  height = rect.bottom - rect.top;
