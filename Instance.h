@@ -5,7 +5,7 @@ class Instance
 {
 public:
 	Instance(void);
-	~Instance(void);
+	virtual ~Instance(void);
 	std::string name;
 	Instance* parent;  // Another pointer.
 	std::string className;
