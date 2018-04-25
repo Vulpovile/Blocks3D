@@ -76,6 +76,8 @@ public:
 
     class App*          app;
 
+	virtual void exitApplication();
+
     Demo(App* app);
 
     virtual ~Demo() {}
@@ -119,7 +121,8 @@ class App : public GApp {
 
         Demo*               applet;
 
-        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd);
+        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow*);
+		
 
         ~App();
         HWND getHWND();
@@ -772,11 +775,13 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	else if(ui->keyDown(SDLK_RIGHT))
 	{
+		
 		right = true;
 	}
 	
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
+		
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
@@ -801,6 +806,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
+
 	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
 	//Draw::lineSegment(G3D::LineSegment::fromTwoPoints(vec, up), rd, Color3::blue(), 3);
 	rd->setColor(Color3::blue());
@@ -926,6 +932,12 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
 	
+}
+
+void Demo::exitApplication()
+{
+	endApplet = true;
+    app->endProgram = true;
 }
 
 void Demo::onGraphics(RenderDevice* rd) {
@@ -1137,10 +1149,9 @@ void App::main() {
 //    applet = new Demo(this);
 //}
 
-App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd) : GApp(settings, wnd) {
+App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
     applet = new Demo(this);
-    SDLWindow* sdlWnd = new SDLWindow(settings.window);
-    hwnd = sdlWnd->win32HWND();
+    hwnd = wndSDL->win32HWND();
     mainHWnd = tempMainHWnd;
     propertyHWnd = CreateWindowEx(
         WS_EX_TOOLWINDOW,
@@ -1165,11 +1176,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_CLOSE:
         if (app != 0)
         {
+			
             HWND g3DWind = app->getHWND();
-            app->endProgram = true;
+			app->applet->exitApplication();
             //DestroyWindow(hwnd);
         }
-        DestroyWindow(hwnd);
+        //DestroyWindow(hwnd);
         break;
         case WM_DESTROY:
             PostQuitMessage(0);
@@ -1187,10 +1199,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				  height = rect.bottom - rect.top;
 				}
 				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
+				SetActiveWindow(g3DWind);
 			}
 		break;
         default:
+		{
+			if(app != 0)
+			{
+				HWND g3DWind = app->getHWND();
+				
+				SetActiveWindow(g3DWind);
+			}
             return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
     }
     return 0;
 }
@@ -1255,7 +1276,7 @@ int main(int argc, char** argv) {
 		MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 	}
     SetParent(hwnd, hwndMain);
-	App app = App(settings, wnd, hwndMain);
+	App app = App(settings, wnd, hwndMain, wnd);
 	RECT rect;
 	int width = 640;
 	int height = 480;
@@ -1265,9 +1286,8 @@ int main(int argc, char** argv) {
 	  height = rect.bottom - rect.top;
 	}
 	SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
-	SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD | WS_BORDER);
+	SetWindowLong(hwnd, GWL_STYLE, WS_VISIBLE | WS_CHILD);
 	SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
-	
 	app.run();
     return 0;
 }
