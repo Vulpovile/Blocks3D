@@ -54,6 +54,7 @@ static bool forwards = false;
 static bool backwards = false;
 static bool left = false;
 static bool right = false;
+static bool centerCam = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
@@ -233,16 +234,20 @@ ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::Textu
 
 
 
-class ForwardButtonListener : public ButtonListener {
+class CameraButtonListener : public ButtonListener {
 public:
 	void onButton1MouseClick(BaseButtonInstance*);
 };
 
-void ForwardButtonListener::onButton1MouseClick(BaseButtonInstance*)
+void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	
-	CoordinateFrame frame = usableApp->renderDevice->getCameraToWorldMatrix();
-	cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
+	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	if(button->name == "CenterCam")
+		centerCam = true;
+	else if(button->name == "ZoomIn")
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
+	else if(button->name == "ZoomOut")
+		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
 }
 
 
@@ -451,7 +456,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
 	instance->parent = dataModel;
-	instance->setButtonListener(new ForwardButtonListener());
+	instance->name = "ZoomIn";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
@@ -462,6 +468,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -31);
 	instance->parent = dataModel;
+	instance->name = "ZoomOut";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft.png")),
@@ -472,6 +480,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-110, -50);
 	instance->parent = dataModel;
+	instance->name = "PanLeft";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight.png")),
@@ -482,6 +492,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-45, -50);
 	instance->parent = dataModel;
+	instance->name = "PanRight";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraCenter.png")),
@@ -492,6 +504,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -60);
 	instance->parent = dataModel;
+	instance->name = "CenterCam";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp.png")),
@@ -502,6 +516,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-105, -75);
 	instance->parent = dataModel;
+	instance->name = "TiltUp";
+	instance->setButtonListener(new CameraButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown.png")),
@@ -512,6 +528,8 @@ void initGUI()
 	instance->floatRight = true;
 	instance->position = Vector2(-40, -75);
 	instance->parent = dataModel;
+	instance->name = "TiltDown";
+	instance->setButtonListener(new CameraButtonListener());
 }
 
 
@@ -679,6 +697,17 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
 	}
 	app->debugCamera.setPosition(cameraPos);
+	if(centerCam)
+	{
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
+		if(selectedInstance == NULL)
+			frame.lookAt(Vector3(0,0,0));
+		else
+			frame.lookAt(((PhysicalInstance*)selectedInstance)->getPosition());
+		app->debugController.setCoordinateFrame(frame);
+		centerCam = false;
+	}
+		
 }
 
 
@@ -985,6 +1014,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
+	
 
 
 	
