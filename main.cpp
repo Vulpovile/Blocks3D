@@ -1269,7 +1269,9 @@ int main(int argc, char** argv) {
 
     GAppSettings settings;
 	settings.window.resizable = true;
+	settings.window.fsaaSamples = 8;
 	settings.writeLicenseFile = false;
+	settings.window.center = true;
 	//Using the damned SDL window now
 	SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
@@ -1342,7 +1344,7 @@ int main(int argc, char** argv) {
 
 	HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
 	SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
-
+	SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
 	app.run();
     return 0;
 }
