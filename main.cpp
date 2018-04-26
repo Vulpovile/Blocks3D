@@ -41,6 +41,7 @@ static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
+VARAreaRef varStatic = NULL;
 static float mousex = 0;
 static float mousey = 0;
 static int cursorid = 0;
@@ -161,6 +162,7 @@ HWND App::getMainHWND()
  
 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
+	varStatic = VARArea::create(1024 * 1024);
 }
 
 
@@ -1060,7 +1062,25 @@ void Demo::exitApplication()
     app->endProgram = true;
 }
 
-
+void makeBeveledBox(Box box, RenderDevice* rd, Color4 color, CoordinateFrame cFrame)
+{
+	Vector3 v0, v1, v2, v3;
+    //glDiffuse();
+    rd->setColor(color);
+    rd->setObjectToWorldMatrix(CoordinateFrame());
+    rd->beginPrimitive(RenderDevice::QUADS);
+    for (int f = 0; f < 6; ++f) {
+        box.getFaceCorners(f, v0, v1, v2, v3);
+		glShadeModel(GL_SMOOTH);
+        //rd->setNormal((v1 - v0).cross(v3 - v0).direction());
+        rd->sendVertex(v0);
+        rd->sendVertex(v1);
+        rd->sendVertex(v2);
+        rd->sendVertex(v3);
+    }
+	rd->setColor(Color3::white());
+    rd->endPrimitive();
+}
 
 
 void Demo::onGraphics(RenderDevice* rd) {
@@ -1101,6 +1121,7 @@ void Demo::onGraphics(RenderDevice* rd) {
     // Setup lighting
     app->renderDevice->enableLighting();
 
+		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
@@ -1128,6 +1149,33 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
 				Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
 				CoordinateFrame c = CoordinateFrame(part->getCFrame().rotation,Vector3(part->getCFrame().translation.x/2, part->getCFrame().translation.y/2, part->getCFrame().translation.z/2));
+				//Box wsb = c.toWorldSpace(box);
+				//makeBeveledBox(c.toWorldSpace(box), app->renderDevice, part->color, part->getCFrame());
+				//G3D::MeshBuilder builder = G3D::MeshBuilder();
+				//for(int i = 0; i < 6; i++)
+				//{
+				//	Vector3 v1, v2, v3, v4;
+				//	wsb.getFaceCorners(i, v1, v2, v3, v4);
+				//	builder.addQuad(v1, v2, v3, v4);
+				//}
+				//std::string str;
+				//G3D::Array<int> arrayInd; 
+				//G3D::Array<Vector3> arrayVector;
+				//builder.commit(str, arrayInd, arrayVector);
+
+				
+				//IFSModel::save(ExePath() + "/content/model.ifs", str, arrayInd, arrayVector, NULL);
+				//IFSModelRef model = IFSModel::create(ExePath() + "/content/model.ifs");
+				//app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+				
+				//app->renderDevice->beginIndexedPrimitives();
+				//{
+				//	app->renderDevice->setNormalArray(G3D::VAR(arrayVector, varStatic));
+					//app->renderDevice->setVertexArray(G3D::VAR(arrayVector, varStatic));
+					//app->renderDevice->sendIndices(RenderDevice::TRIANGLES, arrayInd);
+				//}
+				//app->renderDevice->endIndexedPrimitives();
+
 				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
@@ -1362,7 +1410,7 @@ int main(int argc, char** argv) {
 
     GAppSettings settings;
 	settings.window.resizable = true;
-	settings.window.fsaaSamples = 8;
+	//settings.window.fsaaSamples = 8;
 	settings.writeLicenseFile = false;
 	settings.window.center = true;
 	//Using the damned SDL window now
