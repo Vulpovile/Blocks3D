@@ -1121,6 +1121,7 @@ void Demo::onGraphics(RenderDevice* rd) {
     // Setup lighting
     app->renderDevice->enableLighting();
 
+		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
 		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
 
@@ -1166,7 +1167,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 				//IFSModel::save(ExePath() + "/content/model.ifs", str, arrayInd, arrayVector, NULL);
 				//IFSModelRef model = IFSModel::create(ExePath() + "/content/model.ifs");
 				//app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-				app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
+				
 				//app->renderDevice->beginIndexedPrimitives();
 				//{
 				//	app->renderDevice->setNormalArray(G3D::VAR(arrayVector, varStatic));
