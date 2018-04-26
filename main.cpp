@@ -260,6 +260,29 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 }
 
 
+class DeleteListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	if(selectedInstance != NULL)
+	{
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(instances.at(i) == selectedInstance)
+			{
+				Instance* deleting = instances.at(i);
+				instances.erase(instances.begin() + i);
+				delete deleting;
+				selectedInstance == NULL;
+			}
+		
+		}
+	}
+}
+
 class ModeSelectionListener : public ButtonListener {
 public:
 	void onButton1MouseClick(BaseButtonInstance*);
@@ -481,15 +504,8 @@ void initGUI()
 	instance->size = Vector2(40,46);
 	instance->position = Vector2(20, 284);
 	instance->parent = dataModel;
-
-	instance = makeImageButton(
-		Texture::fromFile(GetFileInPath("/content/images/Delete.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_dn.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
-	instance->size = Vector2(40,46);
-	instance->position = Vector2(20, 284);
-	instance->parent = dataModel;
+	instance->name = "Delete";
+	instance->setButtonListener(new DeleteListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn.png")),
@@ -703,6 +719,19 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->name == "Delete")
+			{
+				ImageButtonInstance* button = (ImageButtonInstance*)instances_2D.at(i);
+				if(selectedInstance == NULL)
+					button->disabled = true;
+				else
+					button->disabled = false;
+					
+			}
+		}
+
 }
 
 
@@ -901,6 +930,27 @@ void Demo::onUserInput(UserInput* ui) {
 		right = true;
 	}
 	
+	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
+	{
+		bool onGUI = false;
+		for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			{
+				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
+				{
+					onGUI = true;
+					break;
+				}
+			}
+		}
+		if(!onGUI)
+		{
+			selectedInstance = NULL;
+		}
+	}
+
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
 		
