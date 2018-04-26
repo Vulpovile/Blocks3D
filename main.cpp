@@ -55,11 +55,14 @@ static bool backwards = false;
 static bool left = false;
 static bool right = false;
 static bool centerCam = false;
+static bool panRight = false;
+static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
 static int mode = CURSOR;
 Vector3 cameraPos = Vector3(0,2,10);
+Vector3 focalPointT = Vector3(0,0,0);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
@@ -172,6 +175,8 @@ void clearInstances()
 
 void OnError(int err, std::string msg = "")
 {
+	usableApp->window()->setInputCaptureCount(0);
+	usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
@@ -248,6 +253,10 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
 	else if(button->name == "ZoomOut")
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
+	else if(button->name == "PanRight")
+		panRight = true;
+	else if(button->name == "TiltUp")
+		tiltUp = true;
 }
 
 
@@ -742,6 +751,37 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		app->debugController.setCoordinateFrame(frame);
 		centerCam = false;
 	}
+	
+	if(panRight)
+	{
+		panRight = false;
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
+		Vector3 camerapoint = frame.translation;
+		Vector3 angles;
+		float radian = 0;
+		frame.rotation.toAxisAngle(angles, radian);
+		message = Convert(angles.x) + ", " + Convert(angles.y) + ", " + Convert(angles.z) + ", " + Convert(radian);
+		
+		messageTime = System::time();
+	}
+	if(tiltUp)
+	{
+		tiltUp = false;
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
+		Vector3 camerapoint = frame.translation;
+
+		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
+		float distance = pow(pow((double)focalPoint.x - (double)camerapoint.x, 2) + pow((double)camerapoint.y - (double)camerapoint.y, 2) + pow((double)focalPoint.z - (double)camerapoint.z, 2), 0.5);
+		float x = distance * cos(22.5 * G3D::pi() / 180) + focalPoint.x;
+        float z = distance * sin(22.5 * G3D::pi() / 180) + focalPoint.z;
+		camerapoint = Vector3(camerapoint.x, camerapoint.y+2, camerapoint.z);
+		
+		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
+		newFrame.lookAt(focalPoint);
+		cameraPos = camerapoint;
+		app->debugController.setCoordinateFrame(newFrame);
+		
+	}
 		
 }
 
@@ -1020,9 +1060,10 @@ void Demo::exitApplication()
     app->endProgram = true;
 }
 
-void Demo::onGraphics(RenderDevice* rd) {
 
-	
+
+
+void Demo::onGraphics(RenderDevice* rd) {
 
 	Vector2 mousepos = Vector2(0,0);
 	G3D::uint8 num = 0;
@@ -1056,7 +1097,7 @@ void Demo::onGraphics(RenderDevice* rd) {
     }
 
 	
-
+	
     // Setup lighting
     app->renderDevice->enableLighting();
 
@@ -1065,9 +1106,14 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		makeFlag(Vector3(-1, 3.5, 0), rd);
 		
+		//Vector3 vector = app->debugCamera.getCoordinateFrame().translation + app->debugCamera.getCoordinateFrame().lookVector()*20;
+		Draw::axes(CoordinateFrame(focalPointT) , rd);
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
+
+		//app->renderDevice->pushState();
+		//app->renderDevice->popState();
 
 		for(size_t i = 0; i < instances.size(); i++)
 		{
@@ -1283,6 +1329,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
 			}
 		break;
+		case WM_MOUSEMOVE:
+			  {
+				  if(app != 0)
+				  {
+					  POINT p;
+					  if(GetCursorPos(&p))
+					  {
+						HWND wnd = WindowFromPoint(p);
+						if(wnd != app->getHWND())
+						{
+							app->window()->setInputCaptureCount(0);
+						}
+						else
+						{
+							app->window()->setInputCaptureCount(200);
+						}
+					  }
+				  }
+			  }
         default:
 		{
             return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -1301,7 +1366,7 @@ int main(int argc, char** argv) {
 	settings.writeLicenseFile = false;
 	settings.window.center = true;
 	//Using the damned SDL window now
-	SDLWindow* wnd = new SDLWindow(settings.window);
+	G3D::SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
 	wnd->setMouseVisible(false);
 	
