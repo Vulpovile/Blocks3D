@@ -278,7 +278,7 @@ void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 				Instance* deleting = instances.at(i);
 				instances.erase(instances.begin() + i);
 				delete deleting;
-				selectedInstance == NULL;
+				selectedInstance = NULL;
 			}
 		
 		}
