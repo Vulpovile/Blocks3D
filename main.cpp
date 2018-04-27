@@ -283,15 +283,9 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		
 }
 
-class DeleteListener : public ButtonListener {
-public:
-	void onButton1MouseClick(BaseButtonInstance*);
-};
 
-void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
+void deleteInstance()
 {
-	
-	
 	if(selectedInstance != NULL)
 	{
 		for(size_t i = 0; i < instances.size(); i++)
@@ -303,18 +297,30 @@ void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 				delete deleting;
 				selectedInstance = NULL;
 				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
-				
-				
 			}
-		
 		}
 	}
 }
+
+
+class DeleteListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	deleteInstance();
+}
+
+
+
 
 class ModeSelectionListener : public ButtonListener {
 public:
 	void onButton1MouseClick(BaseButtonInstance*);
 };
+
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
@@ -953,6 +959,11 @@ void Demo::onUserInput(UserInput* ui) {
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 
+	if(ui->keyPressed(SDLK_DELETE))
+	{
+		deleteInstance();
+	}
+
 	if(ui->keyDown(SDLK_LCTRL))
 	{
 		if(ui->keyPressed('d'))
@@ -1207,7 +1218,6 @@ void makeBeveledBox(Box box, RenderDevice* rd, Color4 color, CoordinateFrame cFr
 
 
 void Demo::onGraphics(RenderDevice* rd) {
-
 	Vector2 mousepos = Vector2(0,0);
 	G3D::uint8 num = 0;
 	rd->window()->getRelativeMouseState(mousepos, num);
@@ -1264,6 +1274,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			Instance* instance = instances.at(i);
 			if(instance->className == "Part" && instance->parent != NULL)
 			{
+				
 				PhysicalInstance* part = (PhysicalInstance*)instance;
 				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
