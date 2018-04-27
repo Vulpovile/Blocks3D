@@ -16,6 +16,8 @@ public:
 	void setPosition(Vector3);
 	CoordinateFrame getCFrame();
 	void setCFrame(CoordinateFrame);
+	Box getBox();
+	CoordinateFrame getCFrameRenderBased();
 private:
 	Vector3 position;
 };

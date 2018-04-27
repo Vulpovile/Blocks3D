@@ -42,6 +42,17 @@ void PhysicalInstance::setCFrame(CoordinateFrame coordinateFrame)
 	position = coordinateFrame.translation;
 }
 
+CoordinateFrame PhysicalInstance::getCFrameRenderBased()
+{
+	return CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x/2, getCFrame().translation.y/2, getCFrame().translation.z/2));
+}
+
+Box PhysicalInstance::getBox()
+{
+	Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
+	CoordinateFrame c = getCFrameRenderBased();
+	return c.toWorldSpace(box);
+}
 
 PhysicalInstance::~PhysicalInstance(void)
 {

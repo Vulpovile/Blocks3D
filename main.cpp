@@ -1265,44 +1265,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 			if(instance->className == "Part" && instance->parent != NULL)
 			{
 				PhysicalInstance* part = (PhysicalInstance*)instance;
-				Vector3 size = part->size;
-				Vector3 pos = part->getCFrame().translation;
-				rd->setObjectToWorldMatrix(CoordinateFrame());
-				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
-				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
-				Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
-				CoordinateFrame c = CoordinateFrame(part->getCFrame().rotation,Vector3(part->getCFrame().translation.x/2, part->getCFrame().translation.y/2, part->getCFrame().translation.z/2));
-				//Box wsb = c.toWorldSpace(box);
-				//makeBeveledBox(c.toWorldSpace(box), app->renderDevice, part->color, part->getCFrame());
-				//G3D::MeshBuilder builder = G3D::MeshBuilder();
-				//for(int i = 0; i < 6; i++)
-				//{
-				//	Vector3 v1, v2, v3, v4;
-				//	wsb.getFaceCorners(i, v1, v2, v3, v4);
-				//	builder.addQuad(v1, v2, v3, v4);
-				//}
-				//std::string str;
-				//G3D::Array<int> arrayInd; 
-				//G3D::Array<Vector3> arrayVector;
-				//builder.commit(str, arrayInd, arrayVector);
-
-				
-				//IFSModel::save(ExePath() + "/content/model.ifs", str, arrayInd, arrayVector, NULL);
-				//IFSModelRef model = IFSModel::create(ExePath() + "/content/model.ifs");
-				//app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-				
-				//app->renderDevice->beginIndexedPrimitives();
-				//{
-				//	app->renderDevice->setNormalArray(G3D::VAR(arrayVector, varStatic));
-					//app->renderDevice->setVertexArray(G3D::VAR(arrayVector, varStatic));
-					//app->renderDevice->sendIndices(RenderDevice::TRIANGLES, arrayInd);
-				//}
-				//app->renderDevice->endIndexedPrimitives();
-
-				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
+				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
-					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), c);
+					Vector3 size = part->size;
+					Vector3 pos = part->getCFrame().translation;
+					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 				}
 				
 			}
