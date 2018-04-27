@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
-#define NUM_SOUNDS 2
+#define NUM_SOUNDS 10
 SDL_AudioSpec fmt;
 
 AudioPlayer::AudioPlayer(void)
