@@ -16,6 +16,7 @@
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
+#include "AudioPlayer.h"
 
 
 #if G3D_VER < 61000
@@ -36,6 +37,7 @@ static G3D::RealTime messageTime = 0;
 static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
+static std::string cameraSound = "";
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
@@ -248,6 +250,7 @@ public:
 
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
+	AudioPlayer::PlaySound(cameraSound);
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	if(button->name == "CenterCam")
 		centerCam = true;
@@ -269,6 +272,8 @@ public:
 
 void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 {
+	
+	
 	if(selectedInstance != NULL)
 	{
 		for(size_t i = 0; i < instances.size(); i++)
@@ -279,6 +284,9 @@ void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 				instances.erase(instances.begin() + i);
 				delete deleting;
 				selectedInstance = NULL;
+				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
+				
+				
 			}
 		
 		}
@@ -871,11 +879,13 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
@@ -1364,6 +1374,7 @@ void App::main() {
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
     applet->run();
@@ -1457,7 +1468,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
-
+	try{
+	AudioPlayer::init();
     GAppSettings settings;
 	settings.window.resizable = true;
 	//settings.window.fsaaSamples = 8;
@@ -1549,5 +1561,10 @@ int main(int argc, char** argv) {
 	//messageTime = G3D::System::time();
 
 	app.run();
+	}
+	catch(std::exception)
+	{
+		OnError(-1);
+	}
     return 0;
 }
