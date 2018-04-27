@@ -38,6 +38,7 @@ static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static std::string cameraSound = "";
+static std::string dingSound = "";
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
@@ -264,6 +265,23 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		tiltUp = true;
 }
 
+class GUDButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	if(selectedInstance != NULL)
+	{
+		AudioPlayer::PlaySound(dingSound);
+		if(button->name == "Duplicate")
+		{
+
+		}
+	}
+		
+}
 
 class DeleteListener : public ButtonListener {
 public:
@@ -448,6 +466,51 @@ void initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+
+
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,215);
+	button->boxEnd = Vector2(80,235);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "Group";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,240);
+	button->boxEnd = Vector2(80,260);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "UnGroup";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,265);
+	button->boxEnd = Vector2(80,285);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "Duplicate";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+	button->name = "Duplicate";
+	button->setButtonListener(new GUDButtonListener());
+
 
 	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
 	instance->name = "go";
@@ -1307,9 +1370,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	//Tools menu
 	Draw::box(G3D::Box(Vector3(5, 185+offset,0),Vector3(75, 185+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
-	fntlighttrek->draw2D(rd,"Group", Vector2(10,190+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"UnGroup", Vector2(10,215+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Duplicate", Vector2(10,240+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	fntlighttrek->draw2D(rd,"MENU", Vector2(10,307+offset), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	//G3D::GFont::draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
@@ -1375,6 +1435,7 @@ void App::main() {
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
+	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
     applet->run();
