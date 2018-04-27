@@ -40,7 +40,6 @@ static int index = 2;
 static std::string cameraSound = "";
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
-static AudioPlayer soundSystem;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
@@ -251,7 +250,7 @@ public:
 
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	soundSystem.PlaySound(cameraSound);
+	AudioPlayer::PlaySound(cameraSound);
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	if(button->name == "CenterCam")
 		centerCam = true;
@@ -285,7 +284,7 @@ void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 				instances.erase(instances.begin() + i);
 				delete deleting;
 				selectedInstance = NULL;
-				soundSystem.PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
+				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
 				
 				
 			}
@@ -880,13 +879,13 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
-		soundSystem.PlaySound(cameraSound);
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
-		soundSystem.PlaySound(cameraSound);
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
@@ -1469,7 +1468,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
-
+	AudioPlayer::init();
     GAppSettings settings;
 	settings.window.resizable = true;
 	//settings.window.fsaaSamples = 8;

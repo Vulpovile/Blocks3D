@@ -5,9 +5,19 @@
 #include <malloc.h>
 #include <string.h>
 #define NUM_SOUNDS 10
-SDL_AudioSpec fmt;
+static SDL_AudioSpec fmt;
 
 AudioPlayer::AudioPlayer(void)
+{
+	
+}
+
+AudioPlayer::~AudioPlayer(void)
+{
+	SDL_CloseAudio();
+}
+
+void AudioPlayer::init()
 {
 	extern void mixaudio(void *unused, Uint8 *stream, int len);
 	fmt.freq = 22050;
@@ -25,12 +35,7 @@ AudioPlayer::AudioPlayer(void)
     SDL_PauseAudio(0);
 }
 
-AudioPlayer::~AudioPlayer(void)
-{
-	SDL_CloseAudio();
-}
-
-struct sample {
+static struct sample {
     Uint8 *data;
     Uint32 dpos;
     Uint32 dlen;

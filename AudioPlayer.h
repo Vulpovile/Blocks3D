@@ -6,5 +6,6 @@ class AudioPlayer
 public:
 	AudioPlayer(void);
 	~AudioPlayer(void);
-	void PlaySound(std::string);
+	static void PlaySound(std::string);
+	static void init();
 };
