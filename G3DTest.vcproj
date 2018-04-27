@@ -231,6 +231,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\AudioPlayer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseButtonInstance.cpp"
 				>
 			</File>
@@ -283,6 +287,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\AudioPlayer.h"
+				>
+			</File>
 			<File
 				RelativePath=".\BaseButtonInstance.h"
 				>

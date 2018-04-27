@@ -16,6 +16,7 @@
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
+#include "AudioPlayer.h"
 
 
 #if G3D_VER < 61000
@@ -38,6 +39,7 @@ static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
+static AudioPlayer soundSystem;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
@@ -269,6 +271,8 @@ public:
 
 void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 {
+	
+	
 	if(selectedInstance != NULL)
 	{
 		for(size_t i = 0; i < instances.size(); i++)
@@ -279,6 +283,9 @@ void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
 				instances.erase(instances.begin() + i);
 				delete deleting;
 				selectedInstance = NULL;
+				soundSystem.PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
+				
+				
 			}
 		
 		}
