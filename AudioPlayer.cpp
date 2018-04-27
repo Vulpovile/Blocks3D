@@ -79,7 +79,7 @@ void AudioPlayer::PlaySound(std::string fileString)
         return;
     }
     SDL_BuildAudioCVT(&cvt, wave.format, wave.channels, wave.freq,
-                            AUDIO_S16,   2,             22050);
+                            AUDIO_S16,   2,             fmt.freq);
     cvt.buf = (Uint8*)malloc(dlen*cvt.len_mult);
     memcpy(cvt.buf, data, dlen);
     cvt.len = dlen;
