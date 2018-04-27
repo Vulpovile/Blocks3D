@@ -1468,6 +1468,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
+	try{
 	AudioPlayer::init();
     GAppSettings settings;
 	settings.window.resizable = true;
@@ -1560,5 +1561,10 @@ int main(int argc, char** argv) {
 	//messageTime = G3D::System::time();
 
 	app.run();
+	}
+	catch(std::exception)
+	{
+		OnError(-1);
+	}
     return 0;
 }
