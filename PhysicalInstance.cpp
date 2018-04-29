@@ -1,5 +1,4 @@
 #include "PhysicalInstance.h"
-
 bool canCollide = true;
 bool anchored = false;
 Vector3 size;

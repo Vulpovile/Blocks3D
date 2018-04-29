@@ -31,9 +31,11 @@ static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
+Ray testRay;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
+static std::string tempPath = "";
 static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
@@ -745,6 +747,7 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
 	test->setPosition(Vector3(2,5,0));
+	
 
 	
 
@@ -757,7 +760,7 @@ void Demo::onInit()  {
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->size = Vector3(-4,-1,-2);
 	test->setPosition(Vector3(-2,7,0));
 
 	
@@ -819,6 +822,11 @@ void Demo::onNetwork() {
 }
 
 
+double getVectorDistance(Vector3 vector1, Vector3 vector2)
+{
+	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
+}
+
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
 	{
@@ -865,12 +873,32 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		panRight = false;
 		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
 		Vector3 camerapoint = frame.translation;
-		Vector3 angles;
-		float radian = 0;
-		frame.rotation.toAxisAngle(angles, radian);
-		message = Convert(angles.x) + ", " + Convert(angles.y) + ", " + Convert(angles.z) + ", " + Convert(radian);
+		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
 		
+		float angle, x, z;
+		frame.rotation.toEulerAnglesXYZ(x, angle, z);
+		angle = toDegrees(angle);
+		angle = angle + 5;
+		if(camerapoint.z < focalPoint.z)
+		{
+			angle = angle + 5;
+		}
+		
+
+		message = Convert(angle);
 		messageTime = System::time();
+
+		float distc = getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint);
+		
+		camerapoint = Vector3(sin(toRadians(angle))*distc,0,cos(toRadians(angle))*distc);
+		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
+		newFrame.lookAt(focalPoint);
+		cameraPos = camerapoint;
+		app->debugController.setCoordinateFrame(newFrame);
+
+		//float xang, yang, zang;
+		//app->debugCamera.getCoordinateFrame().rotation.toEulerAnglesXYZ(xang, yang, zang);
+
 	}
 	if(tiltUp)
 	{
@@ -888,6 +916,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
 		app->debugController.setCoordinateFrame(newFrame);
+		
 		
 	}
 		
@@ -910,6 +939,7 @@ double getOSVersion() {
 	return ::atof(version.c_str());
 }
 
+//User Input
 void Demo::onUserInput(UserInput* ui) {
 	
     if (ui->keyPressed(SDLK_ESCAPE)) {
@@ -1034,6 +1064,7 @@ void Demo::onUserInput(UserInput* ui) {
 		if(!onGUI)
 		{
 			selectedInstance = NULL;
+			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
 		}
 	}
 
@@ -1218,6 +1249,13 @@ void makeBeveledBox(Box box, RenderDevice* rd, Color4 color, CoordinateFrame cFr
 
 
 void Demo::onGraphics(RenderDevice* rd) {
+	
+	float angle, x, z;
+	app->debugCamera.getCoordinateFrame().rotation.toEulerAnglesXYZ(x, angle, z);
+	message = Convert(toDegrees(angle)) + " X: " + Convert(app->debugCamera.getCoordinateFrame().translation.x) + " Z: " + Convert(app->debugCamera.getCoordinateFrame().translation.z);
+	messageTime = System::time();
+
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
 	Vector2 mousepos = Vector2(0,0);
 	G3D::uint8 num = 0;
 	rd->window()->getRelativeMouseState(mousepos, num);
@@ -1287,8 +1325,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 			}
 			
 		}
-	
+		Box box;
 		
+		//Draw::ray(testRay, rd, Color3::orange(), 1);
 
 		Vector3 gamepoint = Vector3(0, 5, 0);
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
@@ -1509,11 +1548,17 @@ int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
 	try{
+		tempPath = ((std::string)getenv("temp")) + "/Dynamica";
+	CreateDirectory(tempPath.c_str(), NULL);
+    
+	message = tempPath;
+	messageTime = System::time();
 	AudioPlayer::init();
     GAppSettings settings;
 	settings.window.resizable = true;
 	//settings.window.fsaaSamples = 8;
 	settings.writeLicenseFile = false;
+	settings.logFilename = tempPath + "/g3dlog.txt";
 	settings.window.center = true;
 	//Using the damned SDL window now
 	G3D::SDLWindow* wnd = new SDLWindow(settings.window);
