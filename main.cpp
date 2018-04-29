@@ -285,6 +285,27 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		
 }
 
+class RotateButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	if(selectedInstance != NULL)
+	{
+		if(selectedInstance->className == "Part")
+		{
+			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
+			if(button->name == "Tilt")
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(toRadians(90),0,0));
+			else if(button->name == "Rotate")
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+		}
+	}
+		
+}
+
 
 void deleteInstance()
 {
@@ -566,6 +587,8 @@ void initGUI()
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
 	instance->parent = dataModel;
+	instance->name = "Rotate";
+	instance->setButtonListener(new RotateButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt.png")),
@@ -575,6 +598,8 @@ void initGUI()
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);
 	instance->parent = dataModel;
+	instance->name = "Tilt";
+	instance->setButtonListener(new RotateButtonListener());
 
 
 	instance = makeImageButton(
