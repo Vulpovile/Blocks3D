@@ -17,7 +17,7 @@
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "AudioPlayer.h"
-
+#include <limits.h>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -1107,15 +1107,21 @@ void Demo::onUserInput(UserInput* ui) {
 		{
 			selectedInstance = NULL;
 			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+			float nearest=std::numeric_limits<float>::infinity();
+			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
             for(size_t i = 0; i < instances.size(); i++)
 			{
 				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
 				{
 					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
-					
 					if (testRay.intersectionTime(test->getBox()) != inf()) 
 					{
-						selectedInstance = test;
+						float distanceFromPart = (camPos-test->getPosition()).magnitude();
+						if (nearest>distanceFromPart)
+						{
+							nearest=distanceFromPart;
+							selectedInstance = test;
+						}
 					}
 				}
 			}
