@@ -901,9 +901,6 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		cameraPos = camerapoint;
 		app->debugController.setCoordinateFrame(newFrame);
 
-		//float xang, yang, zang;
-		//app->debugCamera.getCoordinateFrame().rotation.toEulerAnglesXYZ(xang, yang, zang);
-
 	}
 	if(tiltUp)
 	{
