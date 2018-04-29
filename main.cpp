@@ -871,31 +871,43 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(panRight)
 	{
 		panRight = false;
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
+		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		Vector3 camerapoint = frame.translation;
 		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
 		
-		float angle, x, z;
-		frame.rotation.toEulerAnglesXYZ(x, angle, z);
-		angle = toDegrees(angle);
-		
-		if(camerapoint.z < focalPoint.z)
-		{
-			float angleadd = abs(angle - 90);
-			angle = angleadd + 5 + 90;
-		}
-		else
-		{
-			angle = angle + 5;
-		}
-		
 
-		message = Convert(angle);
+		float distb = getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), Vector3(camerapoint.x, camerapoint.y, focalPoint.z));
+		float distc = abs(((float)getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint)));
+
+
+
+		float angle = toRadians(90);
+		
+		
+		//message = Convert(angle);
+		messageTime = System::time();
+		//frame.rotation.toEulerAnglesXYZ(x, angle, z);
+		//angle = toDegrees(angle);
+		
+//		if(camerapoint.z < focalPoint.z)
+//		{
+//			float angleadd = abs(angle - 90);
+//			angle = angleadd + 5 + 90;
+//		}
+//		else
+//		{
+//			angle = angle + 5;
+//		}
+		
+		
 		messageTime = System::time();
 
-		float distc = abs(((float)(getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint))));
-		
-		camerapoint = Vector3(sin(toRadians(angle))*distc,camerapoint.y,cos(toRadians(angle))*distc);
+		//abs(((float)(getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint))));
+		float x = distc * cos(angle-toRadians(2)) + focalPoint.x;
+        float z = distc * sin(angle-toRadians(2)) + focalPoint.z;
+		message = "NOT 0, " + Convert(x) + ", " + Convert(z);
+		//camerapoint = Vector3(sin(angle)*distc,camerapoint.y,cos(angle)*distc);
+		camerapoint = Vector3(x,camerapoint.y,z);
 		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
@@ -1254,8 +1266,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
 	float angle, x, z;
 	app->debugCamera.getCoordinateFrame().rotation.toEulerAnglesXYZ(x, angle, z);
-	message = Convert(toDegrees(angle)) + " X: " + Convert(app->debugCamera.getCoordinateFrame().translation.x) + " Z: " + Convert(app->debugCamera.getCoordinateFrame().translation.z);
-	messageTime = System::time();
+	//message = Convert(toDegrees(angle)) + " X: " + Convert(app->debugCamera.getCoordinateFrame().translation.x) + " Z: " + Convert(app->debugCamera.getCoordinateFrame().translation.z);
+	//messageTime = System::time();
 
 		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
 	Vector2 mousepos = Vector2(0,0);
