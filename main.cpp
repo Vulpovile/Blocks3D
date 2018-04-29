@@ -690,27 +690,22 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
 	test->size = Vector3(24,1,24);
-	test->setCFrame(CoordinateFrame(Matrix3::fromEulerAnglesXYZ(toRadians(90),toRadians(45),toRadians(45)), Vector3(0,0,0)));
-	selectedInstance = test;
+	test->setPosition(Vector3(0,0,0));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+	//selectedInstance = test;
 	
 
 	
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(10,1,0));
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
 	test->size = Vector3(4,1,2);
 	test->setPosition(Vector3(-10,1,0));
-
 	test = makePart();
 	test->parent = dataModel;
-	test->color = Color3::gray();
+	test->color = Color3(.5F,1,.5F);
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-7,2,0));
+	test->setPosition(Vector3(10,1,0));
 
 	test = makePart();
 	test->parent = dataModel;
@@ -722,31 +717,37 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-4,3,0));
+	test->setPosition(Vector3(-7,2,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(5,3,0));
+	test->setPosition(Vector3(4,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-1,4,0));
+	test->setPosition(Vector3(-5,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(3,4,0));
+	test->setPosition(Vector3(1,4,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(2,5,0));
+	test->setPosition(Vector3(-3,4,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-2,5,0));
 	
 
 	
@@ -761,7 +762,7 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(-4,-1,-2);
-	test->setPosition(Vector3(-2,7,0));
+	test->setPosition(Vector3(2,7,0));
 
 	
 	
@@ -1079,6 +1080,23 @@ void Demo::onUserInput(UserInput* ui) {
 		{
 			selectedInstance = NULL;
 			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+            for(size_t i = 0; i < instances.size(); i++)
+			{
+				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
+				{
+					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
+					
+					if (testRay.intersectionTime(test->getBox()) != inf()) 
+					{
+						selectedInstance = test;
+					}
+				}
+			}
+			
+				
+				
+			//message = Convert(closest);
+            
 		}
 	}
 
@@ -1308,12 +1326,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
-		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
-
-		makeFlag(Vector3(-1, 3.5, 0), rd);
+		//Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
+		//makeFlag(Vector3(-1, 3.5, 0), rd);
 		
 		//Vector3 vector = app->debugCamera.getCoordinateFrame().translation + app->debugCamera.getCoordinateFrame().lookVector()*20;
-		Draw::axes(CoordinateFrame(focalPointT) , rd);
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
@@ -1343,7 +1359,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		
 		//Draw::ray(testRay, rd, Color3::orange(), 1);
 
-		Vector3 gamepoint = Vector3(0, 5, 0);
+		/*Vector3 gamepoint = Vector3(0, 5, 0);
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 50 && distance > -50)
@@ -1352,7 +1368,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 			if(distance < 0)
 			distance = distance*-1;
 			fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-		}
+		}*/
+
     app->renderDevice->disableLighting();
 
     if (app->sky.notNull()) {
