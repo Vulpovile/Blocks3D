@@ -878,8 +878,13 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		float angle, x, z;
 		frame.rotation.toEulerAnglesXYZ(x, angle, z);
 		angle = toDegrees(angle);
-		angle = angle + 5;
+		
 		if(camerapoint.z < focalPoint.z)
+		{
+			float angleadd = abs(angle - 90);
+			angle = angleadd + 5 + 90;
+		}
+		else
 		{
 			angle = angle + 5;
 		}
@@ -888,9 +893,9 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		message = Convert(angle);
 		messageTime = System::time();
 
-		float distc = getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint);
+		float distc = abs(((float)(getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint))));
 		
-		camerapoint = Vector3(sin(toRadians(angle))*distc,0,cos(toRadians(angle))*distc);
+		camerapoint = Vector3(sin(toRadians(angle))*distc,camerapoint.y,cos(toRadians(angle))*distc);
 		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
