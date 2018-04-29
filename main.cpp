@@ -40,6 +40,7 @@ static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
 static std::string cameraSound = "";
+static std::string clickSound = "";
 static std::string dingSound = "";
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
@@ -294,6 +295,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(selectedInstance != NULL)
 	{
+		AudioPlayer::PlaySound(clickSound);
 		if(selectedInstance->className == "Part")
 		{
 			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
@@ -1509,6 +1511,7 @@ void App::main() {
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
+	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
