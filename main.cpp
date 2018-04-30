@@ -63,6 +63,7 @@ static bool left = false;
 static bool right = false;
 static bool centerCam = false;
 static bool panRight = false;
+static bool panLeft = false;
 static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -264,6 +265,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
 	else if(button->name == "PanRight")
 		panRight = true;
+	else if(button->name == "PanLeft")
+		panLeft = true;
 	else if(button->name == "TiltUp")
 		tiltUp = true;
 }
@@ -900,7 +903,17 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	{
 		panRight = false;
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-		Vector3 camerapoint = frame.translation;
+		float y = frame.translation.y;
+		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
+		Vector3 focus = frame.translation+frame.lookVector()*25;
+		frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(45),0);
+		frame2 = frame2 - frame2.lookVector()*25;
+		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
+		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
+		newFrame.lookAt(focus);
+		app->debugController.setCoordinateFrame(newFrame);
+
+		/*Vector3 camerapoint = frame.translation;
 		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
 		
 
@@ -909,7 +922,8 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 
 
-		float angle = toRadians(90);
+
+		float angle = atan2(camerapoint.z - focalPoint.z, focalPoint.x - camerapoint.x);
 		
 		
 		//message = Convert(angle);
@@ -927,20 +941,35 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 //			angle = angle + 5;
 //		}
 		
+
 		
 		messageTime = System::time();
 
 		//abs(((float)(getVectorDistance(Vector3(focalPoint.x, camerapoint.y, focalPoint.z), camerapoint))));
-		float x = distc * cos(angle-toRadians(2)) + focalPoint.x;
-        float z = distc * sin(angle-toRadians(2)) + focalPoint.z;
-		message = "NOT 0, " + Convert(x) + ", " + Convert(z);
+		float x = distc * cos(angle + toRadians(2)) + focalPoint.x;
+        float z = distc * sin(angle + toRadians(2)) + focalPoint.z;
+		message = "NOT 0, " + Convert(toDegrees(angle)) + ", " + Convert(toDegrees(angle + toRadians(2)));
 		//camerapoint = Vector3(sin(angle)*distc,camerapoint.y,cos(angle)*distc);
 		camerapoint = Vector3(x,camerapoint.y,z);
 		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
-		app->debugController.setCoordinateFrame(newFrame);
+		app->debugController.setCoordinateFrame(newFrame);*/
 
+	}
+	if(panLeft)
+	{
+		panLeft = false;
+		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		float y = frame.translation.y;
+		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
+		Vector3 focus = frame.translation+frame.lookVector()*25;
+		frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(-45),0);
+		frame2 = frame2 - frame2.lookVector()*25;
+		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
+		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
+		newFrame.lookAt(focus);
+		app->debugController.setCoordinateFrame(newFrame);
 	}
 	if(tiltUp)
 	{
