@@ -1114,12 +1114,12 @@ void Demo::onUserInput(UserInput* ui) {
 				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
 				{
 					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
-					if (testRay.intersectionTime(test->getBox()) != inf()) 
+					float time = testRay.intersectionTime(test->getBox());
+					if (time != inf()) 
 					{
-						float distanceFromPart = (camPos-test->getPosition()).magnitude();
-						if (nearest>distanceFromPart)
+						if (nearest>time)
 						{
-							nearest=distanceFromPart;
+							nearest=time;
 							selectedInstance = test;
 						}
 					}
