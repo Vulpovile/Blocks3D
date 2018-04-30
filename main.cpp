@@ -16,7 +16,8 @@
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
-
+#include "AudioPlayer.h"
+#include <limits.h>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -30,17 +31,23 @@ static std::vector<Instance*> instances_2D;
 static Instance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
+Ray testRay;
 static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
+static std::string tempPath = "";
 static G3D::RealTime inputTime = 0;
 static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
 static int index = 2;
+static std::string cameraSound = "";
+static std::string clickSound = "";
+static std::string dingSound = "";
 static float TIMERVAL = 60.0F;
 static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
+VARAreaRef varStatic = NULL;
 static float mousex = 0;
 static float mousey = 0;
 static int cursorid = 0;
@@ -55,11 +62,14 @@ static bool backwards = false;
 static bool left = false;
 static bool right = false;
 static bool centerCam = false;
+static bool panRight = false;
+static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
 static int mode = CURSOR;
 Vector3 cameraPos = Vector3(0,2,10);
+Vector3 focalPointT = Vector3(0,0,0);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
@@ -134,13 +144,23 @@ class App : public GApp {
         HWND getHWND();
         HWND getPropertyHWND();
         HWND getMainHWND();
-        //void addHWND(HWND hwnd);
+		Vector3 getFocalPoint();
+		void setFocalPoint(Vector3 vect);
     private:
         HWND hwnd;
         HWND propertyHWnd;
         HWND mainHWnd;
+		Vector3 focalPoint;
 };
 
+Vector3 App::getFocalPoint()
+{
+	return focalPoint;
+}
+void App::setFocalPoint(Vector3 vect)
+{
+	focalPoint=vect;
+}
 App *usableApp = NULL;
 
 HWND App::getHWND()
@@ -158,6 +178,7 @@ HWND App::getMainHWND()
  
 
 Demo::Demo(App* _app) : GApplet(_app), app(_app) {
+	varStatic = VARArea::create(1024 * 1024);
 }
 
 
@@ -172,6 +193,8 @@ void clearInstances()
 
 void OnError(int err, std::string msg = "")
 {
+	usableApp->window()->setInputCaptureCount(0);
+	usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	//DialogBox(NULL, MAKEINTRESOURCE(IDD_DIALOG1), NULL, NULL);
@@ -241,6 +264,7 @@ public:
 
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
+	AudioPlayer::PlaySound(cameraSound);
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	if(button->name == "CenterCam")
 		centerCam = true;
@@ -248,13 +272,90 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
 	else if(button->name == "ZoomOut")
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
+	else if(button->name == "PanRight")
+		panRight = true;
+	else if(button->name == "TiltUp")
+		tiltUp = true;
 }
+
+class GUDButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	if(selectedInstance != NULL)
+	{
+		AudioPlayer::PlaySound(dingSound);
+		if(button->name == "Duplicate")
+		{
+
+		}
+	}
+		
+}
+
+class RotateButtonListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	if(selectedInstance != NULL)
+	{
+		AudioPlayer::PlaySound(clickSound);
+		if(selectedInstance->className == "Part")
+		{
+			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
+			if(button->name == "Tilt")
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
+			else if(button->name == "Rotate")
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+		}
+	}
+		
+}
+
+
+void deleteInstance()
+{
+	if(selectedInstance != NULL)
+	{
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(instances.at(i) == selectedInstance)
+			{
+				Instance* deleting = instances.at(i);
+				instances.erase(instances.begin() + i);
+				delete deleting;
+				selectedInstance = NULL;
+				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
+			}
+		}
+	}
+}
+
+
+class DeleteListener : public ButtonListener {
+public:
+	void onButton1MouseClick(BaseButtonInstance*);
+};
+
+void DeleteListener::onButton1MouseClick(BaseButtonInstance* button)
+{
+	deleteInstance();
+}
+
+
 
 
 class ModeSelectionListener : public ButtonListener {
 public:
 	void onButton1MouseClick(BaseButtonInstance*);
 };
+
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
@@ -407,6 +508,51 @@ void initGUI()
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 
+
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,215);
+	button->boxEnd = Vector2(80,235);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "Group";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,240);
+	button->boxEnd = Vector2(80,260);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "UnGroup";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,265);
+	button->boxEnd = Vector2(80,285);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->title = "Duplicate";
+	button->setAllColorsSame();
+	button->font = fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->parent = dataModel;
+	button->name = "Duplicate";
+	button->setButtonListener(new GUDButtonListener());
+
+
 	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
 	instance->name = "go";
 	instance->size = Vector2(65,65);
@@ -453,6 +599,8 @@ void initGUI()
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
 	instance->parent = dataModel;
+	instance->name = "Rotate";
+	instance->setButtonListener(new RotateButtonListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt.png")),
@@ -462,6 +610,8 @@ void initGUI()
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);
 	instance->parent = dataModel;
+	instance->name = "Tilt";
+	instance->setButtonListener(new RotateButtonListener());
 
 
 	instance = makeImageButton(
@@ -472,15 +622,8 @@ void initGUI()
 	instance->size = Vector2(40,46);
 	instance->position = Vector2(20, 284);
 	instance->parent = dataModel;
-
-	instance = makeImageButton(
-		Texture::fromFile(GetFileInPath("/content/images/Delete.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_dn.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
-	instance->size = Vector2(40,46);
-	instance->position = Vector2(20, 284);
-	instance->parent = dataModel;
+	instance->name = "Delete";
+	instance->setButtonListener(new DeleteListener());
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn.png")),
@@ -584,27 +727,22 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
 	test->size = Vector3(24,1,24);
-	test->setCFrame(CoordinateFrame(Matrix3::fromEulerAnglesXYZ(toRadians(90),toRadians(45),toRadians(45)), Vector3(0,0,0)));
-	selectedInstance = test;
+	test->setPosition(Vector3(0,0,0));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+	//selectedInstance = test;
 	
 
 	
-	test = makePart();
-	test->parent = dataModel;
-	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(10,1,0));
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
 	test->size = Vector3(4,1,2);
 	test->setPosition(Vector3(-10,1,0));
-
 	test = makePart();
 	test->parent = dataModel;
-	test->color = Color3::gray();
+	test->color = Color3(.5F,1,.5F);
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-7,2,0));
+	test->setPosition(Vector3(10,1,0));
 
 	test = makePart();
 	test->parent = dataModel;
@@ -616,31 +754,38 @@ void Demo::onInit()  {
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-4,3,0));
+	test->setPosition(Vector3(-7,2,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(5,3,0));
+	test->setPosition(Vector3(4,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-1,4,0));
+	test->setPosition(Vector3(-5,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(3,4,0));
+	test->setPosition(Vector3(1,4,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
 	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(2,5,0));
+	test->setPosition(Vector3(-3,4,0));
+
+	test = makePart();
+	test->parent = dataModel;
+	test->color = Color3::gray();
+	test->size = Vector3(4,1,2);
+	test->setPosition(Vector3(-2,5,0));
+	
 
 	
 
@@ -653,8 +798,8 @@ void Demo::onInit()  {
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
-	test->setPosition(Vector3(-2,7,0));
+	test->size = Vector3(-4,-1,-2);
+	test->setPosition(Vector3(2,7,0));
 
 	
 	
@@ -694,6 +839,19 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
+	for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->name == "Delete")
+			{
+				ImageButtonInstance* button = (ImageButtonInstance*)instances_2D.at(i);
+				if(selectedInstance == NULL)
+					button->disabled = true;
+				else
+					button->disabled = false;
+					
+			}
+		}
+
 }
 
 
@@ -701,6 +859,11 @@ void Demo::onNetwork() {
 	// Poll net messages here
 }
 
+
+double getVectorDistance(Vector3 vector1, Vector3 vector2)
+{
+	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
+}
 
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
@@ -731,16 +894,79 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		right = false;
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
 	}
-	app->debugCamera.setPosition(cameraPos);
+	//app->debugCamera.setPosition(cameraPos);
 	if(centerCam)
 	{
 		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
+		Vector3 focalPos;
 		if(selectedInstance == NULL)
-			frame.lookAt(Vector3(0,0,0));
+		{
+			focalPos=Vector3(0,0,0);
+			frame.lookAt(focalPos);
+			app->setFocalPoint(focalPos);
+		}
 		else
-			frame.lookAt(((PhysicalInstance*)selectedInstance)->getPosition());
+		{
+			focalPos=((PhysicalInstance*)selectedInstance)->getPosition();
+			frame.lookAt(focalPos);
+			app->setFocalPoint(focalPos);
+		}
+
 		app->debugController.setCoordinateFrame(frame);
 		centerCam = false;
+		
+	}
+
+	float camAngleY=0;
+	float camAngleX=0;
+	float camAngleZ=0;
+	//test+=0.1f;
+
+
+	//app->debugController.setCoordinateFrame(cf);
+	
+	//app->setFocalPoint(Vector3(0,0,0));
+
+	if(panRight)
+	{
+
+		float addOrSubtractThis=toRadians(45);
+		Vector3 camPos = frame.translation;
+		Vector3 focalPoint = app->getFocalPoint();
+		CoordinateFrame localFrame = CoordinateFrame();
+		CoordinateFrame cf = CoordinateFrame(Vector3(focalPoint.x,focalPoint.y,focalPoint.z));
+		cf.lookAt(Vector3(camPos.x,focalPoint.y,camPos.z));
+		cf=cf*Matrix3::fromEulerAnglesXYZ(0,addOrSubtractThis,0);
+		float distd = (Vector3(camPos.x,0,camPos.z)-Vector3(focalPoint.x,0,focalPoint.z)).magnitude();
+		cf=cf+cf.lookVector()*distd; // Distance
+		cf=cf+Vector3(0,camPos.y,0);
+		cf.lookAt(focalPoint);
+		panRight = false;
+		Vector3 camerapoint = frame.translation;
+		messageTime = System::time();
+		cameraPos=camPos;
+		
+		app->debugController.setCoordinateFrame(cf);
+	}
+
+	if(tiltUp)
+	{
+		tiltUp = false;
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
+		Vector3 camerapoint = frame.translation;
+
+		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
+		float distance = pow(pow((double)focalPoint.x - (double)camerapoint.x, 2) + pow((double)camerapoint.y - (double)camerapoint.y, 2) + pow((double)focalPoint.z - (double)camerapoint.z, 2), 0.5);
+		float x = distance * cos(22.5 * G3D::pi() / 180) + focalPoint.x;
+        float z = distance * sin(22.5 * G3D::pi() / 180) + focalPoint.z;
+		camerapoint = Vector3(camerapoint.x, camerapoint.y+2, camerapoint.z);
+		
+		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
+		newFrame.lookAt(focalPoint);
+		cameraPos = camerapoint;
+		app->debugController.setCoordinateFrame(newFrame);
+		
+		
 	}
 		
 }
@@ -762,6 +988,7 @@ double getOSVersion() {
 	return ::atof(version.c_str());
 }
 
+//User Input
 void Demo::onUserInput(UserInput* ui) {
 	
     if (ui->keyPressed(SDLK_ESCAPE)) {
@@ -800,13 +1027,20 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
+		AudioPlayer::PlaySound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
+	}
+
+	if(ui->keyPressed(SDLK_DELETE))
+	{
+		deleteInstance();
 	}
 
 	if(ui->keyDown(SDLK_LCTRL))
@@ -861,6 +1095,51 @@ void Demo::onUserInput(UserInput* ui) {
 		right = true;
 	}
 	
+	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
+	{
+		bool onGUI = false;
+		for(size_t i = 0; i < instances_2D.size(); i++)
+		{
+			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			{
+				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
+				{
+					onGUI = true;
+					break;
+				}
+			}
+		}
+		if(!onGUI)
+		{
+			selectedInstance = NULL;
+			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+			float nearest=std::numeric_limits<float>::infinity();
+			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
+            for(size_t i = 0; i < instances.size(); i++)
+			{
+				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
+				{
+					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
+					float time = testRay.intersectionTime(test->getBox());
+					if (time != inf()) 
+					{
+						if (nearest>time)
+						{
+							nearest=time;
+							selectedInstance = test;
+						}
+					}
+				}
+			}
+			
+				
+				
+			//message = Convert(closest);
+            
+		}
+	}
+
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
 		
@@ -1020,10 +1299,35 @@ void Demo::exitApplication()
     app->endProgram = true;
 }
 
+void makeBeveledBox(Box box, RenderDevice* rd, Color4 color, CoordinateFrame cFrame)
+{
+	Vector3 v0, v1, v2, v3;
+    //glDiffuse();
+    rd->setColor(color);
+    rd->setObjectToWorldMatrix(CoordinateFrame());
+    rd->beginPrimitive(RenderDevice::QUADS);
+    for (int f = 0; f < 6; ++f) {
+        box.getFaceCorners(f, v0, v1, v2, v3);
+		glShadeModel(GL_SMOOTH);
+        //rd->setNormal((v1 - v0).cross(v3 - v0).direction());
+        rd->sendVertex(v0);
+        rd->sendVertex(v1);
+        rd->sendVertex(v2);
+        rd->sendVertex(v3);
+    }
+	rd->setColor(Color3::white());
+    rd->endPrimitive();
+}
+
+
 void Demo::onGraphics(RenderDevice* rd) {
-
 	
+	float angle, x, z;
+	app->debugCamera.getCoordinateFrame().rotation.toEulerAnglesXYZ(x, angle, z);
+	//message = Convert(toDegrees(angle)) + " X: " + Convert(app->debugCamera.getCoordinateFrame().translation.x) + " Z: " + Convert(app->debugCamera.getCoordinateFrame().translation.z);
+	//messageTime = System::time();
 
+		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
 	Vector2 mousepos = Vector2(0,0);
 	G3D::uint8 num = 0;
 	rd->window()->getRelativeMouseState(mousepos, num);
@@ -1056,45 +1360,46 @@ void Demo::onGraphics(RenderDevice* rd) {
     }
 
 	
-
+	
     // Setup lighting
     app->renderDevice->enableLighting();
 
+		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
-		Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
-
-		makeFlag(Vector3(-1, 3.5, 0), rd);
+		//Draw::axes(CoordinateFrame(Vector3(0, 0, 0)), app->renderDevice);
+		//makeFlag(Vector3(-1, 3.5, 0), rd);
 		
+		//Vector3 vector = app->debugCamera.getCoordinateFrame().translation + app->debugCamera.getCoordinateFrame().lookVector()*20;
 
 		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 		app->renderDevice->setAmbientLightColor(lighting.ambient);
+
+		//app->renderDevice->pushState();
+		//app->renderDevice->popState();
 
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
 			if(instance->className == "Part" && instance->parent != NULL)
 			{
+				
 				PhysicalInstance* part = (PhysicalInstance*)instance;
-				Vector3 size = part->size;
-				Vector3 pos = part->getCFrame().translation;
-				rd->setObjectToWorldMatrix(CoordinateFrame());
-				Vector3 pos2 = Vector3((pos.x-size.x/2)/2,(pos.y-size.y/2)/2,(pos.z-size.z/2)/2);
-				Vector3 pos3 = Vector3((pos.x+size.x/2)/2,(pos.y+size.y/2)/2,(pos.z+size.z/2)/2);
-				Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
-				CoordinateFrame c = CoordinateFrame(part->getCFrame().rotation,Vector3(part->getCFrame().translation.x/2, part->getCFrame().translation.y/2, part->getCFrame().translation.z/2));
-				Draw::box(c.toWorldSpace(box), app->renderDevice, part->color, Color4::clear());
+				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
-					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), c);
+					Vector3 size = part->size;
+					Vector3 pos = part->getCFrame().translation;
+					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 				}
 				
 			}
 			
 		}
-	
+		Box box;
 		
+		//Draw::ray(testRay, rd, Color3::orange(), 1);
 
-		Vector3 gamepoint = Vector3(0, 5, 0);
+		/*Vector3 gamepoint = Vector3(0, 5, 0);
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 50 && distance > -50)
@@ -1103,7 +1408,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 			if(distance < 0)
 			distance = distance*-1;
 			fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-		}
+		}*/
+
     app->renderDevice->disableLighting();
 
     if (app->sky.notNull()) {
@@ -1153,9 +1459,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	//Tools menu
 	Draw::box(G3D::Box(Vector3(5, 185+offset,0),Vector3(75, 185+offset,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
-	fntlighttrek->draw2D(rd,"Group", Vector2(10,190+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"UnGroup", Vector2(10,215+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-	fntlighttrek->draw2D(rd,"Duplicate", Vector2(10,240+offset), 12, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	fntlighttrek->draw2D(rd,"MENU", Vector2(10,307+offset), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 	//G3D::GFont::draw2D("Debug Mode Enabled", Vector2(0,30), 20, Color3::white(), Color3::black());
 	//app->debugFont->draw2D("Dynamica 2004-2005 Simulation Client version " + VERSION + str, Vector2(0,0), 20, Color3::white(), Color3::black());
@@ -1220,6 +1523,9 @@ void App::main() {
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
+	clickSound = GetFileInPath("/content/sounds/switch.wav");
+	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
     applet->run();
@@ -1283,6 +1589,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
 			}
 		break;
+		case WM_MOUSEMOVE:
+			  {
+				  if(app != 0)
+				  {
+					  POINT p;
+					  if(GetCursorPos(&p))
+					  {
+						HWND wnd = WindowFromPoint(p);
+						if(wnd != app->getHWND())
+						{
+							app->window()->setInputCaptureCount(0);
+						}
+						else
+						{
+							app->window()->setInputCaptureCount(200);
+						}
+					  }
+				  }
+			  }
         default:
 		{
             return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -1294,14 +1619,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int main(int argc, char** argv) {
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_CrtSetBreakAlloc(1279);
-
+	try{
+		tempPath = ((std::string)getenv("temp")) + "/Dynamica";
+	CreateDirectory(tempPath.c_str(), NULL);
+    
+	message = tempPath;
+	messageTime = System::time();
+	AudioPlayer::init();
     GAppSettings settings;
 	settings.window.resizable = true;
-	settings.window.fsaaSamples = 8;
+	//settings.window.fsaaSamples = 8;
 	settings.writeLicenseFile = false;
+	settings.logFilename = tempPath + "/g3dlog.txt";
 	settings.window.center = true;
 	//Using the damned SDL window now
-	SDLWindow* wnd = new SDLWindow(settings.window);
+	G3D::SDLWindow* wnd = new SDLWindow(settings.window);
 	//wnd->setInputCaptureCount(200);
 	wnd->setMouseVisible(false);
 	
@@ -1386,5 +1718,10 @@ int main(int argc, char** argv) {
 	//messageTime = G3D::System::time();
 
 	app.run();
+	}
+	catch(std::exception)
+	{
+		OnError(-1);
+	}
     return 0;
 }
