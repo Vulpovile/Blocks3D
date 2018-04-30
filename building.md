@@ -4,9 +4,7 @@
 
 #### Skip to steps 7-13 if you have already built this program
 
-1. Install Visual Studio 2005. [This link here](http://download.microsoft.com/download/8/3/a/83aad8f9-38ba-4503-b3cd-ba28c360c27b/ENU/vcsetup.exe) is a web installer, but it works.
-
-* The above link is for Visual Studio Express, which is faster to download and install. If you'd like to skip some steps, but have a slower download, get [Visual Studio Professional](https://archive.org/details/Microsoft_Visual_Studio_2005_180-Days_Trial) and skip steps 7-11.
+1. Install Visual Studio 2005. Google where to find it. Make note of which version you downloaded.
 
 2. Download and install G3D from [this link here](https://sourceforge.net/projects/g3d/files/g3d-cpp/6.10/g3d-6_10_win32.exe/download).
 
