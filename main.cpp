@@ -57,6 +57,7 @@ static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static bool showMouse = true;
 //Controller
+static bool moving = false;
 static bool forwards = false;
 static bool backwards = false;
 static bool left = false;
@@ -874,30 +875,38 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	}
 
 	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-	if(forwards)
+
+	if (moving)
 	{
-		forwards = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*moveRate;
-	}
-	else if(backwards)
-	{
-		backwards = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*moveRate;
-	}
-	if(left)
-	{
-		left = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.leftVector()*moveRate;
-	}
-	else if(right)
-	{
-		right = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
+		cameraPos = frame.translation;
+		if(forwards)
+		{
+			forwards = false;
+			frame.translation = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*moveRate;
+		}
+		else if(backwards)
+		{
+			backwards = false;
+			frame.translation = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*moveRate;
+		}
+		if(left)
+		{
+			left = false;
+			frame.translation = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.leftVector()*moveRate;
+		}
+		else if(right)
+		{
+			right = false;
+			frame.translation = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
+		}
+		moving=false;
+		app->setFocalPoint(frame.translation + frame.lookVector() * 15);
 	}
 	//app->debugCamera.setPosition(cameraPos);
 	if(centerCam)
 	{
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
+		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		
 		Vector3 focalPos;
 		if(selectedInstance == NULL)
 		{
@@ -907,12 +916,13 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		}
 		else
 		{
-			focalPos=((PhysicalInstance*)selectedInstance)->getPosition();
+			focalPos=((PhysicalInstance*)selectedInstance)->getPosition()/2;
 			frame.lookAt(focalPos);
 			app->setFocalPoint(focalPos);
 		}
 
 		app->debugController.setCoordinateFrame(frame);
+		//app->debugCamera.setCoordinateFrame(frame);
 		centerCam = false;
 		
 	}
@@ -923,7 +933,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	//test+=0.1f;
 
 
-	//app->debugController.setCoordinateFrame(cf);
+	//app->debugController.setCoordinateFrame(frame);
 	
 	//app->setFocalPoint(Vector3(0,0,0));
 
@@ -934,15 +944,15 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		Vector3 camPos = frame.translation;
 		Vector3 focalPoint = app->getFocalPoint();
 		CoordinateFrame localFrame = CoordinateFrame();
-		CoordinateFrame cf = CoordinateFrame(Vector3(focalPoint.x,focalPoint.y,focalPoint.z));
-		cf.lookAt(Vector3(camPos.x,focalPoint.y,camPos.z));
+		CoordinateFrame cf = CoordinateFrame(Vector3(focalPoint.x,0,focalPoint.z));
+		cf.lookAt(Vector3(camPos.x,0,camPos.z));
 		cf=cf*Matrix3::fromEulerAnglesXYZ(0,addOrSubtractThis,0);
 		float distd = (Vector3(camPos.x,0,camPos.z)-Vector3(focalPoint.x,0,focalPoint.z)).magnitude();
 		cf=cf+cf.lookVector()*distd; // Distance
 		cf=cf+Vector3(0,camPos.y,0);
 		cf.lookAt(focalPoint);
 		panRight = false;
-		Vector3 camerapoint = frame.translation;
+		//Vector3 camerapoint = frame.translation;
 		messageTime = System::time();
 		cameraPos=camPos;
 		
@@ -1080,19 +1090,23 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyDown(SDLK_UP))
 	{
 		forwards = true;
+		moving = true;
 	}
 	else if(ui->keyDown(SDLK_DOWN))
 	{
 		backwards = true;
+		moving = true;
 	}
 	if(ui->keyDown(SDLK_LEFT))
 	{
 		left = true;
+		moving = true;
 	}
 	else if(ui->keyDown(SDLK_RIGHT))
 	{
 		
 		right = true;
+		moving = true;
 	}
 	
 	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
