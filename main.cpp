@@ -1700,12 +1700,14 @@ int main(int argc, char** argv) {
 	
 	
 	SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
-	HMONITOR monitor = MonitorFromWindow(hwndMain, MONITOR_DEFAULTTONEAREST);
-	MONITORINFO lpmi;
-	GetMonitorInfo( monitor, &lpmi);
 	
-	int widthMON = lpmi.rcMonitor.bottom;
-	int heightMON = lpmi.rcMonitor.right;
+	
+	if(GetClientRect(hwndMain, &rect))
+	{
+		width = rect.right - rect.left;
+		height = rect.bottom - rect.top;
+	}
+	SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
 
 	//message = Convert(widthMON) + ", " + Convert(heightMON);
 	//messageTime = G3D::System::time();
