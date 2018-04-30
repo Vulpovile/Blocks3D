@@ -64,6 +64,7 @@ static bool left = false;
 static bool right = false;
 static bool centerCam = false;
 static bool panRight = false;
+static bool panLeft = false;
 static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -275,6 +276,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
 	else if(button->name == "PanRight")
 		panRight = true;
+	else if(button->name == "PanLeft")
+		panLeft = true;
 	else if(button->name == "TiltUp")
 		tiltUp = true;
 }
@@ -937,25 +940,34 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	
 	//app->setFocalPoint(Vector3(0,0,0));
 
-	if(panRight)
-	{
+	float panDirection=0;
 
-		float addOrSubtractThis=toRadians(45);
+	if (panLeft)
+	{
+		panDirection=toRadians(-45);
+		panLeft = false;
+	}
+	if (panRight)
+	{
+		panDirection=toRadians(45);
+		panRight = false;
+	}
+
+	if(panDirection!=0)
+	{
 		Vector3 camPos = frame.translation;
 		Vector3 focalPoint = app->getFocalPoint();
 		CoordinateFrame localFrame = CoordinateFrame();
 		CoordinateFrame cf = CoordinateFrame(Vector3(focalPoint.x,0,focalPoint.z));
 		cf.lookAt(Vector3(camPos.x,0,camPos.z));
-		cf=cf*Matrix3::fromEulerAnglesXYZ(0,addOrSubtractThis,0);
+		cf=cf*Matrix3::fromEulerAnglesXYZ(0,panDirection,0);
 		float distd = (Vector3(camPos.x,0,camPos.z)-Vector3(focalPoint.x,0,focalPoint.z)).magnitude();
 		cf=cf+cf.lookVector()*distd; // Distance
 		cf=cf+Vector3(0,camPos.y,0);
 		cf.lookAt(focalPoint);
-		panRight = false;
 		//Vector3 camerapoint = frame.translation;
 		messageTime = System::time();
 		cameraPos=camPos;
-		
 		app->debugController.setCoordinateFrame(cf);
 	}
 
