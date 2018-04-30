@@ -879,7 +879,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 
-	if (moving)
+	if (moving | app->debugController.active())
 	{
 		cameraPos = frame.translation;
 		if(forwards)
@@ -903,7 +903,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			frame.translation = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
 		}
 		moving=false;
-		app->setFocalPoint(frame.translation + frame.lookVector() * 15);
+		app->setFocalPoint(frame.translation + frame.lookVector() * 10);
 	}
 	//app->debugCamera.setPosition(cameraPos);
 	if(centerCam)
