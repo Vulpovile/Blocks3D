@@ -300,7 +300,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		{
 			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 			if(button->name == "Tilt")
-				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(toRadians(90),0,0));
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
 			else if(button->name == "Rotate")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
 		}
