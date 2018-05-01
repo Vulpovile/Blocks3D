@@ -58,7 +58,7 @@ void mixaudio(void *unused, Uint8 *stream, int len)
     }
 }
 
-void AudioPlayer::PlaySound(std::string fileString)
+void AudioPlayer::playSound(std::string fileString)
 {
 
 	if(initiated)

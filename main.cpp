@@ -255,7 +255,7 @@ public:
 
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	AudioPlayer::PlaySound(cameraSound);
+	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	if(button->name == "CenterCam")
 		centerCam = true;
@@ -280,7 +280,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(selectedInstance != NULL)
 	{
-		AudioPlayer::PlaySound(dingSound);
+		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
 		{
 
@@ -298,7 +298,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(selectedInstance != NULL)
 	{
-		AudioPlayer::PlaySound(clickSound);
+		AudioPlayer::playSound(clickSound);
 		if(selectedInstance->getClassName() == "Part")
 		{
 			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
@@ -324,7 +324,7 @@ void deleteInstance()
 				instances.erase(instances.begin() + i);
 				delete deleting;
 				selectedInstance = NULL;
-				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
+				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 			}
 		}
 	}
@@ -1049,13 +1049,13 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
-		AudioPlayer::PlaySound(cameraSound);
+		AudioPlayer::playSound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
-		AudioPlayer::PlaySound(cameraSound);
+		AudioPlayer::playSound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
