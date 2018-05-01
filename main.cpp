@@ -299,7 +299,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 	if(selectedInstance != NULL)
 	{
 		AudioPlayer::PlaySound(clickSound);
-		if(selectedInstance->className == "Part")
+		if(selectedInstance->getClassName() == "Part")
 		{
 			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 			if(button->name == "Tilt")
@@ -1122,7 +1122,7 @@ void Demo::onUserInput(UserInput* ui) {
 		bool onGUI = false;
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
-			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
@@ -1140,7 +1140,7 @@ void Demo::onUserInput(UserInput* ui) {
 			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
             for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
+				if(instances.at(i)->getClassName() == "Part" && instances.at(i)->parent == dataModel)
 				{
 					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
 					float time = testRay.intersectionTime(test->getBox());
@@ -1167,7 +1167,7 @@ void Demo::onUserInput(UserInput* ui) {
 		
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
-			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
@@ -1237,7 +1237,7 @@ void drawButtons(RenderDevice* rd)
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
-			if((instance->className == "TextButton" || instance->className == "ImageButton") && instance->parent == dataModel)
+			if((instance->getClassName() == "TextButton" || instance->getClassName() == "ImageButton") && instance->parent == dataModel)
 			{
 				BaseButtonInstance* tbi = (BaseButtonInstance*)instance;
 				tbi->drawObj(rd, Vector2(mousex, mousey), mouseButton1Down);				
@@ -1451,7 +1451,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
-			if(instance->className == "Part" && instance->parent != NULL)
+			if(instance->getClassName() == "Part" && instance->parent != NULL)
 			{
 				
 				PhysicalInstance* part = (PhysicalInstance*)instance;

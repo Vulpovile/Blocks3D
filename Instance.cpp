@@ -4,17 +4,23 @@
 
 std::string name;
 Instance* parent;
-static std::string className = "DataModel";
+std::vector<Instance* > children;
+static std::string className = "BaseInstance";
 
 Instance::Instance(void)
 {
 	name = "Default Game Instance";
-	className = "DataModel";
+	className = "BaseInstance";
 }
 
 Instance::~Instance(void)
 {
 	name = "Default Game Instance";
+}
+
+std::string Instance::getClassName()
+{
+	return className;
 }
 
 
