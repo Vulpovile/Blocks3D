@@ -243,6 +243,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DataModelInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
 				>
 			</File>
@@ -297,6 +301,10 @@
 			</File>
 			<File
 				RelativePath=".\ButtonListener.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DataModelInstance.h"
 				>
 			</File>
 			<File
