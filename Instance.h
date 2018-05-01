@@ -7,7 +7,7 @@ public:
 	Instance(void);
 	virtual ~Instance(void);
 	std::string name;
-	Instance* parent;  // Another pointer.
+	
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();
 	Instance* findFirstChild(std::string);
@@ -19,4 +19,5 @@ public:
 	Instance* getParent();
 protected:
 	std::string className;
+	Instance* parent;  // Another pointer.
 };

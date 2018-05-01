@@ -3,12 +3,13 @@
 #include "Instance.h"
 
 std::string name;
-Instance* parent;
+Instance* parent = NULL;
 std::vector<Instance* > children;
 static std::string className = "BaseInstance";
 
 Instance::Instance(void)
 {
+	parent = NULL;
 	name = "Default Game Instance";
 	className = "BaseInstance";
 }
