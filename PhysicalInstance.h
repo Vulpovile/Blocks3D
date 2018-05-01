@@ -7,7 +7,7 @@ class PhysicalInstance :
 public:
 	PhysicalInstance(void);
 	~PhysicalInstance(void);
-	Vector3 size;
+	
 	Vector3 velocity;
 	Vector3 rotvelocity;
 	CoordinateFrame cFrame;
@@ -18,6 +18,9 @@ public:
 	void setCFrame(CoordinateFrame);
 	Box getBox();
 	CoordinateFrame getCFrameRenderBased();
+	Vector3 getSize();
+	void setSize(Vector3);
 private:
 	Vector3 position;
+	Vector3 size;
 };

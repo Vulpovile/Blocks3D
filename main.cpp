@@ -719,7 +719,7 @@ void Demo::onInit()  {
 	PhysicalInstance* test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(0.2F,0.3F,1);
-	test->size = Vector3(24,1,24);
+	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
 	//selectedInstance = test;
@@ -729,54 +729,54 @@ void Demo::onInit()  {
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-10,1,0));
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3(.5F,1,.5F);
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(10,1,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(7,2,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-7,2,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(4,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-5,3,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-3,4,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
 	
 
@@ -785,13 +785,13 @@ void Demo::onInit()  {
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(4,1,2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(0,6,0));
 
 	test = makePart();
 	test->parent = dataModel;
 	test->color = Color3::gray();
-	test->size = Vector3(-4,-1,-2);
+	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
 
 	
@@ -1458,7 +1458,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
-					Vector3 size = part->size;
+					Vector3 size = part->getSize();
 					Vector3 pos = part->getCFrame().translation;
 					drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 				}
