@@ -32,7 +32,6 @@ void AudioPlayer::init()
     /* Open the audio device and start playing sound! */
     if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
         fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
-        exit(1);
     }
     SDL_PauseAudio(0);
 }
