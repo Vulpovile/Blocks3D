@@ -7,7 +7,7 @@ public:
 	Instance(void);
 	virtual ~Instance(void);
 	std::string name;
-	
+	virtual void render(RenderDevice*);
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();
 	Instance* findFirstChild(std::string);

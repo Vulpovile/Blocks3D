@@ -7,7 +7,7 @@ class PhysicalInstance :
 public:
 	PhysicalInstance(void);
 	~PhysicalInstance(void);
-	
+	virtual void render(RenderDevice*);
 	Vector3 velocity;
 	Vector3 rotvelocity;
 	CoordinateFrame cFrame;

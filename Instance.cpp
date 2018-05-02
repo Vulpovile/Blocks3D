@@ -14,6 +14,14 @@ Instance::Instance(void)
 	className = "BaseInstance";
 }
 
+void Instance::render(RenderDevice* rd)
+{
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		children.at(i)->render(rd);
+	}
+}
+
 Instance::~Instance(void)
 {
 	for(size_t i = 0; i < children.size(); i++)
@@ -34,13 +42,18 @@ std::vector<Instance* > Instance::getChildren()
 
 std::vector<Instance* > Instance::getAllChildren()
 {
-	std::vector<Instance* > totalchildren = children;
-	for(size_t i = 0; i < children.size(); i++)
+	if(!children.empty())
 	{
-		std::vector<Instance* > subchildren = children.at(i)->getAllChildren();
-		totalchildren.insert(totalchildren.end(), subchildren.begin(), subchildren.end());
+		std::vector<Instance* > totalchildren = children;
+		for(size_t i = 0; i < children.size(); i++)
+		{
+			std::vector<Instance* > subchildren = children.at(i)->getAllChildren();
+			if(!subchildren.empty())
+				totalchildren.insert(totalchildren.end(), subchildren.begin(), subchildren.end());
+		}
+		return totalchildren;
 	}
-	return totalchildren;
+	return children;
 }
 
 void Instance::setParent(Instance* newParent)

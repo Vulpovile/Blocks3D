@@ -93,6 +93,19 @@ Box PhysicalInstance::getBox()
 	return itemBox;
 }
 
+void PhysicalInstance::render(RenderDevice* rd)
+{
+	Draw::box(getBox(), rd, color, Color4::clear());
+	if(!children.empty())
+	{
+		for(size_t i = 0; i < children.size(); i++)
+		{
+			children.at(i)->render(rd);
+		}
+	}
+	
+}
+
 PhysicalInstance::~PhysicalInstance(void)
 {
 }

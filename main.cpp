@@ -1032,7 +1032,6 @@ void Demo::onUserInput(UserInput* ui) {
 		showMouse = true;
 		app->debugController.setActive(false);
 	}
-
 	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
 	{
 		moveRate = 1;
@@ -1443,16 +1442,24 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		//app->renderDevice->pushState();
 		//app->renderDevice->popState();
-
-		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+		dataModel->getWorkspace()->render(rd);
+		if(selectedInstance != NULL)
+		{
+			PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
+			Vector3 size = part->getSize();
+			Vector3 pos = part->getPosition();
+			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+		}
+		/*std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
 			if(instance->getClassName() == "Part")
 			{
-				
+				instance->render(rd);
 				PhysicalInstance* part = (PhysicalInstance*)instance;
-				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
+				//part->render(rd);
+				//Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
 					Vector3 size = part->getSize();
@@ -1463,7 +1470,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			}
 			
 		}
-		Box box;
+		Box box;*/
 		
 		//Draw::ray(testRay, rd, Color3::orange(), 1);
 
