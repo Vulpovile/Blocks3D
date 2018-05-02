@@ -11,11 +11,13 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
+#include <iomanip>
 #include "Instance.h"
 #include "resource.h"
 #include "PhysicalInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
+#include "DataModelInstance.h"
 #include "AudioPlayer.h"
 #include <limits.h>
 
@@ -23,12 +25,9 @@
 	#error Requires G3D 6.10
 #endif
 HWND hwnd;
-static const float VNUM = 0.01F;
+
 static std::string title = "";
-static const std::string VERSION = "PRE-ALPHA ";
-static std::vector<Instance*> instances;
-static std::vector<Instance*> instances_2D;
-static Instance* dataModel;
+static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
 Ray testRay;
@@ -42,8 +41,6 @@ static int index = 2;
 static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
-static float TIMERVAL = 60.0F;
-static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
@@ -70,7 +67,6 @@ static const int ARROWS = 1;
 static const int RESIZE = 2;
 static int mode = CURSOR;
 Vector3 cameraPos = Vector3(0,2,10);
-Vector3 focalPointT = Vector3(0,0,0);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
@@ -175,10 +171,10 @@ Demo::Demo(App* _app) : GApplet(_app), app(_app) {
 
 void clearInstances()
 {
-	for(size_t i = 0; i < instances.size(); i++)
-	{
-		delete instances.at(i);
-	}
+	//for(size_t i = 0; i < instances.size(); i++)
+	//{
+	//	delete instances.at(i);
+	//}
 	delete dataModel;
 }
 
@@ -226,23 +222,23 @@ std::string Convert (float number){
 PhysicalInstance* makePart()
 {
 	PhysicalInstance* part = new PhysicalInstance();
-	instances.push_back(part);
+//	instances.push_back(part);
 	return part;
 }
 
 TextButtonInstance* makeTextButton()
 {
 	TextButtonInstance* part = new TextButtonInstance();
-	instances.push_back(part);
-	instances_2D.push_back(part);
+//	instances.push_back(part);
+//	instances_2D.push_back(part);
 	return part;
 }
 
 ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage, disableImage);
-	instances.push_back(part);
-	instances_2D.push_back(part);
+//	instances.push_back(part);
+//	instances_2D.push_back(part);
 	return part;
 }
 
@@ -255,7 +251,7 @@ public:
 
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	AudioPlayer::PlaySound(cameraSound);
+	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	if(button->name == "CenterCam")
 		centerCam = true;
@@ -280,7 +276,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(selectedInstance != NULL)
 	{
-		AudioPlayer::PlaySound(dingSound);
+		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
 		{
 
@@ -298,8 +294,8 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(selectedInstance != NULL)
 	{
-		AudioPlayer::PlaySound(clickSound);
-		if(selectedInstance->className == "Part")
+		AudioPlayer::playSound(clickSound);
+		if(selectedInstance->getClassName() == "Part")
 		{
 			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 			if(button->name == "Tilt")
@@ -316,17 +312,11 @@ void deleteInstance()
 {
 	if(selectedInstance != NULL)
 	{
-		for(size_t i = 0; i < instances.size(); i++)
-		{
-			if(instances.at(i) == selectedInstance)
-			{
-				Instance* deleting = instances.at(i);
-				instances.erase(instances.begin() + i);
-				delete deleting;
-				selectedInstance = NULL;
-				AudioPlayer::PlaySound(GetFileInPath("/content/sounds/pageturn.wav"));
-			}
-		}
+		if(selectedInstance->getParent() != NULL)
+			selectedInstance->getParent()->removeChild(selectedInstance);
+		delete selectedInstance;
+		selectedInstance = NULL;
+		AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 	}
 }
 
@@ -354,7 +344,7 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	
-
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->name == "Cursor" || instances_2D.at(i)->name == "Resize" || instances_2D.at(i)->name == "Arrows")
@@ -380,7 +370,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -24);
 	button->boxEnd = Vector2(80, 0);
 	button->floatBottom = true;
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -392,7 +382,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -48);
 	button->boxEnd = Vector2(80, -24);
 	button->floatBottom = true;
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -404,7 +394,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -72);
 	button->boxEnd = Vector2(80, -48);
 	button->floatBottom = true;
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -416,7 +406,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -96);
 	button->boxEnd = Vector2(80, -72);
 	button->floatBottom = true;
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -428,7 +418,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -120);
 	button->boxEnd = Vector2(80, -96);
 	button->floatBottom = true;
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->boxOutlineColor = Color3(0,255,255);
@@ -439,7 +429,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
 	button->boxEnd = Vector2(125, 25);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -452,7 +442,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
 	button->boxEnd = Vector2(250, 25);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -465,7 +455,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
 	button->boxEnd = Vector2(375, 25);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -478,7 +468,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
 	button->boxEnd = Vector2(500, 25);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -491,7 +481,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
 	button->boxEnd = Vector2(625, 25);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -514,7 +504,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 
 
 	button = makeTextButton();
@@ -528,7 +518,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,265);
@@ -541,7 +531,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->parent = dataModel;
+	button->setParent(dataModel->getGuiRoot());
 	button->name = "Duplicate";
 	button->setButtonListener(new GUDButtonListener());
 
@@ -550,7 +540,7 @@ void initGUI()
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 
 	
 
@@ -561,14 +551,14 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ds.png")));
 	instance->size = Vector2(50,50);
 	instance->position = Vector2(15, 90);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Cursor";
 	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Resize";
 	instance->setButtonListener(new ModeSelectionListener());
 	
@@ -580,7 +570,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/MoveTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(40, 140);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Arrows";
 	instance->setButtonListener(new ModeSelectionListener());
 
@@ -591,7 +581,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Rotate";
 	instance->setButtonListener(new RotateButtonListener());
 
@@ -602,7 +592,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Tilt";
 	instance->setButtonListener(new RotateButtonListener());
 
@@ -614,7 +604,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
 	instance->size = Vector2(40,46);
 	instance->position = Vector2(20, 284);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Delete";
 	instance->setButtonListener(new DeleteListener());
 
@@ -626,7 +616,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "ZoomIn";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -638,7 +628,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -31);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "ZoomOut";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -650,7 +640,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-110, -50);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "PanLeft";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -662,7 +652,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-45, -50);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "PanRight";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -674,7 +664,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -60);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "CenterCam";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -686,7 +676,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-105, -75);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "TiltUp";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -698,7 +688,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-40, -75);
-	instance->parent = dataModel;
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "TiltDown";
 	instance->setButtonListener(new CameraButtonListener());
 }
@@ -709,72 +699,72 @@ void Demo::onInit()  {
     // Called before Demo::run() beings
 	
 
-	dataModel = new Instance();
-	dataModel->parent = NULL;
+	dataModel = new DataModelInstance();
+	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
 	
 	initGUI();
 
 	
 	PhysicalInstance* test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(40),toRadians(40)));
 	//selectedInstance = test;
 	
 
 	
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-10,1,0));
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(10,1,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(7,2,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-7,2,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(4,3,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-5,3,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-3,4,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
@@ -783,13 +773,13 @@ void Demo::onInit()  {
 	
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(0,6,0));
 
 	test = makePart();
-	test->parent = dataModel;
+	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
@@ -832,18 +822,17 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
-	for(size_t i = 0; i < instances_2D.size(); i++)
+	
+	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
+		if(obj != NULL)
 		{
-			if(instances_2D.at(i)->name == "Delete")
-			{
-				ImageButtonInstance* button = (ImageButtonInstance*)instances_2D.at(i);
-				if(selectedInstance == NULL)
-					button->disabled = true;
-				else
-					button->disabled = false;
-					
-			}
+			ImageButtonInstance* button = (ImageButtonInstance*)obj;
+			if(selectedInstance == NULL)
+				button->disabled = true;
+			else
+				button->disabled = false;	
 		}
+
 
 }
 
@@ -1037,7 +1026,6 @@ void Demo::onUserInput(UserInput* ui) {
 		showMouse = true;
 		app->debugController.setActive(false);
 	}
-
 	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
 	{
 		moveRate = 1;
@@ -1049,13 +1037,13 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
-		AudioPlayer::PlaySound(cameraSound);
+		AudioPlayer::playSound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
-		AudioPlayer::PlaySound(cameraSound);
+		AudioPlayer::playSound(cameraSound);
 		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
@@ -1120,9 +1108,10 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
 	{
 		bool onGUI = false;
+		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
-			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
@@ -1138,9 +1127,10 @@ void Demo::onUserInput(UserInput* ui) {
 			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
 			float nearest=std::numeric_limits<float>::infinity();
 			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
+			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
             for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(instances.at(i)->className == "Part" && instances.at(i)->parent == dataModel)
+				if(instances.at(i)->getClassName() == "Part")
 				{
 					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
 					float time = testRay.intersectionTime(test->getBox());
@@ -1164,10 +1154,10 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
-		
+		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
-			if(instances_2D.at(i)->className == "TextButton" || instances_2D.at(i)->className == "ImageButton")
+			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
@@ -1234,10 +1224,11 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 
 void drawButtons(RenderDevice* rd)
 {
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
-			if((instance->className == "TextButton" || instance->className == "ImageButton") && instance->parent == dataModel)
+			if(instance->getClassName() == "TextButton" || instance->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* tbi = (BaseButtonInstance*)instance;
 				tbi->drawObj(rd, Vector2(mousex, mousey), mouseButton1Down);				
@@ -1247,6 +1238,7 @@ void drawButtons(RenderDevice* rd)
 
 void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
 {
+	
 	//rd->setLight(0, NULL);
 	//rd->setAmbientLightColor(Color3(1,1,1));
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
@@ -1272,49 +1264,32 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	{
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
-		float max = size.x;
-		if(abs(size.y) > max)
-			max = size.y;
-		if(abs(size.z) > max)
-			max = size.z;
-		max = max / 2;
-		Draw::arrow(pos, Vector3(0, 1+max, 0), rd);
-		Draw::arrow(pos, Vector3(1+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3(0, 0, 1+max), rd);
-		Draw::arrow(pos, Vector3(0, (-1)-max, 0), rd);
-		Draw::arrow(pos, Vector3((-1)-max, 0, 0), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1)-max), rd);
+		
+		AABox box;
+		c.toWorldSpace(Box(from, to)).getBounds(box);
+		float max = box.high().y - pos.y;
+
+		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
+		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
+		
+		max = box.high().x - pos.x;
+
+		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
+		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
+
+		max = box.high().z - pos.z;
+
+		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
+		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
 
 
-		Vector3 gamepoint = pos;
-		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 0)
-			distance = distance*-1;
-		CoordinateFrame frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y+max+0.8, pos.z));
-		Box icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x+max+0.8, pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z+(max+0.8)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y-(max+0.8), pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x-(max+0.8), pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z-(max+0.8)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
 
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
 	else if(mode == RESIZE)
 	{
+		//Box box = c.toWorldSpace(Box(from, to))
 		Color3 sphereColor = outline;
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
@@ -1327,37 +1302,28 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y + (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+
+			position = pos + (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+
+			position = pos + (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
 
 
 		}
-		distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 0)
-			distance = distance*-1;
-		CoordinateFrame frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y+size.y/2+1, pos.z));
-		Box icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x+size.x/2+1, pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor , Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z+(size.z/2+1)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y-(size.y/2+1), pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x-(size.x/2+1), pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z-(size.z/2+1)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
@@ -1447,15 +1413,24 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		//app->renderDevice->pushState();
 		//app->renderDevice->popState();
-
+		dataModel->getWorkspace()->render(rd);
+		if(selectedInstance != NULL)
+		{
+			PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
+			Vector3 size = part->getSize();
+			Vector3 pos = part->getPosition();
+			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+		}
+		/*std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 		{
 			Instance* instance = instances.at(i);
-			if(instance->className == "Part" && instance->parent != NULL)
+			if(instance->getClassName() == "Part")
 			{
-				
+				instance->render(rd);
 				PhysicalInstance* part = (PhysicalInstance*)instance;
-				Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
+				//part->render(rd);
+				//Draw::box(part->getBox(), app->renderDevice, part->color, Color4::clear());
 				if(selectedInstance == part)
 				{
 					Vector3 size = part->getSize();
@@ -1466,7 +1441,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			}
 			
 		}
-		Box box;
+		Box box;*/
 		
 		//Draw::ray(testRay, rd, Color3::orange(), 1);
 
@@ -1501,8 +1476,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
 	}
 
-	fntdominant->draw2D(rd, "Timer: " + Convert(TIMERVAL), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
-	fntdominant->draw2D(rd, "Score: " + Convert(SCOREVAL), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
+	fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
+	fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
 	
 	//GUI Boxes
 
@@ -1792,7 +1769,7 @@ int main(int argc, char** argv) {
 
 	app.run();
 	}
-	catch(std::exception)
+	catch(...)
 	{
 		OnError(-1);
 	}
