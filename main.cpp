@@ -11,6 +11,7 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 #include <G3DAll.h>
+#include <iomanip>
 #include "Instance.h"
 #include "resource.h"
 #include "PhysicalInstance.h"
@@ -24,10 +25,8 @@
 	#error Requires G3D 6.10
 #endif
 HWND hwnd;
-static const float VNUM = 0.01F;
+
 static std::string title = "";
-static const std::string VERSION = "PRE-ALPHA ";
-//static std::vector<Instance*> instances;
 static std::vector<Instance*> instances_2D;
 static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
@@ -43,8 +42,6 @@ static int index = 2;
 static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
-static float TIMERVAL = 60.0F;
-static int SCOREVAL = 0;
 static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
@@ -71,7 +68,6 @@ static const int ARROWS = 1;
 static const int RESIZE = 2;
 static int mode = CURSOR;
 Vector3 cameraPos = Vector3(0,2,10);
-Vector3 focalPointT = Vector3(0,0,0);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
@@ -1505,8 +1501,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
 	}
 
-	fntdominant->draw2D(rd, "Timer: " + Convert(TIMERVAL), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
-	fntdominant->draw2D(rd, "Score: " + Convert(SCOREVAL), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
+	fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 0+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
+	fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 25+offset), 20, Color3::fromARGB(0x81C518), Color3::black());
 	
 	//GUI Boxes
 
