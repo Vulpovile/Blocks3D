@@ -66,6 +66,7 @@ static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
 static int mode = CURSOR;
+bool dragging = false;
 Vector3 cameraPos = Vector3(0,2,10);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
@@ -1140,6 +1141,9 @@ void Demo::onUserInput(UserInput* ui) {
 						{
 							nearest=time;
 							selectedInstance = test;
+							//message = "Dragging = true.";
+							//messageTime = System::time();
+							dragging = true;
 						}
 					}
 				}
@@ -1154,7 +1158,11 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
+		dragging = false;
+		//message = "Dragging = false.";
+		//messageTime = System::time();
 		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
+		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
@@ -1165,6 +1173,33 @@ void Demo::onUserInput(UserInput* ui) {
 					button->onMouseClick();
 				}
 			}
+		}
+	}
+
+	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
+		if (dragging) {
+		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
+		Ray dragRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+		for(size_t i = 0; i < instances.size(); i++)
+			{
+				if(instances.at(i)->getClassName() == "Part")
+				{
+					PhysicalInstance* moveTo = (PhysicalInstance*)instances.at(i);
+					float __time = testRay.intersectionTime(moveTo->getBox());
+					float __nearest=std::numeric_limits<float>::infinity();
+					if (__time != inf()) 
+					{
+						if (__nearest>__time)
+						{
+							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
+							part->setPosition(closest);
+							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
+						}
+					}
+				}
+			}
+			Sleep(10);
 		}
 	}
 
