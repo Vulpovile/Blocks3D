@@ -711,7 +711,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(40),toRadians(40)));
 	//selectedInstance = test;
 	
 
@@ -1238,6 +1238,7 @@ void drawButtons(RenderDevice* rd)
 
 void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
 {
+	
 	//rd->setLight(0, NULL);
 	//rd->setAmbientLightColor(Color3(1,1,1));
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
@@ -1263,49 +1264,32 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	{
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
-		float max = size.x;
-		if(abs(size.y) > max)
-			max = size.y;
-		if(abs(size.z) > max)
-			max = size.z;
-		max = max / 2;
-		Draw::arrow(pos, Vector3(0, 1+max, 0), rd);
-		Draw::arrow(pos, Vector3(1+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3(0, 0, 1+max), rd);
-		Draw::arrow(pos, Vector3(0, (-1)-max, 0), rd);
-		Draw::arrow(pos, Vector3((-1)-max, 0, 0), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1)-max), rd);
+		
+		AABox box;
+		c.toWorldSpace(Box(from, to)).getBounds(box);
+		float max = box.high().y - pos.y;
+
+		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
+		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
+		
+		max = box.high().x - pos.x;
+
+		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
+		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
+
+		max = box.high().z - pos.z;
+
+		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
+		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
 
 
-		Vector3 gamepoint = pos;
-		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 0)
-			distance = distance*-1;
-		CoordinateFrame frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y+max+0.8, pos.z));
-		Box icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x+max+0.8, pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z+(max+0.8)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y-(max+0.8), pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x-(max+0.8), pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z-(max+0.8)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, Color3::orange(), Color4::clear());
 
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
 	else if(mode == RESIZE)
 	{
+		//Box box = c.toWorldSpace(Box(from, to))
 		Color3 sphereColor = outline;
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
@@ -1318,37 +1302,28 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y + (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
-			Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+
+			position = pos + (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+
+			position = pos + (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y - (size.y/2 + 1), pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x + (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x - (size.x/2 + 1), pos.y, pos.z), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z + (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
+			//Draw::sphere(Sphere(Vector3(pos.x, pos.y, pos.z - (size.z/2 + 1)), multiplier), rd, sphereColor, Color4::clear());
 
 
 		}
-		distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 0)
-			distance = distance*-1;
-		CoordinateFrame frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y+size.y/2+1, pos.z));
-		Box icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x+size.x/2+1, pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor , Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z+(size.z/2+1)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y-(size.y/2+1), pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x-(size.x/2+1), pos.y, pos.z));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
-		frame = CoordinateFrame(rd->getCameraToWorldMatrix().rotation, Vector3(pos.x, pos.y, pos.z-(size.z/2+1)));
-		icon = Box(Vector3(0-distance/128, 0-distance/128, 0-distance/128), Vector3(distance/128, distance/128, distance/128));
-		Draw::box(frame.toWorldSpace(icon), rd, sphereColor, Color4::clear());
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
