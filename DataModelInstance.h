@@ -9,4 +9,5 @@ public:
 	DataModelInstance(void);
 	~DataModelInstance(void);
 	WorkspaceInstance* getWorkspace();
+	Instance* getGuiRoot();
 };

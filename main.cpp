@@ -27,7 +27,6 @@
 HWND hwnd;
 
 static std::string title = "";
-static std::vector<Instance*> instances_2D;
 static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
@@ -231,7 +230,7 @@ TextButtonInstance* makeTextButton()
 {
 	TextButtonInstance* part = new TextButtonInstance();
 //	instances.push_back(part);
-	instances_2D.push_back(part);
+//	instances_2D.push_back(part);
 	return part;
 }
 
@@ -239,7 +238,7 @@ ImageButtonInstance* makeImageButton(G3D::TextureRef newImage = NULL, G3D::Textu
 {
 	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage, disableImage);
 //	instances.push_back(part);
-	instances_2D.push_back(part);
+//	instances_2D.push_back(part);
 	return part;
 }
 
@@ -345,7 +344,7 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
 	
-
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->name == "Cursor" || instances_2D.at(i)->name == "Resize" || instances_2D.at(i)->name == "Arrows")
@@ -371,7 +370,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -24);
 	button->boxEnd = Vector2(80, 0);
 	button->floatBottom = true;
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -383,7 +382,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -48);
 	button->boxEnd = Vector2(80, -24);
 	button->floatBottom = true;
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -395,7 +394,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -72);
 	button->boxEnd = Vector2(80, -48);
 	button->floatBottom = true;
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -407,7 +406,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -96);
 	button->boxEnd = Vector2(80, -72);
 	button->floatBottom = true;
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->textOutlineColor = Color4::clear();
@@ -419,7 +418,7 @@ void initGUI()
 	button->boxBegin = Vector2(0, -120);
 	button->boxEnd = Vector2(80, -96);
 	button->floatBottom = true;
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
 	button->boxOutlineColor = Color3(0,255,255);
@@ -430,7 +429,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
 	button->boxEnd = Vector2(125, 25);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -443,7 +442,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
 	button->boxEnd = Vector2(250, 25);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -456,7 +455,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
 	button->boxEnd = Vector2(375, 25);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -469,7 +468,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
 	button->boxEnd = Vector2(500, 25);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -482,7 +481,7 @@ void initGUI()
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
 	button->boxEnd = Vector2(625, 25);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
@@ -505,7 +504,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 
 
 	button = makeTextButton();
@@ -519,7 +518,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,265);
@@ -532,7 +531,7 @@ void initGUI()
 	button->setAllColorsSame();
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setParent(dataModel);
+	button->setParent(dataModel->getGuiRoot());
 	button->name = "Duplicate";
 	button->setButtonListener(new GUDButtonListener());
 
@@ -541,7 +540,7 @@ void initGUI()
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 
 	
 
@@ -552,14 +551,14 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/ArrowTool_ds.png")));
 	instance->size = Vector2(50,50);
 	instance->position = Vector2(15, 90);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Cursor";
 	instance->setButtonListener(new ModeSelectionListener());
 
 	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Resize";
 	instance->setButtonListener(new ModeSelectionListener());
 	
@@ -571,7 +570,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/MoveTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(40, 140);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Arrows";
 	instance->setButtonListener(new ModeSelectionListener());
 
@@ -582,7 +581,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Rotate";
 	instance->setButtonListener(new RotateButtonListener());
 
@@ -593,7 +592,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Tilt";
 	instance->setButtonListener(new RotateButtonListener());
 
@@ -605,7 +604,7 @@ void initGUI()
 		Texture::fromFile(GetFileInPath("/content/images/Delete_ds.png")));
 	instance->size = Vector2(40,46);
 	instance->position = Vector2(20, 284);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "Delete";
 	instance->setButtonListener(new DeleteListener());
 
@@ -617,7 +616,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -90);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "ZoomIn";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -629,7 +628,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -31);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "ZoomOut";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -641,7 +640,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-110, -50);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "PanLeft";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -653,7 +652,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-45, -50);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "PanRight";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -665,7 +664,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-77, -60);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "CenterCam";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -677,7 +676,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-105, -75);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "TiltUp";
 	instance->setButtonListener(new CameraButtonListener());
 
@@ -689,7 +688,7 @@ void initGUI()
 	instance->floatBottom = true;
 	instance->floatRight = true;
 	instance->position = Vector2(-40, -75);
-	instance->setParent(dataModel);
+	instance->setParent(dataModel->getGuiRoot());
 	instance->name = "TiltDown";
 	instance->setButtonListener(new CameraButtonListener());
 }
@@ -823,18 +822,17 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
-	for(size_t i = 0; i < instances_2D.size(); i++)
+	
+	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
+		if(obj != NULL)
 		{
-			if(instances_2D.at(i)->name == "Delete")
-			{
-				ImageButtonInstance* button = (ImageButtonInstance*)instances_2D.at(i);
-				if(selectedInstance == NULL)
-					button->disabled = true;
-				else
-					button->disabled = false;
-					
-			}
+			ImageButtonInstance* button = (ImageButtonInstance*)obj;
+			if(selectedInstance == NULL)
+				button->disabled = true;
+			else
+				button->disabled = false;	
 		}
+
 
 }
 
@@ -1110,6 +1108,7 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
 	{
 		bool onGUI = false;
+		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
@@ -1155,7 +1154,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
 	{
-		
+		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 		for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
@@ -1225,10 +1224,11 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 
 void drawButtons(RenderDevice* rd)
 {
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
-			if((instance->getClassName() == "TextButton" || instance->getClassName() == "ImageButton") && instance->getParent() == dataModel)
+			if(instance->getClassName() == "TextButton" || instance->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* tbi = (BaseButtonInstance*)instance;
 				tbi->drawObj(rd, Vector2(mousex, mousey), mouseButton1Down);				
@@ -1794,7 +1794,7 @@ int main(int argc, char** argv) {
 
 	app.run();
 	}
-	catch(std::exception)
+	catch(...)
 	{
 		OnError(-1);
 	}

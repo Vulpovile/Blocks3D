@@ -2,12 +2,14 @@
 
 
 WorkspaceInstance* workspace;
+Instance* guiRoot;
 
 DataModelInstance::DataModelInstance(void)
 {
 	workspace = new WorkspaceInstance();
+	guiRoot = new Instance();
 	children.push_back(workspace);
-	className = "DataModel";
+	className = "dataModel";
 }
 
 DataModelInstance::~DataModelInstance(void)
@@ -17,4 +19,9 @@ DataModelInstance::~DataModelInstance(void)
 WorkspaceInstance* DataModelInstance::getWorkspace()
 {
 	return workspace;
+}
+
+Instance* DataModelInstance::getGuiRoot()
+{
+	return guiRoot;
 }
