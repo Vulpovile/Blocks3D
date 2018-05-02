@@ -243,6 +243,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Globals.cpp"
+				>
+			</File>
+			<File
 				RelativePath="main.cpp"
 				>
 				<FileConfiguration
@@ -305,6 +309,10 @@
 			</File>
 			<File
 				RelativePath=".\ButtonListener.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Globals.h"
 				>
 			</File>
 			<File

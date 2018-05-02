@@ -3,6 +3,10 @@
 
 WorkspaceInstance* workspace;
 Instance* guiRoot;
+float mousex;
+float mousey;
+bool mouseButton1Down;
+
 
 DataModelInstance::DataModelInstance(void)
 {
@@ -10,6 +14,9 @@ DataModelInstance::DataModelInstance(void)
 	guiRoot = new Instance();
 	children.push_back(workspace);
 	className = "dataModel";
+	mousex = 0;
+	mousey = 0;
+	mouseButton1Down = false;
 }
 
 DataModelInstance::~DataModelInstance(void)

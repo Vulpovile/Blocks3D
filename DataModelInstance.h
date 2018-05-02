@@ -10,4 +10,7 @@ public:
 	~DataModelInstance(void);
 	WorkspaceInstance* getWorkspace();
 	Instance* getGuiRoot();
+	float mousex;
+	float mousey;
+	bool mouseButton1Down;
 };

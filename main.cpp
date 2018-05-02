@@ -19,6 +19,7 @@
 #include "ImageButtonInstance.h"
 #include "DataModelInstance.h"
 #include "AudioPlayer.h"
+#include "Globals.h"
 #include <limits.h>
 
 #if G3D_VER < 61000
@@ -45,11 +46,11 @@ static G3D::TextureRef go = NULL;
 static G3D::TextureRef go_ovr = NULL;
 static G3D::TextureRef go_dn = NULL;
 VARAreaRef varStatic = NULL;
-static float mousex = 0;
-static float mousey = 0;
+//static float dataModel->mousex = 0;
+//static float dataModel->mousey = 0;
 static int cursorid = 0;
 static G3D::TextureRef cursor = NULL;
-static bool mouseButton1Down = false;
+//static bool dataModel->mouseButton1Down = false;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static bool showMouse = true;
@@ -71,10 +72,7 @@ Vector3 cameraPos = Vector3(0,2,10);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
-/**
- This simple demo applet uses the debug mode as the regular
- rendering mode so you can fly around the scene.
- */
+
 
 
 
@@ -703,6 +701,8 @@ void Demo::onInit()  {
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
+
+	Globals::dataModel = dataModel;
 	
 	initGUI();
 
@@ -1085,9 +1085,9 @@ void Demo::onUserInput(UserInput* ui) {
 		message = "FPS has been locked at " + Convert(FPSVal[index]);
 		//setDesiredFrameRate(FPSVal[index]);
 	}
-	mousex = ui->getMouseX();
-	mousey = ui->getMouseY();
-	mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
+	dataModel->mousex = ui->getMouseX();
+	dataModel->mousey = ui->getMouseY();
+	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
 	if(ui->keyDown(SDLK_UP))
 	{
 		forwards = true;
@@ -1125,7 +1125,7 @@ void Demo::onUserInput(UserInput* ui) {
 		if(!onGUI)
 		{
 			selectedInstance = NULL;
-			testRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+			testRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
 			float nearest=std::numeric_limits<float>::infinity();
 			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
@@ -1143,7 +1143,7 @@ void Demo::onUserInput(UserInput* ui) {
 							selectedInstance = test;
 							//message = "Dragging = true.";
 							//messageTime = System::time();
-							dragging = true;
+							//dragging = true;
 						}
 					}
 				}
@@ -1179,7 +1179,7 @@ void Demo::onUserInput(UserInput* ui) {
 	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
 		if (dragging) {
 		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
-		Ray dragRay = app->debugCamera.worldRay(mousex, mousey, app->renderDevice->getViewport());
+		Ray dragRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
@@ -1246,9 +1246,9 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 {
 	
 
-	if(mousex >= point1x && mousey >= point1y)
+	if(dataModel->mousex >= point1x && dataModel->mousey >= point1y)
 	{
-		if(mousex < point2x && mousey < point2y)
+		if(dataModel->mousex < point2x && dataModel->mousey < point2y)
 		{
 			return true;
 		}
@@ -1259,16 +1259,17 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 
 void drawButtons(RenderDevice* rd)
 {
-	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getChildren();
+	dataModel->getGuiRoot()->render(rd);
+	/*std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 		{
 			Instance* instance = instances_2D.at(i);
 			if(instance->getClassName() == "TextButton" || instance->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* tbi = (BaseButtonInstance*)instance;
-				tbi->drawObj(rd, Vector2(mousex, mousey), mouseButton1Down);				
+				tbi->drawObj(rd, Vector2(dataModel->mousex, dataModel->mousey), dataModel->mouseButton1Down);				
 			}
-		}
+		}*/
 }
 
 void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
