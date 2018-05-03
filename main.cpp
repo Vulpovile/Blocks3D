@@ -1012,19 +1012,19 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mousex = ui->getMouseX();
 	dataModel->mousey = ui->getMouseY();
 	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	if(ui->keyDown(SDLK_UP))
+	if(ui->keyDown('u'))
 	{
 		forwards = true;
 	}
-	else if(ui->keyDown(SDLK_DOWN))
+	else if(ui->keyDown('j'))
 	{
 		backwards = true;
 	}
-	if(ui->keyDown(SDLK_LEFT))
+	if(ui->keyDown('h'))
 	{
 		left = true;
 	}
-	else if(ui->keyDown(SDLK_RIGHT))
+	else if(ui->keyDown('k'))
 	{
 		
 		right = true;
