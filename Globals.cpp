@@ -2,6 +2,7 @@
 
 DataModelInstance* Globals::dataModel = NULL;
 
+
 Globals::Globals(void)
 {
 
