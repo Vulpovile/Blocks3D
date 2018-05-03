@@ -688,7 +688,7 @@ void Demo::onInit()  {
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
-
+	dataModel->font = fntdominant;
 	Globals::dataModel = dataModel;
 	
 	initGUI();
@@ -1376,6 +1376,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	
 	drawButtons(rd);
+	dataModel->drawMessage(rd);
 	rd->pushState();
 		rd->beforePrimitive();
 
