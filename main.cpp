@@ -1294,6 +1294,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->window()->setInputCaptureCount(1);
 	}
 	
+	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
 	
@@ -1547,7 +1548,7 @@ int main(int argc, char** argv) {
 		wc.hInstance     = hInstance;
 		wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
 		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 		wc.lpszMenuName  = NULL;
 		wc.lpszClassName = "containerHWND";
 		wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
@@ -1555,7 +1556,6 @@ int main(int argc, char** argv) {
 		if (!RegisterClassEx (&wc))
 				return false;
 
-		HMODULE hThisInstance = GetModuleHandle(NULL);
 		HWND hwnd = wnd->win32HWND();
 			HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
@@ -1568,10 +1568,10 @@ int main(int argc, char** argv) {
 			600,
 			NULL, // parent
 			NULL, // menu
-			hThisInstance,
+			hInstance,
 			NULL
 		);
-		ShowWindow(hwndMain, SW_SHOW);
+		
 		if(hwndMain == NULL)
 		{
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
@@ -1608,6 +1608,7 @@ int main(int argc, char** argv) {
 			height = rect.bottom - rect.top;
 		}
 		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
+		ShowWindow(hwndMain, SW_SHOW);
 		app.run();
 	}
 	catch(...)
