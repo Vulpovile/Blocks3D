@@ -940,7 +940,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 //User Input
 void Demo::onUserInput(UserInput* ui) {
 	
-    if (ui->keyPressed(SDLK_ESCAPE)) {
+	if (ui->keyPressed(SDLK_F4) && ui->keyDown(SDLK_LALT)) {
         // Even when we aren't in debug mode, quit on escape.
         endApplet = true;
         app->endProgram = true;
