@@ -667,7 +667,7 @@ void Demo::onInit()  {
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
-
+	dataModel->font = fntdominant;
 	Globals::dataModel = dataModel;
 	
 	initGUI();
@@ -919,7 +919,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 //User Input
 void Demo::onUserInput(UserInput* ui) {
-    if (GetKeyState(VK_ESCAPE) >> 1) {
+	if (ui->keyPressed(SDLK_F4) && ui->keyDown(SDLK_LALT)) {
         // Even when we aren't in debug mode, quit on escape.
         //endApplet = true;
 		PostQuitMessage(0);
@@ -992,22 +992,26 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mousex = ui->getMouseX();
 	dataModel->mousey = ui->getMouseY();
 	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	if(GetKeyState(VK_UP) >> 1)
+
+	if(GetKeyState('U') >> 1)
 	{
 		forwards = true;
 	}
-	else if(GetKeyState(VK_DOWN) >> 1)
+	else if(GetKeyState('J') >> 1)
 	{
 		backwards = true;
 	}
-	if(GetKeyState(VK_LEFT) >> 1)
+	if(GetKeyState('H') >> 1)
 	{
 		left = true;
 	}
-	else if(GetKeyState(VK_RIGHT) >> 1)
+	else if(GetKeyState('K') >> 1)
 	{
-		
 		right = true;
+	}
+	if(ui->keyDown('U'))
+	{
+		forwards = true;
 	}
 	
 	if(GetKeyState(SDL_LEFT_MOUSE_KEY))
@@ -1274,6 +1278,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->window()->setInputCaptureCount(1);
 	}
 	
+	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     renderDevice->setProjectionAndCameraMatrix(debugCamera);
 	
@@ -1356,6 +1361,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	
 	drawButtons(rd);
+	dataModel->drawMessage(rd);
 	rd->pushState();
 		rd->beforePrimitive();
 
@@ -1585,7 +1591,7 @@ int main(int argc, char** argv) {
 		wc.hInstance     = hInstance;
 		wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
 		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 		wc.lpszMenuName  = NULL;
 		wc.lpszClassName = "containerHWND";
 		wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
@@ -1606,21 +1612,46 @@ int main(int argc, char** argv) {
 			600,
 			NULL, // parent
 			NULL, // menu
-			hThisInstance,
+			hInstance,
 			NULL
 		);
-		ShowWindow(hwndMain, SW_SHOW);
+		
 		if(hwndMain == NULL)
 		{
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 			return 0;
 		}
-		
+		ShowWindow(hwndMain, SW_SHOW);
+
 		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
 		Demo demo = Demo(settings,win32Window);
 
 		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 		demo.run();
+/*
+		LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
+		lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
+		SetWindowLong(hwnd, GWL_STYLE, lStyle);
+
+		LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+		lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+		SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
+		SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
+		HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
+		SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
+		SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
+		
+		
+		if(GetClientRect(hwndMain, &rect))
+		{
+			width = rect.right - rect.left;
+			height = rect.bottom - rect.top;
+		}
+		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
+		
+		app.run();
+		*/
+		
 	}
 	catch(...)
 	{

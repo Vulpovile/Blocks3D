@@ -6,6 +6,9 @@ Instance* guiRoot;
 float mousex;
 float mousey;
 bool mouseButton1Down;
+std::string message;
+bool showMessage;
+G3D::GFontRef font;
 
 
 DataModelInstance::DataModelInstance(void)
@@ -17,10 +20,36 @@ DataModelInstance::DataModelInstance(void)
 	mousex = 0;
 	mousey = 0;
 	mouseButton1Down = false;
+	showMessage = false;
 }
 
 DataModelInstance::~DataModelInstance(void)
 {
+}
+
+void DataModelInstance::setMessage(std::string msg)
+{
+	message = msg;
+	showMessage = true;
+}
+
+void DataModelInstance::clearMessage()
+{
+	showMessage = false;
+	message = "";
+}
+
+void DataModelInstance::drawMessage(RenderDevice* rd)
+{
+	if(showMessage && !font.isNull())
+	{
+		int x = rd->getWidth()/2;
+		int y = rd->getHeight()/2;
+		int width = rd->getWidth()/2 + 100;
+		int height = width / 3;
+		Draw::box(Box(Vector3(x-(width/2), y-(height/2), 0), Vector3(x+(width/2), y+(height/2), 0)), rd, Color4::fromARGB(0x55B2B2B2), Color3::fromARGB(0xB2B2B2));
+		font->draw2D(rd, message, Vector2(x,y), height/8, Color3::white(), Color4::clear(), GFont::XALIGN_CENTER, GFont::YALIGN_CENTER);
+	}
 }
 
 WorkspaceInstance* DataModelInstance::getWorkspace()
