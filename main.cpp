@@ -10,7 +10,8 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
-#define NO_SDL_MAIN
+
+#define _WIN32_WINNT 0x0400
 
 #include <G3DAll.h>
 #include <iomanip>
@@ -23,6 +24,7 @@
 #include "AudioPlayer.h"
 #include "Globals.h"
 #include <limits.h>
+#include <windows.h>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -90,6 +92,13 @@ class Demo : public GApp {
 		virtual void onCleanup();
 
 		void		QuitApp();
+		void		onKeyPressed(int key);
+		void		onKeyUp(int key);
+		void		onMouseLeftPressed(int x, int y);
+		void		onMouseLeftUp(int x, int y);
+		void		onMouseRightPressed(int x, int y);
+		void		onMouseRightUp(int x, int y);
+		void		onMouseWheel(int x, int y, short delta);
 	private:
 		HWND		hWndMain;
 		SkyRef      sky;
@@ -715,7 +724,6 @@ void Demo::onInit()  {
 	test->setPosition(Vector3(2,7,0));
 
 	
-	
 
 
 
@@ -881,20 +889,18 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	return ::atof(version.c_str());
 }*/
 
-//User Input
+short GetHoldKeyState(int key)
+{
+	return GetKeyState(key) >> 1;
+}
+
 void Demo::onUserInput(UserInput* ui) {
-	if (ui->keyPressed(SDLK_F4) && ui->keyDown(SDLK_LALT)) {
-        // Even when we aren't in debug mode, quit on escape.
-        //endApplet = true;
-		PostQuitMessage(0);
-        //endProgram = true;
-    }
 	if(mouseMovedBeginMotion)
 	{
 		mouseMovedBeginMotion = false;
 		debugController.setActive(true);
 	}
-	if(GetKeyState(VK_RBUTTON) >> 1)
+	if(GetHoldKeyState(VK_RBUTTON))
 	{
 		oldMouse = ui->getMouseXY();
 		showMouse = false;
@@ -908,7 +914,7 @@ void Demo::onUserInput(UserInput* ui) {
 		debugController.setActive(false);
 	}
 
-	if(GetKeyState(VK_RSHIFT) >> 1 || GetKeyState(VK_LSHIFT) >> 1)
+	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT))
 	{
 		moveRate = 1;
 	}
@@ -953,6 +959,7 @@ void Demo::onUserInput(UserInput* ui) {
 	//	message = "FPS has been locked at " + Convert(FPSVal[index]);
 		//setDesiredFrameRate(FPSVal[index]);
 	//}
+
 	dataModel->mousex = ui->getMouseX();
 	dataModel->mousey = ui->getMouseY();
 	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
@@ -1356,21 +1363,47 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->afterPrimitive();
 
 	rd->popState();
-
-
-
-	
-
-
-	
-
 	renderDevice->pop2D();
-
-
-	
 }
 
+void Demo::onKeyPressed(int key)
+{
+	if (key=='A')
+	{
+		std::cout << "A PRESS" << std::endl;
+	}
+}
+void Demo::onKeyUp(int key)
+{
+	if (key=='A')
+	{
+		std::cout << "A UP" << std::endl;
+	}
+}
 
+void Demo::onMouseLeftPressed(int x,int y)
+{
+	std::cout << "Click: " << x << "," << y << std::endl;
+}
+void Demo::onMouseLeftUp(int x,int y)
+{
+	std::cout << "Release: " << x << "," << y << std::endl;
+}
+void Demo::onMouseRightPressed(int x,int y)
+{
+	std::cout << "Click: " << x << "," << y << std::endl;
+}
+void Demo::onMouseRightUp(int x,int y)
+{
+	std::cout << "Release: " << x << "," << y << std::endl;
+}
+void Demo::onMouseWheel(int x,int y,short delta)
+{
+	if (delta>0) // Mouse wheel up
+	{
+
+	}
+}
 /*
 void App::main() {
 	setDebugMode(false);
@@ -1385,13 +1418,6 @@ App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow
 	applet = new Demo(this);
     hwnd = wndSDL->win32HWND();
     mainHWnd = tempMainHWnd;
-    propertyHWnd = CreateWindowEx(
-        WS_EX_TOOLWINDOW,
-        "ToolWindowClass", "ToolWindow",
-        WS_SYSMENU | WS_THICKFRAME | WS_VISIBLE | WS_CHILD,
-        200, 700, 400, 64,
-        mainHWnd, NULL, GetModuleHandle(0), NULL
-    );
 
 }
 
@@ -1411,12 +1437,38 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             app->QuitApp();
         break;
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_LBUTTONDOWN:
+			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_LBUTTONUP:
+			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_RBUTTONDOWN:
+			app->onMouseRightPressed(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_RBUTTONUP:
+			app->onMouseRightUp(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_MOUSEWHEEL:
+			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		break;
 		case WM_SIZE:
 		{
-			int winWidth = LOWORD(lParam);
-			int winHeight = HIWORD(lParam);
-			app->renderDevice->notifyResize(winWidth,winHeight);
-			Rect2D viewportRect = Rect2D::xywh(0,0,winWidth,winHeight);
+			int viewWidth = LOWORD(lParam);
+			int viewHeight = HIWORD(lParam);
+			app->renderDevice->notifyResize(viewWidth,viewHeight);
+			Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
 			app->renderDevice->setViewport(viewportRect);
 			app->onGraphics(app->renderDevice);
 		}
@@ -1432,13 +1484,63 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+
+LRESULT CALLBACK ToolProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+    switch(msg)
+    {
+		case WM_SIZE:
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+
+bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
+{
+	WNDCLASSEX wc;
+	wc.cbSize        = sizeof(WNDCLASSEX);
+	wc.style         = 0;
+	wc.lpfnWndProc   = proc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance     = hInstance;
+	wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	wc.lpszMenuName  = NULL;
+	wc.lpszClassName = name;
+	wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
+	if (!RegisterClassEx (&wc))
+		return false;
+	return true;
+}
+
 void Demo::main() {
 	usableApp = this;
 	setDebugMode(true);
 	debugController.setActive(false);
+	/*
+	if (!createWindowClass("ToolWindowClass",ToolProc,GetModuleHandle(0)))
+	{
+		return;
+	}
 
-    // Load objects here
+    HWND propertyHWnd = CreateWindowEx(
+    WS_EX_TOOLWINDOW,"ToolWindowClass", "ToolWindow",
+    WS_SYSMENU | WS_VISIBLE | WS_CHILD,
+	0, 0, 800, 64,
+    hWndMain, NULL, GetModuleHandle(0), NULL);
 
+	ShowWindow(propertyHWnd,SW_SHOW);
+	*/
+	UpdateWindow(hWndMain);
+
+    // Load objects here=
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
@@ -1466,6 +1568,7 @@ void Demo::main() {
 	renderDevice->notifyResize(cRect.right,cRect.bottom);
 	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
 	renderDevice->setViewport(viewportRect);
+	window()->setInputCaptureCount(1);
 
 	while (!quit)
 	{
@@ -1528,7 +1631,6 @@ void Demo::QuitApp()
 	quit=true;
 }
 
-
 int main(int argc, char** argv) {
 	try{
 		tempPath = ((std::string)getenv("temp")) + "/Dynamica";
@@ -1542,30 +1644,18 @@ int main(int argc, char** argv) {
 		settings.writeLicenseFile = false;
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
-
-		WNDCLASSEX wc;
-		HINSTANCE hInstance = GetModuleHandle(NULL);
-		wc.cbSize        = sizeof(WNDCLASSEX);
-		wc.style         = 0;
-		wc.lpfnWndProc   = WndProc;
-		wc.cbClsExtra    = 0;
-		wc.cbWndExtra    = 0;
-		wc.hInstance     = hInstance;
-		wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-		wc.lpszMenuName  = NULL;
-		wc.lpszClassName = "containerHWND";
-		wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-		
-		if (!RegisterClassEx (&wc))
-				return false;
-
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
+		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
+		{
+			MessageBox(NULL, "Failed to register mainHWND","Dynamica Crash", MB_OK);
+			return false;
+		}
+
+		
 			HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
-			"containerHWND",
+			"mainHWND",
 			"Main test",
 			WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT,
@@ -1574,7 +1664,7 @@ int main(int argc, char** argv) {
 			600,
 			NULL, // parent
 			NULL, // menu
-			hInstance,
+			hThisInstance,
 			NULL
 		);
 		
