@@ -99,6 +99,7 @@ class Demo : public GApp {
 		void		onMouseRightPressed(int x, int y);
 		void		onMouseRightUp(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
+
 	private:
 		HWND		hWndMain;
 		SkyRef      sky;
@@ -984,76 +985,6 @@ void Demo::onUserInput(UserInput* ui) {
 	{
 		forwards = true;
 	}
-	
-	if(GetKeyState(SDL_LEFT_MOUSE_KEY))
-	{
-		bool onGUI = false;
-		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-		for(size_t i = 0; i < instances_2D.size(); i++)
-		{
-			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
-			{
-				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, renderDevice))
-				{
-					onGUI = true;
-					break;
-				}
-			}
-		}
-		if(!onGUI)
-		{
-			selectedInstance = NULL;
-			testRay = debugCamera.worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
-			float nearest=std::numeric_limits<float>::infinity();
-			Vector3 camPos = debugCamera.getCoordinateFrame().translation;
-			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-            for(size_t i = 0; i < instances.size(); i++)
-			{
-				if(instances.at(i)->getClassName() == "Part")
-				{
-					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
-					float time = testRay.intersectionTime(test->getBox());
-					if (time != inf()) 
-					{
-						if (nearest>time)
-						{
-							nearest=time;
-							selectedInstance = test;
-							//message = "Dragging = true.";
-							//messageTime = System::time();
-							//dragging = true;
-						}
-					}
-				}
-			}
-			
-				
-				
-			//message = Convert(closest);
-            
-		}
-	}
-
-	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
-	{
-		dragging = false;
-		//message = "Dragging = false.";
-		//messageTime = System::time();
-		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-		for(size_t i = 0; i < instances_2D.size(); i++)
-		{
-			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
-			{
-				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, renderDevice))
-				{
-					button->onMouseClick();
-				}
-			}
-		}
-	}
 
 	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
 		if (dragging) {
@@ -1384,10 +1315,69 @@ void Demo::onKeyUp(int key)
 void Demo::onMouseLeftPressed(int x,int y)
 {
 	std::cout << "Click: " << x << "," << y << std::endl;
+
+	bool onGUI = false;
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
+	for(size_t i = 0; i < instances_2D.size(); i++)
+	{
+		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		{
+			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+			if(button->mouseInButton(x,y, renderDevice))
+			{
+				onGUI = true;
+				break;
+			}
+		}
+	}
+	if(!onGUI)
+	{
+		selectedInstance = NULL;
+		testRay = debugCamera.worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
+		float nearest=std::numeric_limits<float>::infinity();
+		Vector3 camPos = debugCamera.getCoordinateFrame().translation;
+		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+        for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(instances.at(i)->getClassName() == "Part")
+			{
+				PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
+				float time = testRay.intersectionTime(test->getBox());
+				if (time != inf()) 
+				{
+					if (nearest>time)
+					{
+						nearest=time;
+						selectedInstance = test;
+						//message = "Dragging = true.";
+						//messageTime = System::time();
+						//dragging = true;
+					}
+				}
+			}
+		}
+	}
 }
 void Demo::onMouseLeftUp(int x,int y)
 {
 	std::cout << "Release: " << x << "," << y << std::endl;
+
+	dragging = false;
+	//message = "Dragging = false.";
+	//messageTime = System::time();
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
+	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+	for(size_t i = 0; i < instances_2D.size(); i++)
+	{
+		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		{
+			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+			if(button->mouseInButton(x, y, renderDevice))
+			{
+				button->onMouseClick();
+			}
+		}
+	}
 }
 void Demo::onMouseRightPressed(int x,int y)
 {
