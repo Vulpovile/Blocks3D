@@ -10,6 +10,7 @@ Color3 color;
 bool changed = true;
 Box itemBox = Box();
 
+
 PhysicalInstance::PhysicalInstance(void)
 {
 	name = "Default PhysicalInstance";
@@ -23,7 +24,38 @@ PhysicalInstance::PhysicalInstance(void)
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
 }
+void PhysicalInstance::setSize(Vector3 newSize)
+{
+	int minsize = 1;
+	int maxsize = 512;
+	changed = true;
+	int sizex = (int)newSize.x;
+	if(sizex <= 0)
+		sizex = 1;
+	if(sizex > 512)
+		sizex = 512;
 
+	int sizey = (int)newSize.y;
+	if(sizey <= 0)
+		sizey = 1;
+	if(sizey > 512)
+		sizey = 512;
+
+	int sizez = (int)newSize.z;
+	if(sizez <= 0)
+		sizez = 1;
+	if(sizez > 512)
+		sizez = 512;
+
+	size = Vector3(sizex, sizey, sizez);
+
+
+
+}
+Vector3 PhysicalInstance::getSize()
+{
+	return size;
+}
 Vector3 PhysicalInstance::getPosition()
 {
 	return position;
@@ -59,6 +91,19 @@ Box PhysicalInstance::getBox()
 		itemBox = c.toWorldSpace(box);
 	}
 	return itemBox;
+}
+
+void PhysicalInstance::render(RenderDevice* rd)
+{
+	Draw::box(getBox(), rd, color, Color4::clear());
+	if(!children.empty())
+	{
+		for(size_t i = 0; i < children.size(); i++)
+		{
+			children.at(i)->render(rd);
+		}
+	}
+	
 }
 
 PhysicalInstance::~PhysicalInstance(void)

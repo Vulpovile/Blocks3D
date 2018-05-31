@@ -1,4 +1,5 @@
 #include "BaseButtonInstance.h"
+#include "Globals.h"
 
 bool floatBottom = false;
 bool floatRight = false;
@@ -10,6 +11,14 @@ ButtonListener* listener = NULL;
 BaseButtonInstance::BaseButtonInstance(void)
 {
 	listener = NULL;
+}
+
+void BaseButtonInstance::render(RenderDevice* rd)
+{
+	DataModelInstance* dataModel = Globals::dataModel;
+	Vector2 pos = Vector2(dataModel->mousex,dataModel->mousey);
+	drawObj(rd, pos, dataModel->mouseButton1Down);
+	Instance::render(rd);
 }
 
 BaseButtonInstance::~BaseButtonInstance(void)

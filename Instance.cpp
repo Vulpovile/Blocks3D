@@ -3,20 +3,103 @@
 #include "Instance.h"
 
 std::string name;
-Instance* parent;
-static std::string className = "DataModel";
+Instance* parent = NULL;
+std::vector<Instance* > children;
+static std::string className = "BaseInstance";
 
 Instance::Instance(void)
 {
+	parent = NULL;
 	name = "Default Game Instance";
-	className = "DataModel";
+	className = "BaseInstance";
+}
+
+void Instance::render(RenderDevice* rd)
+{
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		children.at(i)->render(rd);
+	}
 }
 
 Instance::~Instance(void)
 {
-	name = "Default Game Instance";
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		delete children.at(i);
+	}
 }
 
+std::string Instance::getClassName()
+{
+	return className;
+}
 
+std::vector<Instance* > Instance::getChildren()
+{
+	return children;
+}
 
+std::vector<Instance* > Instance::getAllChildren()
+{
+	if(!children.empty())
+	{
+		std::vector<Instance* > totalchildren = children;
+		for(size_t i = 0; i < children.size(); i++)
+		{
+			std::vector<Instance* > subchildren = children.at(i)->getAllChildren();
+			if(!subchildren.empty())
+				totalchildren.insert(totalchildren.end(), subchildren.begin(), subchildren.end());
+		}
+		return totalchildren;
+	}
+	return children;
+}
 
+void Instance::setParent(Instance* newParent)
+{
+	if(parent != NULL)
+	{
+		parent->removeChild(this);
+	}
+	parent = newParent;
+	if(newParent != NULL)
+	{
+		newParent->addChild(this);
+	}
+}
+
+Instance* Instance::getParent()
+{
+	return parent;
+}
+
+void Instance::addChild(Instance* newChild)
+{
+	children.push_back(newChild);
+}
+
+void Instance::removeChild(Instance* oldChild)
+{
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		if(children.at(i) == oldChild)
+		{
+			children.erase(children.begin() + i);
+		}
+	}
+}
+
+Instance* Instance::findFirstChild(std::string name)
+{
+	Instance* child = NULL;
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		if(children.at(i)->name == name)
+		{
+			child = children.at(i);
+			break;
+		}
+	}
+	return child;
+}

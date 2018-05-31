@@ -8,6 +8,7 @@ class BaseButtonInstance : public Instance
 public:
 	BaseButtonInstance(void);
 	virtual ~BaseButtonInstance(void);
+	virtual void render(RenderDevice* rd);
 	virtual void drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown);
 	virtual bool mouseInButton(float, float, RenderDevice* rd);
 	virtual void onMouseClick();
