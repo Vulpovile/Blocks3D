@@ -79,7 +79,6 @@ class Demo : public GApp {
 	public:
 		Demo(const GAppSettings& settings,Win32Window* wind);
 
-		//class App*          app;
 		virtual void exitApplication();
 		virtual ~Demo() {}
 		virtual void onInit();
@@ -99,42 +98,7 @@ class Demo : public GApp {
 
 };
 
-class App : public GApp {
-    protected:
-        void main();
-    public:
-        SkyRef              sky;
-
-        Demo*               applet;
-
-        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow*);
-		
-
-        ~App();
-        HWND getHWND();
-        HWND getPropertyHWND();
-        HWND getMainHWND();
-    private:
-        HWND hwnd;
-        HWND propertyHWnd;
-        HWND mainHWnd;
-};
-
-App *usableApp = NULL;
-
-HWND App::getHWND()
-{
-    return hwnd;
-}
-HWND App::getPropertyHWND()
-{
-    return propertyHWnd;
-}
-HWND App::getMainHWND()
-{
-    return mainHWnd;
-}
- 
+Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
 	varStatic = VARArea::create(1024 * 1024);
@@ -934,12 +898,12 @@ void Demo::onUserInput(UserInput* ui) {
 	{
 		oldMouse = ui->getMouseXY();
 		showMouse = false;
-		window()->setRelativeMousePosition(window()->width()/2, window()->height()/2);
+		//window()->setRelativeMousePosition(window()->width()/2, window()->height()/2);
 		mouseMovedBeginMotion = true;
 	}
 	else
 	{
-		ui->setMouseXY(oldMouse);
+		//ui->setMouseXY(oldMouse);
 		showMouse = true;
 		debugController.setActive(false);
 	}
@@ -1407,28 +1371,17 @@ void Demo::onGraphics(RenderDevice* rd) {
 }
 
 
-
+/*
 void App::main() {
-	usableApp = this;
 	setDebugMode(false);
 	debugController.setActive(false);
-    // Load objects here
-	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
-	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
-	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
-	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
-	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
-	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
-	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
-	clickSound = GetFileInPath("/content/sounds/switch.wav");
-	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
-    sky = Sky::create(NULL, ExePath() + "/content/sky/");
-	cursorid = cursor->openGLID();
     applet->run();
 }
+*/
 
+/*
 App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
-    /*
+
 	applet = new Demo(this);
     hwnd = wndSDL->win32HWND();
     mainHWnd = tempMainHWnd;
@@ -1439,14 +1392,13 @@ App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow
         200, 700, 400, 64,
         mainHWnd, NULL, GetModuleHandle(0), NULL
     );
-	*/
-}
 
+}
 
 App::~App() {
     delete applet;
 }
-
+*/
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -1481,21 +1433,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 void Demo::main() {
+	usableApp = this;
 	setDebugMode(true);
 	debugController.setActive(false);
+
     // Load objects here
+
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
+	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
+	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
+	clickSound = GetFileInPath("/content/sounds/switch.wav");
+	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
+	cursorid = cursor->openGLID();
 
-	RealTime	now, lastTime;
+	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
 	float		fps=30.f;
 
 	RealTime	desiredFrameDuration=1.0/fps;
 	onInit();
-	RealTime    lastWaitTime;
+	RealTime    lastWaitTime=0;
 
 	MSG			messages;
 	RECT cRect;
@@ -1511,12 +1473,12 @@ void Demo::main() {
 		lastTime = now;
 		now = System::getTick();
 		RealTime timeStep = now - lastTime;
-
+		
 		m_userInputWatch.tick();
 			onUserInput(userInput);
 			m_moduleManager->onUserInput(userInput);
 		m_userInputWatch.tock();
-
+		
 		m_simulationWatch.tick();
 			debugController.doSimulation(clamp(timeStep, 0.0, 0.1));
 			debugCamera.setCoordinateFrame
@@ -1627,31 +1589,7 @@ int main(int argc, char** argv) {
 		Demo demo = Demo(settings,win32Window);
 
 		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
-		demo.run();
-/*
-		LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
-		lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
-		SetWindowLong(hwnd, GWL_STYLE, lStyle);
-
-		LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-		lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-		SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
-		SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
-		HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
-		SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
-		SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
-		
-		
-		if(GetClientRect(hwndMain, &rect))
-		{
-			width = rect.right - rect.left;
-			height = rect.bottom - rect.top;
-		}
-		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
-		
-		app.run();
-		*/
-		
+		demo.run();		
 	}
 	catch(...)
 	{
