@@ -16,5 +16,6 @@ public:
 	Instance* getGuiRoot();
 	float mousex;
 	float mousey;
+	Vector2 getMousePos();
 	bool mouseButton1Down;
 };

@@ -56,7 +56,10 @@ WorkspaceInstance* DataModelInstance::getWorkspace()
 {
 	return workspace;
 }
-
+Vector2 DataModelInstance::getMousePos()
+{
+	return Vector2(mousex,mousey);
+}
 Instance* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;

@@ -98,6 +98,7 @@ class Demo : public GApp {
 		void		onMouseLeftUp(int x, int y);
 		void		onMouseRightPressed(int x, int y);
 		void		onMouseRightUp(int x, int y);
+		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
 
 	private:
@@ -894,6 +895,10 @@ short GetHoldKeyState(int key)
 {
 	return GetKeyState(key) >> 1;
 }
+bool IsHolding(int button)
+{
+	return (GetKeyState(button) >> 1)>0;
+}
 
 void Demo::onUserInput(UserInput* ui) {
 	if(mouseMovedBeginMotion)
@@ -903,7 +908,7 @@ void Demo::onUserInput(UserInput* ui) {
 	}
 	if(GetHoldKeyState(VK_RBUTTON))
 	{
-		oldMouse = ui->getMouseXY();
+		oldMouse = dataModel->getMousePos();
 		showMouse = false;
 		//window()->setRelativeMousePosition(window()->width()/2, window()->height()/2);
 		mouseMovedBeginMotion = true;
@@ -924,27 +929,14 @@ void Demo::onUserInput(UserInput* ui) {
 		moveRate = 0.5;
 	}
 
-	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
-	{
-		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = debugCamera.getCoordinateFrame();
-		cameraPos = cameraPos + frame.lookVector()*2;
-	}
-	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
-	{
-		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = debugCamera.getCoordinateFrame();
-		cameraPos = cameraPos - frame.lookVector()*2;
-	}
-
-	if(GetKeyState(VK_DELETE) >> 1)
+	if(GetHoldKeyState(VK_DELETE))
 	{
 		deleteInstance();
 	}
 
-	if(GetKeyState(VK_LCONTROL) >> 1)
+	if(GetHoldKeyState(VK_LCONTROL))
 	{
-		if(GetKeyState('D') >> 1)
+		if(GetHoldKeyState('D'))
 		{
 			messageTime = System::time();
 			if(debugMode())
@@ -961,32 +953,28 @@ void Demo::onUserInput(UserInput* ui) {
 		//setDesiredFrameRate(FPSVal[index]);
 	//}
 
-	dataModel->mousex = ui->getMouseX();
-	dataModel->mousey = ui->getMouseY();
-	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
+	//dataModel->mousex = ui->getMouseX();
+	//dataModel->mousey = ui->getMouseY();
+	dataModel->mouseButton1Down = IsHolding(VK_LBUTTON);
 
-	if(GetKeyState('U') >> 1)
+	if(GetHoldKeyState('U'))
 	{
 		forwards = true;
 	}
-	else if(GetKeyState('J') >> 1)
+	if(GetHoldKeyState('J'))
 	{
 		backwards = true;
 	}
-	if(GetKeyState('H') >> 1)
+	if(GetHoldKeyState('H'))
 	{
 		left = true;
 	}
-	else if(GetKeyState('K') >> 1)
+	if(GetHoldKeyState('K'))
 	{
 		right = true;
 	}
-	if(ui->keyDown('U'))
-	{
-		forwards = true;
-	}
 
-	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
+	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
 		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 		Ray dragRay = debugCamera.worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
@@ -1387,11 +1375,26 @@ void Demo::onMouseRightUp(int x,int y)
 {
 	std::cout << "Release: " << x << "," << y << std::endl;
 }
+void Demo::onMouseMoved(int x,int y)
+{
+	std::cout << "Moved: " << x << "," << y << std::endl;
+	dataModel->mousex = x;
+	dataModel->mousey = y;
+
+}
 void Demo::onMouseWheel(int x,int y,short delta)
 {
 	if (delta>0) // Mouse wheel up
 	{
-
+		AudioPlayer::playSound(cameraSound);
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
+		cameraPos = cameraPos + frame.lookVector()*2;
+	}
+	else
+	{
+		AudioPlayer::playSound(cameraSound);
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
+		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 }
 /*
@@ -1441,6 +1444,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_LBUTTONDOWN:
 			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
 		break;
+		case WM_MOUSEMOVE:
+			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
+		break;
 		case WM_LBUTTONUP:
 			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
 		break;
@@ -1462,9 +1468,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			app->renderDevice->setViewport(viewportRect);
 			app->onGraphics(app->renderDevice);
 		}
-		break;
-		case WM_MOUSEMOVE:
-
 		break;
         default:
 		{
