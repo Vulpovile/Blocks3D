@@ -688,7 +688,7 @@ void Demo::onInit()  {
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
-
+	dataModel->font = fntdominant;
 	Globals::dataModel = dataModel;
 	
 	initGUI();
@@ -940,7 +940,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 //User Input
 void Demo::onUserInput(UserInput* ui) {
 	
-    if (ui->keyPressed(SDLK_ESCAPE)) {
+	if (ui->keyPressed(SDLK_F4) && ui->keyDown(SDLK_LALT)) {
         // Even when we aren't in debug mode, quit on escape.
         endApplet = true;
         app->endProgram = true;
@@ -1012,19 +1012,19 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mousex = ui->getMouseX();
 	dataModel->mousey = ui->getMouseY();
 	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	if(ui->keyDown(SDLK_UP))
+	if(ui->keyDown('u'))
 	{
 		forwards = true;
 	}
-	else if(ui->keyDown(SDLK_DOWN))
+	else if(ui->keyDown('j'))
 	{
 		backwards = true;
 	}
-	if(ui->keyDown(SDLK_LEFT))
+	if(ui->keyDown('h'))
 	{
 		left = true;
 	}
-	else if(ui->keyDown(SDLK_RIGHT))
+	else if(ui->keyDown('k'))
 	{
 		
 		right = true;
@@ -1294,6 +1294,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->window()->setInputCaptureCount(1);
 	}
 	
+	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
 	
@@ -1376,6 +1377,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	
 	drawButtons(rd);
+	dataModel->drawMessage(rd);
 	rd->pushState();
 		rd->beforePrimitive();
 
@@ -1546,7 +1548,7 @@ int main(int argc, char** argv) {
 		wc.hInstance     = hInstance;
 		wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
 		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 		wc.lpszMenuName  = NULL;
 		wc.lpszClassName = "containerHWND";
 		wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
@@ -1554,7 +1556,6 @@ int main(int argc, char** argv) {
 		if (!RegisterClassEx (&wc))
 				return false;
 
-		HMODULE hThisInstance = GetModuleHandle(NULL);
 		HWND hwnd = wnd->win32HWND();
 			HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
@@ -1567,10 +1568,10 @@ int main(int argc, char** argv) {
 			600,
 			NULL, // parent
 			NULL, // menu
-			hThisInstance,
+			hInstance,
 			NULL
 		);
-		ShowWindow(hwndMain, SW_SHOW);
+		
 		if(hwndMain == NULL)
 		{
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
@@ -1607,6 +1608,7 @@ int main(int argc, char** argv) {
 			height = rect.bottom - rect.top;
 		}
 		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
+		ShowWindow(hwndMain, SW_SHOW);
 		app.run();
 	}
 	catch(...)

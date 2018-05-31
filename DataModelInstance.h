@@ -8,6 +8,10 @@ class DataModelInstance :
 public:
 	DataModelInstance(void);
 	~DataModelInstance(void);
+	void setMessage(std::string);
+	void clearMessage();
+	void drawMessage(RenderDevice*);
+	GFontRef font;
 	WorkspaceInstance* getWorkspace();
 	Instance* getGuiRoot();
 	float mousex;
