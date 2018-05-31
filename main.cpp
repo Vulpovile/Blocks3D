@@ -10,6 +10,8 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
+#define NO_SDL_MAIN
+
 #include <G3DAll.h>
 #include <iomanip>
 #include "Instance.h"
@@ -87,10 +89,13 @@ class Demo : public GApp {
 		virtual void onGraphics(RenderDevice* rd);
 		virtual void onUserInput(UserInput* ui);
 		virtual void onCleanup();
+
+		void		QuitApp();
 	private:
-		HWND hWndMain;
-		SkyRef              sky;
-		void main();
+		HWND		hWndMain;
+		SkyRef      sky;
+		bool		quit;
+		void		main();
 };
 
 class App : public GApp {
@@ -133,6 +138,7 @@ HWND App::getMainHWND()
 Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
 	varStatic = VARArea::create(1024 * 1024);
 	hWndMain = window->hwnd();
+	quit=false;
 }
 
 void clearInstances()
@@ -912,36 +918,36 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 //User Input
 void Demo::onUserInput(UserInput* ui) {
-	
-    if (ui->keyPressed(SDLK_ESCAPE)) {
+    if (GetKeyState(VK_ESCAPE) >> 1) {
         // Even when we aren't in debug mode, quit on escape.
         //endApplet = true;
-        endProgram = true;
+		PostQuitMessage(0);
+        //endProgram = true;
     }
 	if(mouseMovedBeginMotion)
 	{
 		mouseMovedBeginMotion = false;
 		debugController.setActive(true);
 	}
-	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
+	if(GetKeyState(VK_RBUTTON) >> 1)
 	{
 		oldMouse = ui->getMouseXY();
 		showMouse = false;
 		window()->setRelativeMousePosition(window()->width()/2, window()->height()/2);
 		mouseMovedBeginMotion = true;
-		
 	}
-	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
+	else
 	{
 		ui->setMouseXY(oldMouse);
 		showMouse = true;
 		debugController.setActive(false);
 	}
-	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
+
+	if(GetKeyState(VK_RSHIFT) >> 1 || GetKeyState(VK_LSHIFT) >> 1)
 	{
 		moveRate = 1;
 	}
-	else if(ui->keyReleased(SDLK_LSHIFT) || ui->keyReleased(SDLK_RSHIFT))
+	else
 	{
 		moveRate = 0.5;
 	}
@@ -959,14 +965,14 @@ void Demo::onUserInput(UserInput* ui) {
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 
-	if(ui->keyPressed(SDLK_DELETE))
+	if(GetKeyState(VK_DELETE) >> 1)
 	{
 		deleteInstance();
 	}
 
-	if(ui->keyDown(SDLK_LCTRL))
+	if(GetKeyState(VK_LCONTROL) >> 1)
 	{
-		if(ui->keyPressed('d'))
+		if(GetKeyState('D') >> 1)
 		{
 			messageTime = System::time();
 			if(debugMode())
@@ -985,25 +991,25 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mousex = ui->getMouseX();
 	dataModel->mousey = ui->getMouseY();
 	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	if(ui->keyDown(SDLK_UP))
+	if(GetKeyState(VK_UP) >> 1)
 	{
 		forwards = true;
 	}
-	else if(ui->keyDown(SDLK_DOWN))
+	else if(GetKeyState(VK_DOWN) >> 1)
 	{
 		backwards = true;
 	}
-	if(ui->keyDown(SDLK_LEFT))
+	if(GetKeyState(VK_LEFT) >> 1)
 	{
 		left = true;
 	}
-	else if(ui->keyDown(SDLK_RIGHT))
+	else if(GetKeyState(VK_RIGHT) >> 1)
 	{
 		
 		right = true;
 	}
 	
-	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
+	if(GetKeyState(SDL_LEFT_MOUSE_KEY))
 	{
 		bool onGUI = false;
 		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
@@ -1440,16 +1446,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
     switch(msg)
     {
-        case WM_CLOSE:
-		PostQuitMessage(0);
+        case WM_QUIT:
+			app->QuitApp();
         break;
         case WM_DESTROY:
-            PostQuitMessage(0);
+            app->QuitApp();
         break;
 		case WM_SIZE:
 
 		break;
 		case WM_MOUSEMOVE:
+
 		break;
         default:
 		{
@@ -1470,7 +1477,7 @@ void Demo::main() {
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
     //run();
 
-	bool				quit=false;
+	
 	RealTime            now, lastTime;
 	double				simTimeRate = 1.0f;
 	float				fps=30.f;
@@ -1482,8 +1489,9 @@ void Demo::main() {
 	
 	//wind->
 	MSG messages;            /* Here messages to the application are saved */
-	while (GetMessage (&messages, NULL, 0, 0))
-    {
+
+	while (!quit)
+	{
 		lastTime = now;
 		now = System::getTick();
 		RealTime timeStep = now - lastTime;
@@ -1517,13 +1525,16 @@ void Demo::main() {
 
 		m_graphicsWatch.tick();
         renderDevice->beginFrame();
-            renderDevice->pushState();
-                onGraphics(renderDevice);
-            renderDevice->popState();
-            renderDebugInfo();
+		renderDevice->pushState();
+		onGraphics(renderDevice);
+		renderDevice->popState();
+		renderDebugInfo();
 		renderDevice->endFrame();
         debugText.clear();
 		m_graphicsWatch.tock();
+
+	while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
+    {
 		
 		 if (IsDialogMessage(hWndMain, &messages) == 0)
         {
@@ -1532,11 +1543,18 @@ void Demo::main() {
             /* Send message to WindowProcedure */
             DispatchMessage(&messages);
         }
-		//onGraphics(renderDevice);
 
+	}
 	}
 
 }
+
+void Demo::QuitApp()
+{
+	PostQuitMessage(0);
+	quit=true;
+}
+
 
 int main(int argc, char** argv) {
 	try{
@@ -1600,7 +1618,6 @@ int main(int argc, char** argv) {
 		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
 		Demo demo = Demo(settings,win32Window);
 		demo.run();
-		//app.run();
 	}
 	catch(...)
 	{
