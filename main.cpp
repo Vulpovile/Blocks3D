@@ -96,6 +96,7 @@ class Demo : public GApp {
 		SkyRef      sky;
 		bool		quit;
 		void		main();
+
 };
 
 class App : public GApp {
@@ -1453,7 +1454,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             app->QuitApp();
         break;
 		case WM_SIZE:
-
+		{
+			int winWidth = LOWORD(lParam);
+			int winHeight = HIWORD(lParam);
+			app->renderDevice->notifyResize(winWidth,winHeight);
+			Rect2D viewportRect = Rect2D::xywh(0,0,winWidth,winHeight);
+			app->renderDevice->setViewport(viewportRect);
+			app->onGraphics(app->renderDevice);
+		}
 		break;
 		case WM_MOUSEMOVE:
 
@@ -1466,7 +1474,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-
 void Demo::main() {
 	setDebugMode(true);
 	debugController.setActive(false);
@@ -1475,78 +1482,76 @@ void Demo::main() {
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
-    //run();
 
-	
-	RealTime            now, lastTime;
-	double				simTimeRate = 1.0f;
-	float				fps=30.f;
+	RealTime	now, lastTime;
+	double		simTimeRate = 1.0f;
+	float		fps=30.f;
 
-	RealTime			desiredFrameDuration=1.0/fps;
+	RealTime	desiredFrameDuration=1.0/fps;
 	onInit();
-	RealTime            lastWaitTime;
-	//GWindow* wind = window();
-	
-	//wind->
-	MSG messages;            /* Here messages to the application are saved */
+	RealTime    lastWaitTime;
+
+	MSG			messages;
+	RECT cRect;
+	GetClientRect(hWndMain,&cRect);
+
+	renderDevice->notifyResize(cRect.right,cRect.bottom);
+	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
+	renderDevice->setViewport(viewportRect);
 
 	while (!quit)
 	{
+		
 		lastTime = now;
 		now = System::getTick();
 		RealTime timeStep = now - lastTime;
 
 		m_userInputWatch.tick();
-		onUserInput(userInput);
-		m_moduleManager->onUserInput(userInput);
+			onUserInput(userInput);
+			m_moduleManager->onUserInput(userInput);
 		m_userInputWatch.tock();
 
 		m_simulationWatch.tick();
-		debugController.doSimulation(clamp(timeStep, 0.0, 0.1));
-		debugCamera.setCoordinateFrame
-			(debugController.getCoordinateFrame());
+			debugController.doSimulation(clamp(timeStep, 0.0, 0.1));
+			debugCamera.setCoordinateFrame
+				(debugController.getCoordinateFrame());
 
-		double rate = simTimeRate;    
-        RealTime rdt = timeStep;
-        SimTime  sdt = timeStep * rate;
-        SimTime  idt = desiredFrameDuration * rate;
+			double rate = simTimeRate;    
+			RealTime rdt = timeStep;
+			SimTime  sdt = timeStep * rate;
+			SimTime  idt = desiredFrameDuration * rate;
 
-		onSimulation(rdt,sdt,idt);
+			onSimulation(rdt,sdt,idt);
 		m_simulationWatch.tock();
+
 		m_waitWatch.tick();
 		{
 			RealTime now = System::time();
 			// Compute accumulated time
 			System::sleep(max(0.0, desiredFrameDuration - (now - lastWaitTime)));
-			//onWait(now - lastWaitTime, desiredFrameDuration);
 			lastWaitTime = System::time();
 		}
 		m_waitWatch.tock();
 
 		m_graphicsWatch.tick();
-        renderDevice->beginFrame();
-		renderDevice->pushState();
-		onGraphics(renderDevice);
-		renderDevice->popState();
-		renderDebugInfo();
-		renderDevice->endFrame();
-        debugText.clear();
+			renderDevice->beginFrame();
+				renderDevice->pushState();
+					onGraphics(renderDevice);
+				renderDevice->popState();
+				renderDebugInfo();
+			renderDevice->endFrame();
+			debugText.clear();
 		m_graphicsWatch.tock();
 
-	while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
-    {
-		
-		 if (IsDialogMessage(hWndMain, &messages) == 0)
-        {
-            /* Translate virtual-key messages into character messages */
-            TranslateMessage(&messages);
-            /* Send message to WindowProcedure */
-            DispatchMessage(&messages);
-        }
-
+		while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
+		{
+			if (IsDialogMessage(hWndMain, &messages) == 0)
+			{
+				TranslateMessage(&messages);
+				DispatchMessage(&messages);
+			}
+		}
 	}
-	}
-
 }
 
 void Demo::QuitApp()
@@ -1569,10 +1574,6 @@ int main(int argc, char** argv) {
 		settings.writeLicenseFile = false;
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
-		//G3D::SDLWindow* wnd = new SDLWindow(settings.window);
-		//wnd->setMouseVisible(false);
-		
-
 
 		WNDCLASSEX wc;
 		HINSTANCE hInstance = GetModuleHandle(NULL);
@@ -1617,6 +1618,8 @@ int main(int argc, char** argv) {
 		
 		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
 		Demo demo = Demo(settings,win32Window);
+
+		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 		demo.run();
 	}
 	catch(...)
