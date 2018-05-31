@@ -73,52 +73,25 @@ Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
 
-class Demo : public GApplet {
+class Demo : public GApp {
+	public:
+		Demo(const GAppSettings& settings,Win32Window* wind);
 
-public:
-
-    // Add state that should be visible to this applet.
-    // If you have multiple applets that need to share
-    // state, put it in the App.
-
-    class App*          app;
-
-	virtual void exitApplication();
-
-    Demo(App* app);
-
-    virtual ~Demo() {}
-
-    virtual void onInit();
-
-    virtual void onLogic();
-
-	virtual void onNetwork();
-
-    virtual void onSimulation(RealTime rdt, SimTime sdt, SimTime idt);
-
-    virtual void onGraphics(RenderDevice* rd);
-
-    virtual void onUserInput(UserInput* ui);
-
-    virtual void onCleanup();
-
+		//class App*          app;
+		virtual void exitApplication();
+		virtual ~Demo() {}
+		virtual void onInit();
+		virtual void onLogic();
+		virtual void onNetwork();
+		virtual void onSimulation(RealTime rdt, SimTime sdt, SimTime idt);
+		virtual void onGraphics(RenderDevice* rd);
+		virtual void onUserInput(UserInput* ui);
+		virtual void onCleanup();
+	private:
+		HWND hWndMain;
+		SkyRef              sky;
+		void main();
 };
-
-
-
-/*class App : public GApp {
-protected:
-    void main();
-public:
-    SkyRef              sky;
-
-    Demo*               applet;
-
-    App(const GAppSettings& settings, GWindow* wnd);
-
-    ~App();
-};*/
 
 class App : public GApp {
     protected:
@@ -135,7 +108,6 @@ class App : public GApp {
         HWND getHWND();
         HWND getPropertyHWND();
         HWND getMainHWND();
-        //void addHWND(HWND hwnd);
     private:
         HWND hwnd;
         HWND propertyHWnd;
@@ -158,10 +130,10 @@ HWND App::getMainHWND()
 }
  
 
-Demo::Demo(App* _app) : GApplet(_app), app(_app) {
+Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
 	varStatic = VARArea::create(1024 * 1024);
+	hWndMain = window->hwnd();
 }
-
 
 void clearInstances()
 {
@@ -776,12 +748,12 @@ void Demo::onInit()  {
 
 
 
-	setDesiredFrameRate(FPSVal[index]);
+	//setDesiredFrameRate(FPSVal[index]);
 	
 	
 	
 
-    GApplet::onInit();
+    //GApplet::onInit();
 	
 }
 
@@ -801,7 +773,7 @@ void Demo::onCleanup() {
 	delete go.pointer();
 	go_ovr.~ReferenceCountedPointer();
 	delete go_ovr.pointer();
-	app->sky->~Sky();
+	sky->~Sky();
 }
 
 
@@ -839,10 +811,11 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	{
 		title = dataModel->name;
 		std::string text = "Game \"" + title + "\"";
-		SetWindowText(app->getMainHWND(), text.c_str());
+		SetWindowText(hWndMain, text.c_str());
+		
 	}
 
-	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+	CoordinateFrame frame = debugCamera.getCoordinateFrame();
 	if(forwards)
 	{
 		forwards = false;
@@ -863,22 +836,22 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		right = false;
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
 	}
-	app->debugCamera.setPosition(cameraPos);
+	debugCamera.setPosition(cameraPos);
 	if(centerCam)
 	{
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
+		CoordinateFrame frame = CoordinateFrame(debugCamera.getCoordinateFrame().translation);
 		if(selectedInstance == NULL)
 			frame.lookAt(Vector3(0,0,0));
 		else
 			frame.lookAt(((PhysicalInstance*)selectedInstance)->getPosition());
-		app->debugController.setCoordinateFrame(frame);
+		debugController.setCoordinateFrame(frame);
 		centerCam = false;
 	}
 	
 	if(panRight)
 	{
 		panRight = false;
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
 		float y = frame.translation.y;
 		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
 		Vector3 focus = frame.translation+frame.lookVector()*25;
@@ -887,13 +860,13 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
 		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
 		newFrame.lookAt(focus);
-		app->debugController.setCoordinateFrame(newFrame);
+		debugController.setCoordinateFrame(newFrame);
 
 	}
 	if(panLeft)
 	{
 		panLeft = false;
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
 		float y = frame.translation.y;
 		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
 		Vector3 focus = frame.translation+frame.lookVector()*25;
@@ -902,12 +875,12 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
 		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
 		newFrame.lookAt(focus);
-		app->debugController.setCoordinateFrame(newFrame);
+		debugController.setCoordinateFrame(newFrame);
 	}
 	if(tiltUp)
 	{
 		tiltUp = false;
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
+		CoordinateFrame frame = CoordinateFrame(debugCamera.getCoordinateFrame().rotation, debugCamera.getCoordinateFrame().translation);
 		Vector3 camerapoint = frame.translation;
 
 		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
@@ -919,7 +892,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
-		app->debugController.setCoordinateFrame(newFrame);
+		debugController.setCoordinateFrame(newFrame);
 		
 		
 	}
@@ -942,19 +915,19 @@ void Demo::onUserInput(UserInput* ui) {
 	
     if (ui->keyPressed(SDLK_ESCAPE)) {
         // Even when we aren't in debug mode, quit on escape.
-        endApplet = true;
-        app->endProgram = true;
+        //endApplet = true;
+        endProgram = true;
     }
 	if(mouseMovedBeginMotion)
 	{
 		mouseMovedBeginMotion = false;
-		app->debugController.setActive(true);
+		debugController.setActive(true);
 	}
 	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
 	{
 		oldMouse = ui->getMouseXY();
 		showMouse = false;
-		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
+		window()->setRelativeMousePosition(window()->width()/2, window()->height()/2);
 		mouseMovedBeginMotion = true;
 		
 	}
@@ -962,7 +935,7 @@ void Demo::onUserInput(UserInput* ui) {
 	{
 		ui->setMouseXY(oldMouse);
 		showMouse = true;
-		app->debugController.setActive(false);
+		debugController.setActive(false);
 	}
 	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
 	{
@@ -976,13 +949,13 @@ void Demo::onUserInput(UserInput* ui) {
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
 	{
 		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos + frame.lookVector()*2;
 	}
 	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
 	{
 		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
+		CoordinateFrame frame = debugCamera.getCoordinateFrame();
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 
@@ -996,11 +969,11 @@ void Demo::onUserInput(UserInput* ui) {
 		if(ui->keyPressed('d'))
 		{
 			messageTime = System::time();
-			if(app->debugMode())
+			if(debugMode())
 				message = "Debug Mode Disabled";
 			else
 				message = "Debug Mode Enabled, Soon to be depricated";
-			app->setDebugMode(!app->debugMode());
+			setDebugMode(!debugMode());
 		}
 	}
 	//if(ui->keyPressed(SDLK_F8))
@@ -1039,7 +1012,7 @@ void Demo::onUserInput(UserInput* ui) {
 			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
+				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, renderDevice))
 				{
 					onGUI = true;
 					break;
@@ -1049,9 +1022,9 @@ void Demo::onUserInput(UserInput* ui) {
 		if(!onGUI)
 		{
 			selectedInstance = NULL;
-			testRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
+			testRay = debugCamera.worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 			float nearest=std::numeric_limits<float>::infinity();
-			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
+			Vector3 camPos = debugCamera.getCoordinateFrame().translation;
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
             for(size_t i = 0; i < instances.size(); i++)
 			{
@@ -1092,7 +1065,7 @@ void Demo::onUserInput(UserInput* ui) {
 			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
 			{
 				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
+				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, renderDevice))
 				{
 					button->onMouseClick();
 				}
@@ -1103,7 +1076,7 @@ void Demo::onUserInput(UserInput* ui) {
 	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
 		if (dragging) {
 		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
-		Ray dragRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
+		Ray dragRay = debugCamera.worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
@@ -1271,8 +1244,8 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 
 void Demo::exitApplication()
 {
-	endApplet = true;
-    app->endProgram = true;
+	//endApplet = true;
+    endProgram = true;
 }
 
 
@@ -1295,30 +1268,30 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
-    app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
+    renderDevice->setProjectionAndCameraMatrix(debugCamera);
 	
 
 
 	
 	
     // Cyan background
-    //app->renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
+    //renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
 
-    app->renderDevice->clear(app->sky.isNull(), true, true);
-    if (app->sky.notNull()) {
-        app->sky->render(app->renderDevice, lighting);
+    renderDevice->clear(sky.isNull(), true, true);
+    if (sky.notNull()) {
+        sky->render(renderDevice, lighting);
     }
 
 	
 	
     // Setup lighting
-    app->renderDevice->enableLighting();
+    renderDevice->enableLighting();
 
-		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
-		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
+		renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
+		renderDevice->setAmbientLightColor(Color3(1,1,1));
 
-		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-		app->renderDevice->setAmbientLightColor(lighting.ambient);
+		renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+		renderDevice->setAmbientLightColor(lighting.ambient);
 
 
 		dataModel->getWorkspace()->render(rd);
@@ -1342,12 +1315,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 		//}
 
-    app->renderDevice->disableLighting();
+    renderDevice->disableLighting();
 
-    if (app->sky.notNull()) {
-        app->sky->renderLensFlare(app->renderDevice, lighting);
+    if (sky.notNull()) {
+        sky->renderLensFlare(renderDevice, lighting);
     }
-	app->renderDevice->push2D();
+	renderDevice->push2D();
 
 	
 
@@ -1414,7 +1387,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	
 
-	app->renderDevice->pop2D();
+	renderDevice->pop2D();
 
 
 	
@@ -1442,7 +1415,8 @@ void App::main() {
 }
 
 App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
-    applet = new Demo(this);
+    /*
+	applet = new Demo(this);
     hwnd = wndSDL->win32HWND();
     mainHWnd = tempMainHWnd;
     propertyHWnd = CreateWindowEx(
@@ -1452,6 +1426,7 @@ App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow
         200, 700, 400, 64,
         mainHWnd, NULL, GetModuleHandle(0), NULL
     );
+	*/
 }
 
 
@@ -1462,60 +1437,105 @@ App::~App() {
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+    Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
     switch(msg)
     {
         case WM_CLOSE:
-        if (app != 0)
-        {
-			
-            HWND g3DWind = app->getHWND();
-			app->applet->exitApplication();
-        }
+		PostQuitMessage(0);
         break;
         case WM_DESTROY:
             PostQuitMessage(0);
         break;
 		case WM_SIZE:
-			if(app != 0)
-			{
-				HWND g3DWind = app->getHWND();
-				int width = 640;
-				int height = 480;
-				RECT rect;
-				if(GetClientRect(hwnd, &rect))
-				{
-				  width = rect.right - rect.left;
-				  height = rect.bottom - rect.top;
-				}
-				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
-			}
+
 		break;
 		case WM_MOUSEMOVE:
-			  {
-				  if(app != 0)
-				  {
-					  POINT p;
-					  if(GetCursorPos(&p))
-					  {
-						HWND wnd = WindowFromPoint(p);
-						if(wnd != app->getHWND())
-						{
-							app->window()->setInputCaptureCount(0);
-						}
-						else
-						{
-							app->window()->setInputCaptureCount(200);
-						}
-					  }
-				  }
-			  }
+		break;
         default:
 		{
             return DefWindowProc(hwnd, msg, wParam, lParam);
 		}
     }
     return 0;
+}
+
+
+void Demo::main() {
+	setDebugMode(true);
+	debugController.setActive(false);
+    // Load objects here
+	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
+	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
+	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+    sky = Sky::create(NULL, ExePath() + "/content/sky/");
+    //run();
+
+	bool				quit=false;
+	RealTime            now, lastTime;
+	double				simTimeRate = 1.0f;
+	float				fps=30.f;
+
+	RealTime			desiredFrameDuration=1.0/fps;
+	onInit();
+	RealTime            lastWaitTime;
+	//GWindow* wind = window();
+	
+	//wind->
+	MSG messages;            /* Here messages to the application are saved */
+	while (GetMessage (&messages, NULL, 0, 0))
+    {
+		lastTime = now;
+		now = System::getTick();
+		RealTime timeStep = now - lastTime;
+
+		m_userInputWatch.tick();
+		onUserInput(userInput);
+		m_moduleManager->onUserInput(userInput);
+		m_userInputWatch.tock();
+
+		m_simulationWatch.tick();
+		debugController.doSimulation(clamp(timeStep, 0.0, 0.1));
+		debugCamera.setCoordinateFrame
+			(debugController.getCoordinateFrame());
+
+		double rate = simTimeRate;    
+        RealTime rdt = timeStep;
+        SimTime  sdt = timeStep * rate;
+        SimTime  idt = desiredFrameDuration * rate;
+
+		onSimulation(rdt,sdt,idt);
+		m_simulationWatch.tock();
+		m_waitWatch.tick();
+		{
+			RealTime now = System::time();
+			// Compute accumulated time
+			System::sleep(max(0.0, desiredFrameDuration - (now - lastWaitTime)));
+			//onWait(now - lastWaitTime, desiredFrameDuration);
+			lastWaitTime = System::time();
+		}
+		m_waitWatch.tock();
+
+		m_graphicsWatch.tick();
+        renderDevice->beginFrame();
+            renderDevice->pushState();
+                onGraphics(renderDevice);
+            renderDevice->popState();
+            renderDebugInfo();
+		renderDevice->endFrame();
+        debugText.clear();
+		m_graphicsWatch.tock();
+		
+		 if (IsDialogMessage(hWndMain, &messages) == 0)
+        {
+            /* Translate virtual-key messages into character messages */
+            TranslateMessage(&messages);
+            /* Send message to WindowProcedure */
+            DispatchMessage(&messages);
+        }
+		//onGraphics(renderDevice);
+
+	}
+
 }
 
 int main(int argc, char** argv) {
@@ -1531,8 +1551,8 @@ int main(int argc, char** argv) {
 		settings.writeLicenseFile = false;
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
-		G3D::SDLWindow* wnd = new SDLWindow(settings.window);
-		wnd->setMouseVisible(false);
+		//G3D::SDLWindow* wnd = new SDLWindow(settings.window);
+		//wnd->setMouseVisible(false);
 		
 
 
@@ -1555,7 +1575,7 @@ int main(int argc, char** argv) {
 				return false;
 
 		HMODULE hThisInstance = GetModuleHandle(NULL);
-		HWND hwnd = wnd->win32HWND();
+
 			HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
 			"containerHWND",
@@ -1576,38 +1596,11 @@ int main(int argc, char** argv) {
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 			return 0;
 		}
-		SetParent(hwnd, hwndMain);
-		App app = App(settings, wnd, hwndMain, wnd);
-		RECT rect;
-		int width = 640;
-		int height = 480;
-		if(GetClientRect(hwndMain, &rect))
-		{
-		  width = rect.right - rect.left;
-		  height = rect.bottom - rect.top;
-		}
-		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
 		
-		LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
-		lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
-		SetWindowLong(hwnd, GWL_STYLE, lStyle);
-
-		LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-		lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-		SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
-		SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
-		HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
-		SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
-		SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
-		
-		
-		if(GetClientRect(hwndMain, &rect))
-		{
-			width = rect.right - rect.left;
-			height = rect.bottom - rect.top;
-		}
-		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
-		app.run();
+		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
+		Demo demo = Demo(settings,win32Window);
+		demo.run();
+		//app.run();
 	}
 	catch(...)
 	{
