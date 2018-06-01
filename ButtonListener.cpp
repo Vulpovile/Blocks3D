@@ -1,7 +1,7 @@
 #include "ButtonListener.h"
 
 
-ButtonListener::ButtonListener(void)
+ButtonListener::ButtonListener()
 {
 }
 

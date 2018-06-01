@@ -17,5 +17,7 @@ public:
 	float mousex;
 	float mousey;
 	Vector2 getMousePos();
+	void setMousePos(int x,int y);
+	void setMousePos(Vector2 pos);
 	bool mouseButton1Down;
 };
