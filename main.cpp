@@ -124,8 +124,8 @@ void clearInstances()
 
 void OnError(int err, std::string msg = "")
 {
-	usableApp->window()->setInputCaptureCount(0);
-	usableApp->window()->setMouseVisible(true);
+	//usableApp->window()->setInputCaptureCount(0);
+	//usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
@@ -874,8 +874,6 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		newFrame.lookAt(focalPoint);
 		cameraPos = camerapoint;
 		debugController.setCoordinateFrame(newFrame);
-		
-		
 	}
 		
 }
@@ -1152,20 +1150,33 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
-	Vector2 mousepos = Vector2(0,0);
+	//Vector2 mousepos = dataModel->getMousePos();
 	G3D::uint8 num = 0;
-	rd->window()->getRelativeMouseState(mousepos, num);
-	
+	//rd->window()->getRelativeMouseState(mousepos, num);
+	POINT mousepos;
 	bool mouseOnScreen = true;
-	if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+	if (GetCursorPos(&mousepos))
 	{
-		mouseOnScreen = false;
-		rd->window()->setInputCaptureCount(0);
+	if (ScreenToClient(hWndMain, &mousepos))
+	{
+		//mouseOnScreen = true;
+		
+		if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+		{
+			mouseOnScreen = false;
+			//ShowCursor(true);
+			window()->setMouseVisible(true);
+			//rd->window()->setInputCaptureCount(0);
+		}
+		else
+		{
+			mouseOnScreen = true;
+			//SetCursor(NULL);
+			window()->setMouseVisible(false);
+			//rd->window()->setInputCaptureCount(1);
+		}
+		
 	}
-	else
-	{
-		mouseOnScreen = true;
-		rd->window()->setInputCaptureCount(1);
 	}
 	
 	
@@ -1236,9 +1247,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
 	fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
 	
-	//GUI Boxes
-
-	
+	//GUI Boxes	
 	Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	
@@ -1397,6 +1406,7 @@ void Demo::onMouseWheel(int x,int y,short delta)
 		cameraPos = cameraPos - frame.lookVector()*2;
 	}
 }
+
 /*
 void App::main() {
 	setDebugMode(false);
@@ -1561,7 +1571,7 @@ void Demo::main() {
 	renderDevice->notifyResize(cRect.right,cRect.bottom);
 	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
 	renderDevice->setViewport(viewportRect);
-	window()->setInputCaptureCount(1);
+	//window()->setInputCaptureCount(1);
 
 	while (!quit)
 	{
