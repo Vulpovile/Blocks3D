@@ -16,6 +16,7 @@ class CameraController {
 
 		void setFrame(const CoordinateFrame& cf);
 		void lookAt(const Vector3& position);
+		void refreshZoom(const CoordinateFrame& frame);
 		void pan(CoordinateFrame* frame,float spdX,float spdY);
 		void update(Demo* demo);
 		void centerCamera(Instance* selection);
@@ -23,6 +24,7 @@ class CameraController {
 		void panRight();
 		void tiltUp();
 		void tiltDown();
+		void Zoom(short delta);
 		bool onMouseWheel(int x, int y, short delta);
 		GCamera* getCamera();
 	private:

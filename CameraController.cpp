@@ -49,6 +49,13 @@ CoordinateFrame CameraController::getCoordinateFrame() {
 	return cf;
 }
 
+void CameraController::refreshZoom(const CoordinateFrame& frame)
+{
+	CoordinateFrame zoomFrame = focusPosition-frame.lookVector()*zoom;
+	zoomFrame.lookAt(focusPosition);
+	setFrame(zoomFrame);
+}
+
 void CameraController::pan(CoordinateFrame* frame,float spdX, float spdY)
 {
 		yaw+=spdX;
@@ -61,23 +68,39 @@ void CameraController::pan(CoordinateFrame* frame,float spdX, float spdY)
 }
 bool CameraController::onMouseWheel(int x, int y, short delta)
 {
+	Zoom(delta);
+	return true;
+}
+void CameraController::Zoom(short delta)
+{
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
 
 	if (delta>0) { // Mouse wheel up
+		CoordinateFrame zoomFrame = frame+frame.lookVector()*(zoom/5);
+		zoom=(zoomFrame.translation-focusPosition).magnitude();
 		if (zoom>CAM_ZOOM_MIN)
-			frame = frame+frame.lookVector()*(zoom/5);
+		{
+			setFrame(zoomFrame);
+		}
+		else
+		{
+			zoom=CAM_ZOOM_MIN;
+			refreshZoom(frame);
+		}
 	}
 	else {
+		CoordinateFrame zoomFrame = frame-frame.lookVector()*(zoom/5);
+		zoom=(zoomFrame.translation-focusPosition).magnitude();
 		if (zoom<CAM_ZOOM_MAX)
-			frame = frame-frame.lookVector()*(zoom/5);
+		{
+			setFrame(zoomFrame);
+		}
+		else
+		{
+			zoom=CAM_ZOOM_MAX;
+			refreshZoom(frame);
+		}
 	}
-
-	zoom=(frame.translation-focusPosition).magnitude();
-	if (zoom<CAM_ZOOM_MIN) zoom=CAM_ZOOM_MIN;
-	if (zoom>CAM_ZOOM_MAX) zoom=CAM_ZOOM_MAX;
-	
-	setFrame(frame);
-	return true;
 }
 
 void CameraController::panLeft()
