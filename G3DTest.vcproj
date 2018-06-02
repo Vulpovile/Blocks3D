@@ -231,7 +231,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath=".\AudioPlayer.cpp"
+				RelativePath=".\BaseButtonInstance.cpp"
 				>
 			</File>
 			<File
@@ -243,7 +243,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Globals.cpp"
+				RelativePath=".\ImageButtonInstance.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Instance.cpp"
 				>
 			</File>
 			<File
@@ -266,45 +270,21 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<Filter
-				Name="Instances"
+			<File
+				RelativePath=".\PhysicalInstance.cpp"
 				>
-				<File
-					RelativePath=".\BaseButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DataModelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ImageButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Instance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PhysicalInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TextButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\WorkspaceInstance.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\TextButtonInstance.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath=".\AudioPlayer.h"
+				RelativePath=".\BaseButtonInstance.h"
 				>
 			</File>
 			<File
@@ -312,45 +292,25 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Globals.h"
+				RelativePath=".\ImageButtonInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Instance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PhysicalInstance.h"
 				>
 			</File>
 			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
-			<Filter
-				Name="Instances"
+			<File
+				RelativePath=".\TextButtonInstance.h"
 				>
-				<File
-					RelativePath=".\BaseButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DataModelInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ImageButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Instance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PhysicalInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TextButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\WorkspaceInstance.h"
-					>
-				</File>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

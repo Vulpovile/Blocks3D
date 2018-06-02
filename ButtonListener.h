@@ -1,10 +1,12 @@
 #pragma once
+#include "Demo.h"
 #include "BaseButtonInstance.h"
 class BaseButtonInstance;
+
 class ButtonListener
 {
 public:
-	ButtonListener(void);
+	ButtonListener();
 	~ButtonListener(void);
 	virtual void onButton1MouseClick(BaseButtonInstance*);
 	//virtual void onMouseOver(); //TODO

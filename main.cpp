@@ -10,6 +10,9 @@
 
   @author Morgan McGuire, matrix@graphics3d.com
  */
+
+#define _WIN32_WINNT 0x0400
+
 #include <G3DAll.h>
 #include <iomanip>
 #include "Instance.h"
@@ -18,9 +21,14 @@
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "DataModelInstance.h"
+#include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
+#include "Demo.h"
+#include "win32Defines.h"
 #include <limits.h>
+
+
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -66,6 +74,8 @@ static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
+static POINT oldGlobalMouse;
+
 static int mode = CURSOR;
 bool dragging = false;
 Vector3 cameraPos = Vector3(0,2,10);
@@ -73,95 +83,14 @@ Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
 
-class Demo : public GApplet {
+Demo *usableApp = NULL;
 
-public:
-
-    // Add state that should be visible to this applet.
-    // If you have multiple applets that need to share
-    // state, put it in the App.
-
-    class App*          app;
-
-	virtual void exitApplication();
-
-    Demo(App* app);
-
-    virtual ~Demo() {}
-
-    virtual void onInit();
-
-    virtual void onLogic();
-
-	virtual void onNetwork();
-
-    virtual void onSimulation(RealTime rdt, SimTime sdt, SimTime idt);
-
-    virtual void onGraphics(RenderDevice* rd);
-
-    virtual void onUserInput(UserInput* ui);
-
-    virtual void onCleanup();
-
-};
-
-
-
-/*class App : public GApp {
-protected:
-    void main();
-public:
-    SkyRef              sky;
-
-    Demo*               applet;
-
-    App(const GAppSettings& settings, GWindow* wnd);
-
-    ~App();
-};*/
-
-class App : public GApp {
-    protected:
-        void main();
-    public:
-        SkyRef              sky;
-
-        Demo*               applet;
-
-        App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow*);
-		
-
-        ~App();
-        HWND getHWND();
-        HWND getPropertyHWND();
-        HWND getMainHWND();
-        //void addHWND(HWND hwnd);
-    private:
-        HWND hwnd;
-        HWND propertyHWnd;
-        HWND mainHWnd;
-};
-
-App *usableApp = NULL;
-
-HWND App::getHWND()
-{
-    return hwnd;
-}
-HWND App::getPropertyHWND()
-{
-    return propertyHWnd;
-}
-HWND App::getMainHWND()
-{
-    return mainHWnd;
-}
- 
-
-Demo::Demo(App* _app) : GApplet(_app), app(_app) {
+Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
 	varStatic = VARArea::create(1024 * 1024);
+	hWndMain = window->hwnd();
+	quit=false;
+	rightButtonHolding=false;
 }
-
 
 void clearInstances()
 {
@@ -170,8 +99,8 @@ void clearInstances()
 
 void OnError(int err, std::string msg = "")
 {
-	usableApp->window()->setInputCaptureCount(0);
-	usableApp->window()->setMouseVisible(true);
+	//usableApp->window()->setInputCaptureCount(0);
+	//usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
 	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
@@ -238,19 +167,19 @@ public:
 void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	AudioPlayer::playSound(cameraSound);
-	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	CoordinateFrame frame = usableApp->cameraController.getCamera()->getCoordinateFrame();
 	if(button->name == "CenterCam")
-		centerCam = true;
+		usableApp->cameraController.centerCamera(selectedInstance);
 	else if(button->name == "ZoomIn")
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
 	else if(button->name == "ZoomOut")
 		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
 	else if(button->name == "PanRight")
-		panRight = true;
+		usableApp->cameraController.panRight();
 	else if(button->name == "PanLeft")
-		panLeft = true;
+		usableApp->cameraController.panLeft();
 	else if(button->name == "TiltUp")
-		tiltUp = true;
+		usableApp->cameraController.tiltUp();
 }
 
 class GUDButtonListener : public ButtonListener {
@@ -328,7 +257,7 @@ public:
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	CoordinateFrame frame = usableApp->debugCamera.getCoordinateFrame();
+	//CoordinateFrame frame = usableApp->g3dCamera.getCoordinateFrame();
 	
 	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
@@ -350,7 +279,7 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 }
 
 
-void initGUI()
+void Demo::initGUI()
 {
 	TextButtonInstance* button = makeTextButton();
 	button->boxBegin = Vector2(0, -24);
@@ -683,8 +612,7 @@ void initGUI()
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
-	
-
+	cameraController.getCamera()->setCoordinateFrame(cameraPos);
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
@@ -772,16 +700,15 @@ void Demo::onInit()  {
 	test->setPosition(Vector3(2,7,0));
 
 	
-	
 
 
 
-	setDesiredFrameRate(FPSVal[index]);
+	//setDesiredFrameRate(FPSVal[index]);
 	
 	
 	
 
-    GApplet::onInit();
+    //GApplet::onInit();
 	
 }
 
@@ -801,7 +728,7 @@ void Demo::onCleanup() {
 	delete go.pointer();
 	go_ovr.~ReferenceCountedPointer();
 	delete go_ovr.pointer();
-	app->sky->~Sky();
+	sky->~Sky();
 }
 
 
@@ -834,96 +761,21 @@ void Demo::onNetwork() {
 //	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 //}
 
+Instance* Demo::getSelection()
+{
+	return selectedInstance;
+}
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
 	{
 		title = dataModel->name;
 		std::string text = "Game \"" + title + "\"";
-		SetWindowText(app->getMainHWND(), text.c_str());
+		SetWindowText(hWndMain, text.c_str());
+		
 	}
 
-	CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-	if(forwards)
-	{
-		forwards = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*moveRate;
-	}
-	else if(backwards)
-	{
-		backwards = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*moveRate;
-	}
-	if(left)
-	{
-		left = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.leftVector()*moveRate;
-	}
-	else if(right)
-	{
-		right = false;
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.rightVector()*moveRate;
-	}
-	app->debugCamera.setPosition(cameraPos);
-	if(centerCam)
-	{
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().translation);
-		if(selectedInstance == NULL)
-			frame.lookAt(Vector3(0,0,0));
-		else
-			frame.lookAt(((PhysicalInstance*)selectedInstance)->getPosition());
-		app->debugController.setCoordinateFrame(frame);
-		centerCam = false;
-	}
-	
-	if(panRight)
-	{
-		panRight = false;
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-		float y = frame.translation.y;
-		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
-		Vector3 focus = frame.translation+frame.lookVector()*25;
-		frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(45),0);
-		frame2 = frame2 - frame2.lookVector()*25;
-		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
-		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
-		newFrame.lookAt(focus);
-		app->debugController.setCoordinateFrame(newFrame);
+	cameraController.update(this);
 
-	}
-	if(panLeft)
-	{
-		panLeft = false;
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-		float y = frame.translation.y;
-		CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
-		Vector3 focus = frame.translation+frame.lookVector()*25;
-		frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(-45),0);
-		frame2 = frame2 - frame2.lookVector()*25;
-		cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
-		CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
-		newFrame.lookAt(focus);
-		app->debugController.setCoordinateFrame(newFrame);
-	}
-	if(tiltUp)
-	{
-		tiltUp = false;
-		CoordinateFrame frame = CoordinateFrame(app->debugCamera.getCoordinateFrame().rotation, app->debugCamera.getCoordinateFrame().translation);
-		Vector3 camerapoint = frame.translation;
-
-		Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
-		float distance = pow(pow((double)focalPoint.x - (double)camerapoint.x, 2) + pow((double)camerapoint.y - (double)camerapoint.y, 2) + pow((double)focalPoint.z - (double)camerapoint.z, 2), 0.5);
-		float x = distance * cos(22.5 * G3D::pi() / 180) + focalPoint.x;
-        float z = distance * sin(22.5 * G3D::pi() / 180) + focalPoint.z;
-		camerapoint = Vector3(camerapoint.x, camerapoint.y+2, camerapoint.z);
-		
-		CoordinateFrame newFrame = CoordinateFrame(camerapoint);
-		newFrame.lookAt(focalPoint);
-		cameraPos = camerapoint;
-		app->debugController.setCoordinateFrame(newFrame);
-		
-		
-	}
-		
 }
 
 /*double getOSVersion() {
@@ -937,70 +789,23 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	return ::atof(version.c_str());
 }*/
 
-//User Input
+bool IsHolding(int button)
+{
+	return (GetKeyState(button) >> 1)>0;
+}
+
 void Demo::onUserInput(UserInput* ui) {
-	
-	if (ui->keyPressed(SDLK_F4) && ui->keyDown(SDLK_LALT)) {
-        // Even when we aren't in debug mode, quit on escape.
-        endApplet = true;
-        app->endProgram = true;
-    }
-	if(mouseMovedBeginMotion)
-	{
-		mouseMovedBeginMotion = false;
-		app->debugController.setActive(true);
-	}
-	if(ui->keyPressed(SDL_RIGHT_MOUSE_KEY))
-	{
-		oldMouse = ui->getMouseXY();
-		showMouse = false;
-		app->window()->setRelativeMousePosition(app->window()->width()/2, app->window()->height()/2);
-		mouseMovedBeginMotion = true;
-		
-	}
-	else if(ui->keyReleased(SDL_RIGHT_MOUSE_KEY))
-	{
-		ui->setMouseXY(oldMouse);
-		showMouse = true;
-		app->debugController.setActive(false);
-	}
-	if(ui->keyPressed(SDLK_LSHIFT) || ui->keyPressed(SDLK_RSHIFT))
-	{
-		moveRate = 1;
-	}
-	else if(ui->keyReleased(SDLK_LSHIFT) || ui->keyReleased(SDLK_RSHIFT))
-	{
-		moveRate = 0.5;
-	}
 
-	if(ui->keyPressed(SDL_MOUSE_WHEEL_UP_KEY))
+	if(GetHoldKeyState(VK_LCONTROL))
 	{
-		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-		cameraPos = cameraPos + frame.lookVector()*2;
-	}
-	if(ui->keyPressed(SDL_MOUSE_WHEEL_DOWN_KEY))
-	{
-		AudioPlayer::playSound(cameraSound);
-		CoordinateFrame frame = app->debugCamera.getCoordinateFrame();
-		cameraPos = cameraPos - frame.lookVector()*2;
-	}
-
-	if(ui->keyPressed(SDLK_DELETE))
-	{
-		deleteInstance();
-	}
-
-	if(ui->keyDown(SDLK_LCTRL))
-	{
-		if(ui->keyPressed('d'))
+		if(GetHoldKeyState('D'))
 		{
 			messageTime = System::time();
-			if(app->debugMode())
+			if(debugMode())
 				message = "Debug Mode Disabled";
 			else
 				message = "Debug Mode Enabled, Soon to be depricated";
-			app->setDebugMode(!app->debugMode());
+			setDebugMode(!debugMode());
 		}
 	}
 	//if(ui->keyPressed(SDLK_F8))
@@ -1009,101 +814,15 @@ void Demo::onUserInput(UserInput* ui) {
 	//	message = "FPS has been locked at " + Convert(FPSVal[index]);
 		//setDesiredFrameRate(FPSVal[index]);
 	//}
-	dataModel->mousex = ui->getMouseX();
-	dataModel->mousey = ui->getMouseY();
-	dataModel->mouseButton1Down = ui->keyDown(SDL_LEFT_MOUSE_KEY);
-	if(ui->keyDown('u'))
-	{
-		forwards = true;
-	}
-	else if(ui->keyDown('j'))
-	{
-		backwards = true;
-	}
-	if(ui->keyDown('h'))
-	{
-		left = true;
-	}
-	else if(ui->keyDown('k'))
-	{
-		
-		right = true;
-	}
-	
-	if(ui->keyPressed(SDL_LEFT_MOUSE_KEY))
-	{
-		bool onGUI = false;
-		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-		for(size_t i = 0; i < instances_2D.size(); i++)
-		{
-			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
-			{
-				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
-				{
-					onGUI = true;
-					break;
-				}
-			}
-		}
-		if(!onGUI)
-		{
-			selectedInstance = NULL;
-			testRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
-			float nearest=std::numeric_limits<float>::infinity();
-			Vector3 camPos = app->debugCamera.getCoordinateFrame().translation;
-			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-            for(size_t i = 0; i < instances.size(); i++)
-			{
-				if(instances.at(i)->getClassName() == "Part")
-				{
-					PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
-					float time = testRay.intersectionTime(test->getBox());
-					if (time != inf()) 
-					{
-						if (nearest>time)
-						{
-							nearest=time;
-							selectedInstance = test;
-							//message = "Dragging = true.";
-							//messageTime = System::time();
-							//dragging = true;
-						}
-					}
-				}
-			}
-			
-				
-				
-			//message = Convert(closest);
-            
-		}
-	}
 
-	if(ui->keyReleased(SDL_LEFT_MOUSE_KEY))
-	{
-		dragging = false;
-		//message = "Dragging = false.";
-		//messageTime = System::time();
-		std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-		for(size_t i = 0; i < instances_2D.size(); i++)
-		{
-			if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
-			{
-				BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
-				if(button->mouseInButton(ui->mouseXY().x, ui->mouseXY().y, app->renderDevice))
-				{
-					button->onMouseClick();
-				}
-			}
-		}
-	}
+	//dataModel->mousex = ui->getMouseX();
+	//dataModel->mousey = ui->getMouseY();
+	dataModel->mouseButton1Down = IsHolding(VK_LBUTTON);
 
-	if (ui->keyDown(SDL_LEFT_MOUSE_KEY)) {
+	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
 		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
-		Ray dragRay = app->debugCamera.worldRay(dataModel->mousex, dataModel->mousey, app->renderDevice->getViewport());
+		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
@@ -1271,164 +990,397 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 
 void Demo::exitApplication()
 {
-	endApplet = true;
-    app->endProgram = true;
+	//endApplet = true;
+    endProgram = true;
 }
 
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
-	Vector2 mousepos = Vector2(0,0);
+	//Vector2 mousepos = dataModel->getMousePos();
 	G3D::uint8 num = 0;
-	rd->window()->getRelativeMouseState(mousepos, num);
-	
+	//rd->window()->getRelativeMouseState(mousepos, num);
+	POINT mousepos;
 	bool mouseOnScreen = true;
-	if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+	if (GetCursorPos(&mousepos))
 	{
-		mouseOnScreen = false;
-		rd->window()->setInputCaptureCount(0);
+	if (ScreenToClient(hWndMain, &mousepos))
+	{
+		//mouseOnScreen = true;
+		
+		if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+		{
+			mouseOnScreen = false;
+			//ShowCursor(true);
+			window()->setMouseVisible(true);
+			//rd->window()->setInputCaptureCount(0);
+		}
+		else
+		{
+			mouseOnScreen = true;
+			//SetCursor(NULL);
+			window()->setMouseVisible(false);
+			//rd->window()->setInputCaptureCount(1);
+		}
+		
 	}
-	else
-	{
-		mouseOnScreen = true;
-		rd->window()->setInputCaptureCount(1);
 	}
 	
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
-    app->renderDevice->setProjectionAndCameraMatrix(app->debugCamera);
-	
-
-
-	
+    renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
-    //app->renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
+    //renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
 
-    app->renderDevice->clear(app->sky.isNull(), true, true);
-    if (app->sky.notNull()) {
-        app->sky->render(app->renderDevice, lighting);
+    renderDevice->clear(sky.isNull(), true, true);
+    if (sky.notNull()) {
+        sky->render(renderDevice, lighting);
     }
-
-	
 	
     // Setup lighting
-    app->renderDevice->enableLighting();
+    renderDevice->enableLighting();
 
-		app->renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
-		app->renderDevice->setAmbientLightColor(Color3(1,1,1));
+	renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
+	renderDevice->setAmbientLightColor(Color3(1,1,1));
 
-		app->renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-		app->renderDevice->setAmbientLightColor(lighting.ambient);
-
-
-		dataModel->getWorkspace()->render(rd);
-		if(selectedInstance != NULL)
-		{
-			PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
-			Vector3 size = part->getSize();
-			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
-		}
-		
-
-		//Vector3 gamepoint = Vector3(0, 5, 0);
-		//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-		//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		//if(distance < 50 && distance > -50)
-		
-		//{
-		//	if(distance < 0)
-		//	distance = distance*-1;
-		//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-		//}
-
-    app->renderDevice->disableLighting();
-
-    if (app->sky.notNull()) {
-        app->sky->renderLensFlare(app->renderDevice, lighting);
-    }
-	app->renderDevice->push2D();
-
+	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+	renderDevice->setAmbientLightColor(lighting.ambient);
 	
-
-	if(System::time() - 3 < messageTime)
+	dataModel->getWorkspace()->render(rd);
+	if(selectedInstance != NULL)
 	{
-		fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
+		PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
+		Vector3 size = part->getSize();
+		Vector3 pos = part->getPosition();
+		drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 	}
-
-	std::stringstream stream;
-	stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
-	fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
-	fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
 	
-	//GUI Boxes
 
+	//Vector3 gamepoint = Vector3(0, 5, 0);
+	//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+	//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+	//if(distance < 50 && distance > -50)
 	
-	Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-	
-	//Camera menu title
-	fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	//{
+	//	if(distance < 0)
+	//	distance = distance*-1;
+	//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+	//}
 
-	//Tools menu
-	Draw::box(G3D::Box(Vector3(5, 210,0),Vector3(75, 210,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
-	fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+    renderDevice->disableLighting();
 
-	
-	drawButtons(rd);
-	dataModel->drawMessage(rd);
-	rd->pushState();
-		rd->beforePrimitive();
-
-		if(showMouse && mouseOnScreen)
+    if (sky.notNull()) {
+        sky->renderLensFlare(renderDevice, lighting);
+    }
+	renderDevice->push2D();
+		if(System::time() - 3 < messageTime)
 		{
-		glEnable( GL_TEXTURE_2D );
-		glEnable(GL_BLEND);// you enable blending function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-		
-		
-		glBindTexture( GL_TEXTURE_2D, cursorid);
-
-		
-		glBegin( GL_QUADS );
-		glTexCoord2d(0.0,0.0);
-		glVertex2f(mousepos.x-40, mousepos.y-40);
-		glTexCoord2d( 1.0,0.0 );
-		glVertex2f(mousepos.x+40, mousepos.y-40);
-		glTexCoord2d(1.0,1.0 );
-		glVertex2f(mousepos.x+40, mousepos.y+40 );
-		glTexCoord2d( 0.0,1.0 );
-		glVertex2f( mousepos.x-40, mousepos.y+40 );
-		glEnd();
-
-		glDisable( GL_TEXTURE_2D );
+			fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
 		}
 
-		rd->afterPrimitive();
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
+		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
+		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
+		
+		//GUI Boxes	
+		Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
+		Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
+		
+		//Camera menu title
+		fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
-	rd->popState();
+		//Tools menu
+		Draw::box(G3D::Box(Vector3(5, 210,0),Vector3(75, 210,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
+		fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
+		
+		drawButtons(rd);
+		dataModel->drawMessage(rd);
+		rd->pushState();
+			rd->beforePrimitive();
 
+			if(showMouse && mouseOnScreen)
+			{
+			glEnable( GL_TEXTURE_2D );
+			glEnable(GL_BLEND);// you enable blending function
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+			
+			
+			glBindTexture( GL_TEXTURE_2D, cursorid);
 
-	
+			
+			glBegin( GL_QUADS );
+			glTexCoord2d(0.0,0.0);
+			glVertex2f(mousepos.x-40, mousepos.y-40);
+			glTexCoord2d( 1.0,0.0 );
+			glVertex2f(mousepos.x+40, mousepos.y-40);
+			glTexCoord2d(1.0,1.0 );
+			glVertex2f(mousepos.x+40, mousepos.y+40 );
+			glTexCoord2d( 0.0,1.0 );
+			glVertex2f( mousepos.x-40, mousepos.y+40 );
+			glEnd();
 
+			glDisable( GL_TEXTURE_2D );
+			}
 
-	
-
-	app->renderDevice->pop2D();
-
-
-	
+			rd->afterPrimitive();
+		rd->popState();
+	renderDevice->pop2D();
 }
 
+void Demo::onKeyPressed(int key)
+{
+	if (key=='A')
+	{
+		std::cout << "A PRESS" << std::endl;
+	}
+	if(key==VK_DELETE)
+	{
+		deleteInstance();
+	}
+}
+void Demo::onKeyUp(int key)
+{
+	if (key=='A')
+	{
+		std::cout << "A UP" << std::endl;
+	}
+}
 
+void Demo::onMouseLeftPressed(int x,int y)
+{
+	std::cout << "Click: " << x << "," << y << std::endl;
 
+	bool onGUI = false;
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
+	for(size_t i = 0; i < instances_2D.size(); i++)
+	{
+		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		{
+			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+			if(button->mouseInButton(x,y, renderDevice))
+			{
+				onGUI = true;
+				break;
+			}
+		}
+	}
+	if(!onGUI)
+	{
+		selectedInstance = NULL;
+		testRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
+		float nearest=std::numeric_limits<float>::infinity();
+		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
+		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+        for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(instances.at(i)->getClassName() == "Part")
+			{
+				PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
+				float time = testRay.intersectionTime(test->getBox());
+				if (time != inf()) 
+				{
+					if (nearest>time)
+					{
+						nearest=time;
+						selectedInstance = test;
+						//message = "Dragging = true.";
+						//messageTime = System::time();
+						//dragging = true;
+					}
+				}
+			}
+		}
+	}
+}
+void Demo::onMouseLeftUp(int x,int y)
+{
+	std::cout << "Release: " << x << "," << y << std::endl;
+
+	dragging = false;
+	//message = "Dragging = false.";
+	//messageTime = System::time();
+	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
+	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+	for(size_t i = 0; i < instances_2D.size(); i++)
+	{
+		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		{
+			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
+			if(button->mouseInButton(x, y, renderDevice))
+			{
+				button->onMouseClick();
+			}
+		}
+	}
+}
+void Demo::onMouseRightPressed(int x,int y)
+{
+	std::cout << "Click: " << x << "," << y << std::endl;
+}
+void Demo::onMouseRightUp(int x,int y)
+{
+	std::cout << "Release: " << x << "," << y << std::endl;
+}
+void Demo::onMouseMoved(int x,int y)
+{
+	oldMouse = dataModel->getMousePos();
+	std::cout << "Moved: " << x << "," << y << std::endl;
+	dataModel->mousex = x;
+	dataModel->mousey = y;
+
+}
+void Demo::onMouseWheel(int x,int y,short delta)
+{
+	if (cameraController.onMouseWheel(x, y, delta))
+	{
+		AudioPlayer::playSound(cameraSound);
+	}
+}
+
+/*
 void App::main() {
+	setDebugMode(false);
+	debugController.setActive(false);
+    applet->run();
+}
+*/
+
+/*
+App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
+
+	applet = new Demo(this);
+    hwnd = wndSDL->win32HWND();
+    mainHWnd = tempMainHWnd;
+
+}
+
+App::~App() {
+    delete applet;
+}
+*/
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	if (app==NULL)
+	{
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+    switch(msg)
+    {
+        case WM_QUIT:
+			app->QuitApp();
+        break;
+        case WM_DESTROY:
+            app->QuitApp();
+        break;
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_LBUTTONDOWN:
+			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_MOUSEMOVE:
+			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_LBUTTONUP:
+			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_RBUTTONDOWN:
+			app->onMouseRightPressed(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_RBUTTONUP:
+			app->onMouseRightUp(LOWORD(lParam),HIWORD(lParam));
+		break;
+		case WM_MOUSEWHEEL:
+			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		break;
+		case WM_SIZE:
+		{
+			int viewWidth = LOWORD(lParam);
+			int viewHeight = HIWORD(lParam);
+			app->renderDevice->notifyResize(viewWidth,viewHeight);
+			Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
+			app->renderDevice->setViewport(viewportRect);
+			app->onGraphics(app->renderDevice);
+		}
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+
+    return 0;
+}
+
+LRESULT CALLBACK ToolProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+    switch(msg)
+    {
+		case WM_SIZE:
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+
+bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
+{
+	WNDCLASSEX wc;
+	wc.cbSize        = sizeof(WNDCLASSEX);
+	wc.style         = 0;
+	wc.lpfnWndProc   = proc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance     = hInstance;
+	wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	wc.lpszMenuName  = NULL;
+	wc.lpszClassName = name;
+	wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
+	if (!RegisterClassEx (&wc))
+		return false;
+	return true;
+}
+
+void Demo::main() {
 	usableApp = this;
 	setDebugMode(false);
 	debugController.setActive(false);
-    // Load objects here
+	/*
+	if (!createWindowClass("ToolWindowClass",ToolProc,GetModuleHandle(0)))
+	{
+		return;
+	}
+
+    HWND propertyHWnd = CreateWindowEx(
+    WS_EX_TOOLWINDOW,"ToolWindowClass", "ToolWindow",
+    WS_SYSMENU | WS_VISIBLE | WS_CHILD,
+	0, 0, 800, 64,
+    hWndMain, NULL, GetModuleHandle(0), NULL);
+
+	ShowWindow(propertyHWnd,SW_SHOW);
+	*/
+	UpdateWindow(hWndMain);
+
+    // Load objects here=
 	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
 	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
 	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
@@ -1440,84 +1392,84 @@ void App::main() {
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
-    applet->run();
-}
 
-App::App(const GAppSettings& settings, GWindow* wnd,HWND tempMainHWnd, SDLWindow* wndSDL) : GApp(settings, wnd) {
-    applet = new Demo(this);
-    hwnd = wndSDL->win32HWND();
-    mainHWnd = tempMainHWnd;
-    propertyHWnd = CreateWindowEx(
-        WS_EX_TOOLWINDOW,
-        "ToolWindowClass", "ToolWindow",
-        WS_SYSMENU | WS_THICKFRAME | WS_VISIBLE | WS_CHILD,
-        200, 700, 400, 64,
-        mainHWnd, NULL, GetModuleHandle(0), NULL
-    );
-}
+	RealTime	now=0, lastTime=0;
+	double		simTimeRate = 1.0f;
+	float		fps=30.f;
 
+	RealTime	desiredFrameDuration=1.0/fps;
+	onInit();
+	RealTime    lastWaitTime=0;
 
-App::~App() {
-    delete applet;
-}
+	MSG			messages;
+	RECT cRect;
+	GetClientRect(hWndMain,&cRect);
 
+	renderDevice->notifyResize(cRect.right,cRect.bottom);
+	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
+	renderDevice->setViewport(viewportRect);
+	//window()->setInputCaptureCount(1);
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    App *app = (App *)GetWindowLongPtr(hwnd, GWL_USERDATA);
-    switch(msg)
-    {
-        case WM_CLOSE:
-        if (app != 0)
-        {
-			
-            HWND g3DWind = app->getHWND();
-			app->applet->exitApplication();
-        }
-        break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
-        break;
-		case WM_SIZE:
-			if(app != 0)
-			{
-				HWND g3DWind = app->getHWND();
-				int width = 640;
-				int height = 480;
-				RECT rect;
-				if(GetClientRect(hwnd, &rect))
-				{
-				  width = rect.right - rect.left;
-				  height = rect.bottom - rect.top;
-				}
-				SetWindowPos(g3DWind, NULL, 0, 0, width, height, NULL);
-			}
-		break;
-		case WM_MOUSEMOVE:
-			  {
-				  if(app != 0)
-				  {
-					  POINT p;
-					  if(GetCursorPos(&p))
-					  {
-						HWND wnd = WindowFromPoint(p);
-						if(wnd != app->getHWND())
-						{
-							app->window()->setInputCaptureCount(0);
-						}
-						else
-						{
-							app->window()->setInputCaptureCount(200);
-						}
-					  }
-				  }
-			  }
-        default:
+	while (!quit)
+	{
+		
+		lastTime = now;
+		now = System::getTick();
+		RealTime timeStep = now - lastTime;
+		
+		m_userInputWatch.tick();
+			onUserInput(userInput);
+			m_moduleManager->onUserInput(userInput);
+		m_userInputWatch.tock();
+		
+		m_simulationWatch.tick();
+			//debugController.doSimulation(clamp(timeStep, 0.0, 0.1));
+			//g3dCamera.setCoordinateFrame
+				//(debugController.getCoordinateFrame());
+
+			double rate = simTimeRate;    
+			RealTime rdt = timeStep;
+			SimTime  sdt = timeStep * rate;
+			SimTime  idt = desiredFrameDuration * rate;
+
+			onSimulation(rdt,sdt,idt);
+		m_simulationWatch.tock();
+
+		m_waitWatch.tick();
 		{
-            return DefWindowProc(hwnd, msg, wParam, lParam);
+			RealTime now = System::time();
+			// Compute accumulated time
+			System::sleep(max(0.0, desiredFrameDuration - (now - lastWaitTime)));
+			lastWaitTime = System::time();
 		}
-    }
-    return 0;
+		m_waitWatch.tock();
+
+		m_graphicsWatch.tick();
+			renderDevice->beginFrame();
+				renderDevice->pushState();
+					onGraphics(renderDevice);
+				renderDevice->popState();
+				renderDebugInfo();
+			renderDevice->endFrame();
+			debugText.clear();
+		m_graphicsWatch.tock();
+
+		while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
+		{
+			if (IsDialogMessage(hWndMain, &messages) == 0)
+			{
+				TranslateMessage(&messages);
+				DispatchMessage(&messages);
+			}
+		}
+	}
+	onCleanup();
+}
+
+void Demo::QuitApp()
+{
+	PostQuitMessage(0);
+	quit=true;
 }
 
 int main(int argc, char** argv) {
@@ -1533,33 +1485,18 @@ int main(int argc, char** argv) {
 		settings.writeLicenseFile = false;
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
-		G3D::SDLWindow* wnd = new SDLWindow(settings.window);
-		wnd->setMouseVisible(false);
+		HMODULE hThisInstance = GetModuleHandle(NULL);
+
+		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
+		{
+			MessageBox(NULL, "Failed to register mainHWND","Dynamica Crash", MB_OK);
+			return false;
+		}
+
 		
-
-
-		WNDCLASSEX wc;
-		HINSTANCE hInstance = GetModuleHandle(NULL);
-		wc.cbSize        = sizeof(WNDCLASSEX);
-		wc.style         = 0;
-		wc.lpfnWndProc   = WndProc;
-		wc.cbClsExtra    = 0;
-		wc.cbWndExtra    = 0;
-		wc.hInstance     = hInstance;
-		wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-		wc.lpszMenuName  = NULL;
-		wc.lpszClassName = "containerHWND";
-		wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-		
-		if (!RegisterClassEx (&wc))
-				return false;
-
-		HWND hwnd = wnd->win32HWND();
 			HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
-			"containerHWND",
+			"mainHWND",
 			"Main test",
 			WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT,
@@ -1568,7 +1505,7 @@ int main(int argc, char** argv) {
 			600,
 			NULL, // parent
 			NULL, // menu
-			hInstance,
+			hThisInstance,
 			NULL
 		);
 		
@@ -1577,39 +1514,13 @@ int main(int argc, char** argv) {
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 			return 0;
 		}
-		SetParent(hwnd, hwndMain);
-		App app = App(settings, wnd, hwndMain, wnd);
-		RECT rect;
-		int width = 640;
-		int height = 480;
-		if(GetClientRect(hwndMain, &rect))
-		{
-		  width = rect.right - rect.left;
-		  height = rect.bottom - rect.top;
-		}
-		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
-		
-		LONG lStyle = GetWindowLong(hwnd, GWL_STYLE);
-		lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
-		SetWindowLong(hwnd, GWL_STYLE, lStyle);
-
-		LONG lExStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-		lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-		SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
-		SetWindowLongPtr(hwndMain, GWL_USERDATA, (LONG)&app);
-		HICON hicon = (HICON)LoadImage(GetModuleHandleW(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE);
-		SendMessage(hwndMain, WM_SETICON, ICON_BIG, (LPARAM)hicon);
-		SetWindowPos(hwndMain, NULL, 0, 0, 800, 600, NULL);
-		
-		
-		if(GetClientRect(hwndMain, &rect))
-		{
-			width = rect.right - rect.left;
-			height = rect.bottom - rect.top;
-		}
-		SetWindowPos(hwnd, NULL, 0, 0, width, height, NULL);
 		ShowWindow(hwndMain, SW_SHOW);
-		app.run();
+		
+		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
+		Demo demo = Demo(settings,win32Window);
+
+		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
+		demo.run();		
 	}
 	catch(...)
 	{
