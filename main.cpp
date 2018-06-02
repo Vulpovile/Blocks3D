@@ -999,6 +999,11 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	}
 	
+	if(Globals::useMousePoint)
+	{
+		mousepos = Globals::mousepoint;
+		ScreenToClient(hWndMain, &mousepos);
+	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());

@@ -2,6 +2,7 @@
 
 #include <G3DAll.h>
 #include "Instance.h"
+#include "Globals.h"
 #include <string>
 
 #define CAM_ZOOM_MIN 0.1f
