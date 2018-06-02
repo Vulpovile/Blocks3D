@@ -997,9 +997,7 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
-	//Vector2 mousepos = dataModel->getMousePos();
 	G3D::uint8 num = 0;
-	//rd->window()->getRelativeMouseState(mousepos, num);
 	POINT mousepos;
 	bool mouseOnScreen = true;
 	if (GetCursorPos(&mousepos))
@@ -1514,6 +1512,7 @@ int main(int argc, char** argv) {
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 			return 0;
 		}
+		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
 		ShowWindow(hwndMain, SW_SHOW);
 		
 		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
