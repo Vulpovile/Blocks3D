@@ -39,6 +39,7 @@ void CameraController::lookAt(const Vector3& position) {
 
 void CameraController::setFrame(const CoordinateFrame& cf) {
 	Vector3 look = cf.getLookVector();
+	g3dCamera.setCoordinateFrame(cf);
 	lookAt(cf.translation + look);
 }
 
@@ -70,13 +71,13 @@ void CameraController::panLeft()
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
 	float y = frame.translation.y;
 	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
-	Vector3 focus = frame.translation+frame.lookVector()*25;
-	//frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(-45),0);
+	Vector3 focus = Vector3(0,0,0); //frame.translation+frame.lookVector()*25;
+	frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(-45),0);
 	frame2 = frame2 - frame2.lookVector()*25;
 	Vector3 cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
 	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
-	newFrame.lookAt(focus);
-	setFrame(newFrame);
+	newFrame.lookAt(focus,frame2.upVector());
+	setFrame(CoordinateFrame(focus));
 }
 void CameraController::panRight()
 {
@@ -84,7 +85,7 @@ void CameraController::panRight()
 	float y = frame.translation.y;
 	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
 	Vector3 focus = frame.translation+frame.lookVector()*25;
-	//frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(45),0);
+	frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(45),0);
 	frame2 = frame2 - frame2.lookVector()*25;
 	Vector3 cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
 	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
@@ -94,7 +95,7 @@ void CameraController::panRight()
 
 void CameraController::tiltUp()
 {
-	//CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().rotation, g3dCamera.getCoordinateFrame().translation);
+	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().rotation, g3dCamera.getCoordinateFrame().translation);
 	Vector3 camerapoint = frame.translation;
 
 	Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
@@ -105,12 +106,14 @@ void CameraController::tiltUp()
 	
 	CoordinateFrame newFrame = CoordinateFrame(camerapoint);
 	newFrame.lookAt(focalPoint);
-	cameraPos = camerapoint;
+	Vector3 cameraPos = camerapoint;
 	frame = newFrame;
+	setFrame(newFrame);
 }
 void CameraController::tiltDown()
 {
 }
+
 void CameraController::centerCamera(Instance* selection)
 {
 	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().translation);
@@ -118,15 +121,14 @@ void CameraController::centerCamera(Instance* selection)
 		lookAt(Vector3(0,0,0));
 	else
 		lookAt(((PhysicalInstance*)selection)->getPosition()/2);
-	//g3dCamera.setCoordinateFrame(frame);
 }
 
 void CameraController::update(Demo* demo)
 {
+	float offsetSize = 0.05F;
 
 	Vector3 cameraPos = g3dCamera.getCoordinateFrame().translation;
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-	//CoordinateFrame cf = getCoordinateFrame();
 
 	if(GetHoldKeyState('U')) {
 		forwards = true;
@@ -140,7 +142,7 @@ void CameraController::update(Demo* demo)
 	if(GetHoldKeyState('K')) {
 		right = true;
 	}
-
+	
 	if(forwards) {
 		forwards = false;
 		frame.translation += frame.lookVector()*moveRate;
@@ -167,7 +169,6 @@ void CameraController::update(Demo* demo)
 		pitch+=(mouse.y-oldDesktopMouse.y)/100.f;
 		
 		SetCursorPos(oldDesktopMouse.x,oldDesktopMouse.y);
-		//frame.translation=cameraPos;
 		frame.rotation = Matrix3::fromEulerAnglesZYX(0, -yaw, -pitch);
 	}
 

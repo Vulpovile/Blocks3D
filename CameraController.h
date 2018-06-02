@@ -33,10 +33,6 @@ class CameraController {
 		bool	left;
 		bool	right;
 		bool	rightButtonHolding;
-		//bool	centerCam;
-		//bool	panRight;
-		//bool	panLeft;
-		//bool	tiltUp;
 		POINT	oldDesktopMouse;
 		GCamera	g3dCamera;
 		std::string cameraSound;

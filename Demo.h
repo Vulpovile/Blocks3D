@@ -25,7 +25,6 @@ class Demo : public GApp {
 		void		onMouseRightUp(int x, int y);
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
-		//GCamera		g3dCamera;
 		CameraController	cameraController;
 	private:
 		void				initGUI();

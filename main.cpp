@@ -25,8 +25,9 @@
 #include "AudioPlayer.h"
 #include "Globals.h"
 #include "Demo.h"
+#include "win32Defines.h"
 #include <limits.h>
-#include <windows.h>
+
 
 
 #if G3D_VER < 61000
@@ -788,10 +789,6 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	return ::atof(version.c_str());
 }*/
 
-short GetHoldKeyState(int key)
-{
-	return GetKeyState(key) >> 1;
-}
 bool IsHolding(int button)
 {
 	return (GetKeyState(button) >> 1)>0;
@@ -1049,8 +1046,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
-
-
+	
+	Draw::box(Box(Vector3(-0.25, -0.25, -0.25), Vector3(0.25, 0.25, 0.25)), renderDevice, Color4(1,1,1,1), Color4::clear()); 
+	
 	dataModel->getWorkspace()->render(rd);
 	if(selectedInstance != NULL)
 	{
