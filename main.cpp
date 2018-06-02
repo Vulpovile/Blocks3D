@@ -817,7 +817,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 	//dataModel->mousex = ui->getMouseX();
 	//dataModel->mousey = ui->getMouseY();
-	dataModel->mouseButton1Down = IsHolding(VK_LBUTTON);
+	dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
