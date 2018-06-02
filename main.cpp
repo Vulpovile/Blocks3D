@@ -1081,6 +1081,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 			fntdominant->draw2D(rd, message, Vector2((rd->getWidth()/2)-(fntdominant->get2DStringBounds(message, 20).x/2),(rd->getHeight()/2)-(fntdominant->get2DStringBounds(message, 20).y/2)), 20, Color3::yellow(), Color3::black());
 		}
 
+		//TODO--Move these to their own instance
+
 		std::stringstream stream;
 		stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
@@ -1099,6 +1101,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 		
 		drawButtons(rd);
+
 		dataModel->drawMessage(rd);
 		rd->pushState();
 			rd->beforePrimitive();
