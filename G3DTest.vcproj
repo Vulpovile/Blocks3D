@@ -231,6 +231,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\AudioPlayer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseButtonInstance.cpp"
 				>
 			</File>
@@ -239,7 +243,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CameraController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DataModelInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\Globals.cpp"
 				>
 			</File>
 			<File
@@ -278,17 +294,41 @@
 				RelativePath=".\TextButtonInstance.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WorkspaceInstance.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\AudioPlayer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseButtonInstance.h"
 				>
 			</File>
 			<File
 				RelativePath=".\ButtonListener.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CameraController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DataModelInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Demo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Globals.h"
 				>
 			</File>
 			<File
@@ -309,6 +349,14 @@
 			</File>
 			<File
 				RelativePath=".\TextButtonInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\win32Defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkspaceInstance.h"
 				>
 			</File>
 		</Filter>
