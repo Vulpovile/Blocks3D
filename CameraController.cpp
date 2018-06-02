@@ -26,13 +26,10 @@ GCamera* CameraController::getCamera()
 }
 
 void CameraController::lookAt(const Vector3& position) {
-	//g3dCamera.lookAt(position,g3dCamera.getCoordinateFrame().upVector());
-	
     const Vector3 look = (position - g3dCamera.getCoordinateFrame().translation);
     yaw   = aTan2(look.x, -look.z);
 	
     pitch = -aTan2(look.y, distance(look.x, look.z));
-	std::cout << distance(look.x, look.z) << "pitch:" << pitch << std::endl;
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame().translation;
 	frame.rotation = Matrix3::fromEulerAnglesZYX(0, -yaw, -pitch);
 	g3dCamera.setCoordinateFrame(frame);
@@ -69,14 +66,10 @@ bool CameraController::onMouseWheel(int x, int y, short delta)
 	if (delta>0) { // Mouse wheel up
 		if (zoom>CAM_ZOOM_MIN)
 			frame = frame+frame.lookVector()*(zoom/5);
-		
-		//setFrame(frame);
 	}
 	else {
-		//zoom+=0.5;
 		if (zoom<CAM_ZOOM_MAX)
 			frame = frame-frame.lookVector()*(zoom/5);
-		//setFrame(frame);
 	}
 
 	zoom=(frame.translation-focusPosition).magnitude();
@@ -90,17 +83,6 @@ bool CameraController::onMouseWheel(int x, int y, short delta)
 void CameraController::panLeft()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-	/*
-	float y = frame.translation.y;
-	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
-	Vector3 focus = Vector3(0,0,0); //frame.translation+frame.lookVector()*25;
-	frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(-45),0);
-	frame2 = frame2 - frame2.lookVector()*25;
-	Vector3 cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
-	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
-	newFrame.lookAt(focus,frame2.upVector());
-	setFrame(CoordinateFrame(focus));
-	*/
 	pan(&frame,toRadians(-45),0);
 	setFrame(frame);
 	
@@ -108,17 +90,6 @@ void CameraController::panLeft()
 void CameraController::panRight()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-	/*
-	float y = frame.translation.y;
-	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
-	Vector3 focus = frame.translation+frame.lookVector()*25;
-	frame2 = frame2 * Matrix3::fromEulerAnglesXYZ(0,toRadians(45),0);
-	frame2 = frame2 - frame2.lookVector()*25;
-	Vector3 cameraPos = Vector3(frame2.translation.x, y, frame2.translation.z);
-	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
-	newFrame.lookAt(focus);
-	setFrame(newFrame);
-	*/
 	pan(&frame,toRadians(45),0);
 	setFrame(frame);
 }
@@ -205,16 +176,7 @@ void CameraController::update(Demo* demo)
 		POINT mouse;
 		GetCursorPos(&mouse);
 		pan(&frame,(mouse.x-oldDesktopMouse.x)/100.f,(mouse.y-oldDesktopMouse.y)/100.f);
-		//yaw+=(mouse.x-oldDesktopMouse.x)/100.f;
-		//pitch+=(mouse.y-oldDesktopMouse.y)/100.f;
-		
 		SetCursorPos(oldDesktopMouse.x,oldDesktopMouse.y);
-		//std::cout << pitch << std::endl;
-		//if (pitch>1.4) pitch=1.4;
-		//if (pitch<-1.4) pitch=-1.4;
-		//frame.translation = Vector3(sin(-yaw)*zoom*cos(pitch),sin(pitch)*zoom,cos(-yaw)*zoom*cos(pitch))+focusPosition;
-		//frame.lookAt(focusPosition);
-
 	}
 
 	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT)) {

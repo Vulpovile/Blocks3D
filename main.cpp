@@ -1142,10 +1142,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 void Demo::onKeyPressed(int key)
 {
-	if (key=='A')
-	{
-		std::cout << "A PRESS" << std::endl;
-	}
 	if(key==VK_DELETE)
 	{
 		deleteInstance();
@@ -1153,10 +1149,7 @@ void Demo::onKeyPressed(int key)
 }
 void Demo::onKeyUp(int key)
 {
-	if (key=='A')
-	{
-		std::cout << "A UP" << std::endl;
-	}
+
 }
 
 void Demo::onMouseLeftPressed(int x,int y)
@@ -1207,7 +1200,7 @@ void Demo::onMouseLeftPressed(int x,int y)
 }
 void Demo::onMouseLeftUp(int x,int y)
 {
-	std::cout << "Release: " << x << "," << y << std::endl;
+	//std::cout << "Release: " << x << "," << y << std::endl;
 
 	dragging = false;
 	//message = "Dragging = false.";
@@ -1228,16 +1221,13 @@ void Demo::onMouseLeftUp(int x,int y)
 }
 void Demo::onMouseRightPressed(int x,int y)
 {
-	std::cout << "Click: " << x << "," << y << std::endl;
 }
 void Demo::onMouseRightUp(int x,int y)
 {
-	std::cout << "Release: " << x << "," << y << std::endl;
 }
 void Demo::onMouseMoved(int x,int y)
 {
 	oldMouse = dataModel->getMousePos();
-	std::cout << "Moved: " << x << "," << y << std::endl;
 	dataModel->mousex = x;
 	dataModel->mousey = y;
 
