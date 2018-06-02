@@ -1047,8 +1047,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
 	
-	Draw::box(Box(Vector3(-0.25, -0.25, -0.25), Vector3(0.25, 0.25, 0.25)), renderDevice, Color4(1,1,1,1), Color4::clear()); 
-	
 	dataModel->getWorkspace()->render(rd);
 	if(selectedInstance != NULL)
 	{

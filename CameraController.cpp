@@ -5,8 +5,6 @@
 #include "Demo.h"
 #include "AudioPlayer.h"
 
-// TODO: FIX PAN AND TILT
-
 CameraController::CameraController(){
 	yaw=0;
 	pitch=0;
@@ -193,4 +191,3 @@ void CameraController::update(Demo* demo)
 	}
 	g3dCamera.setCoordinateFrame(frame);
 }
-
