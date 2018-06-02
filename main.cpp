@@ -901,7 +901,11 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 
 void drawButtons(RenderDevice* rd)
 {
-	dataModel->getGuiRoot()->render(rd);
+	rd->pushState();
+	rd->beforePrimitive();
+			dataModel->getGuiRoot()->render(rd);
+	rd->afterPrimitive();
+	rd->popState();
 }
 
 void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
