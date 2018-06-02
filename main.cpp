@@ -171,9 +171,9 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 	if(button->name == "CenterCam")
 		usableApp->cameraController.centerCamera(selectedInstance);
 	else if(button->name == "ZoomIn")
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) + frame.lookVector()*2;
+		usableApp->cameraController.Zoom(1);
 	else if(button->name == "ZoomOut")
-		cameraPos = Vector3(cameraPos.x, cameraPos.y, cameraPos.z) - frame.lookVector()*2;
+		usableApp->cameraController.Zoom(-1);
 	else if(button->name == "PanRight")
 		usableApp->cameraController.panRight();
 	else if(button->name == "PanLeft")
