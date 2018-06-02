@@ -5,6 +5,8 @@
 #include "Demo.h"
 #include "AudioPlayer.h"
 
+
+
 CameraController::CameraController(){
 	yaw=0;
 	pitch=0;
@@ -13,8 +15,9 @@ CameraController::CameraController(){
 	backwards=false;
 	left=false;
 	right=false;
+	zoom=7.f;
 	rightButtonHolding=false;
-
+	focusPosition=Vector3(0,0,0);
 }
 
 GCamera* CameraController::getCamera()
@@ -39,6 +42,7 @@ void CameraController::setFrame(const CoordinateFrame& cf) {
 	Vector3 look = cf.getLookVector();
 	g3dCamera.setCoordinateFrame(cf);
 	lookAt(cf.translation + look);
+	focusPosition=cf.translation+cf.lookVector()*zoom;
 }
 
 CoordinateFrame CameraController::getCoordinateFrame() {
@@ -48,25 +52,45 @@ CoordinateFrame CameraController::getCoordinateFrame() {
 	return cf;
 }
 
-void CameraController::pan(int spdX, int spdY)
+void CameraController::pan(CoordinateFrame* frame,float spdX, float spdY)
 {
+		yaw+=spdX;
+		pitch+=spdY;
 
+		if (pitch>1.4f) pitch=1.4f;
+		if (pitch<-1.4f) pitch=-1.4f;
+		frame->translation = Vector3(sin(-yaw)*zoom*cos(pitch),sin(pitch)*zoom,cos(-yaw)*zoom*cos(pitch))+focusPosition;
+		frame->lookAt(focusPosition);
 }
 bool CameraController::onMouseWheel(int x, int y, short delta)
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
+
 	if (delta>0) { // Mouse wheel up
-		g3dCamera.setCoordinateFrame(g3dCamera.getCoordinateFrame() + frame.lookVector()*2);
+		if (zoom>CAM_ZOOM_MIN)
+			frame = frame+frame.lookVector()*(zoom/5);
+		
+		//setFrame(frame);
 	}
 	else {
-		g3dCamera.setCoordinateFrame(g3dCamera.getCoordinateFrame() - frame.lookVector()*2);
+		//zoom+=0.5;
+		if (zoom<CAM_ZOOM_MAX)
+			frame = frame-frame.lookVector()*(zoom/5);
+		//setFrame(frame);
 	}
+
+	zoom=(frame.translation-focusPosition).magnitude();
+	if (zoom<CAM_ZOOM_MIN) zoom=CAM_ZOOM_MIN;
+	if (zoom>CAM_ZOOM_MAX) zoom=CAM_ZOOM_MAX;
+	
+	setFrame(frame);
 	return true;
 }
 
 void CameraController::panLeft()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
+	/*
 	float y = frame.translation.y;
 	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
 	Vector3 focus = Vector3(0,0,0); //frame.translation+frame.lookVector()*25;
@@ -76,10 +100,15 @@ void CameraController::panLeft()
 	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
 	newFrame.lookAt(focus,frame2.upVector());
 	setFrame(CoordinateFrame(focus));
+	*/
+	pan(&frame,toRadians(-45),0);
+	setFrame(frame);
+	
 }
 void CameraController::panRight()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
+	/*
 	float y = frame.translation.y;
 	CoordinateFrame frame2 = CoordinateFrame(frame.rotation, frame.translation + frame.lookVector()*25);
 	Vector3 focus = frame.translation+frame.lookVector()*25;
@@ -89,36 +118,40 @@ void CameraController::panRight()
 	CoordinateFrame newFrame = CoordinateFrame(frame2.rotation, Vector3(frame2.translation.x, y, frame2.translation.z));
 	newFrame.lookAt(focus);
 	setFrame(newFrame);
+	*/
+	pan(&frame,toRadians(45),0);
+	setFrame(frame);
 }
 
 void CameraController::tiltUp()
 {
-	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().rotation, g3dCamera.getCoordinateFrame().translation);
-	Vector3 camerapoint = frame.translation;
 
-	Vector3 focalPoint = camerapoint + frame.lookVector() * 25;
-	float distance = pow(pow((double)focalPoint.x - (double)camerapoint.x, 2) + pow((double)camerapoint.y - (double)camerapoint.y, 2) + pow((double)focalPoint.z - (double)camerapoint.z, 2), 0.5);
-	float x = distance * cos(22.5 * G3D::pi() / 180) + focalPoint.x;
-    float z = distance * sin(22.5 * G3D::pi() / 180) + focalPoint.z;
-	camerapoint = Vector3(camerapoint.x, camerapoint.y+2, camerapoint.z);
-	
-	CoordinateFrame newFrame = CoordinateFrame(camerapoint);
-	newFrame.lookAt(focalPoint);
-	Vector3 cameraPos = camerapoint;
-	frame = newFrame;
-	setFrame(newFrame);
+	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().rotation, g3dCamera.getCoordinateFrame().translation);
+	pan(&frame,0,toRadians(25));
+	setFrame(frame);
 }
 void CameraController::tiltDown()
 {
+	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().rotation, g3dCamera.getCoordinateFrame().translation);
+	pan(&frame,0,toRadians(-25));
+	setFrame(frame);
 }
 
 void CameraController::centerCamera(Instance* selection)
 {
 	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().translation);
 	if(selection == NULL)
+	{
 		lookAt(Vector3(0,0,0));
+		focusPosition=Vector3(0,0,0);
+	}
 	else
-		lookAt(((PhysicalInstance*)selection)->getPosition()/2);
+	{
+		Vector3 partPos = ((PhysicalInstance*)selection)->getPosition()/2;
+		lookAt(partPos);
+		focusPosition=partPos;
+		zoom=((partPos-frame.translation).magnitude());
+	}
 }
 
 void CameraController::update(Demo* demo)
@@ -127,18 +160,22 @@ void CameraController::update(Demo* demo)
 
 	Vector3 cameraPos = g3dCamera.getCoordinateFrame().translation;
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-
+	bool moving=false;
 	if(GetHoldKeyState('U')) {
 		forwards = true;
+		moving=true;
 	}
 	if(GetHoldKeyState('J')) {
 		backwards = true;
+		moving=true;
 	}
 	if(GetHoldKeyState('H')) {
 		left = true;
+		moving=true;
 	}
 	if(GetHoldKeyState('K')) {
 		right = true;
+		moving=true;
 	}
 	
 	if(forwards) {
@@ -158,16 +195,26 @@ void CameraController::update(Demo* demo)
 		frame.translation += frame.rightVector()*moveRate;
 	}
 
+	if (moving)
+	{
+		zoom=7;
+		focusPosition=frame.translation+frame.lookVector()*zoom;
+	}
 
 	if(rightButtonHolding) {
 		POINT mouse;
 		GetCursorPos(&mouse);
-
-		yaw+=(mouse.x-oldDesktopMouse.x)/100.f;
-		pitch+=(mouse.y-oldDesktopMouse.y)/100.f;
+		pan(&frame,(mouse.x-oldDesktopMouse.x)/100.f,(mouse.y-oldDesktopMouse.y)/100.f);
+		//yaw+=(mouse.x-oldDesktopMouse.x)/100.f;
+		//pitch+=(mouse.y-oldDesktopMouse.y)/100.f;
 		
 		SetCursorPos(oldDesktopMouse.x,oldDesktopMouse.y);
-		frame.rotation = Matrix3::fromEulerAnglesZYX(0, -yaw, -pitch);
+		//std::cout << pitch << std::endl;
+		//if (pitch>1.4) pitch=1.4;
+		//if (pitch<-1.4) pitch=-1.4;
+		//frame.translation = Vector3(sin(-yaw)*zoom*cos(pitch),sin(pitch)*zoom,cos(-yaw)*zoom*cos(pitch))+focusPosition;
+		//frame.lookAt(focusPosition);
+
 	}
 
 	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT)) {

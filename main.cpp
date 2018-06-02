@@ -180,6 +180,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		usableApp->cameraController.panLeft();
 	else if(button->name == "TiltUp")
 		usableApp->cameraController.tiltUp();
+	else if(button->name == "TiltDown")
+		usableApp->cameraController.tiltDown();
 }
 
 class GUDButtonListener : public ButtonListener {
@@ -612,7 +614,7 @@ void Demo::initGUI()
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
-	cameraController.getCamera()->setCoordinateFrame(cameraPos);
+	cameraController.setFrame(cameraPos);
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
