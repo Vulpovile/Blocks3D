@@ -705,7 +705,7 @@ void Demo::onInit()  {
 
 
 
-	//setDesiredFrameRate(FPSVal[index]);
+	//setDesiredFrameRate(60);
 	
 	
 	
@@ -1051,7 +1051,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
 	
+	rd->beforePrimitive();
 	dataModel->getWorkspace()->render(rd);
+	rd->afterPrimitive();
+
 	if(selectedInstance != NULL)
 	{
 		PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
@@ -1402,7 +1405,7 @@ void Demo::main() {
 
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
-	float		fps=30.f;
+	float		fps=30.0f;
 
 	RealTime	desiredFrameDuration=1.0/fps;
 	onInit();
@@ -1502,7 +1505,7 @@ int main(int argc, char** argv) {
 
 		
 			HWND hwndMain = CreateWindowEx(
-			WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE,
+			WS_EX_ACCEPTFILES,
 			"mainHWND",
 			"Main test",
 			WS_OVERLAPPEDWINDOW,
