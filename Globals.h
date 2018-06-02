@@ -7,6 +7,7 @@ public:
     Globals(void);
     ~Globals(void);
     static DataModelInstance* dataModel;
+	static bool showMouse;
 	static const int gen;
 	static const int major;
 	static const int minor;

@@ -40,45 +40,22 @@ static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
 Ray testRay;
-static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
 static std::string tempPath = "";
-static G3D::RealTime inputTime = 0;
-static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
-static int index = 2;
 static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
-static G3D::TextureRef go = NULL;
-static G3D::TextureRef go_ovr = NULL;
-static G3D::TextureRef go_dn = NULL;
-VARAreaRef varStatic = NULL;
-//static float dataModel->mousex = 0;
-//static float dataModel->mousey = 0;
 static int cursorid = 0;
 static G3D::TextureRef cursor = NULL;
-//static bool dataModel->mouseButton1Down = false;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
-static bool showMouse = true;
-//Controller
-static bool forwards = false;
-static bool backwards = false;
-static bool left = false;
-static bool right = false;
-static bool centerCam = false;
-static bool panRight = false;
-static bool panLeft = false;
-static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
 static POINT oldGlobalMouse;
-
 static int mode = CURSOR;
 bool dragging = false;
-Vector3 cameraPos = Vector3(0,2,10);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
@@ -86,7 +63,6 @@ Instance* selectedInstance = NULL;
 Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
-	varStatic = VARArea::create(1024 * 1024);
 	hWndMain = window->hwnd();
 	quit=false;
 	rightButtonHolding=false;
@@ -452,14 +428,15 @@ void Demo::initGUI()
 	button->name = "Duplicate";
 	button->setButtonListener(new GUDButtonListener());
 
-
-	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
+	ImageButtonInstance* instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/Run.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Run_dn.png")));
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
 	instance->setParent(dataModel->getGuiRoot());
 
-	
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/ArrowTool.png")),
@@ -614,7 +591,7 @@ void Demo::initGUI()
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
-	cameraController.setFrame(cameraPos);
+	cameraController.setFrame(Vector3(0,2,10));
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
@@ -721,15 +698,6 @@ void Demo::onInit()  {
 
 void Demo::onCleanup() {
     clearInstances();
-	go->~Texture();
-	go_ovr->~Texture();
-	go_dn->~Texture();
-	go_dn.~ReferenceCountedPointer();
-	delete go_dn.pointer();
-	go.~ReferenceCountedPointer();
-	delete go.pointer();
-	go_ovr.~ReferenceCountedPointer();
-	delete go_ovr.pointer();
 	sky->~Sky();
 }
 
@@ -806,15 +774,16 @@ void Demo::onUserInput(UserInput* ui) {
 			if(debugMode())
 				message = "Debug Mode Disabled";
 			else
-				message = "Debug Mode Enabled, Soon to be depricated";
+				message = "Debug Mode Enabled";
 			setDebugMode(!debugMode());
 		}
 	}
-	//if(ui->keyPressed(SDLK_F8))
-	//{
-	//	messageTime = System::time();
-	//	message = "FPS has been locked at " + Convert(FPSVal[index]);
-		//setDesiredFrameRate(FPSVal[index]);
+	if(GetHoldKeyState(VK_F8))
+	{
+		messageTime = System::time();
+		message = "FOV Set to 10";
+		
+	}
 	//}
 
 	//dataModel->mousex = ui->getMouseX();
@@ -1111,7 +1080,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->pushState();
 			rd->beforePrimitive();
 
-			if(showMouse && mouseOnScreen)
+			if(Globals::showMouse && mouseOnScreen)
 			{
 			glEnable( GL_TEXTURE_2D );
 			glEnable(GL_BLEND);// you enable blending function
@@ -1381,9 +1350,6 @@ void Demo::main() {
 	UpdateWindow(hWndMain);
 
     // Load objects here=
-	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
-	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
-	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
