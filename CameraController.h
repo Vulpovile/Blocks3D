@@ -4,6 +4,9 @@
 #include "Instance.h"
 #include <string>
 
+#define CAM_ZOOM_MIN 0.1f
+#define CAM_ZOOM_MAX 100.f
+
 class Demo;
 
 class CameraController {
@@ -13,7 +16,7 @@ class CameraController {
 
 		void setFrame(const CoordinateFrame& cf);
 		void lookAt(const Vector3& position);
-		void pan(int spdX,int spdY);
+		void pan(CoordinateFrame* frame,float spdX,float spdY);
 		void update(Demo* demo);
 		void centerCamera(Instance* selection);
 		void panLeft();
@@ -28,6 +31,7 @@ class CameraController {
 		float	yaw;
 		float	pitch;
 		float	moveRate;
+		float	zoom;
 		bool	forwards;
 		bool	backwards;
 		bool	left;
