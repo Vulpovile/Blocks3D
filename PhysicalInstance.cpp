@@ -117,7 +117,7 @@ Box PhysicalInstance::getBox()
 void PhysicalInstance::render(RenderDevice* rd)
 {
 	if(changed)
-	Box box = getBox();
+		Box box = getBox();
 	glColor(color);
 	glBegin(GL_QUADS);
     for(int i = 0; i < 96; i+=16)
