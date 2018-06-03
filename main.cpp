@@ -63,10 +63,24 @@ Instance* selectedInstance = NULL;
 
 Demo *usableApp = NULL;
 
-Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
+Demo::Demo(const GAppSettings& settings,Win32Window* window) { //: GApp(settings,window) {
 	hWndMain = window->hwnd();
 	quit=false;
 	rightButtonHolding=false;
+
+	// GApp replacement
+	renderDevice = new RenderDevice();
+
+	if (window != NULL) {
+	renderDevice->init(window, NULL);
+	}
+	else
+	{
+		MessageBox(NULL,"Window not found!","Error",MB_OK);
+		return;
+	}
+    _window = renderDevice->window();
+    _window->makeCurrent();
 }
 
 void clearInstances()
@@ -767,6 +781,7 @@ bool IsHolding(int button)
 
 void Demo::onUserInput(UserInput* ui) {
 
+	/*
 	if(GetHoldKeyState(VK_LCONTROL))
 	{
 		if(GetHoldKeyState('D'))
@@ -779,6 +794,7 @@ void Demo::onUserInput(UserInput* ui) {
 			setDebugMode(!debugMode());
 		}
 	}
+	*/
 	if(GetHoldKeyState(VK_F8))
 	{
 		messageTime = System::time();
@@ -967,7 +983,7 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 void Demo::exitApplication()
 {
 	//endApplet = true;
-    endProgram = true;
+    //endProgram = true;
 }
 
 
@@ -986,14 +1002,14 @@ void Demo::onGraphics(RenderDevice* rd) {
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
-			window()->setMouseVisible(true);
+			_window->setMouseVisible(true);
 			//rd->window()->setInputCaptureCount(0);
 		}
 		else
 		{
 			mouseOnScreen = true;
 			//SetCursor(NULL);
-			window()->setMouseVisible(false);
+			_window->setMouseVisible(false);
 			//rd->window()->setInputCaptureCount(1);
 		}
 		
@@ -1315,10 +1331,10 @@ LRESULT CALLBACK ToolProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-void Demo::main() {
+void Demo::run() {
 	usableApp = this;
-	setDebugMode(false);
-	debugController.setActive(false);
+	//setDebugMode(false);
+	//debugController.setActive(false);
 	/*
 	if (!createWindowClass("ToolWindowClass",ToolProc,GetModuleHandle(0)))
 	{
@@ -1371,7 +1387,7 @@ void Demo::main() {
 		
 		m_userInputWatch.tick();
 			onUserInput(userInput);
-			m_moduleManager->onUserInput(userInput);
+			//m_moduleManager->onUserInput(userInput);
 		m_userInputWatch.tock();
 		
 		m_simulationWatch.tick();
@@ -1401,9 +1417,9 @@ void Demo::main() {
 				renderDevice->pushState();
 					onGraphics(renderDevice);
 				renderDevice->popState();
-				renderDebugInfo();
+				//renderDebugInfo();
 			renderDevice->endFrame();
-			debugText.clear();
+			//debugText.clear();
 		m_graphicsWatch.tock();
 
 		while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
@@ -1471,7 +1487,6 @@ int main(int argc, char** argv) {
 		
 		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
 		Demo demo = Demo(settings,win32Window);
-
 		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 		demo.run();		
 	}

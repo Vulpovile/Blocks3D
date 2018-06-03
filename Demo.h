@@ -2,7 +2,7 @@
 #include <G3DAll.h>
 #include "CameraController.h"
 
-class Demo : public GApp {
+class Demo { // : public GApp {
 	public:
 		Demo(const GAppSettings& settings,Win32Window* wind);
 		virtual			~Demo() {}
@@ -16,6 +16,7 @@ class Demo : public GApp {
 		virtual void	onCleanup();
 
 		Instance*	getSelection();
+		void		run();
 		void		QuitApp();
 		void		onKeyPressed(int key);
 		void		onKeyUp(int key);
@@ -26,6 +27,8 @@ class Demo : public GApp {
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
 		CameraController	cameraController;
+		RenderDevice*		renderDevice;
+		UserInput*			userInput;
 	private:
 		void				initGUI();
 		HWND				hWndMain;
@@ -33,4 +36,12 @@ class Demo : public GApp {
 		bool				quit;
 		bool				rightButtonHolding;
 		void				main();
+		GWindow*			_window;
+	protected:
+		Stopwatch           m_graphicsWatch;
+		Stopwatch           m_logicWatch;
+		Stopwatch           m_networkWatch;
+		Stopwatch           m_userInputWatch;
+		Stopwatch           m_simulationWatch;
+		Stopwatch           m_waitWatch;
 };
