@@ -270,6 +270,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\WindowFunctions.cpp"
+				>
+			</File>
 			<Filter
 				Name="Instance"
 				>
@@ -333,6 +337,10 @@
 			</File>
 			<File
 				RelativePath=".\win32Defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WindowFunctions.h"
 				>
 			</File>
 			<Filter
