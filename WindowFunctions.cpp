@@ -1,5 +1,9 @@
 
 #include "WindowFunctions.h"
+#include <sstream>
+#include <string>
+
+using namespace std;
 
 bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
 {
@@ -17,7 +21,12 @@ bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
 	wc.lpszClassName = name;
 	wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 	if (!RegisterClassEx (&wc))
+	{
+		stringstream errMsg;
+		errMsg<<"Failed to register " << name;
+		MessageBox(NULL, errMsg.str().c_str(),"Dynamica Crash", MB_OK);
 		return false;
+	}
 	return true;
 }
 

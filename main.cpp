@@ -11,6 +11,8 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 
+// TODO: Move toolbar buttons with resized window.
+
 #define _WIN32_WINNT 0x0400
 
 #include <G3DAll.h>
@@ -63,14 +65,68 @@ Instance* selectedInstance = NULL;
 
 Demo *usableApp = NULL;
 
-Demo::Demo(const GAppSettings& settings,Win32Window* window) { //: GApp(settings,window) {
-	hWndMain = window->hwnd();
+Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
+	_hWndMain = parentWindow;
+
+	HMODULE hThisInstance = GetModuleHandle(NULL);
+
+	_hwndToolbox = CreateWindowEx(
+		WS_EX_ACCEPTFILES,
+		"toolboxHWND",
+		"Main test",
+		WS_CHILD | WS_VISIBLE,
+		0,
+		560,
+		800,
+		50,
+		_hWndMain, // parent
+		NULL, // menu
+		hThisInstance,
+		NULL
+	);
+	_buttonTest = CreateWindow(
+		"COMBOBOX",
+		"",
+		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		20,
+		10,
+		80,
+		120,
+		_hwndToolbox, // parent
+		NULL, // menu
+		hThisInstance,
+		NULL
+	);
+	SendMessage(_buttonTest,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) "TEST"); 
+	SendMessage(_buttonTest,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) "TEST2");
+	SendMessage(_buttonTest, CB_SETCURSEL, (WPARAM)1, (LPARAM)0);
+	_hwndRenderer = CreateWindowEx(
+		WS_EX_ACCEPTFILES,
+		"G3DWindow",
+		"3D",
+		WS_CHILD,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		1,
+		1,
+		_hWndMain, // parent
+		NULL, // menu
+		hThisInstance,
+		NULL
+	);
+
+
+	Win32Window* window = Win32Window::create(settings.window,_hwndRenderer);
+	ShowWindow(_hwndRenderer, SW_SHOW);
+	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
+	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
+	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)this);
+	ShowWindow(_hWndMain, SW_SHOW);
 	quit=false;
 	rightButtonHolding=false;
-
+	mouseOnScreen=false;
 	// GApp replacement
 	renderDevice = new RenderDevice();
-
 	if (window != NULL) {
 	renderDevice->init(window, NULL);
 	}
@@ -81,6 +137,7 @@ Demo::Demo(const GAppSettings& settings,Win32Window* window) { //: GApp(settings
 	}
     _window = renderDevice->window();
     _window->makeCurrent();
+
 }
 
 void clearInstances()
@@ -755,7 +812,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	{
 		title = dataModel->name;
 		std::string text = "Game \"" + title + "\"";
-		SetWindowText(hWndMain, text.c_str());
+		SetWindowText(_hWndMain, text.c_str());
 		
 	}
 
@@ -991,10 +1048,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
 	G3D::uint8 num = 0;
 	POINT mousepos;
-	bool mouseOnScreen = true;
+	mouseOnScreen = true;
 	if (GetCursorPos(&mousepos))
 	{
-	if (ScreenToClient(hWndMain, &mousepos))
+	if (ScreenToClient(_hWndMain, &mousepos))
 	{
 		//mouseOnScreen = true;
 		
@@ -1019,7 +1076,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	if(Globals::useMousePoint)
 	{
 		mousepos = Globals::mousepoint;
-		ScreenToClient(hWndMain, &mousepos);
+		ScreenToClient(_hWndMain, &mousepos);
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
@@ -1225,6 +1282,7 @@ void Demo::onMouseMoved(int x,int y)
 }
 void Demo::onMouseWheel(int x,int y,short delta)
 {
+	if (mouseOnScreen==true)
 	if (cameraController.onMouseWheel(x, y, delta))
 	{
 		AudioPlayer::playSound(cameraSound);
@@ -1255,6 +1313,58 @@ App::~App() {
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	if (app==NULL)
+	{
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+    switch(msg)
+    {
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_MOUSEWHEEL:
+			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		break;
+		case WM_SIZE:
+			app->resizeWithParent(hwnd);
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+
+LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	if (app==NULL)
+	{
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+    switch(msg)
+    {
+		case WM_SIZE:
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
     Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
 	if (app==NULL)
 	{
@@ -1268,22 +1378,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             app->QuitApp();
         break;
-		case WM_KEYDOWN:
-			if ((HIWORD(lParam)&0x4000)==0) // single key press
-			{
-				app->onKeyPressed(wParam);
-			}
-		break;
-		case WM_KEYUP:
-		{
-			app->onKeyUp(wParam);
-		}
-		break;
 		case WM_LBUTTONDOWN:
 			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
-		break;
-		case WM_MOUSEMOVE:
-			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_LBUTTONUP:
 			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
@@ -1294,16 +1390,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_RBUTTONUP:
 			app->onMouseRightUp(LOWORD(lParam),HIWORD(lParam));
 		break;
-		case WM_MOUSEWHEEL:
-			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		case WM_MOUSEMOVE:
+			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_SIZE:
 		{
-			int viewWidth = LOWORD(lParam);
-			int viewHeight = HIWORD(lParam);
-			app->renderDevice->notifyResize(viewWidth,viewHeight);
-			Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
-			app->renderDevice->setViewport(viewportRect);
 			app->onGraphics(app->renderDevice);
 		}
 		break;
@@ -1315,22 +1406,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
-
-LRESULT CALLBACK ToolProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
-    switch(msg)
-    {
-		case WM_SIZE:
-		break;
-        default:
-		{
-            return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
-    }
-    return 0;
-}
-
 void Demo::run() {
 	usableApp = this;
 	//setDebugMode(false);
@@ -1349,7 +1424,7 @@ void Demo::run() {
 
 	ShowWindow(propertyHWnd,SW_SHOW);
 	*/
-	UpdateWindow(hWndMain);
+	UpdateWindow(_hWndMain);
 
     // Load objects here=
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
@@ -1370,13 +1445,13 @@ void Demo::run() {
 	RealTime    lastWaitTime=0;
 
 	MSG			messages;
-	RECT cRect;
-	GetClientRect(hWndMain,&cRect);
-
-	renderDevice->notifyResize(cRect.right,cRect.bottom);
-	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
-	renderDevice->setViewport(viewportRect);
+	//RECT cRect;
+	//GetClientRect(_hWndMain,&cRect);
+	//renderDevice->notifyResize(cRect.right,cRect.bottom);
+	//Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
+	//renderDevice->setViewport(viewportRect);
 	//window()->setInputCaptureCount(1);
+	resizeWithParent(_hWndMain);
 
 	while (!quit)
 	{
@@ -1424,7 +1499,7 @@ void Demo::run() {
 
 		while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
 		{
-			if (IsDialogMessage(hWndMain, &messages) == 0)
+			if (IsDialogMessage(_hWndMain, &messages) == 0)
 			{
 				TranslateMessage(&messages);
 				DispatchMessage(&messages);
@@ -1433,11 +1508,31 @@ void Demo::run() {
 	}
 	onCleanup();
 }
+void Demo::resizeWithParent(HWND parentWindow)
+{
+	RECT rect;
+	GetClientRect(parentWindow,&rect);
+	SetWindowPos(_hwndRenderer,NULL,0,0,rect.right,rect.bottom-50,SWP_NOMOVE);
+	SetWindowPos(_hwndToolbox,NULL,0,rect.bottom-50,rect.right,50,SWP_NOACTIVATE | SWP_SHOWWINDOW);
+	GetClientRect(_hwndRenderer,&rect);
+	int viewWidth=rect.right;
+	int viewHeight=rect.bottom;
+	renderDevice->notifyResize(viewWidth,viewHeight);
+	Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
+	renderDevice->setViewport(viewportRect);
+
+}
 
 void Demo::QuitApp()
 {
 	PostQuitMessage(0);
 	quit=true;
+}
+void Demo::onCreate(HWND parentWindow)
+{
+	//SetWindowLongPtr(hwndRenderer,GWL_USERDATA,(LONG)this);
+	//SetWindowLongPtr(hwndToolbox,GWL_USERDATA,(LONG)this);
+	//SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 }
 
 int main(int argc, char** argv) {
@@ -1456,13 +1551,13 @@ int main(int argc, char** argv) {
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
-		{
-			MessageBox(NULL, "Failed to register mainHWND","Dynamica Crash", MB_OK);
 			return false;
-		}
-
+		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
+			return false;
+		if (!createWindowClass("G3DWindow",G3DProc,hThisInstance))
+			return false;
 		
-			HWND hwndMain = CreateWindowEx(
+		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",
 			"Main test",
@@ -1470,25 +1565,23 @@ int main(int argc, char** argv) {
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			800,
-			600,
+			660,
 			NULL, // parent
 			NULL, // menu
 			hThisInstance,
 			NULL
 		);
-		
+
 		if(hwndMain == NULL)
 		{
 			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
-		ShowWindow(hwndMain, SW_SHOW);
 		
-		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
-		Demo demo = Demo(settings,win32Window);
-		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
-		demo.run();		
+		
+		Demo demo = Demo(settings,hwndMain);
+		demo.run();	
 	}
 	catch(...)
 	{

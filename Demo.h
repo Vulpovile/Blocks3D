@@ -4,7 +4,7 @@
 
 class Demo { // : public GApp {
 	public:
-		Demo(const GAppSettings& settings,Win32Window* wind);
+		Demo(const GAppSettings& settings,HWND parentWindow);
 		virtual			~Demo() {}
 		virtual void	exitApplication();
 		virtual void	onInit();
@@ -18,6 +18,8 @@ class Demo { // : public GApp {
 		Instance*	getSelection();
 		void		run();
 		void		QuitApp();
+		void		resizeWithParent(HWND parentWindow);
+		void		onCreate(HWND parentWindow);
 		void		onKeyPressed(int key);
 		void		onKeyUp(int key);
 		void		onMouseLeftPressed(int x, int y);
@@ -31,12 +33,16 @@ class Demo { // : public GApp {
 		UserInput*			userInput;
 	private:
 		void				initGUI();
-		HWND				hWndMain;
+		HWND				_hWndMain;
 		SkyRef				sky;
 		bool				quit;
+		bool				mouseOnScreen;
 		bool				rightButtonHolding;
 		void				main();
 		GWindow*			_window;
+		HWND				_hwndToolbox;
+		HWND				_buttonTest;
+		HWND				_hwndRenderer;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;
