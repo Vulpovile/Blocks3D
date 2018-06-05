@@ -132,7 +132,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 	}
 	else
 	{
-		MessageBox(NULL,"Oh No! Window not found!","Error",MB_OK);
+		MessageBox(NULL,"Window not found!","Error",MB_OK);
 		return;
 	}
     _window = renderDevice->window();
