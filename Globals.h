@@ -1,5 +1,6 @@
 #pragma once
 #include "DataModelInstance.h"
+#include <G3DAll.h>
 
 class Globals
 {
@@ -14,4 +15,6 @@ public:
 	static const int major;
 	static const int minor;
 	static const int patch;
+	static G3D::TextureRef surface;
+	static int surfaceId;
 };

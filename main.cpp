@@ -1428,6 +1428,8 @@ void Demo::run() {
 
     // Load objects here=
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
+	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
+	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
