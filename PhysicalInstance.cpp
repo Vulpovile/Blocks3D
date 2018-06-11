@@ -6,6 +6,12 @@ Vector3 position;
 Vector3 velocity;
 Vector3 rotVelocity;
 GLfloat vertecies[96];
+Surface top;
+Surface front;
+Surface right;
+Surface back;
+Surface left;
+Surface bottom;
 CoordinateFrame cFrame;
 Color3 color;
 bool changed = true;
@@ -24,6 +30,12 @@ PhysicalInstance::PhysicalInstance(void)
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
+	top = Snaps;
+	front = Smooth;
+	right = Smooth;
+	back = Smooth;
+	left = Smooth;
+	bottom = Inlets;
 }
 void PhysicalInstance::setSize(Vector3 newSize)
 {
@@ -122,6 +134,24 @@ void PhysicalInstance::render(RenderDevice* rd)
 	glBegin(GL_QUADS);
     for(int i = 0; i < 96; i+=16)
 	{
+		if(i == 0)//Back
+		{
+		}
+		if(i == 16)//Right
+		{
+		}
+		if(i == 32)//Front
+		{
+		}
+		else if(i == 48)//Top
+		{
+		}
+		else if(i == 64)//Left
+		{
+		}
+		else if(i == 80)//Bottom
+		{
+		}
 		Vector3 v0 = Vector3(vertecies[i], vertecies[i+1], vertecies[i+2]), v1 = Vector3(vertecies[i+3], vertecies[i+4], vertecies[i+5]), v3 = Vector3(vertecies[i+9], vertecies[i+10], vertecies[i+11]);
 		glNormal3fv((v1 - v0).cross(v3 - v0).direction());
 		glVertex3fv(v0);

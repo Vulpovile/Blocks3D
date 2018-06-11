@@ -1,5 +1,6 @@
 #pragma once
 #include "instance.h"
+#include "Surface.h"
 
 class PhysicalInstance :
 	public Instance
@@ -10,6 +11,12 @@ public:
 	virtual void render(RenderDevice*);
 	Vector3 velocity;
 	Vector3 rotvelocity;
+	Surface top;
+	Surface front;
+	Surface right;
+	Surface back;
+	Surface left;
+	Surface bottom;
 	CoordinateFrame cFrame;
 	Color3 color;
 	Vector3 getPosition();
@@ -17,6 +24,7 @@ public:
 	CoordinateFrame getCFrame();
 	void setCFrame(CoordinateFrame);
 	Box getBox();
+	Box getScaledBox();
 	CoordinateFrame getCFrameRenderBased();
 	Vector3 getSize();
 	void setSize(Vector3);

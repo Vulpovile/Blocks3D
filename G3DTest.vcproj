@@ -336,6 +336,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Surface.h"
+				>
+			</File>
+			<File
 				RelativePath=".\win32Defines.h"
 				>
 			</File>
