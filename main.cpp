@@ -118,9 +118,6 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 
 	Win32Window* window = Win32Window::create(settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);
-	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
-	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
-	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)this);
 	ShowWindow(_hWndMain, SW_SHOW);
 	quit=false;
 	rightButtonHolding=false;
@@ -138,6 +135,9 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
     _window = renderDevice->window();
     _window->makeCurrent();
 
+	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
+	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
+	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)this);
 }
 
 void clearInstances()
@@ -1200,8 +1200,10 @@ void Demo::onKeyUp(int key)
 
 }
 
-void Demo::onMouseLeftPressed(int x,int y)
+void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 {
+	SetFocus(hwnd);
+
 	std::cout << "Click: " << x << "," << y << std::endl;
 
 	bool onGUI = false;
@@ -1379,7 +1381,7 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             app->QuitApp();
         break;
 		case WM_LBUTTONDOWN:
-			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
+			app->onMouseLeftPressed(hwnd,LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_LBUTTONUP:
 			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));

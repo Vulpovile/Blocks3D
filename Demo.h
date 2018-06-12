@@ -22,7 +22,7 @@ class Demo { // : public GApp {
 		void		onCreate(HWND parentWindow);
 		void		onKeyPressed(int key);
 		void		onKeyUp(int key);
-		void		onMouseLeftPressed(int x, int y);
+		void		onMouseLeftPressed(HWND hwnd,int x, int y);
 		void		onMouseLeftUp(int x, int y);
 		void		onMouseRightPressed(int x, int y);
 		void		onMouseRightUp(int x, int y);
