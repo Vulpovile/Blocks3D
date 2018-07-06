@@ -77,11 +77,11 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
-
+	IWebBrowser2* wb = 0;
 	_hwndToolbox = CreateWindowEx(
 		WS_EX_ACCEPTFILES,
-		"toolboxHWND",
-		"Main test",
+		"AX",
+		"{8856F961-340A-11D0-A96B-00C04FD705A2}",
 		WS_CHILD | WS_VISIBLE,
 		0,
 		560,
@@ -92,6 +92,15 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 		hThisInstance,
 		NULL
 	);
+
+	SendMessage(_hwndToolbox,AX_INPLACE,1,0);
+	SendMessage(_hwndToolbox,AX_QUERYINTERFACE,(WPARAM)&IID_IWebBrowser2,(LPARAM)&wb);
+	if (wb)
+	{
+        wb->Navigate(L"https://scottbeebiwan.tk/g3d/toolbox/",0,0,0,0);
+        wb->Release();
+	}
+
 	_buttonTest = CreateWindow(
 		"COMBOBOX",
 		"",
@@ -1562,6 +1571,7 @@ int main(int argc, char** argv) {
 		OleInitialize(0);
 		if (!AXRegister())
 			return 0;
+
 		tempPath = ((std::string)getenv("temp")) + "/"+PlaceholderName;
 		CreateDirectory(tempPath.c_str(), NULL);
 	    
