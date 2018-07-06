@@ -237,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ax.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ButtonListener.cpp"
 				>
 			</File>
@@ -315,6 +319,10 @@
 			>
 			<File
 				RelativePath=".\AudioPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ax.h"
 				>
 			</File>
 			<File

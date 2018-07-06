@@ -34,7 +34,9 @@
 #include <exdisp.h>
 #include <vector>
 #include <string>
-
+#include <comdef.h>
+#include <comdefsp.h>
+#include "ax.h"
 
 
 #if G3D_VER < 61000
@@ -70,8 +72,6 @@ Instance* selectedInstance = NULL;
 static const std::string PlaceholderName = "Dynamica";
 
 Demo *usableApp = NULL;
-
-
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
 	_hWndMain = parentWindow;
@@ -1559,6 +1559,9 @@ void Demo::onCreate(HWND parentWindow)
 
 int main(int argc, char** argv) {
 	try{
+		OleInitialize(0);
+		if (!AXRegister())
+			return 0;
 		tempPath = ((std::string)getenv("temp")) + "/"+PlaceholderName;
 		CreateDirectory(tempPath.c_str(), NULL);
 	    
@@ -1571,7 +1574,6 @@ int main(int argc, char** argv) {
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
 		HMODULE hThisInstance = GetModuleHandle(NULL);
-
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
 			return false;
 		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
