@@ -890,15 +890,24 @@ void Demo::onUserInput(UserInput* ui) {
 			Sleep(10);
 		}
 	}
-
+	// Camera KB Handling {
+		if (GetKPBool(VK_OEM_COMMA)) //Left
+			usableApp->cameraController.panLeft();
+		else if (GetKPBool(VK_OEM_PERIOD)) // Right
+			usableApp->cameraController.panRight();
+		else if (GetKPBool(0x49)) // Zoom In (I)
+			usableApp->cameraController.Zoom(1);
+		else if (GetKPBool(0x4F)) // Zoom Out (O)
+			usableApp->cameraController.Zoom(-1);
+	// }
 
 	//readMouseGUIInput();
 	// Add other key handling here
 }
 
-
-
-
+bool GetKPBool(int VK) {
+	return (GetKeyState(VK) & 0x8000);
+}
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
