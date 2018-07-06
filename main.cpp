@@ -30,6 +30,10 @@
 #include "win32Defines.h"
 #include "WindowFunctions.h"
 #include <limits.h>
+#include <mshtml.h>
+#include <exdisp.h>
+#include <vector>
+#include <string>
 
 
 
@@ -38,6 +42,7 @@
 #endif
 HWND hwnd;
 
+IWebBrowser2* test;
 static std::string title = "";
 static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
@@ -65,6 +70,8 @@ Instance* selectedInstance = NULL;
 static const std::string PlaceholderName = "Dynamica";
 
 Demo *usableApp = NULL;
+
+
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
 	_hWndMain = parentWindow;
@@ -838,7 +845,7 @@ bool IsHolding(int button)
 	return (GetKeyState(button) >> 1)>0;
 }
 
-bool GetKPBool(int VK) {
+BOOL GetKPBool(int VK) {
 	return (GetKeyState(VK) & 0x8000);
 }
 
