@@ -151,7 +151,7 @@ void OnError(int err, std::string msg = "")
 	//usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
 	clearInstances();
-	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
+	MessageBox(NULL, emsg.c_str(),"Hypercube Crash", MB_OK);
 	exit(err);
 }
 
@@ -1541,7 +1541,7 @@ void Demo::onCreate(HWND parentWindow)
 
 int main(int argc, char** argv) {
 	try{
-		tempPath = ((std::string)getenv("temp")) + "/Dynamica";
+		tempPath = ((std::string)getenv("temp")) + "/Hypercube";
 		CreateDirectory(tempPath.c_str(), NULL);
 	    
 		message = tempPath;
@@ -1578,7 +1578,7 @@ int main(int argc, char** argv) {
 
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
+			MessageBox(NULL, "Failed to create HWND","Hypercube Crash", MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
