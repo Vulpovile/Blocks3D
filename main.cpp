@@ -62,6 +62,7 @@ bool dragging = false;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 Instance* selectedInstance = NULL;
+static const std::string PlaceholderName = "Dynamica";
 
 Demo *usableApp = NULL;
 
@@ -149,9 +150,10 @@ void OnError(int err, std::string msg = "")
 {
 	//usableApp->window()->setInputCaptureCount(0);
 	//usableApp->window()->setMouseVisible(true);
-	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
+	std::string emsg = "An unexpected error has occured and "+PlaceholderName+" has to quit. We're sorry!" + msg;
+	std::string title = PlaceholderName+"Crash";
 	clearInstances();
-	MessageBox(NULL, emsg.c_str(),"Hypercube Crash", MB_OK);
+	MessageBox(NULL, emsg.c_str(), title.c_str(), MB_OK);
 	exit(err);
 }
 
@@ -836,6 +838,10 @@ bool IsHolding(int button)
 	return (GetKeyState(button) >> 1)>0;
 }
 
+bool GetKPBool(int VK) {
+	return (GetKeyState(VK) & 0x8000);
+}
+
 void Demo::onUserInput(UserInput* ui) {
 
 	/*
@@ -903,10 +909,6 @@ void Demo::onUserInput(UserInput* ui) {
 
 	//readMouseGUIInput();
 	// Add other key handling here
-}
-
-bool GetKPBool(int VK) {
-	return (GetKeyState(VK) & 0x8000);
 }
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
@@ -1550,7 +1552,7 @@ void Demo::onCreate(HWND parentWindow)
 
 int main(int argc, char** argv) {
 	try{
-		tempPath = ((std::string)getenv("temp")) + "/Hypercube";
+		tempPath = ((std::string)getenv("temp")) + "/"+PlaceholderName;
 		CreateDirectory(tempPath.c_str(), NULL);
 	    
 		message = tempPath;
