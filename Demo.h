@@ -5,6 +5,7 @@
 class Demo { // : public GApp {
 	public:
 		Demo(const GAppSettings& settings,HWND parentWindow);
+		void Boop();
 		virtual			~Demo() {}
 		virtual void	exitApplication();
 		virtual void	onInit();

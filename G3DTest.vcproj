@@ -257,6 +257,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IEDispatcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath="main.cpp"
 				>
 				<FileConfiguration
@@ -339,6 +343,10 @@
 			</File>
 			<File
 				RelativePath=".\Globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IEDispatcher.h"
 				>
 			</File>
 			<File

@@ -16,6 +16,7 @@
 #define _WIN32_WINNT 0x0400
 
 #include <G3DAll.h>
+#include <initguid.h>
 #include <iomanip>
 #include "Instance.h"
 #include "resource.h"
@@ -37,12 +38,25 @@
 #include <comdef.h>
 #include <comdefsp.h>
 #include "ax.h"
+#include "IEDispatcher.h"
 
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
 HWND hwnd;
+
+DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
+HRESULT hresult;
+IUnknown * punk;
+IDispatch * pdisp = new IEDispatcher();
+OLECHAR dat = ((OLECHAR)"SayHello");
+OLECHAR * szMember = &dat;
+DISPID dispid;
+DISPPARAMS dispparamsNoArgs = {NULL, NULL, 0, 0};
+EXCEPINFO excepinfo;
+UINT nArgErr;
+
 
 IWebBrowser2* test;
 static std::string title = "";
@@ -86,7 +100,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 		0,
 		560,
 		800,
-		50,
+		60,
 		_hWndMain, // parent
 		NULL, // menu
 		hThisInstance,
@@ -1340,6 +1354,14 @@ App::~App() {
 }
 */
 
+void Boop()
+{
+	OnError(1, "Test");
+}
+
+
+
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -1377,6 +1399,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	MessageBox(NULL, (LPCSTR)wParam, (LPCSTR)lParam, 1);
 	if (app==NULL)
 	{
 		return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -1392,6 +1415,7 @@ LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
+
 LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -1543,8 +1567,8 @@ void Demo::resizeWithParent(HWND parentWindow)
 {
 	RECT rect;
 	GetClientRect(parentWindow,&rect);
-	SetWindowPos(_hwndRenderer,NULL,0,0,rect.right,rect.bottom-50,SWP_NOMOVE);
-	SetWindowPos(_hwndToolbox,NULL,0,rect.bottom-50,rect.right,50,SWP_NOACTIVATE | SWP_SHOWWINDOW);
+	SetWindowPos(_hwndRenderer,NULL,0,0,rect.right,rect.bottom-60,SWP_NOMOVE);
+	SetWindowPos(_hwndToolbox,NULL,0,rect.bottom-60,rect.right,60,SWP_NOACTIVATE | SWP_SHOWWINDOW);
 	GetClientRect(_hwndRenderer,&rect);
 	int viewWidth=rect.right;
 	int viewHeight=rect.bottom;
@@ -1568,7 +1592,9 @@ void Demo::onCreate(HWND parentWindow)
 
 int main(int argc, char** argv) {
 	try{
-		OleInitialize(0);
+		hresult = OleInitialize(NULL);
+		hresult = CoCreateInstance(CLSID_G3d, NULL, CLSCTX_SERVER, IID_IUnknown, (void **)&punk);
+		hresult = punk->QueryInterface(IID_IDispatch, &pdisp);
 		if (!AXRegister())
 			return 0;
 
