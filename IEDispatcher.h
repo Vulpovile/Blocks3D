@@ -6,8 +6,6 @@ class IEDispatcher : public IDispatch
 public:
 	IEDispatcher(void);
 	~IEDispatcher(void);
-	int IEDispatcher::QueryInterface(const IID &riid, void **ppvObject);
-	ULONG IEDispatcher::AddRef();
-	HRESULT IEDispatcher::GetIDsOfNames(const IID &rrid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId);
-	ULONG IEDispatcher::Release();
+	HRESULT IEDispatcher::QueryInterface();
+	HRESULT IEDispatcher::QueryInterface(const IID &riid, void **ppvObject);
 };
