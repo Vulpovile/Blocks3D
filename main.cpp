@@ -1634,7 +1634,8 @@ int main(int argc, char** argv) {
 
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Failed to create HWND", PlaceholderName + " Crash", MB_OK);
+			std::string val = PlaceholderName + " Crash";
+			MessageBox(NULL, "Failed to create HWND", val.c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
