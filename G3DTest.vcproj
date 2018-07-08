@@ -257,6 +257,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IEBrowser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IEBrowser.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IEDispatcher.cpp"
 				>
 			</File>

@@ -141,7 +141,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
 
 	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
-	webBrowser->navigateSyncURL(L"https://scottbeebiwan.tk/g3d/toolbox/");
+	webBrowser->navigateSyncURL(L"http://scottbeebiwan.tk/g3d/toolbox/");
 }
 
 void clearInstances()
