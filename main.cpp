@@ -1566,11 +1566,6 @@ void Demo::onCreate(HWND parentWindow)
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
-<<<<<<< HEAD
-=======
-		hresult = CoCreateInstance(CLSID_G3d, NULL, CLSCTX_SERVER, IID_IUnknown, (void **)&punk);
-		hresult = punk->QueryInterface(IID_IDispatch, (void **)&pdisp);
->>>>>>> db4c46cf20d280b99ab13d892c809de8108d4862
 		if (!AXRegister())
 			return 0;
 
