@@ -35,11 +35,9 @@
 #include <exdisp.h>
 #include <vector>
 #include <string>
-#include <comdef.h>
-#include <comdefsp.h>
 #include "ax.h"
-#include "IEDispatcher.h"
-
+#include <cguid.h>
+#include "IEBrowser.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -48,8 +46,6 @@ HWND hwnd;
 
 DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
 HRESULT hresult;
-IUnknown * punk;
-IDispatch * pdisp = new IEDispatcher();
 OLECHAR dat = ((OLECHAR)"SayHello");
 OLECHAR * szMember = &dat;
 DISPID dispid;
@@ -57,8 +53,6 @@ DISPPARAMS dispparamsNoArgs = {NULL, NULL, 0, 0};
 EXCEPINFO excepinfo;
 UINT nArgErr;
 
-
-IWebBrowser2* test;
 static std::string title = "";
 static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
@@ -91,7 +85,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
-	IWebBrowser2* wb = 0;
+
 	_hwndToolbox = CreateWindowEx(
 		WS_EX_ACCEPTFILES,
 		"AX",
@@ -106,31 +100,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 		hThisInstance,
 		NULL
 	);
-
-	SendMessage(_hwndToolbox,AX_INPLACE,1,0);
-	SendMessage(_hwndToolbox,AX_QUERYINTERFACE,(WPARAM)&IID_IWebBrowser2,(LPARAM)&wb);
-	if (wb)
-	{
-        wb->Navigate(L"https://scottbeebiwan.tk/g3d/toolbox/",0,0,0,0);
-        wb->Release();
-	}
-
-	_buttonTest = CreateWindow(
-		"COMBOBOX",
-		"",
-		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE ,
-		20,
-		10,
-		80,
-		120,
-		_hwndToolbox, // parent
-		NULL, // menu
-		hThisInstance,
-		NULL
-	);
-	SendMessage(_buttonTest,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) "TEST"); 
-	SendMessage(_buttonTest,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) "TEST2");
-	SendMessage(_buttonTest, CB_SETCURSEL, (WPARAM)1, (LPARAM)0);
+	
 	_hwndRenderer = CreateWindowEx(
 		WS_EX_ACCEPTFILES,
 		"G3DWindow",
@@ -146,10 +116,10 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 		NULL
 	);
 
-
 	Win32Window* window = Win32Window::create(settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);
 	ShowWindow(_hWndMain, SW_SHOW);
+
 	quit=false;
 	rightButtonHolding=false;
 	mouseOnScreen=false;
@@ -163,12 +133,15 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 		MessageBox(NULL,"Window not found!","Error",MB_OK);
 		return;
 	}
+
     _window = renderDevice->window();
     _window->makeCurrent();
 
 	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
-	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)this);
+
+	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
+	webBrowser->navigateSyncURL(L"https://scottbeebiwan.tk/g3d/toolbox/");
 }
 
 void clearInstances()
@@ -1398,13 +1371,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
 	MessageBox(NULL, (LPCSTR)wParam, (LPCSTR)lParam, 1);
-	if (app==NULL)
-	{
-		return DefWindowProc(hwnd, msg, wParam, lParam);
-	}
-    switch(msg)
+	//if (app==NULL)
+	//{
+		//return DefWindowProc(hwnd, msg, wParam, lParam);
+	//}
+	switch(msg)
     {
 		case WM_SIZE:
 		break;
@@ -1593,8 +1566,11 @@ void Demo::onCreate(HWND parentWindow)
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
+<<<<<<< HEAD
+=======
 		hresult = CoCreateInstance(CLSID_G3d, NULL, CLSCTX_SERVER, IID_IUnknown, (void **)&punk);
-		hresult = punk->QueryInterface(IID_IDispatch, &pdisp);
+		hresult = punk->QueryInterface(IID_IDispatch, (void **)&pdisp);
+>>>>>>> db4c46cf20d280b99ab13d892c809de8108d4862
 		if (!AXRegister())
 			return 0;
 
@@ -1634,7 +1610,7 @@ int main(int argc, char** argv) {
 
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Failed to create HWND",placeholderName+" Crash", MB_OK);
+			MessageBox(NULL, "Failed to create HWND", (PlaceholderName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));

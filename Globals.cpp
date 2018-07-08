@@ -8,6 +8,10 @@ int const Globals::patch = 2;
 int Globals::surfaceId = 2;
 bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;
+
+const std::string Globals::PlaceholderName = "Dynamica";
+
+
 G3D::TextureRef Globals::surface;
 POINT Globals::mousepoint;
 Globals::Globals(void){}

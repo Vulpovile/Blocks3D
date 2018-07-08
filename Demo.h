@@ -29,6 +29,7 @@ class Demo { // : public GApp {
 		void		onMouseRightUp(int x, int y);
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
+
 		CameraController	cameraController;
 		RenderDevice*		renderDevice;
 		UserInput*			userInput;

@@ -17,4 +17,5 @@ public:
 	static const int patch;
 	static G3D::TextureRef surface;
 	static int surfaceId;
+	static const std::string PlaceholderName;
 };
