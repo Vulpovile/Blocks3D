@@ -167,10 +167,10 @@ void PhysicalInstance::render(RenderDevice* rd)
 			face = bottom;
 		}
 
-		if(face == Snaps)
+		/*if(face == Snaps)
 			add = 0.0;
 		else if(face == Inlets)
-			add = 0.2;
+			add = 0.2;*/
 
 		Vector3 v0 = Vector3(vertecies[i], vertecies[i+1], vertecies[i+2]), v1 = Vector3(vertecies[i+3], vertecies[i+4], vertecies[i+5]), v3 = Vector3(vertecies[i+9], vertecies[i+10], vertecies[i+11]);
 		/*glNormal3fv((v1 - v0).cross(v3 - v0).direction());
