@@ -16,7 +16,7 @@ class Demo { // : public GApp {
 		virtual void	onUserInput(UserInput* ui);
 		virtual void	onCleanup();
 
-		Instance*	getSelection();
+		std::vector<Instance*>	getSelection();
 		void		run();
 		void		QuitApp();
 		void		resizeWithParent(HWND parentWindow);

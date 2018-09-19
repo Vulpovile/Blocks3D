@@ -76,7 +76,7 @@ static int mode = CURSOR;
 bool dragging = false;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
-Instance* selectedInstance = NULL;
+std::vector<Instance*> selectedInstances = std::vector<Instance*>();
 static const std::string PlaceholderName = "Dynamica";
 
 Demo *usableApp = NULL;
@@ -221,8 +221,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = usableApp->cameraController.getCamera()->getCoordinateFrame();
-	if(button->name == "CenterCam")
-		usableApp->cameraController.centerCamera(selectedInstance);
+	if(button->name == "CenterCam" && selectedInstances.size() > 0)
+		usableApp->cameraController.centerCamera(selectedInstances.at(0));
 	else if(button->name == "ZoomIn")
 		usableApp->cameraController.Zoom(1);
 	else if(button->name == "ZoomOut")
@@ -244,7 +244,7 @@ public:
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstance != NULL)
+	if(selectedInstances.size() > 0)
 	{
 		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
@@ -262,8 +262,9 @@ public:
 
 void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstance != NULL)
+	if(selectedInstances.size() > 0)
 	{
+		Instance* selectedInstance = selectedInstances.at(0);
 		AudioPlayer::playSound(clickSound);
 		if(selectedInstance->getClassName() == "Part")
 		{
@@ -273,6 +274,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			else if(button->name == "Rotate")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
 		}
+		selectedInstances.erase(selectedInstances.begin());
 	}
 		
 }
@@ -280,13 +282,18 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 
 void deleteInstance()
 {
-	if(selectedInstance != NULL)
+	if(selectedInstances.size() > 0)
 	{
-		if(selectedInstance->getParent() != NULL)
-			selectedInstance->getParent()->removeChild(selectedInstance);
-		delete selectedInstance;
-		selectedInstance = NULL;
-		AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+		while(selectedInstances.size() > 0)
+		{
+			Instance* selectedInstance = selectedInstances.at(0);
+			if(selectedInstance->getParent() != NULL)
+				selectedInstance->getParent()->removeChild(selectedInstance);
+			delete selectedInstance;
+			selectedInstance = NULL;
+			selectedInstances.erase(selectedInstances.begin());
+			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+		}
 	}
 }
 
@@ -788,7 +795,7 @@ void Demo::onLogic() {
 		if(obj != NULL)
 		{
 			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(selectedInstance == NULL)
+			if(selectedInstances.size() > 0)
 				button->disabled = true;
 			else
 				button->disabled = false;	
@@ -808,9 +815,9 @@ void Demo::onNetwork() {
 //	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 //}
 
-Instance* Demo::getSelection()
+std::vector<Instance*> Demo::getSelection()
 {
-	return selectedInstance;
+	return selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(dataModel->name != title)
@@ -875,7 +882,9 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
-		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
+			PhysicalInstance* part = NULL;
+			if(selectedInstances.size() > 0)
+				part = (PhysicalInstance*) selectedInstances.at(0);
 		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
@@ -1117,12 +1126,15 @@ void Demo::onGraphics(RenderDevice* rd) {
 	dataModel->getWorkspace()->render(rd);
 	rd->afterPrimitive();
 
-	if(selectedInstance != NULL)
+	if(selectedInstances.size() > 0)
 	{
-		PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
-		Vector3 size = part->getSize();
-		Vector3 pos = part->getPosition();
-		drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+		for(size_t i = 0; i < selectedInstances.size(); i++)
+		{
+			PhysicalInstance* part = (PhysicalInstance*)selectedInstances.at(i);
+			Vector3 size = part->getSize();
+			Vector3 pos = part->getPosition();
+			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+		}
 	}
 	
 
@@ -1236,7 +1248,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 	}
 	if(!onGUI)
 	{
-		selectedInstance = NULL;
+		while(selectedInstances.size() > 0)
+			selectedInstances.erase(selectedInstances.begin());
 		testRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		float nearest=std::numeric_limits<float>::infinity();
 		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
@@ -1252,7 +1265,9 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 					if (nearest>time)
 					{
 						nearest=time;
-						selectedInstance = test;
+						while(selectedInstances.size() > 0)
+							selectedInstances.erase(selectedInstances.begin());
+						selectedInstances.push_back(test);
 						//message = "Dragging = true.";
 						//messageTime = System::time();
 						//dragging = true;
