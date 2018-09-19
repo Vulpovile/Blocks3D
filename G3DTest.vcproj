@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="atl.lib"
+				AdditionalDependencies="Advapi32.lib"
 				OutputFile="./G3DTest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -169,6 +169,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Advapi32.lib"
 				OutputFile="./G3DTest-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -246,10 +247,6 @@
 			</File>
 			<File
 				RelativePath=".\CameraController.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Dialogs.rc"
 				>
 			</File>
 			<File

@@ -8,6 +8,7 @@ class IEBrowser {
 		IEBrowser(HWND attachHWnd);
 		~IEBrowser(void);
 		bool navigateSyncURL(wchar_t* url);
+		void Boop(char* test);
 	private:
 		IWebBrowser2* webBrowser;
 		HWND hwnd;

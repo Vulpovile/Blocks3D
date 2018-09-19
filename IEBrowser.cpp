@@ -8,6 +8,9 @@
 #include "Globals.h"
 #include "ax.h"
 
+void IEBrowser::Boop(char* test)
+{
+}
 
 IEBrowser::IEBrowser(HWND attachHWnd) {
 	MSG messages;
