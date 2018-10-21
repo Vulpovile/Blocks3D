@@ -266,9 +266,8 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 	{
 		Instance* selectedInstance = selectedInstances.at(0);
 		AudioPlayer::playSound(clickSound);
-		if(selectedInstance->getClassName() == "Part")
+		if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(selectedInstance))
 		{
-			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 			if(button->name == "Tilt")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
 			else if(button->name == "Rotate")
@@ -889,9 +888,8 @@ void Demo::onUserInput(UserInput* ui) {
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(instances.at(i)->getClassName() == "Part")
+				if(PhysicalInstance* moveTo = dynamic_cast<PhysicalInstance*>(instances.at(i)))
 				{
-					PhysicalInstance* moveTo = (PhysicalInstance*)instances.at(i);
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
 					if (__time != inf()) 
@@ -1236,9 +1234,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
-		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D.at(i)))
 		{
-			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 			if(button->mouseInButton(x,y, renderDevice))
 			{
 				onGUI = true;
@@ -1256,9 +1253,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
         for(size_t i = 0; i < instances.size(); i++)
 		{
-			if(instances.at(i)->getClassName() == "Part")
+			if(PhysicalInstance* test = dynamic_cast<PhysicalInstance*>(instances.at(i)))
 			{
-				PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
 				float time = testRay.intersectionTime(test->getBox());
 				if (time != inf()) 
 				{
@@ -1288,9 +1284,8 @@ void Demo::onMouseLeftUp(int x,int y)
 	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
-		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D[i]))
 		{
-			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 			if(button->mouseInButton(x, y, renderDevice))
 			{
 				button->onMouseClick();
