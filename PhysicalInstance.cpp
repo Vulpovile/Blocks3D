@@ -1,43 +1,48 @@
 #include "PhysicalInstance.h"
 #include "Globals.h"
-bool canCollide = true;
-bool anchored = false;
-Vector3 size;
-Vector3 position;
-Vector3 velocity;
-Vector3 rotVelocity;
 GLfloat vertecies[96];
-Surface top;
-Surface front;
-Surface right;
-Surface back;
-Surface left;
-Surface bottom;
-CoordinateFrame cFrame;
-Color3 color;
 bool changed = true;
 Box itemBox = Box();
 
-
 PhysicalInstance::PhysicalInstance(void)
 {
-	name = "Default PhysicalInstance";
+    name = "Default PhysicalInstance";
 	className = "Part";
 	canCollide = true;
 	anchored = true;
 	size = Vector3(2,1,4);
-	position = Vector3(0,0,0);
-	cFrame = CoordinateFrame(position);
+	setCFrame(CoordinateFrame(Vector3(0,0,0)));
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
-	top = Snaps;
-	front = Smooth;
-	right = Smooth;
-	back = Smooth;
-	left = Smooth;
-	bottom = Inlets;
+	top = Surface::Smooth;
+    front = Surface::Smooth;
+    right = Surface::Smooth;
+	back = Surface::Smooth;
+	left = Surface::Smooth;
+	bottom = Surface::Smooth;
 }
+
+PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
+{
+	name = oinst.name;
+	className = "Part";
+	canCollide = oinst.canCollide;
+	
+	anchored = oinst.anchored;
+	size = oinst.size;
+	setCFrame(oinst.cFrame);
+	color = oinst.color;
+	velocity = oinst.velocity;
+	rotVelocity = oinst.rotVelocity;
+	top = oinst.top;
+	front = oinst.front;
+	right = oinst.right;
+	back = oinst.back;
+	left = oinst.left;
+	bottom = oinst.bottom;
+}
+
 void PhysicalInstance::setSize(Vector3 newSize)
 {
 	int minsize = 1;
@@ -127,6 +132,11 @@ Box PhysicalInstance::getBox()
 	return itemBox;
 }
 
+bool PhysicalInstance::collides(Box box)
+{
+	return CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), box);
+}
+
 void PhysicalInstance::render(RenderDevice* rd)
 {
 	if(changed)
@@ -143,29 +153,17 @@ void PhysicalInstance::render(RenderDevice* rd)
 		double add = 0.8;
 		Surface face;
 		if(i == 0)//Back
-		{
 			face = back;
-		}
 		else if(i == 16)//Right
-		{
 			face = right;
-		}
 		else if(i == 32)//Front
-		{
 			face = front;
-		}
 		else if(i == 48)//Top
-		{
 			face = top;
-		}
 		else if(i == 64)//Left
-		{
 			face = left;
-		}
 		else if(i == 80)//Bottom
-		{
 			face = bottom;
-		}
 
 		/*if(face == Snaps)
 			add = 0.0;

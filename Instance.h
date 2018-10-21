@@ -5,6 +5,7 @@ class Instance
 {
 public:
 	Instance(void);
+	Instance(const Instance&);
 	virtual ~Instance(void);
 	std::string name;
 	virtual void render(RenderDevice*);
@@ -17,6 +18,7 @@ public:
 	void addChild(Instance*);
 	void removeChild(Instance*);
 	Instance* getParent();
+	Instance* clone() const { return new Instance(*this); }
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.

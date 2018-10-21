@@ -7,10 +7,11 @@ class PhysicalInstance :
 {
 public:
 	PhysicalInstance(void);
+	PhysicalInstance(const PhysicalInstance &oinst);
+	Instance* clone() const { return new PhysicalInstance(*this); }
 	~PhysicalInstance(void);
 	virtual void render(RenderDevice*);
 	Vector3 velocity;
-	Vector3 rotvelocity;
 	Surface top;
 	Surface front;
 	Surface right;
@@ -28,6 +29,10 @@ public:
 	CoordinateFrame getCFrameRenderBased();
 	Vector3 getSize();
 	void setSize(Vector3);
+	bool canCollide;
+	bool anchored;
+	Vector3 rotVelocity;
+	bool collides(Box);
 private:
 	Vector3 position;
 	Vector3 size;

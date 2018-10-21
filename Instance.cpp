@@ -14,6 +14,13 @@ Instance::Instance(void)
 	className = "BaseInstance";
 }
 
+Instance::Instance(const Instance &oinst)
+{
+	parent = oinst.parent;
+	name = oinst.name;
+	className = "BaseInstance";
+}
+
 void Instance::render(RenderDevice* rd)
 {
 	for(size_t i = 0; i < children.size(); i++)
