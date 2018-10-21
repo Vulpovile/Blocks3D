@@ -18,7 +18,7 @@ public:
 	void addChild(Instance*);
 	void removeChild(Instance*);
 	Instance* getParent();
-	Instance* clone() const { return new Instance(*this); }
+	virtual Instance* clone() const { return new Instance(*this); }
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.

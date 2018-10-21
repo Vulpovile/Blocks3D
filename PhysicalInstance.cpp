@@ -28,7 +28,7 @@ PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
 	name = oinst.name;
 	className = "Part";
 	canCollide = oinst.canCollide;
-	
+	setParent(oinst.parent);
 	anchored = oinst.anchored;
 	size = oinst.size;
 	setCFrame(oinst.cFrame);

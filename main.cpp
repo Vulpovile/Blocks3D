@@ -252,9 +252,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			std::vector<Instance*> newinst;
 			for(size_t i = 0; i < selectedInstances.size(); i++)
 			{
-				Instance* inst = selectedInstances.at(i)->clone();
-				newinst.push_back(inst);
-				inst->setParent(selectedInstances.at(i)->getParent());
+				newinst.push_back(selectedInstances.at(i)->clone());
 			}
 			selectedInstances = newinst;
 		}
