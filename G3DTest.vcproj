@@ -290,6 +290,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\propertyGrid.c"
+				>
+			</File>
+			<File
 				RelativePath=".\WindowFunctions.cpp"
 				>
 			</File>
@@ -360,6 +364,10 @@
 			</File>
 			<File
 				RelativePath=".\IEDispatcher.h"
+				>
+			</File>
+			<File
+				RelativePath=".\propertyGrid.h"
 				>
 			</File>
 			<File
