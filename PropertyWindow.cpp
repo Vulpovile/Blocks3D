@@ -49,22 +49,45 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ItemInit(pItem);
 
 		pItem.lpszCatalog="Test";
-		pItem.lpszPropName="Test2";
+		pItem.lpszPropName="Offset";
 		pItem.lpszzCmbItems="What";
 		pItem.lpszPropDesc="Description";
-		pItem.lpCurValue=0;
+		pItem.lpCurValue=(LPARAM)"0, 0, 0";
 
 		pItem.iItemType=PIT_EDIT;
+
+		PROPGRIDITEM pItem2;
+		PropGrid_ItemInit(pItem2);
+
+		pItem2.lpszCatalog="Test";
+		pItem2.lpszPropName="s";
+		pItem2.lpszzCmbItems="itemlist\0itemlist2\0itemlist3";
+		pItem2.lpszPropDesc="";
+		pItem2.lpCurValue=0;
+
+		pItem2.iItemType=PIT_COMBO;
+
+		/*PROPGRIDITEM FauxExplorerItem;
+		PropGrid_ItemInit(FauxExplorerItem);
+		FauxExplorerItem.lpszCatalog="Test";
+		FauxExplorerItem.lpszPropName = "Editable Combo Field";
+		FauxExplorerItem.lpszzCmbItems = "Test1\0Test2\0Test3";
+		FauxExplorerItem.lpszPropDesc = "Press F4 to view drop down.";
+		FauxExplorerItem.iItemType = PIT_EDITCOMBO;
+		FauxExplorerItem.lpCurValue = 1;
+		PropGrid_AddItem(_propGrid, &FauxExplorerItem);*/
+
 		PropGrid_Enable(_propGrid,true);
 		ShowWindow(_propGrid,SW_SHOW);
 		PropGrid_AddItem(_propGrid,&pItem);
+		PropGrid_AddItem(_propGrid,&pItem2);
 		PropGrid_SetItemHeight(_propGrid,20);
 		PropGrid_ShowToolTips(_propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
 		PropGrid_ExpandAllCatalogs(_propGrid);
 
 		SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
-		_redraw(_hwndProp);
+		_redraw();
 
 		return true;
 }
@@ -75,13 +98,12 @@ PropertyWindow::PropertyWindow(int x, int y, int sx, int sy, HMODULE hThisInstan
 
 void PropertyWindow::onResize()
 {
-	_redraw(_hwndProp);
+	_redraw();
 }
 
-void PropertyWindow::_redraw(HWND hwnd)
+void PropertyWindow::_redraw()
 {
 	RECT rect;
-	GetClientRect(hwnd,&rect);
-	SetWindowPos(_propGrid, NULL, 0, 0, rect.right, rect.bottom, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+	GetClientRect(_hwndProp,&rect);
+	SetWindowPos(_propGrid, NULL, 0, 20, rect.right, rect.bottom-20, SWP_NOZORDER | SWP_NOACTIVATE);
 }
-
