@@ -242,6 +242,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BrowserCallHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ButtonListener.cpp"
 				>
 			</File>
@@ -332,6 +336,10 @@
 			</File>
 			<File
 				RelativePath=".\ax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BrowserCallHandler.h"
 				>
 			</File>
 			<File
