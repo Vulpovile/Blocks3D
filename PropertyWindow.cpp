@@ -55,9 +55,32 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		pItem.lpCurValue=0;
 
 		pItem.iItemType=PIT_EDIT;
+
+		PROPGRIDITEM pItem2;
+		PropGrid_ItemInit(pItem2);
+
+		pItem2.lpszCatalog="Test";
+		pItem2.lpszPropName="s";
+		pItem2.lpszzCmbItems="itemlist\0itemlist2\0itemlist3";
+		pItem2.lpszPropDesc="";
+		pItem2.lpCurValue=0;
+
+		pItem2.iItemType=PIT_COMBO;
+
+		/*PROPGRIDITEM FauxExplorerItem;
+		PropGrid_ItemInit(FauxExplorerItem);
+		FauxExplorerItem.lpszCatalog="Test";
+		FauxExplorerItem.lpszPropName = "Editable Combo Field";
+		FauxExplorerItem.lpszzCmbItems = "Test1\0Test2\0Test3";
+		FauxExplorerItem.lpszPropDesc = "Press F4 to view drop down.";
+		FauxExplorerItem.iItemType = PIT_EDITCOMBO;
+		FauxExplorerItem.lpCurValue = 1;
+		PropGrid_AddItem(_propGrid, &FauxExplorerItem);*/
+
 		PropGrid_Enable(_propGrid,true);
 		ShowWindow(_propGrid,SW_SHOW);
 		PropGrid_AddItem(_propGrid,&pItem);
+		PropGrid_AddItem(_propGrid,&pItem2);
 		PropGrid_SetItemHeight(_propGrid,20);
 		PropGrid_ShowToolTips(_propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
