@@ -1663,9 +1663,9 @@ int main(int argc, char** argv) {
 		PropGrid_Enable(propGrid,true);
 		ShowWindow(propGrid,SW_SHOW);
 		PropGrid_AddItem(propGrid,&pItem);
-		PropGrid_SetItemHeight(propGrid,20);
-		PropGrid_ShowToolTips(propGrid,TRUE);
-		PropGrid_ShowPropertyDescriptions(propGrid,TRUE);
+		PropGrid_SetItemHeight(propGrid, 20);
+		PropGrid_ShowToolTips(propGrid, TRUE);
+		PropGrid_ShowPropertyDescriptions(propGrid, TRUE);
 		PropGrid_ExpandAllCatalogs(propGrid);
 
 
