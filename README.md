@@ -7,4 +7,4 @@ Equivalent to known features of 05 as it stood in October 2005 with the 'Morgan 
 
 ## Credits
 - Morgan McGuire, creator of G3D - his old pre-2006 website for the only existing colour pictures of 2005 era roblox on the internet, as well as a couple of helpful emails. He assisted roblox development in the 2004-2006 timeframe.
-- David Baszucki and Erik Cassel (1969-2013) - for creating roblox
+- David Baszucki and Erik Cassel (1967-2013, RIP) - for creating roblox
