@@ -15,12 +15,12 @@ PhysicalInstance::PhysicalInstance(void)
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
-	top = Surface::Smooth;
-    front = Surface::Smooth;
-    right = Surface::Smooth;
-	back = Surface::Smooth;
-	left = Surface::Smooth;
-	bottom = Surface::Smooth;
+	top = Smooth;
+    front = Smooth;
+    right = Smooth;
+	back = Smooth;
+	left = Smooth;
+	bottom = Smooth;
 }
 
 PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
