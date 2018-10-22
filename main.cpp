@@ -38,7 +38,7 @@
 #include "ax.h"
 #include <cguid.h>
 #include "IEBrowser.h"
-#include "propertyGrid.h"
+#include "PropertyWindow.h"
 #include <commctrl.h>
 
 #if G3D_VER < 61000
@@ -141,7 +141,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 
 	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
-
+	_propWindow = new PropertyWindow(0,0,200,640,hThisInstance);
 	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
 	webBrowser->navigateSyncURL(L"http://scottbeebiwan.tk/g3d/toolbox/");
 }
@@ -1349,8 +1349,6 @@ void Boop()
 }
 
 
-
-
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -1579,11 +1577,6 @@ void Demo::onCreate(HWND parentWindow)
 	//SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 }
 
-void openProperties(Instance inst)
-{
-	//Open the properties window and feed either the selected instance or the datamodel itself if no instance is selected
-}
-
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
@@ -1616,63 +1609,13 @@ int main(int argc, char** argv) {
 		settings.window.center = true;
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
-		if (!createWindowClass("propHWND",WndProc,hThisInstance))
-			return false;
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
 			return false;
 		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
 			return false;
 		if (!createWindowClass("G3DWindow",G3DProc,hThisInstance))
 			return false;
-		
-		HWND hwndProp = CreateWindowEx(
-			WS_EX_TOOLWINDOW,
-			"propHWND",
-			"PropertyGrid",
-			WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
-			CW_USEDEFAULT,
-			CW_USEDEFAULT,
-			300,
-			660,
-			NULL, // parent
-			NULL, // menu
-			hThisInstance,
-			NULL
-		);
-		ShowWindow(hwndProp,SW_SHOW);
 
-
-
-		HWND propGrid = New_PropertyGrid(hwndProp, 1000);
-		//InitPropertyGrid(GetModuleHandle(NULL));
-
-		PROPGRIDITEM pItem;
-		PropGrid_ItemInit(pItem);
-		
-		pItem.lpszCatalog="Test";
-		pItem.lpszPropName="Test2";
-		pItem.lpszzCmbItems="What\0\0";
-		pItem.lpszPropDesc="Description";
-		pItem.iItemType = PIT_COMBO;
-		pItem.lpCurValue=0;
-		//PROPGRIDITEM FauxExplorerItem;
-		//PropGrid_ItemInit(FauxExplorerItem);
-		//FauxExplorerItem.lpszCatalog="Test";
-		//FauxExplorerItem.lpszPropName = "Editable Combo Field";
-		//FauxExplorerItem.lpszzCmbItems = "Test1\0Test2\0Test3";
-		//FauxExplorerItem.lpszPropDesc = "Press F4 to view drop down.";
-		//FauxExplorerItem.iItemType = PIT_EDITCOMBO;
-		//FauxExplorerItem.lpCurValue = 1;
-		//PropGrid_AddItem(propGrid, &FauxExplorerItem);
-		pItem.iItemType=PIT_EDIT;
-		
-		ShowWindow(propGrid,SW_SHOW);
-		PropGrid_AddItem(propGrid,&pItem);
-		PropGrid_SetItemHeight(propGrid, 20);
-		PropGrid_ShowToolTips(propGrid, TRUE);
-		PropGrid_ShowPropertyDescriptions(propGrid, TRUE);
-		PropGrid_ExpandAllCatalogs(propGrid);
-		PropGrid_Enable(propGrid,true);
 		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",

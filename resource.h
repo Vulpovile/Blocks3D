@@ -3,6 +3,7 @@
 // Used by Dialogs.rc
 //
 #define IDI_ICON1                       102
+#define IDC_PROPERTYGRID				2000
 
 // Next default values for new objects
 // 

@@ -1,6 +1,7 @@
 #pragma once
 #include <G3DAll.h>
 #include "CameraController.h"
+#include "PropertyWindow.h"
 
 class Demo { // : public GApp {
 	public:
@@ -45,6 +46,7 @@ class Demo { // : public GApp {
 		HWND				_hwndToolbox;
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
+		PropertyWindow*		_propWindow;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;
