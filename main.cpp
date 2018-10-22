@@ -279,7 +279,6 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			else if(button->name == "Rotate")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
 		}
-		selectedInstances.erase(selectedInstances.begin());
 	}
 		
 }
