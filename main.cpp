@@ -1624,7 +1624,7 @@ int main(int argc, char** argv) {
 			WS_EX_ACCEPTFILES,
 			"propHWND",
 			"Prop Test",
-			WS_OVERLAPPEDWINDOW,
+			WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			300,
