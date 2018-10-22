@@ -693,7 +693,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(40),toRadians(40)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	
 
 	
