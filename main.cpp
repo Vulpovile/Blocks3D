@@ -38,6 +38,8 @@
 #include "ax.h"
 #include <cguid.h>
 #include "IEBrowser.h"
+#include "propertyGrid.h"
+#include <commctrl.h>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -1583,9 +1585,22 @@ int main(int argc, char** argv) {
 		if (!AXRegister())
 			return 0;
 
+			
+		INITCOMMONCONTROLSEX icc;
+		WNDCLASSEX wcx;
+
+		/* Initialize common controls. Also needed for MANIFEST's */
+
+		icc.dwSize = sizeof(icc);
+		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
+					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
+		InitCommonControlsEx(&icc);
+
 		tempPath = ((std::string)getenv("temp")) + "/"+PlaceholderName;
 		CreateDirectory(tempPath.c_str(), NULL);
-	    
+	
+		
+
 		message = tempPath;
 		messageTime = System::time();
 		AudioPlayer::init();
@@ -1595,6 +1610,9 @@ int main(int argc, char** argv) {
 		settings.logFilename = tempPath + "/g3dlog.txt";
 		settings.window.center = true;
 		HMODULE hThisInstance = GetModuleHandle(NULL);
+
+		if (!createWindowClass("propHWND",WndProc,hThisInstance))
+			return false;
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
 			return false;
 		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
@@ -1602,6 +1620,45 @@ int main(int argc, char** argv) {
 		if (!createWindowClass("G3DWindow",G3DProc,hThisInstance))
 			return false;
 		
+		HWND hwndProp = CreateWindowEx(
+			WS_EX_ACCEPTFILES,
+			"propHWND",
+			"Prop Test",
+			WS_OVERLAPPEDWINDOW,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			300,
+			660,
+			NULL, // parent
+			NULL, // menu
+			hThisInstance,
+			NULL
+		);
+		ShowWindow(hwndProp,SW_SHOW);
+
+
+
+		HWND propGrid = New_PropertyGrid(hwndProp, 1000);
+		//InitPropertyGrid(GetModuleHandle(NULL));
+
+		PROPGRIDITEM pItem;
+		PropGrid_ItemInit(pItem);
+
+		pItem.lpszCatalog="Test";
+		pItem.lpszPropName="Test2";
+		pItem.lpszzCmbItems="What\0\0";
+		pItem.lpszPropDesc="Description";
+		pItem.lpCurValue=0;
+
+		pItem.iItemType=PIT_EDIT;
+		PropGrid_Enable(propGrid,true);
+		ShowWindow(propGrid,SW_SHOW);
+		PropGrid_AddItem(propGrid,&pItem);
+		PropGrid_SetItemHeight(propGrid,20);
+		PropGrid_ShowToolTips(propGrid,TRUE);
+		PropGrid_ShowPropertyDescriptions(propGrid,TRUE);
+		PropGrid_ExpandAllCatalogs(propGrid);
+
 		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",
