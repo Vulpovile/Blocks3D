@@ -1972,6 +1972,7 @@ static LPITEMIDLIST ConvertPathToLpItemIdList(LPTSTR pszPath)
         pDesktopFolder->ParseDisplayName(NULL, NULL, pwzPath, &chEaten, &pidl, &dwAttributes);
         pDesktopFolder->Release();
     }
+	delete pwzPath;
     return pidl;
 }
 
