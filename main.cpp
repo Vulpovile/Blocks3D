@@ -1672,7 +1672,7 @@ int main(int argc, char** argv) {
 		PropGrid_ShowToolTips(propGrid, TRUE);
 		PropGrid_ShowPropertyDescriptions(propGrid, TRUE);
 		PropGrid_ExpandAllCatalogs(propGrid);
-PropGrid_Enable(propGrid,true);
+		PropGrid_Enable(propGrid,true);
 		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",
@@ -1693,10 +1693,8 @@ PropGrid_Enable(propGrid,true);
 			MessageBox(NULL, "Failed to create HWND", (PlaceholderName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
-
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
 		
-
 		
 		Demo demo = Demo(settings,hwndMain);
 		demo.run();	
