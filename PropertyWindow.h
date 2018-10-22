@@ -8,5 +8,5 @@ public:
 private:
 	HWND	_propGrid;
 	HWND	_hwndProp;
-	void	_redraw(HWND hwnd);
+	void	_redraw();
 };

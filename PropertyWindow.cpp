@@ -49,10 +49,10 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ItemInit(pItem);
 
 		pItem.lpszCatalog="Test";
-		pItem.lpszPropName="Test2";
+		pItem.lpszPropName="Offset";
 		pItem.lpszzCmbItems="What";
 		pItem.lpszPropDesc="Description";
-		pItem.lpCurValue=0;
+		pItem.lpCurValue=(LPARAM)"0, 0, 0";
 
 		pItem.iItemType=PIT_EDIT;
 
@@ -87,7 +87,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ExpandAllCatalogs(_propGrid);
 
 		SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
-		_redraw(_hwndProp);
+		_redraw();
 
 		return true;
 }
@@ -98,13 +98,12 @@ PropertyWindow::PropertyWindow(int x, int y, int sx, int sy, HMODULE hThisInstan
 
 void PropertyWindow::onResize()
 {
-	_redraw(_hwndProp);
+	_redraw();
 }
 
-void PropertyWindow::_redraw(HWND hwnd)
+void PropertyWindow::_redraw()
 {
 	RECT rect;
-	GetClientRect(hwnd,&rect);
-	SetWindowPos(_propGrid, NULL, 0, 0, rect.right, rect.bottom, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+	GetClientRect(_hwndProp,&rect);
+	SetWindowPos(_propGrid, NULL, 0, 20, rect.right, rect.bottom-20, SWP_NOZORDER | SWP_NOACTIVATE);
 }
-
