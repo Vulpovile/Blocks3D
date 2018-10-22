@@ -1623,7 +1623,7 @@ int main(int argc, char** argv) {
 		HWND hwndProp = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"propHWND",
-			"Prop Test",
+			"PropertyGrid",
 			WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
@@ -1643,13 +1643,22 @@ int main(int argc, char** argv) {
 
 		PROPGRIDITEM pItem;
 		PropGrid_ItemInit(pItem);
-
+		
 		pItem.lpszCatalog="Test";
 		pItem.lpszPropName="Test2";
 		pItem.lpszzCmbItems="What\0\0";
 		pItem.lpszPropDesc="Description";
+		pItem.iItemType = PIT_EDITCOMBO;
 		pItem.lpCurValue=0;
-
+		//PROPGRIDITEM FauxExplorerItem;
+		//PropGrid_ItemInit(FauxExplorerItem);
+		//FauxExplorerItem.lpszCatalog="Test";
+		//FauxExplorerItem.lpszPropName = "Editable Combo Field";
+		//FauxExplorerItem.lpszzCmbItems = "Test1\0Test2\0Test3";
+		//FauxExplorerItem.lpszPropDesc = "Press F4 to view drop down.";
+		//FauxExplorerItem.iItemType = PIT_EDITCOMBO;
+		//FauxExplorerItem.lpCurValue = 1;
+		//PropGrid_AddItem(propGrid, &FauxExplorerItem);
 		pItem.iItemType=PIT_EDIT;
 		PropGrid_Enable(propGrid,true);
 		ShowWindow(propGrid,SW_SHOW);
@@ -1658,6 +1667,7 @@ int main(int argc, char** argv) {
 		PropGrid_ShowToolTips(propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(propGrid,TRUE);
 		PropGrid_ExpandAllCatalogs(propGrid);
+
 
 		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
