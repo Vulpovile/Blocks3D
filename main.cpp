@@ -1621,7 +1621,7 @@ int main(int argc, char** argv) {
 			return false;
 		
 		HWND hwndProp = CreateWindowEx(
-			WS_EX_ACCEPTFILES,
+			WS_EX_TOOLWINDOW,
 			"propHWND",
 			"PropertyGrid",
 			WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX,
