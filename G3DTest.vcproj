@@ -295,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PropertyWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WindowFunctions.cpp"
 				>
 			</File>
@@ -401,6 +405,10 @@
 			</File>
 			<File
 				RelativePath=".\propertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PropertyWindow.h"
 				>
 			</File>
 			<File
