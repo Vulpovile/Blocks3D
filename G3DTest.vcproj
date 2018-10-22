@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="advapi32.lib"
+				AdditionalDependencies="advapi32.lib UxTheme.lib"
 				OutputFile="./G3DTest-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -335,11 +335,23 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\ActionType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AffectType.h"
+				>
+			</File>
+			<File
 				RelativePath=".\AudioPlayer.h"
 				>
 			</File>
 			<File
 				RelativePath=".\ax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BinType.h"
 				>
 			</File>
 			<File
@@ -355,6 +367,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ControllerType.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Demo.h"
 				>
 			</File>
@@ -367,6 +383,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InputType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\JointType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PartType.h"
+				>
+			</File>
+			<File
 				RelativePath=".\propertyGrid.h"
 				>
 			</File>
@@ -375,7 +403,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SoundType.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Surface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SurfaceConstraint.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SurfaceType.h"
 				>
 			</File>
 			<File
