@@ -469,6 +469,10 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\Dialogs.rc"
+				>
+			</File>
+			<File
 				RelativePath=".\icon1.ico"
 				>
 			</File>
