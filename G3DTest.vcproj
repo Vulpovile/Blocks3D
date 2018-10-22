@@ -21,7 +21,7 @@
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
-			UseOfATL="2"
+			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib"
 				OutputFile="./G3DTest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -148,6 +148,7 @@
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Debug/G3DTest.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
@@ -169,7 +170,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="advapi32.lib UxTheme.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib"
 				OutputFile="./G3DTest-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -290,7 +291,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\propertyGrid.c"
+				RelativePath=".\propertyGrid.cpp"
 				>
 			</File>
 			<File
@@ -388,6 +389,10 @@
 			</File>
 			<File
 				RelativePath=".\JointType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\KeywordFilterType.h"
 				>
 			</File>
 			<File
