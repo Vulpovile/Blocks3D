@@ -1579,6 +1579,11 @@ void Demo::onCreate(HWND parentWindow)
 	//SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
 }
 
+void openProperties(Instance inst)
+{
+	//Open the properties window and feed either the selected instance or the datamodel itself if no instance is selected
+}
+
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
@@ -1648,7 +1653,7 @@ int main(int argc, char** argv) {
 		pItem.lpszPropName="Test2";
 		pItem.lpszzCmbItems="What\0\0";
 		pItem.lpszPropDesc="Description";
-		pItem.iItemType = PIT_EDITCOMBO;
+		pItem.iItemType = PIT_COMBO;
 		pItem.lpCurValue=0;
 		//PROPGRIDITEM FauxExplorerItem;
 		//PropGrid_ItemInit(FauxExplorerItem);
@@ -1660,15 +1665,14 @@ int main(int argc, char** argv) {
 		//FauxExplorerItem.lpCurValue = 1;
 		//PropGrid_AddItem(propGrid, &FauxExplorerItem);
 		pItem.iItemType=PIT_EDIT;
-		PropGrid_Enable(propGrid,true);
+		
 		ShowWindow(propGrid,SW_SHOW);
 		PropGrid_AddItem(propGrid,&pItem);
 		PropGrid_SetItemHeight(propGrid, 20);
 		PropGrid_ShowToolTips(propGrid, TRUE);
 		PropGrid_ShowPropertyDescriptions(propGrid, TRUE);
 		PropGrid_ExpandAllCatalogs(propGrid);
-
-
+PropGrid_Enable(propGrid,true);
 		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",
