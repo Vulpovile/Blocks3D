@@ -21,6 +21,7 @@ ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureR
 	floatRight = false;
 	disabled = false;
 	className = "ImageButton";
+	initProperties();
 }
 
 ImageButtonInstance::~ImageButtonInstance(void)

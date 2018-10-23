@@ -1,7 +1,7 @@
 #define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
-#include "propertyGrid.h"
+#include "Property.h"
 #include "resource.h"
 #include "PropertyWindow.h"
 
@@ -111,4 +111,11 @@ void PropertyWindow::_redraw()
 
 void PropertyWindow::SetProperties(Instance * instance)
 {
+	PropGrid_ResetContent(_propGrid);
+	for(size_t i = 0; i < instance->properties.size(); i++)
+	{
+		PropGrid_AddItem(_propGrid, &instance->properties.at(i));
+	}
+	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
+	_redraw();
 }

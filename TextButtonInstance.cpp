@@ -20,6 +20,7 @@ TextButtonInstance::TextButtonInstance(void)
 	visible = true;
 	className = "TextButton";
 	disabled = false;
+	initProperties();
 }
 
 bool TextButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd)

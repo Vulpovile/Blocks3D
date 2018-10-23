@@ -11,6 +11,7 @@ ButtonListener* listener = NULL;
 BaseButtonInstance::BaseButtonInstance(void)
 {
 	listener = NULL;
+	initProperties();
 }
 
 void BaseButtonInstance::render(RenderDevice* rd)

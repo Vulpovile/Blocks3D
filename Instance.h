@@ -5,6 +5,7 @@
 class Instance
 {
 public:
+	std::vector<Property> properties;
 	Instance(void);
 	Instance(const Instance&);
 	virtual ~Instance(void);
@@ -23,4 +24,5 @@ public:
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
+	void initProperties();
 };

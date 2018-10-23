@@ -15,6 +15,7 @@ Instance::Instance(const Instance &oinst)
 	setParent(oinst.parent);
 	name = oinst.name;
 	className = oinst.className;
+	initProperties();
 }
 
 void Instance::render(RenderDevice* rd)
@@ -24,6 +25,24 @@ void Instance::render(RenderDevice* rd)
 		children.at(i)->render(rd);
 	}
 }
+
+void Update(PROPGRIDITEM)
+{
+
+}
+
+void Instance::initProperties()
+{
+	::PROPGRIDITEM pItem;
+	pItem.lpszCatalog="Test";
+	pItem.lpszPropName="Offset";
+	pItem.lpszzCmbItems="What";
+	pItem.lpszPropDesc="Description";
+	pItem.lpCurValue=(LPARAM)"0, 0, 0";
+	properties.push_back(Property(pItem, Update));
+}
+
+
 
 Instance::~Instance(void)
 {

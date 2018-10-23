@@ -14,6 +14,7 @@ DataModelInstance::DataModelInstance(void)
 	mousey = 0;
 	mouseButton1Down = false;
 	showMessage = false;
+	initProperties();
 }
 
 DataModelInstance::~DataModelInstance(void)

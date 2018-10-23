@@ -1269,6 +1269,7 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 						while(selectedInstances.size() > 0)
 							selectedInstances.erase(selectedInstances.begin());
 						selectedInstances.push_back(test);
+						_propWindow->SetProperties(test);
 						//message = "Dragging = true.";
 						//messageTime = System::time();
 						//dragging = true;
