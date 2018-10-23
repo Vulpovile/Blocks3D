@@ -10,7 +10,8 @@
     Property &prop;
 } PRGP;*/
 
-//std::vector<PRGP> propvec;
+std::vector<Property> prop;
+Instance* selectedInstance;
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	PropertyWindow *propWind = (PropertyWindow *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -24,9 +25,26 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			propWind->onResize();
 		}
-		case WM_NOTIFY:
-			MessageBox(NULL,"Test","Test",0);
 		break;
+		case WM_NOTIFY:
+		{
+			switch(((LPNMHDR)lParam)->code)
+            {
+                case PGN_PROPERTYCHANGE:
+				{
+					if(selectedInstance != NULL)
+					{
+						for(size_t i = 0; i < prop.size(); i++)
+						{
+							MessageBox(NULL, (LPCSTR)prop.at(i).item.lpCurValue, "A", MB_OK);
+							selectedInstance->PropUpdate(prop.at(i).addr, prop.at(i).item);
+						}
+					}
+				}
+                break;
+            }
+            //MessageBox(NULL,"Test","Test",0);
+		}
 		break;
 		default:
 			return DefWindowProc(hwnd, msg, wParam, lParam); 
@@ -121,8 +139,8 @@ void PropertyWindow::_redraw()
 void PropertyWindow::SetProperties(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
-	std::vector<Property> prop = instance->getProperties();
-	
+	prop = instance->getProperties();
+	selectedInstance = instance;
 	for(size_t i = 0; i < prop.size(); i++)
 	{
 		::PROPGRIDITEM item = prop.at(i).item;

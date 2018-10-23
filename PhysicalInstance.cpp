@@ -242,7 +242,7 @@ std::vector<Property> PhysicalInstance::getProperties()
 		"The position of the object in the workspace",
 		(LPARAM)"Coming soon",
 		PIT_EDIT
-		), (DWORD)&name));
+		), (DWORD)&position));
 	return properties;
 }
 
