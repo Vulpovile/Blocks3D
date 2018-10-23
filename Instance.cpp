@@ -25,9 +25,12 @@ void Instance::render(RenderDevice* rd)
 	}
 }
 
-void Instance::PropUpdate(DWORD addr, PROPGRIDITEM pItem)
+void Instance::PropUpdate(DWORD &addr, PROPGRIDITEM &pItem)
 {
-
+	if((DWORD)&name == addr)
+	{
+		name = pItem.lpCurValue;
+	}
 }
 
 std::vector<Property> Instance::getProperties()
