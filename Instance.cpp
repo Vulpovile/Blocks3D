@@ -39,6 +39,7 @@ void Instance::initProperties()
 	pItem.lpszzCmbItems="What";
 	pItem.lpszPropDesc="Description";
 	pItem.lpCurValue=(LPARAM)"0, 0, 0";
+	pItem.iItemType=PIT_EDIT;
 	properties.push_back(Property(pItem, Update));
 }
 
