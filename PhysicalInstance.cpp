@@ -214,7 +214,7 @@ PhysicalInstance::~PhysicalInstance(void)
 }
 
 
-void PhysicalInstance::PropUpdate(LPPROPGRIDITEM item)
+void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	if(strcmp(item->lpszPropName, "Name") == 0)
 	{

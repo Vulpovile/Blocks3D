@@ -41,7 +41,7 @@ PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, 
 	return pItem;
 }
 
-void Instance::PropUpdate(LPPROPGRIDITEM item)
+void Instance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	if(strcmp(item->lpszPropName, "Name") == 0)
 	{

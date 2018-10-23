@@ -21,7 +21,7 @@ public:
 	Instance* getParent();
 	virtual Instance* clone() const { return new Instance(*this); }
 	virtual std::vector<PROPGRIDITEM> getProperties();
-	virtual void PropUpdate(LPPROPGRIDITEM pItem);
+	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
