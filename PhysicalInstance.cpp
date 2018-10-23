@@ -221,7 +221,7 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 		name = (LPTSTR)item->lpCurValue;
 	}
 }
-
+char pto[512];
 std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties;
@@ -234,13 +234,17 @@ std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 		(LPARAM)name.c_str(),
 		PIT_EDIT
 		));
-	char pso[512];
+
 	
+	
+	sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
+	LPCSTR str = LPCSTR(pto);
+	std::cout << str << std::endl;
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",
 		"The position of the object in the workspace",
-		(LPARAM)"Coming soon",
+		(LPARAM)str,
 		PIT_EDIT
 		));
 	return properties;
