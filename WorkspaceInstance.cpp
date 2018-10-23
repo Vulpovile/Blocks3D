@@ -1,6 +1,5 @@
 #include "WorkspaceInstance.h"
-float timer = 60.0F;
-int score = 0;
+
 
 WorkspaceInstance::WorkspaceInstance(void)
 {

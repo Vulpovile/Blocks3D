@@ -1,14 +1,5 @@
 #include "ImageButtonInstance.h"
-G3D::TextureRef image = NULL;
-int openGLID = 0;
-G3D::TextureRef image_ovr = NULL;
-int openGLID_ovr = 0;
-G3D::TextureRef image_dn = NULL;
-int openGLID_dn = 0;
-G3D::TextureRef image_ds = NULL;
-int openGLID_ds = 0;
-Vector2 size;
-Vector2 position;
+
 ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	

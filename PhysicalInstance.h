@@ -36,4 +36,7 @@ public:
 private:
 	Vector3 position;
 	Vector3 size;
+	GLfloat vertecies[96];
+	bool changed;
+	Box itemBox;
 };

@@ -2,10 +2,6 @@
 #include <G3DAll.h>
 #include "Instance.h"
 
-std::string name;
-Instance* parent = NULL;
-std::vector<Instance* > children;
-static std::string className = "BaseInstance";
 
 Instance::Instance(void)
 {

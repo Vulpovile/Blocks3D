@@ -1,8 +1,6 @@
 #include "PhysicalInstance.h"
 #include "Globals.h"
-GLfloat vertecies[96];
-bool changed = true;
-Box itemBox = Box();
+
 
 PhysicalInstance::PhysicalInstance(void)
 {
