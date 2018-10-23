@@ -254,7 +254,15 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			std::vector<Instance*> newinst;
 			for(size_t i = 0; i < selectedInstances.size(); i++)
 			{
-				newinst.push_back(selectedInstances.at(i)->clone());
+				PhysicalInstance* tempinst = (PhysicalInstance*) selectedInstances.at(i);
+				Vector3 tempPos = tempinst->getPosition();
+				Vector3 tempSize = tempinst->getSize();
+				
+				PhysicalInstance* clonedInstance = (PhysicalInstance*) selectedInstances.at(i)->clone();
+
+				newinst.push_back(tempinst);
+				tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
+				usableApp->cameraController.centerCamera(selectedInstances.at(0));
 			}
 			selectedInstances = newinst;
 		}
