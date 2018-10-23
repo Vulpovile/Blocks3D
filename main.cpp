@@ -261,8 +261,8 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 				PhysicalInstance* clonedInstance = (PhysicalInstance*) selectedInstances.at(i)->clone();
 
 				newinst.push_back(tempinst);
-				tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-				usableApp->cameraController.centerCamera(selectedInstances.at(0));
+				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
+				usableApp->cameraController.centerCamera(selectedInstances.at(0));*/
 			}
 			selectedInstances = newinst;
 		}
