@@ -11,5 +11,6 @@ public:
 	HWND	_hwndProp;
 private:
 	HWND	_propGrid;
-	void	_redraw();
+	HWND	_explorerComboBox;
+	void	_resize();
 };

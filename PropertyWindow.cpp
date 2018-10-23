@@ -58,6 +58,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 
 	if (!createWindowClass("propHWND",PropProc,hThisInstance))
 			return false;
+
 		_hwndProp = CreateWindowEx(
 			WS_EX_TOOLWINDOW,
 			"propHWND",
@@ -68,6 +69,21 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 			300,
 			660,
 			NULL, // parent
+			NULL, // menu
+			hThisInstance,
+			NULL
+		);
+		
+		_explorerComboBox = CreateWindowEx(
+			NULL,
+			"COMBOBOX",
+			"Combo",
+			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST,
+			0,
+			0,
+			280,
+			20,
+			_hwndProp, // parent
 			NULL, // menu
 			hThisInstance,
 			NULL
@@ -117,7 +133,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ExpandAllCatalogs(_propGrid);
 
 		SetWindowLongPtr(_hwndProp,GWL_USERDATA,(LONG)this);
-		_redraw();
+		_resize();
 
 		return true;
 }
@@ -128,14 +144,15 @@ PropertyWindow::PropertyWindow(int x, int y, int sx, int sy, HMODULE hThisInstan
 
 void PropertyWindow::onResize()
 {
-	_redraw();
+	_resize();
 }
 
-void PropertyWindow::_redraw()
+void PropertyWindow::_resize()
 {
 	RECT rect;
 	GetClientRect(_hwndProp,&rect);
 	SetWindowPos(_propGrid, NULL, 0, 20, rect.right, rect.bottom-20, SWP_NOZORDER | SWP_NOACTIVATE);
+	SetWindowPos(_explorerComboBox, NULL, 0, 0, rect.right, 20, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 void PropertyWindow::SetProperties(Instance * instance)
@@ -153,7 +170,7 @@ void PropertyWindow::SetProperties(Instance * instance)
 	}
 	PropGrid_ExpandAllCatalogs(_propGrid);
 	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
-	_redraw();
+	_resize();
 }
 
 void PropertyWindow::ClearProperties()
