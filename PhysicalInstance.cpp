@@ -212,7 +212,8 @@ void PhysicalInstance::render(RenderDevice* rd)
 PhysicalInstance::~PhysicalInstance(void)
 {
 }
-
+char pto[512];
+#include <sstream>
 
 void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
@@ -220,8 +221,36 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 	{
 		name = (LPTSTR)item->lpCurValue;
 	}
+	else if(strcmp(item->lpszPropName, "Offset") == 0)
+	{
+		std::string str = (LPTSTR)item->lpCurValue;
+		std::vector<float> vect;
+		std::stringstream ss(str);
+		float i;
+
+		while (ss >> i)
+		{
+			vect.push_back(i);
+
+			if (ss.peek() == ',')
+				ss.ignore();
+		}
+
+		if(vect.size() != 3)
+		{
+			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
+			LPCSTR str = LPCSTR(pto);
+			item->lpCurValue = (LPARAM)str;
+			MessageBox(NULL, "NO","NO", MB_OK);
+		}
+		else
+		{
+			Vector3 pos(vect.at(0),vect.at(1),vect.at(2));
+			setPosition(pos);
+		}
+	}
 }
-char pto[512];
+
 std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties;
@@ -239,7 +268,6 @@ std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 	
 	sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
 	LPCSTR str = LPCSTR(pto);
-	std::cout << str << std::endl;
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",

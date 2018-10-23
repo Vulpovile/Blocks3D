@@ -20,6 +20,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	switch(msg)
     {
+		case WM_CLOSE:
+		{
+			ShowWindow(hwnd, SW_HIDE);
+		}
+		break;
 		case WM_SIZE:
 		{
 			propWind->onResize();
@@ -56,7 +61,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		_hwndProp = CreateWindowEx(
 			WS_EX_TOOLWINDOW,
 			"propHWND",
-			"Prop Test",
+			"PropertyGrid",
 			WS_VISIBLE | WS_POPUPWINDOW | WS_THICKFRAME | WS_CAPTION,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,

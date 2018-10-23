@@ -6,8 +6,9 @@ public:
 	bool	onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance);
 	void	SetProperties(Instance *);
 	void	onResize();
+	
+	HWND	_hwndProp;
 private:
 	HWND	_propGrid;
-	HWND	_hwndProp;
 	void	_redraw();
 };

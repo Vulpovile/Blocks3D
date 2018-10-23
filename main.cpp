@@ -1258,8 +1258,6 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 	}
 	if(!onGUI)
 	{
-		while(selectedInstances.size() > 0)
-			selectedInstances.erase(selectedInstances.begin());
 		testRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		float nearest=std::numeric_limits<float>::infinity();
 		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
@@ -1274,9 +1272,23 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 					if (nearest>time)
 					{
 						nearest=time;
-						while(selectedInstances.size() > 0)
+						bool found = false;
+						for(size_t i = 0; i < selectedInstances.size(); i++)
+						{
+							if(selectedInstances.at(i) == test)
+							{
+								found = true;
+								ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+								SetActiveWindow(_propWindow->_hwndProp);
+								SetForegroundWindow(_propWindow->_hwndProp);
+								break;
+							}
+						}
+						if(!found)
+						{while(selectedInstances.size() > 0)
 							selectedInstances.erase(selectedInstances.begin());
 						selectedInstances.push_back(test);
+						}
 						_propWindow->SetProperties(test);
 						//message = "Dragging = true.";
 						//messageTime = System::time();
