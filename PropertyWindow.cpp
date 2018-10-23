@@ -5,6 +5,12 @@
 #include "resource.h"
 #include "PropertyWindow.h"
 
+typedef struct typPRGP {
+    Instance* instance;   // Declare member types
+    Property &prop;
+} PRGP;
+
+std::vector<PRGP> propvec;
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	PropertyWindow *propWind = (PropertyWindow *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -113,10 +119,14 @@ void PropertyWindow::SetProperties(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
 	std::vector<Property> prop = instance->getProperties();
+	
 	for(size_t i = 0; i < prop.size(); i++)
 	{
 		::PROPGRIDITEM item = prop.at(i).item;
 		PropGrid_AddItem(_propGrid, &item);
+		PRGP propgp;
+		propgp.instance = instance;
+		propgp.prop = prop.at(i);
 	}
 	PropGrid_ExpandAllCatalogs(_propGrid);
 	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
