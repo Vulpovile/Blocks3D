@@ -34,13 +34,13 @@ void Update(PROPGRIDITEM)
 void Instance::initProperties()
 {
 	PROPGRIDITEM * pItem = new PROPGRIDITEM();
-	pItem->lpszCatalog="Test";
-	pItem->lpszPropName="Offset";
-	pItem->lpszzCmbItems="What";
-	pItem->lpszPropDesc="Description";
-	pItem->lpCurValue=(LPARAM)"0, 0, 0";
-	pItem->iItemType=PIT_EDIT;
 	PropGrid_ItemInit((*pItem));
+	pItem->lpszCatalog="Properties";
+	pItem->lpszPropName="Name";
+	pItem->lpszPropDesc="The name of the current instance";
+	pItem->lpCurValue=(LPARAM)name.c_str();
+	pItem->iItemType=PIT_EDIT;
+	
 	properties.push_back(new Property(pItem, Update));
 }
 
