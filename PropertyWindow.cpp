@@ -111,10 +111,10 @@ void PropertyWindow::_redraw()
 
 void PropertyWindow::SetProperties(Instance * instance)
 {
-	PropGrid_ResetContent(_propGrid);
+	//PropGrid_ResetContent(_propGrid);
 	for(size_t i = 0; i < instance->properties.size(); i++)
 	{
-		PropGrid_AddItem(_propGrid, &instance->properties.at(i));
+		PropGrid_AddItem(_propGrid, instance->properties.at(i)->item);
 	}
 	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 	_redraw();

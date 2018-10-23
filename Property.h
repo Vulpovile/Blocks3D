@@ -5,8 +5,8 @@ class Property
 {
 public:
 	void(*callbackFuncOnChange)(PROPGRIDITEM);
-	PROPGRIDITEM item;
-	Property(PROPGRIDITEM item, void(*onPropUpdate)(PROPGRIDITEM));
+	PROPGRIDITEM * item;
+	Property(PROPGRIDITEM * item, void(*onPropUpdate)(PROPGRIDITEM));
 	~Property(void);
 	void updateProperty(PROPGRIDITEM);
 };

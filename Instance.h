@@ -5,7 +5,7 @@
 class Instance
 {
 public:
-	std::vector<Property> properties;
+	std::vector<Property *> properties;
 	Instance(void);
 	Instance(const Instance&);
 	virtual ~Instance(void);

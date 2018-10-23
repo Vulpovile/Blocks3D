@@ -33,14 +33,15 @@ void Update(PROPGRIDITEM)
 
 void Instance::initProperties()
 {
-	::PROPGRIDITEM pItem;
-	pItem.lpszCatalog="Test";
-	pItem.lpszPropName="Offset";
-	pItem.lpszzCmbItems="What";
-	pItem.lpszPropDesc="Description";
-	pItem.lpCurValue=(LPARAM)"0, 0, 0";
-	pItem.iItemType=PIT_EDIT;
-	properties.push_back(Property(pItem, Update));
+	PROPGRIDITEM * pItem = new PROPGRIDITEM();
+	pItem->lpszCatalog="Test";
+	pItem->lpszPropName="Offset";
+	pItem->lpszzCmbItems="What";
+	pItem->lpszPropDesc="Description";
+	pItem->lpCurValue=(LPARAM)"0, 0, 0";
+	pItem->iItemType=PIT_EDIT;
+	PropGrid_ItemInit((*pItem));
+	properties.push_back(new Property(pItem, Update));
 }
 
 
