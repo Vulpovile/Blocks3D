@@ -1,7 +1,7 @@
 
 #pragma once
 #include <G3DAll.h>
-#include "Property.h"
+#include "propertyGrid.h"
 class Instance
 {
 public:
@@ -20,8 +20,8 @@ public:
 	void removeChild(Instance*);
 	Instance* getParent();
 	virtual Instance* clone() const { return new Instance(*this); }
-	virtual std::vector<Property> getProperties();
-	virtual void PropUpdate(DWORD &addr, PROPGRIDITEM &pItem);
+	virtual std::vector<PROPGRIDITEM> getProperties();
+	virtual void PropUpdate(LPPROPGRIDITEM pItem);
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.

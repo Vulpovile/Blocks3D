@@ -214,35 +214,35 @@ PhysicalInstance::~PhysicalInstance(void)
 }
 
 
-void PhysicalInstance::PropUpdate(DWORD &addr, PROPGRIDITEM &pItem)
+void PhysicalInstance::PropUpdate(LPPROPGRIDITEM item)
 {
-	if((DWORD)&name == addr)
+	if(strcmp(item->lpszPropName, "Name") == 0)
 	{
-		name = pItem.lpCurValue;
+		name = (LPTSTR)item->lpCurValue;
 	}
 }
 
-std::vector<Property> PhysicalInstance::getProperties()
+std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 {
-	std::vector<Property> properties;
+	std::vector<PROPGRIDITEM> properties;
 	
 	
-	properties.push_back(Property(createPGI(
+	properties.push_back(createPGI(
 		"Properties",
 		"Name",
 		"The name of this instance",
 		(LPARAM)name.c_str(),
 		PIT_EDIT
-		), (DWORD)&name));
+		));
 	char pso[512];
 	
-	properties.push_back(Property(createPGI(
+	properties.push_back(createPGI(
 		"Item",
 		"Offset",
 		"The position of the object in the workspace",
 		(LPARAM)"Coming soon",
 		PIT_EDIT
-		), (DWORD)&position));
+		));
 	return properties;
 }
 

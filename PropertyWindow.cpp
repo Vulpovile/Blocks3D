@@ -1,7 +1,6 @@
 #define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
-#include "Property.h"
 #include "resource.h"
 #include "PropertyWindow.h"
 
@@ -10,7 +9,7 @@
     Property &prop;
 } PRGP;*/
 
-std::vector<Property> prop;
+std::vector<PROPGRIDITEM> prop;
 Instance* selectedInstance;
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -32,14 +31,12 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 case PGN_PROPERTYCHANGE:
 				{
-					if(selectedInstance != NULL)
-					{
-						for(size_t i = 0; i < prop.size(); i++)
-						{
-							MessageBox(NULL, (LPCSTR)prop.at(i).item.lpCurValue, "A", MB_OK);
-							selectedInstance->PropUpdate(prop.at(i).addr, prop.at(i).item);
-						}
-					}
+					if (IDC_PROPERTYGRID==wParam) {
+                        LPNMHDR pnm = (LPNMHDR)lParam;
+                        LPNMPROPGRID lpnmp = (LPNMPROPGRID)pnm;
+                        LPPROPGRIDITEM item = PropGrid_GetItemData(pnm->hwndFrom,lpnmp->iIndex);
+						selectedInstance->PropUpdate(item);
+                    }
 				}
                 break;
             }
@@ -143,7 +140,7 @@ void PropertyWindow::SetProperties(Instance * instance)
 	selectedInstance = instance;
 	for(size_t i = 0; i < prop.size(); i++)
 	{
-		::PROPGRIDITEM item = prop.at(i).item;
+		::PROPGRIDITEM item = prop.at(i);
 		PropGrid_AddItem(_propGrid, &item);
 		//PRGP propgp;
 		//propgp.instance = instance;

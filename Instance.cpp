@@ -41,26 +41,26 @@ PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, 
 	return pItem;
 }
 
-void Instance::PropUpdate(DWORD &addr, PROPGRIDITEM &pItem)
+void Instance::PropUpdate(LPPROPGRIDITEM item)
 {
-	if((DWORD)&name == addr)
+	if(strcmp(item->lpszPropName, "Name") == 0)
 	{
-		name = pItem.lpCurValue;
+		name = item->lpCurValue;
 	}
 }
 
-std::vector<Property> Instance::getProperties()
+std::vector<PROPGRIDITEM> Instance::getProperties()
 {
-	std::vector<Property> properties;
+	std::vector<PROPGRIDITEM> properties;
 	
 	
-	properties.push_back(Property(createPGI(
+	properties.push_back(createPGI(
 		"Properties",
 		"Name",
 		"The name of this instance",
 		(LPARAM)name.c_str(),
 		PIT_EDIT
-		), (DWORD)&name));
+		));
 	return properties;
 }
 
