@@ -75,7 +75,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 
 		_propGrid = New_PropertyGrid(_hwndProp,IDC_PROPERTYGRID);
 
-		PROPGRIDITEM pItem;
+		/*PROPGRIDITEM pItem;
 		PropGrid_ItemInit(pItem);
 
 		pItem.lpszCatalog="Test";
@@ -109,8 +109,8 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 
 		PropGrid_Enable(_propGrid,true);
 		ShowWindow(_propGrid,SW_SHOW);
-		PropGrid_AddItem(_propGrid,&pItem);
-		PropGrid_AddItem(_propGrid,&pItem2);
+//		PropGrid_AddItem(_propGrid,&pItem);
+//		PropGrid_AddItem(_propGrid,&pItem2);
 		PropGrid_SetItemHeight(_propGrid,20);
 		PropGrid_ShowToolTips(_propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
@@ -154,4 +154,9 @@ void PropertyWindow::SetProperties(Instance * instance)
 	PropGrid_ExpandAllCatalogs(_propGrid);
 	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 	_redraw();
+}
+
+void PropertyWindow::ClearProperties()
+{
+	PropGrid_ResetContent(_propGrid);
 }

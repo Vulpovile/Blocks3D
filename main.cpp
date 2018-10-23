@@ -1262,13 +1262,16 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		float nearest=std::numeric_limits<float>::infinity();
 		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-        for(size_t i = 0; i < instances.size(); i++)
+        bool objFound = false;
+		for(size_t i = 0; i < instances.size(); i++)
 		{
 			if(PhysicalInstance* test = dynamic_cast<PhysicalInstance*>(instances.at(i)))
 			{
 				float time = testRay.intersectionTime(test->getBox());
+				
 				if (time != inf()) 
 				{
+					objFound = true;
 					if (nearest>time)
 					{
 						nearest=time;
@@ -1295,7 +1298,13 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 						//dragging = true;
 					}
 				}
-			}
+			}		
+		}
+		if(!objFound)
+		{
+			while(selectedInstances.size() > 0)
+					selectedInstances.erase(selectedInstances.begin());
+			_propWindow->ClearProperties();
 		}
 	}
 }
