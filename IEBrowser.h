@@ -1,4 +1,5 @@
 //#include "WindowFunctions.h"
+#pragma once
 #include <mshtml.h>
 #include <exdisp.h>
 //#include <Mshtmhst.h>

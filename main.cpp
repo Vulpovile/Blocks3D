@@ -79,7 +79,7 @@ bool dragging = false;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 std::vector<Instance*> selectedInstances = std::vector<Instance*>();
-static const std::string PlaceholderName = "Dynamica";
+static const std::string PlaceholderName = "HyperCube";
 
 Demo *usableApp = NULL;
 

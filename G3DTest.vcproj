@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib"
 				OutputFile="./G3DTest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -147,8 +147,8 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile=".\Debug/G3DTest.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
@@ -291,6 +291,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Property.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\propertyGrid.cpp"
 				>
 			</File>
@@ -401,6 +405,10 @@
 			</File>
 			<File
 				RelativePath=".\PartType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Property.h"
 				>
 			</File>
 			<File
