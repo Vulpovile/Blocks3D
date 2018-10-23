@@ -24,6 +24,9 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			propWind->onResize();
 		}
+		case WM_NOTIFY:
+			MessageBox(NULL,"Test","Test",0);
+		break;
 		break;
 		default:
 			return DefWindowProc(hwnd, msg, wParam, lParam); 
@@ -93,7 +96,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
 		PropGrid_ExpandAllCatalogs(_propGrid);
 
-		SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
+		SetWindowLongPtr(_hwndProp,GWL_USERDATA,(LONG)this);
 		_redraw();
 
 		return true;
