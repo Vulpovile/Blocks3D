@@ -1,25 +1,19 @@
 #include "Property.h"
 
-Property::Property(std::string title, std::string propName, void * prop, void *(*getFunc)(void), void(*setFunc)(void *))
+Property::Property(PROPGRIDITEM item, void(*onPropUpdate)(PROPGRIDITEM))
 {
-	this->title = title;
-	this->propName = propName;
-	this->prop = prop;
-	this->getFunc = getFunc;
-	this->setFunc = setFunc;
+	this->callbackFuncOnChange = onPropUpdate;
+	this->item = item;
 }
 
 Property::~Property(void)
 {
 }
 
-
-void Property::setProperty(void * newprop)
+void Property::updateProperty(PROPGRIDITEM item)
 {
-	this->setFunc(newprop);
+	callbackFuncOnChange(item);
 }
 
-void * Property::getProperty()
-{
-	return this->getFunc();
-}
+
+

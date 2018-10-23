@@ -106,3 +106,6 @@ Instance* Instance::findFirstChild(std::string name)
 	}
 	return child;
 }
+
+
+

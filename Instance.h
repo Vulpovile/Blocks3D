@@ -1,11 +1,10 @@
+
+#pragma once
 #include <G3DAll.h>
 #include "Property.h"
-#pragma once
-
 class Instance
 {
 public:
-	Property *properties;
 	Instance(void);
 	Instance(const Instance&);
 	virtual ~Instance(void);

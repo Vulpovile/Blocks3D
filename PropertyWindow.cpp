@@ -1,3 +1,4 @@
+#define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
 #include "propertyGrid.h"
@@ -106,4 +107,8 @@ void PropertyWindow::_redraw()
 	RECT rect;
 	GetClientRect(_hwndProp,&rect);
 	SetWindowPos(_propGrid, NULL, 0, 20, rect.right, rect.bottom-20, SWP_NOZORDER | SWP_NOACTIVATE);
+}
+
+void PropertyWindow::SetProperties(Instance * instance)
+{
 }
