@@ -17,12 +17,28 @@ Instance::Instance(const Instance &oinst)
 	className = oinst.className;
 }
 
+
+
 void Instance::render(RenderDevice* rd)
 {
 	for(size_t i = 0; i < children.size(); i++)
 	{
 		children.at(i)->render(rd);
 	}
+}
+
+
+
+PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type)
+{
+	PROPGRIDITEM pItem;
+	PropGrid_ItemInit(pItem);
+	pItem.lpszCatalog=catalog;
+	pItem.lpszPropName=propName;
+	pItem.lpszPropDesc=propDesc;
+	pItem.lpCurValue=curVal;
+	pItem.iItemType=type;
+	return pItem;
 }
 
 void Instance::PropUpdate(DWORD &addr, PROPGRIDITEM &pItem)
@@ -36,15 +52,15 @@ void Instance::PropUpdate(DWORD &addr, PROPGRIDITEM &pItem)
 std::vector<Property> Instance::getProperties()
 {
 	std::vector<Property> properties;
-	PROPGRIDITEM pItem;
-	PropGrid_ItemInit(pItem);
-	pItem.lpszCatalog="Properties";
-	pItem.lpszPropName="Name";
-	pItem.lpszPropDesc="The name of the current instance";
-	pItem.lpCurValue=(LPARAM)name.c_str();
-	pItem.iItemType=PIT_EDIT;
 	
-	properties.push_back(Property(pItem, (DWORD)&name));
+	
+	properties.push_back(Property(createPGI(
+		"Properties",
+		"Name",
+		"The name of this instance",
+		(LPARAM)name.c_str(),
+		PIT_EDIT
+		), (DWORD)&name));
 	return properties;
 }
 

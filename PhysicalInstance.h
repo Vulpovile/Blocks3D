@@ -33,6 +33,8 @@ public:
 	bool anchored;
 	Vector3 rotVelocity;
 	bool collides(Box);
+	virtual std::vector<Property> getProperties();
+	virtual void PropUpdate(DWORD &addr, PROPGRIDITEM &pItem);
 private:
 	Vector3 position;
 	Vector3 size;

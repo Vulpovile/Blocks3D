@@ -25,5 +25,6 @@ public:
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
+	PROPGRIDITEM createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type);
 	
 };
