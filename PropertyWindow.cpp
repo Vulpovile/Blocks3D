@@ -112,11 +112,13 @@ void PropertyWindow::_redraw()
 void PropertyWindow::SetProperties(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
-	for(size_t i = 0; i < instance->properties.size(); i++)
+	std::vector<Property> prop = instance->getProperties();
+	for(size_t i = 0; i < prop.size(); i++)
 	{
-		::PROPGRIDITEM * item = instance->properties.at(i)->item;
-		PropGrid_AddItem(_propGrid, item);
+		::PROPGRIDITEM item = prop.at(i).item;
+		PropGrid_AddItem(_propGrid, &item);
 	}
+	PropGrid_ExpandAllCatalogs(_propGrid);
 	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 	_redraw();
 }

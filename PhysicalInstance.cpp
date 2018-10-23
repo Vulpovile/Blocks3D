@@ -19,7 +19,6 @@ PhysicalInstance::PhysicalInstance(void)
 	back = Smooth;
 	left = Smooth;
 	bottom = Smooth;
-	initProperties();
 }
 
 PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)

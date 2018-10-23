@@ -5,7 +5,6 @@
 class Instance
 {
 public:
-	std::vector<Property *> properties;
 	Instance(void);
 	Instance(const Instance&);
 	virtual ~Instance(void);
@@ -21,8 +20,10 @@ public:
 	void removeChild(Instance*);
 	Instance* getParent();
 	virtual Instance* clone() const { return new Instance(*this); }
+	virtual std::vector<Property> getProperties();
+	virtual void PropUpdate(DWORD addr, PROPGRIDITEM pItem);
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
-	void initProperties();
+	
 };

@@ -1,20 +1,15 @@
 #include "Property.h"
 
-Property::Property(PROPGRIDITEM * item, void(*onPropUpdate)(PROPGRIDITEM))
+Property::Property(PROPGRIDITEM item, DWORD addr)
 {
-	this->callbackFuncOnChange = onPropUpdate;
+	this->addr = addr;
 	this->item = item;
 }
 
 Property::~Property(void)
 {
-	delete item;
 }
 
-void Property::updateProperty(PROPGRIDITEM item)
-{
-	callbackFuncOnChange(item);
-}
 
 
 

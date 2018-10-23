@@ -6,7 +6,6 @@ WorkspaceInstance::WorkspaceInstance(void)
 	className = "Workspace";
 	timer = 60.0F;
 	score = 0;
-	initProperties();
 }
 
 WorkspaceInstance::~WorkspaceInstance(void)

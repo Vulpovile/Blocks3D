@@ -15,7 +15,6 @@ Instance::Instance(const Instance &oinst)
 	setParent(oinst.parent);
 	name = oinst.name;
 	className = oinst.className;
-	initProperties();
 }
 
 void Instance::render(RenderDevice* rd)
@@ -26,22 +25,24 @@ void Instance::render(RenderDevice* rd)
 	}
 }
 
-void Update(PROPGRIDITEM)
+void Instance::PropUpdate(DWORD addr, PROPGRIDITEM pItem)
 {
 
 }
 
-void Instance::initProperties()
+std::vector<Property> Instance::getProperties()
 {
-	PROPGRIDITEM * pItem = new PROPGRIDITEM();
-	PropGrid_ItemInit((*pItem));
-	pItem->lpszCatalog="Properties";
-	pItem->lpszPropName="Name";
-	pItem->lpszPropDesc="The name of the current instance";
-	pItem->lpCurValue=(LPARAM)name.c_str();
-	pItem->iItemType=PIT_EDIT;
+	std::vector<Property> properties;
+	PROPGRIDITEM pItem;
+	PropGrid_ItemInit(pItem);
+	pItem.lpszCatalog="Properties";
+	pItem.lpszPropName="Name";
+	pItem.lpszPropDesc="The name of the current instance";
+	pItem.lpCurValue=(LPARAM)name.c_str();
+	pItem.iItemType=PIT_EDIT;
 	
-	properties.push_back(new Property(pItem, Update));
+	properties.push_back(Property(pItem, (DWORD)&name));
+	return properties;
 }
 
 
