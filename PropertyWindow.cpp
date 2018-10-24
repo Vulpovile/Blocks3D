@@ -58,8 +58,8 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 void PropertyWindow::refreshExplorer()
 {
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
-	for (unsigned int i=0;i<selectedInstances.size();i++) {
-		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)selectedInstances[i]->name.c_str()); 
+	for (unsigned int i=0;i<g_selectedInstances.size();i++) {
+		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)g_selectedInstances[i]->name.c_str()); 
 		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0); 
 	}
 }

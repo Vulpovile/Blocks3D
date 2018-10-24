@@ -20,4 +20,4 @@ public:
 	static const std::string PlaceholderName;
 };
 
-extern std::vector<Instance*> selectedInstances;
+extern std::vector<Instance*> g_selectedInstances;

@@ -10,7 +10,7 @@ bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;
 
 const std::string Globals::PlaceholderName = "Dynamica";
-std::vector<Instance*> selectedInstances = std::vector<Instance*>();
+std::vector<Instance*> g_selectedInstances = std::vector<Instance*>();
 G3D::TextureRef Globals::surface;
 POINT Globals::mousepoint;
 Globals::Globals(void){}

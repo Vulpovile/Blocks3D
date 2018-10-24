@@ -222,8 +222,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = usableApp->cameraController.getCamera()->getCoordinateFrame();
-	if(button->name == "CenterCam" && selectedInstances.size() > 0)
-		usableApp->cameraController.centerCamera(selectedInstances.at(0));
+	if(button->name == "CenterCam" && g_selectedInstances.size() > 0)
+		usableApp->cameraController.centerCamera(g_selectedInstances.at(0));
 	else if(button->name == "ZoomIn")
 		usableApp->cameraController.Zoom(1);
 	else if(button->name == "ZoomOut")
@@ -245,25 +245,25 @@ public:
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstances.size() > 0)
+	if(g_selectedInstances.size() > 0)
 	{
 		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
 		{
 			std::vector<Instance*> newinst;
-			for(size_t i = 0; i < selectedInstances.size(); i++)
+			for(size_t i = 0; i < g_selectedInstances.size(); i++)
 			{
-				PhysicalInstance* tempinst = (PhysicalInstance*) selectedInstances.at(i);
+				PhysicalInstance* tempinst = (PhysicalInstance*) g_selectedInstances.at(i);
 				Vector3 tempPos = tempinst->getPosition();
 				Vector3 tempSize = tempinst->getSize();
 				
-				PhysicalInstance* clonedInstance = (PhysicalInstance*) selectedInstances.at(i)->clone();
+				PhysicalInstance* clonedInstance = (PhysicalInstance*) g_selectedInstances.at(i)->clone();
 
 				newinst.push_back(tempinst);
 				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-				usableApp->cameraController.centerCamera(selectedInstances.at(0));*/
+				usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
-			selectedInstances = newinst;
+			g_selectedInstances = newinst;
 		}
 	}
 }
@@ -275,9 +275,9 @@ public:
 
 void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstances.size() > 0)
+	if(g_selectedInstances.size() > 0)
 	{
-		Instance* selectedInstance = selectedInstances.at(0);
+		Instance* selectedInstance = g_selectedInstances.at(0);
 		AudioPlayer::playSound(clickSound);
 		if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(selectedInstance))
 		{
@@ -293,16 +293,16 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 
 void deleteInstance()
 {
-	if(selectedInstances.size() > 0)
+	if(g_selectedInstances.size() > 0)
 	{
-		while(selectedInstances.size() > 0)
+		while(g_selectedInstances.size() > 0)
 		{
-			Instance* selectedInstance = selectedInstances.at(0);
+			Instance* selectedInstance = g_selectedInstances.at(0);
 			if(selectedInstance->getParent() != NULL)
 				selectedInstance->getParent()->removeChild(selectedInstance);
 			delete selectedInstance;
 			selectedInstance = NULL;
-			selectedInstances.erase(selectedInstances.begin());
+			g_selectedInstances.erase(g_selectedInstances.begin());
 			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 		}
 	}
@@ -821,7 +821,7 @@ void Demo::onNetwork() {
 
 std::vector<Instance*> Demo::getSelection()
 {
-	return selectedInstances;
+	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
@@ -829,7 +829,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		if(obj != NULL)
 		{
 			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(selectedInstances.size() <= 0)
+			if(g_selectedInstances.size() <= 0)
 				button->disabled = true;
 			else
 				button->disabled = false;	
@@ -899,8 +899,8 @@ void Demo::onUserInput(UserInput* ui) {
 	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
 			PhysicalInstance* part = NULL;
-			if(selectedInstances.size() > 0)
-				part = (PhysicalInstance*) selectedInstances.at(0);
+			if(g_selectedInstances.size() > 0)
+				part = (PhysicalInstance*) g_selectedInstances.at(0);
 		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
@@ -1141,11 +1141,11 @@ void Demo::onGraphics(RenderDevice* rd) {
 	dataModel->getWorkspace()->render(rd);
 	rd->afterPrimitive();
 
-	if(selectedInstances.size() > 0)
+	if(g_selectedInstances.size() > 0)
 	{
-		for(size_t i = 0; i < selectedInstances.size(); i++)
+		for(size_t i = 0; i < g_selectedInstances.size(); i++)
 		{
-			PhysicalInstance* part = (PhysicalInstance*)selectedInstances.at(i);
+			PhysicalInstance* part = (PhysicalInstance*)g_selectedInstances.at(i);
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
 			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
@@ -1280,9 +1280,9 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 					{
 						nearest=time;
 						bool found = false;
-						for(size_t i = 0; i < selectedInstances.size(); i++)
+						for(size_t i = 0; i < g_selectedInstances.size(); i++)
 						{
-							if(selectedInstances.at(i) == test)
+							if(g_selectedInstances.at(i) == test)
 							{
 								found = true;
 								ShowWindow(_propWindow->_hwndProp, SW_SHOW);
@@ -1292,9 +1292,9 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 							}
 						}
 						if(!found)
-						{while(selectedInstances.size() > 0)
-							selectedInstances.erase(selectedInstances.begin());
-						selectedInstances.push_back(test);
+						{while(g_selectedInstances.size() > 0)
+							g_selectedInstances.erase(g_selectedInstances.begin());
+						g_selectedInstances.push_back(test);
 						}
 						_propWindow->SetProperties(test);
 						//message = "Dragging = true.";
@@ -1306,8 +1306,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		}
 		if(!objFound)
 		{
-			while(selectedInstances.size() > 0)
-					selectedInstances.erase(selectedInstances.begin());
+			while(g_selectedInstances.size() > 0)
+					g_selectedInstances.erase(g_selectedInstances.begin());
 			_propWindow->ClearProperties();
 		}
 	}
