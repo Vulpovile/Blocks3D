@@ -3,6 +3,7 @@
 
 TextButtonInstance::TextButtonInstance(void)
 {
+	BaseButtonInstance::BaseButtonInstance();
 	boxBegin = Vector2(0,0);
 	boxEnd = Vector2(0,0);
 	fontLocationRelativeTo = Vector2(0,0);

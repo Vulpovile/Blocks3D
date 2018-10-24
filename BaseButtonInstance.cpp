@@ -6,6 +6,7 @@ ButtonListener* listener = NULL;
 
 BaseButtonInstance::BaseButtonInstance(void)
 {
+	Instance::Instance();
 	listener = NULL;
 }
 

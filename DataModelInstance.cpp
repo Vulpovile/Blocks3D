@@ -6,6 +6,7 @@
 
 DataModelInstance::DataModelInstance(void)
 {
+	Instance::Instance();
 	workspace = new WorkspaceInstance();
 	guiRoot = new Instance();
 	children.push_back(workspace);

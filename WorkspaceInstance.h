@@ -9,4 +9,5 @@ public:
 	int score;
 	WorkspaceInstance(void);
 	~WorkspaceInstance(void);
+	
 };

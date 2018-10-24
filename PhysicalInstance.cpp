@@ -4,6 +4,7 @@
 
 PhysicalInstance::PhysicalInstance(void)
 {
+	Instance::Instance();
     name = "Default PhysicalInstance";
 	className = "Part";
 	canCollide = true;
@@ -23,6 +24,7 @@ PhysicalInstance::PhysicalInstance(void)
 
 PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
 {
+	Instance::Instance(oinst);
 	name = oinst.name;
 	className = "Part";
 	canCollide = oinst.canCollide;

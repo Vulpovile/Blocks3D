@@ -2,7 +2,7 @@
 
 ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
-	
+	BaseButtonInstance::BaseButtonInstance();
 	image = newImage;
 	openGLID = image->getOpenGLID();
 	image_ovr = overImage;
