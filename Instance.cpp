@@ -45,7 +45,7 @@ void Instance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	if(strcmp(item->lpszPropName, "Name") == 0)
 	{
-		name = item->lpCurValue;
+		name = (LPSTR)item->lpCurValue;
 	}
 }
 

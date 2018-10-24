@@ -218,11 +218,7 @@ char pto2[512];
 
 void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
-	if(strcmp(item->lpszPropName, "Name") == 0)
-	{
-		name = (LPTSTR)item->lpCurValue;
-	}
-	else if(strcmp(item->lpszPropName, "Color3") == 0)
+	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
 		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
 	}
@@ -283,20 +279,14 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 			setSize(size);
 		}
 	}
+
+	else Instance::PropUpdate(item);
 }
 
 std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 {
-	std::vector<PROPGRIDITEM> properties;
+	std::vector<PROPGRIDITEM> properties = Instance::getProperties();
 	
-	
-	properties.push_back(createPGI(
-		"Properties",
-		"Name",
-		"The name of this instance",
-		(LPARAM)name.c_str(),
-		PIT_EDIT
-		));
 
 	properties.push_back(createPGI(
 		"Properties",

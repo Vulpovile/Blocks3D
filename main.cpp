@@ -295,18 +295,27 @@ void deleteInstance()
 {
 	if(g_selectedInstances.size() > 0)
 	{
-		while(g_selectedInstances.size() > 0)
+		int undeletable = 0;
+		while(g_selectedInstances.size() > undeletable)
 		{
-			Instance* selectedInstance = g_selectedInstances.at(0);
-			if(selectedInstance->getParent() != NULL)
-				selectedInstance->getParent()->removeChild(selectedInstance);
-			delete selectedInstance;
-			selectedInstance = NULL;
-			g_selectedInstances.erase(g_selectedInstances.begin());
-			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+			if(g_selectedInstances.at(0) != dataModel && g_selectedInstances.at(0) != dataModel->getWorkspace())
+			{
+				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+				Instance* selectedInstance = g_selectedInstances.at(0);
+				if(selectedInstance->getParent() != NULL)
+					selectedInstance->getParent()->removeChild(selectedInstance);
+				delete selectedInstance;
+				selectedInstance = NULL;
+				g_selectedInstances.erase(g_selectedInstances.begin());
+			}
+			else
+			{
+				undeletable++;
+			}
 		}
 	}
-	usableApp->_propWindow->ClearProperties();
+	if(g_selectedInstances.size() == 0)
+		usableApp->_propWindow->ClearProperties();
 }
 
 
@@ -829,7 +838,7 @@ void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		if(obj != NULL)
 		{
 			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(g_selectedInstances.size() <= 0)
+			if(g_selectedInstances.size() <= 0 || g_selectedInstances.at(0) == dataModel->getWorkspace())
 				button->disabled = true;
 			else
 				button->disabled = false;	
@@ -1308,7 +1317,9 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		{
 			while(g_selectedInstances.size() > 0)
 					g_selectedInstances.erase(g_selectedInstances.begin());
-			_propWindow->ClearProperties();
+			g_selectedInstances.push_back(dataModel->getWorkspace());
+			_propWindow->SetProperties(dataModel->getWorkspace());
+			
 		}
 	}
 }
