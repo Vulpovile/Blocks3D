@@ -25,8 +25,8 @@ PhysicalInstance::PhysicalInstance(void)
 PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
 {
 	Instance::Instance(oinst);
-	name = oinst.name;
-	className = "Part";
+	//name = oinst.name;
+	//className = "Part";
 	canCollide = oinst.canCollide;
 	setParent(oinst.parent);
 	anchored = oinst.anchored;

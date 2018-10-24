@@ -12,9 +12,10 @@ Instance::Instance(void)
 
 Instance::Instance(const Instance &oinst)
 {
-	setParent(oinst.parent);
+	
 	name = oinst.name;
 	className = oinst.className;
+	//setParent(oinst.parent);
 }
 
 
