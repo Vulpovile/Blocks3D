@@ -13,6 +13,9 @@
 std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
 Instance* selectedInstance;
+
+PropertyWindow * thisCls;
+
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	PropertyWindow *propWind = (PropertyWindow *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -38,11 +41,14 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				{ 
 					int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
 					CHAR  ListItem[256];
-					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem);
-					MessageBox(hwnd, ListItem, "Item Selected", MB_OK);  
+					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
 					if(ItemIndex != 0)
 					{
-					//SetProperties(children.at(ItemIndex-1));
+						thisCls->ClearProperties();
+						while(g_selectedInstances.size() != 0)
+							g_selectedInstances.erase(g_selectedInstances.begin());
+						g_selectedInstances.push_back(children.at(ItemIndex-1));
+						thisCls->SetProperties(children.at(ItemIndex-1));
 					}
 				}
 			}
@@ -79,14 +85,14 @@ void PropertyWindow::refreshExplorer()
 		children = g_selectedInstances[i]->getChildren();
 		for(size_t z = 0; z < children.size(); z++)
 		{
-			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(i)->name.c_str()); 
+			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(z)->name.c_str()); 
 		}
 		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0); 
 	}
 }
 
 bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance) {
-
+	thisCls = this;
 	if (!createWindowClass("propHWND",PropProc,hThisInstance))
 			return false;
 

@@ -444,6 +444,10 @@
 				RelativePath=".\icon1.ico"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Desktop\Parts.bmp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

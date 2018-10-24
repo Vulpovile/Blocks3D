@@ -67,6 +67,13 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "C:\\Users\\Andreja\\Desktop\\Parts.bmp"
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

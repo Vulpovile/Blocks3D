@@ -8,6 +8,7 @@ Instance::Instance(void)
 	parent = NULL;
 	name = "Default Game Instance";
 	className = "BaseInstance";
+	listicon = 0;
 }
 
 Instance::Instance(const Instance &oinst)
