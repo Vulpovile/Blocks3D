@@ -13,12 +13,12 @@ PhysicalInstance::PhysicalInstance(void)
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
-	top = Smooth;
-    front = Smooth;
-    right = Smooth;
-	back = Smooth;
-	left = Smooth;
-	bottom = Smooth;
+	top = Enum::SurfaceType::Smooth;
+    front = Enum::SurfaceType::Smooth;
+    right = Enum::SurfaceType::Smooth;
+	back = Enum::SurfaceType::Smooth;
+	left = Enum::SurfaceType::Smooth;
+	bottom = Enum::SurfaceType::Smooth;
 }
 
 PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
@@ -149,7 +149,7 @@ void PhysicalInstance::render(RenderDevice* rd)
     for(int i = 0; i < 96; i+=16)
 	{
 		double add = 0.8;
-		SurfaceType face;
+		Enum::SurfaceType::Value face;
 		if(i == 0)//Back
 			face = back;
 		else if(i == 16)//Right

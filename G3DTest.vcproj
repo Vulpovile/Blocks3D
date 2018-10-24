@@ -364,6 +364,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Enum.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Enums.h"
 				>
 			</File>
