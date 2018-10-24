@@ -253,6 +253,8 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			std::vector<Instance*> newinst;
 			for(size_t i = 0; i < g_selectedInstances.size(); i++)
 			{
+				if(g_selectedInstances.at(i) != dataModel->getWorkspace())
+				{
 				PhysicalInstance* tempinst = (PhysicalInstance*) g_selectedInstances.at(i);
 				Vector3 tempPos = tempinst->getPosition();
 				Vector3 tempSize = tempinst->getSize();
@@ -260,10 +262,13 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 				PhysicalInstance* clonedInstance = (PhysicalInstance*) g_selectedInstances.at(i)->clone();
 
 				newinst.push_back(tempinst);
+				}
 				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
 				usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
 			g_selectedInstances = newinst;
+			if(g_selectedInstances.size() > 0)
+				usableApp->_propWindow->SetProperties(newinst.at(0));
 		}
 	}
 }
