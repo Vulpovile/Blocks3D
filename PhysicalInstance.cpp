@@ -224,7 +224,7 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 	}
 	else if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
-		color = Color3(GetRValue(item->lpCurValue),GetGValue(item->lpCurValue),GetBValue(item->lpCurValue));
+		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{
