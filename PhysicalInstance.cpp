@@ -221,7 +221,7 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 	{
 		name = (LPTSTR)item->lpCurValue;
 	}
-	else if(strcmp(item->lpszPropName, "Color") == 0)
+	else if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
 		color = Color3(GetRValue(item->lpCurValue),GetGValue(item->lpCurValue),GetBValue(item->lpCurValue));
 	}
@@ -270,7 +270,7 @@ std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 
 	properties.push_back(createPGI(
 		"Properties",
-		"Color",
+		"Color3",
 		"The color of the selected part",
 		RGB((color.r*255),(color.g*255),(color.b*255)),
 		PIT_COLOR
