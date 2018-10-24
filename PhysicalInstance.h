@@ -1,6 +1,6 @@
 #pragma once
 #include "instance.h"
-#include "Surface.h"
+#include "Enums.h"
 
 class PhysicalInstance :
 	public Instance
@@ -12,12 +12,12 @@ public:
 	~PhysicalInstance(void);
 	virtual void render(RenderDevice*);
 	Vector3 velocity;
-	Surface top;
-	Surface front;
-	Surface right;
-	Surface back;
-	Surface left;
-	Surface bottom;
+	SurfaceType top;
+	SurfaceType front;
+	SurfaceType right;
+	SurfaceType back;
+	SurfaceType left;
+	SurfaceType bottom;
 	CoordinateFrame cFrame;
 	Color3 color;
 	Vector3 getPosition();

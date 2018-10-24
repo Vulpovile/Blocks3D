@@ -149,7 +149,7 @@ void PhysicalInstance::render(RenderDevice* rd)
     for(int i = 0; i < 96; i+=16)
 	{
 		double add = 0.8;
-		Surface face;
+		SurfaceType face;
 		if(i == 0)//Back
 			face = back;
 		else if(i == 16)//Right

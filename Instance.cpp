@@ -136,16 +136,14 @@ void Instance::removeChild(Instance* oldChild)
 
 Instance* Instance::findFirstChild(std::string name)
 {
-	Instance* child = NULL;
 	for(size_t i = 0; i < children.size(); i++)
 	{
-		if(children.at(i)->name == name)
+		if(children.at(i)->name.compare(name) == 0)
 		{
-			child = children.at(i);
-			break;
+			return children.at(i);
 		}
 	}
-	return child;
+	return NULL;
 }
 
 

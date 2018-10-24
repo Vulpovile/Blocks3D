@@ -157,7 +157,7 @@ void OnError(int err, std::string msg = "")
 	//usableApp->window()->setMouseVisible(true);
 	std::string emsg = "An unexpected error has occured and "+PlaceholderName+" has to quit. We're sorry!" + msg;
 	std::string title = PlaceholderName+"Crash";
-	clearInstances();
+	//clearInstances();
 	MessageBox(NULL, emsg.c_str(), title.c_str(), MB_OK);
 	exit(err);
 }
@@ -307,6 +307,7 @@ void deleteInstance()
 			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 		}
 	}
+	usableApp->_propWindow->ClearProperties();
 }
 
 
@@ -802,16 +803,8 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
-	
-	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
-		if(obj != NULL)
-		{
-			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(selectedInstances.size() > 0)
-				button->disabled = true;
-			else
-				button->disabled = false;	
-		}
+
+		
 
 
 }
@@ -832,6 +825,18 @@ std::vector<Instance*> Demo::getSelection()
 	return selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
+
+	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
+		if(obj != NULL)
+		{
+			ImageButtonInstance* button = (ImageButtonInstance*)obj;
+			if(selectedInstances.size() <= 0)
+				button->disabled = true;
+			else
+				button->disabled = false;	
+		}
+
+
 	if(dataModel->name != title)
 	{
 		title = dataModel->name;

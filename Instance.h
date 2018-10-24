@@ -12,7 +12,7 @@ public:
 	virtual void render(RenderDevice*);
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();
-	Instance* findFirstChild(std::string);
+	virtual Instance* findFirstChild(std::string);
 	std::vector<Instance* > getChildren();
 	std::vector<Instance* > getAllChildren();
 	void setParent(Instance*);

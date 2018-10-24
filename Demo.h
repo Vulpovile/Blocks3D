@@ -34,6 +34,7 @@ class Demo { // : public GApp {
 		CameraController	cameraController;
 		RenderDevice*		renderDevice;
 		UserInput*			userInput;
+		PropertyWindow*		_propWindow;
 	private:
 		void				initGUI();
 		HWND				_hWndMain;
@@ -46,7 +47,7 @@ class Demo { // : public GApp {
 		HWND				_hwndToolbox;
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
-		PropertyWindow*		_propWindow;
+		
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;

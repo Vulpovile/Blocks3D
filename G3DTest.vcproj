@@ -340,23 +340,11 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath=".\ActionType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AffectType.h"
-				>
-			</File>
-			<File
 				RelativePath=".\AudioPlayer.h"
 				>
 			</File>
 			<File
 				RelativePath=".\ax.h"
-				>
-			</File>
-			<File
-				RelativePath=".\BinType.h"
 				>
 			</File>
 			<File
@@ -372,11 +360,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ControllerType.h"
+				RelativePath=".\Demo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Demo.h"
+				RelativePath=".\Enums.h"
 				>
 			</File>
 			<File
@@ -385,22 +373,6 @@
 			</File>
 			<File
 				RelativePath=".\IEDispatcher.h"
-				>
-			</File>
-			<File
-				RelativePath=".\InputType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\JointType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\KeywordFilterType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PartType.h"
 				>
 			</File>
 			<File
@@ -413,22 +385,6 @@
 			</File>
 			<File
 				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SoundType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Surface.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SurfaceConstraint.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SurfaceType.h"
 				>
 			</File>
 			<File

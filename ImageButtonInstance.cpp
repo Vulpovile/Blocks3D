@@ -85,7 +85,7 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
 	}
 	int renderimage = openGLID;
-	if(selected == true && !image_dn.isNull())
+	if(selected == true && !image_dn.isNull() && !disabled)
 	{
 		renderimage = openGLID_dn;
 	}
