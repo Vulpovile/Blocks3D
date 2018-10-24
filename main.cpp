@@ -46,6 +46,7 @@
 #endif
 HWND hwnd;
 
+
 DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
 HRESULT hresult;
 OLECHAR dat = ((OLECHAR)"SayHello");
@@ -876,6 +877,8 @@ bool IsHolding(int button)
 	return (GetKeyState(button) >> 1)>0;
 }
 
+
+
 BOOL GetKPBool(int VK) {
 	return (GetKeyState(VK) & 0x8000);
 }
@@ -979,7 +982,7 @@ void makeFlag(Vector3 &vec, RenderDevice* &rd)
 
 
 
-bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
+/*bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 {
 	
 
@@ -991,7 +994,7 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 		}
 	}
 	return false;
-}
+}*/
 
 
 void drawButtons(RenderDevice* rd)
@@ -1101,11 +1104,13 @@ void Demo::onGraphics(RenderDevice* rd) {
 	mouseOnScreen = true;
 	if (GetCursorPos(&mousepos))
 	{
+		POINT pointm = mousepos;
 	if (ScreenToClient(_hWndMain, &mousepos))
 	{
 		//mouseOnScreen = true;
-		
-		if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+		//POINT pointm;
+		///GetCursorPos(&pointm);
+		if(_hwndRenderer != WindowFromPoint(pointm)) //OLD: mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
