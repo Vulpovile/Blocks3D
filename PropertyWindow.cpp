@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "PropertyWindow.h"
 #include "Globals.h"
+#include "strsafe.h"
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
     Property &prop;
@@ -13,9 +14,12 @@ std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
 Instance* selectedInstance;
 
+const int CX_BITMAP = 16;
+const int CY_BITMAP = 16;
 
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	TCHAR achTemp[256];
 	PropertyWindow *propWind = (PropertyWindow *)GetWindowLongPtr(hwnd, GWL_USERDATA);
 	if (propWind==NULL)
 	{
@@ -27,6 +31,78 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			ShowWindow(hwnd, SW_HIDE);
 		}
+		break;
+		case WM_DRAWITEM:
+			{
+				std::cout << "Drawing?" << "\r\n";
+				COLORREF clrBackground;
+				COLORREF clrForeground;
+				TEXTMETRIC tm;
+				int x;
+				int y;
+				HRESULT hr;
+				size_t cch;
+
+				LPDRAWITEMSTRUCT lpdis = (LPDRAWITEMSTRUCT) lParam;
+			       
+				if (lpdis->itemID == -1) // Empty item)
+					break;
+
+				// Get the food icon from the item data.
+				HBITMAP hbmIcon = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
+				HBITMAP hbmMask = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
+				// The colors depend on whether the item is selected.
+				clrForeground = SetTextColor(lpdis->hDC, 
+					GetSysColor(lpdis->itemState & ODS_SELECTED ?
+					COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT));
+
+				clrBackground = SetBkColor(lpdis->hDC, 
+					GetSysColor(lpdis->itemState & ODS_SELECTED ?
+					COLOR_HIGHLIGHT : COLOR_WINDOW));
+
+				// Calculate the vertical and horizontal position.
+				GetTextMetrics(lpdis->hDC, &tm);
+				y = (lpdis->rcItem.bottom + lpdis->rcItem.top - tm.tmHeight) / 2;
+				x = LOWORD(GetDialogBaseUnits()) / 4;
+
+				// Get and display the text for the list item.
+				SendMessage(lpdis->hwndItem, CB_GETLBTEXT, lpdis->itemID, (LPARAM) achTemp);
+
+				hr = StringCchLength(achTemp, 256, &cch);
+				if (FAILED(hr))
+				{
+					// TODO: Write error handler.
+				}
+
+				ExtTextOut(lpdis->hDC, CX_BITMAP + 2 * x, y,
+					ETO_CLIPPED | ETO_OPAQUE, &lpdis->rcItem,
+					achTemp, (UINT)cch, NULL);
+
+				// Restore the previous colors.
+				SetTextColor(lpdis->hDC, clrForeground);
+				SetBkColor(lpdis->hDC, clrBackground);
+			    
+				//  Draw the food icon for the item. 
+				HDC hdc = CreateCompatibleDC(lpdis->hDC); 
+				if (hdc == NULL) 
+					break; 
+			 
+				SelectObject(hdc, hbmMask); 
+				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
+					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCAND); 
+			 
+				SelectObject(hdc, hbmIcon); 
+				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
+					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCPAINT); 
+			 
+				DeleteDC(hdc); 
+			  
+				// If the item has the focus, draw the focus rectangle.
+				if (lpdis->itemState & ODS_FOCUS)
+					DrawFocusRect(lpdis->hDC, &lpdis->rcItem);
+
+		    
+			}
 		break;
 		case WM_MEASUREITEM:
 		{
@@ -58,6 +134,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 		break;
+		
 		case WM_NOTIFY:
 		{
 			switch(((LPNMHDR)lParam)->code)
@@ -92,7 +169,8 @@ void PropertyWindow::refreshExplorer()
 		{
 			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(z)->name.c_str()); 
 		}
-		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0); 
+		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+		InvalidateRect(_explorerComboBox, NULL, NULL);
 	}
 }
 
