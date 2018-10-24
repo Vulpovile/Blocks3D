@@ -1487,6 +1487,27 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_MOUSEMOVE:
 			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
 		break;
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_SYSKEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_SYSKEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
 		case WM_SIZE:
 		{
 			app->onGraphics(app->renderDevice);
