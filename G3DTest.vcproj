@@ -445,7 +445,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Desktop\Parts.bmp"
+				RelativePath=".\Parts.bmp"
 				>
 			</File>
 		</Filter>
