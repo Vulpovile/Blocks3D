@@ -255,11 +255,9 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			{
 				if(g_selectedInstances.at(i) != dataModel->getWorkspace())
 				{
-				PhysicalInstance* tempinst = (PhysicalInstance*) g_selectedInstances.at(i);
-				Vector3 tempPos = tempinst->getPosition();
-				Vector3 tempSize = tempinst->getSize();
+				Instance* tempinst = g_selectedInstances.at(i);
 				
-				PhysicalInstance* clonedInstance = (PhysicalInstance*) g_selectedInstances.at(i)->clone();
+				Instance* clonedInstance = g_selectedInstances.at(i)->clone();
 
 				newinst.push_back(tempinst);
 				}
@@ -1159,10 +1157,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
 		{
-			PhysicalInstance* part = (PhysicalInstance*)g_selectedInstances.at(i);
+			if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(g_selectedInstances.at(i)))
+			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
 			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+			}
 		}
 	}
 	
