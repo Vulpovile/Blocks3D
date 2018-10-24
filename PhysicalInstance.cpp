@@ -213,6 +213,7 @@ PhysicalInstance::~PhysicalInstance(void)
 {
 }
 char pto[512];
+char pto2[512];
 #include <sstream>
 
 void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
@@ -253,6 +254,35 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 			setPosition(pos);
 		}
 	}
+
+	else if(strcmp(item->lpszPropName, "Size") == 0)
+	{
+		std::string str = (LPTSTR)item->lpCurValue;
+		std::vector<float> vect;
+		std::stringstream ss(str);
+		float i;
+
+		while (ss >> i)
+		{
+			vect.push_back(i);
+
+			if (ss.peek() == ',')
+				ss.ignore();
+		}
+
+		if(vect.size() != 3)
+		{
+			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
+			LPCSTR str = LPCSTR(pto);
+			item->lpCurValue = (LPARAM)str;
+			MessageBox(NULL, "NO","NO", MB_OK);
+		}
+		else
+		{
+			Vector3 size(vect.at(0),vect.at(1),vect.at(2));
+			setSize(size);
+		}
+	}
 }
 
 std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
@@ -276,13 +306,20 @@ std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
 		PIT_COLOR
 		));
 	
-	sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
-	LPCSTR str = LPCSTR(pto);
+	sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",
 		"The position of the object in the workspace",
-		(LPARAM)str,
+		(LPARAM)pto,
+		PIT_EDIT
+		));
+	sprintf(pto2, "%g, %g, %g", size.x, size.y, size.z);
+	properties.push_back(createPGI(
+		"Item",
+		"Size",
+		"The position of the object in the workspace",
+		(LPARAM)pto2,
 		PIT_EDIT
 		));
 	return properties;
