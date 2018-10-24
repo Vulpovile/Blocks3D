@@ -1,18 +1,12 @@
 #include "DataModelInstance.h"
 
 
-WorkspaceInstance* workspace;
-Instance* guiRoot;
-float mousex;
-float mousey;
-bool mouseButton1Down;
-std::string message;
-bool showMessage;
-G3D::GFontRef font;
+
 
 
 DataModelInstance::DataModelInstance(void)
 {
+	Instance::Instance();
 	workspace = new WorkspaceInstance();
 	guiRoot = new Instance();
 	children.push_back(workspace);

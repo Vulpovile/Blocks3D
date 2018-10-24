@@ -11,8 +11,12 @@ public:
 	void setMessage(std::string);
 	void clearMessage();
 	void drawMessage(RenderDevice*);
-	GFontRef font;
 	WorkspaceInstance* getWorkspace();
+	WorkspaceInstance* workspace;
+	Instance* guiRoot;
+	std::string message;
+	bool showMessage;
+	G3D::GFontRef font;
 	Instance* getGuiRoot();
 	float mousex;
 	float mousey;

@@ -21,6 +21,7 @@
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
+			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
@@ -73,6 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib"
 				OutputFile="./G3DTest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -145,7 +147,8 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="2"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile=".\Debug/G3DTest.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
@@ -167,12 +170,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib"
 				OutputFile="./G3DTest-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/G3DTest.pdb"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -235,6 +239,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ax.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BrowserCallHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ButtonListener.cpp"
 				>
 			</File>
@@ -243,11 +255,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Dialogs.rc"
+				RelativePath=".\Globals.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Globals.cpp"
+				RelativePath=".\IEBrowser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IEBrowser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IEDispatcher.cpp"
 				>
 			</File>
 			<File
@@ -269,6 +289,18 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\propertyGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PropertyWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WindowFunctions.cpp"
+				>
 			</File>
 			<Filter
 				Name="Instance"
@@ -312,6 +344,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BrowserCallHandler.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ButtonListener.h"
 				>
 			</File>
@@ -324,7 +364,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Enum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Enums.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IEDispatcher.h"
+				>
+			</File>
+			<File
+				RelativePath=".\propertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PropertyWindow.h"
 				>
 			</File>
 			<File
@@ -333,6 +393,10 @@
 			</File>
 			<File
 				RelativePath=".\win32Defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WindowFunctions.h"
 				>
 			</File>
 			<Filter
@@ -373,7 +437,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\Dialogs.rc"
+				>
+			</File>
+			<File
 				RelativePath=".\icon1.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\Parts.bmp"
 				>
 			</File>
 		</Filter>

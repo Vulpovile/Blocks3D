@@ -2,17 +2,24 @@
 #include <G3DAll.h>
 #include "Instance.h"
 
-std::string name;
-Instance* parent = NULL;
-std::vector<Instance* > children;
-static std::string className = "BaseInstance";
 
 Instance::Instance(void)
 {
 	parent = NULL;
 	name = "Default Game Instance";
 	className = "BaseInstance";
+	listicon = 0;
 }
+
+Instance::Instance(const Instance &oinst)
+{
+	
+	name = oinst.name;
+	className = oinst.className;
+	//setParent(oinst.parent);
+}
+
+
 
 void Instance::render(RenderDevice* rd)
 {
@@ -21,6 +28,45 @@ void Instance::render(RenderDevice* rd)
 		children.at(i)->render(rd);
 	}
 }
+
+
+
+PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type)
+{
+	PROPGRIDITEM pItem;
+	PropGrid_ItemInit(pItem);
+	pItem.lpszCatalog=catalog;
+	pItem.lpszPropName=propName;
+	pItem.lpszPropDesc=propDesc;
+	pItem.lpCurValue=curVal;
+	pItem.iItemType=type;
+	return pItem;
+}
+
+void Instance::PropUpdate(LPPROPGRIDITEM &item)
+{
+	if(strcmp(item->lpszPropName, "Name") == 0)
+	{
+		name = (LPSTR)item->lpCurValue;
+	}
+}
+
+std::vector<PROPGRIDITEM> Instance::getProperties()
+{
+	std::vector<PROPGRIDITEM> properties;
+	
+	
+	properties.push_back(createPGI(
+		"Properties",
+		"Name",
+		"The name of this instance",
+		(LPARAM)name.c_str(),
+		PIT_EDIT
+		));
+	return properties;
+}
+
+
 
 Instance::~Instance(void)
 {
@@ -92,14 +138,15 @@ void Instance::removeChild(Instance* oldChild)
 
 Instance* Instance::findFirstChild(std::string name)
 {
-	Instance* child = NULL;
 	for(size_t i = 0; i < children.size(); i++)
 	{
-		if(children.at(i)->name == name)
+		if(children.at(i)->name.compare(name) == 0)
 		{
-			child = children.at(i);
-			break;
+			return children.at(i);
 		}
 	}
-	return child;
+	return NULL;
 }
+
+
+

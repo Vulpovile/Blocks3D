@@ -1,17 +1,8 @@
 #include "ImageButtonInstance.h"
-G3D::TextureRef image = NULL;
-int openGLID = 0;
-G3D::TextureRef image_ovr = NULL;
-int openGLID_ovr = 0;
-G3D::TextureRef image_dn = NULL;
-int openGLID_dn = 0;
-G3D::TextureRef image_ds = NULL;
-int openGLID_ds = 0;
-Vector2 size;
-Vector2 position;
+
 ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
-	
+	BaseButtonInstance::BaseButtonInstance();
 	image = newImage;
 	openGLID = image->getOpenGLID();
 	image_ovr = overImage;
@@ -94,7 +85,7 @@ void ImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouse
 		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
 	}
 	int renderimage = openGLID;
-	if(selected == true && !image_dn.isNull())
+	if(selected == true && !image_dn.isNull() && !disabled)
 	{
 		renderimage = openGLID_dn;
 	}

@@ -1,15 +1,12 @@
 #include "BaseButtonInstance.h"
 #include "Globals.h"
 
-bool floatBottom = false;
-bool floatRight = false;
-bool floatCenter = false;
-bool disabled = false;
-bool selected = false;
+
 ButtonListener* listener = NULL;
 
 BaseButtonInstance::BaseButtonInstance(void)
 {
+	Instance::Instance();
 	listener = NULL;
 }
 

@@ -11,9 +11,12 @@
   @author Morgan McGuire, matrix@graphics3d.com
  */
 
+// TODO: Move toolbar buttons with resized window.
+
 #define _WIN32_WINNT 0x0400
 
 #include <G3DAll.h>
+#include <initguid.h>
 #include <iomanip>
 #include "Instance.h"
 #include "resource.h"
@@ -26,70 +29,120 @@
 #include "Globals.h"
 #include "Demo.h"
 #include "win32Defines.h"
+#include "WindowFunctions.h"
 #include <limits.h>
-
-
+#include <mshtml.h>
+#include <exdisp.h>
+#include <vector>
+#include <string>
+#include "ax.h"
+#include <cguid.h>
+#include "IEBrowser.h"
+#include "PropertyWindow.h"
+#include <commctrl.h>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
 HWND hwnd;
 
+DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
+HRESULT hresult;
+OLECHAR dat = ((OLECHAR)"SayHello");
+OLECHAR * szMember = &dat;
+DISPID dispid;
+DISPPARAMS dispparamsNoArgs = {NULL, NULL, 0, 0};
+EXCEPINFO excepinfo;
+UINT nArgErr;
+
 static std::string title = "";
 static DataModelInstance* dataModel;
 GFontRef fntdominant = NULL;
 GFontRef fntlighttrek = NULL;
 Ray testRay;
-static bool democ = true;
 static std::string message = "";
 static G3D::RealTime messageTime = 0;
 static std::string tempPath = "";
-static G3D::RealTime inputTime = 0;
-static int FPSVal[8] = {10, 20, 30, 60, 120, 240, INT_MAX,1};
-static int index = 2;
 static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
-static G3D::TextureRef go = NULL;
-static G3D::TextureRef go_ovr = NULL;
-static G3D::TextureRef go_dn = NULL;
-VARAreaRef varStatic = NULL;
-//static float dataModel->mousex = 0;
-//static float dataModel->mousey = 0;
 static int cursorid = 0;
 static G3D::TextureRef cursor = NULL;
-//static bool dataModel->mouseButton1Down = false;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
-static bool showMouse = true;
-//Controller
-static bool forwards = false;
-static bool backwards = false;
-static bool left = false;
-static bool right = false;
-static bool centerCam = false;
-static bool panRight = false;
-static bool panLeft = false;
-static bool tiltUp = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
 static const int RESIZE = 2;
 static POINT oldGlobalMouse;
-
 static int mode = CURSOR;
 bool dragging = false;
-Vector3 cameraPos = Vector3(0,2,10);
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
-Instance* selectedInstance = NULL;
+static const std::string PlaceholderName = "HyperCube";
 
 Demo *usableApp = NULL;
 
-Demo::Demo(const GAppSettings& settings,Win32Window* window) : GApp(settings,window) {
-	varStatic = VARArea::create(1024 * 1024);
-	hWndMain = window->hwnd();
+Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
+	_hWndMain = parentWindow;
+
+	HMODULE hThisInstance = GetModuleHandle(NULL);
+
+	_hwndToolbox = CreateWindowEx(
+		WS_EX_ACCEPTFILES,
+		"AX",
+		"{8856F961-340A-11D0-A96B-00C04FD705A2}",
+		WS_CHILD | WS_VISIBLE,
+		0,
+		560,
+		800,
+		60,
+		_hWndMain, // parent
+		NULL, // menu
+		hThisInstance,
+		NULL
+	);
+	
+	_hwndRenderer = CreateWindowEx(
+		WS_EX_ACCEPTFILES,
+		"G3DWindow",
+		"3D",
+		WS_CHILD,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		1,
+		1,
+		_hWndMain, // parent
+		NULL, // menu
+		hThisInstance,
+		NULL
+	);
+
+	Win32Window* window = Win32Window::create(settings.window,_hwndRenderer);
+	ShowWindow(_hwndRenderer, SW_SHOW);
+	ShowWindow(_hWndMain, SW_SHOW);
+
 	quit=false;
 	rightButtonHolding=false;
+	mouseOnScreen=false;
+	// GApp replacement
+	renderDevice = new RenderDevice();
+	if (window != NULL) {
+	renderDevice->init(window, NULL);
+	}
+	else
+	{
+		MessageBox(NULL,"Window not found!","Error",MB_OK);
+		return;
+	}
+
+    _window = renderDevice->window();
+    _window->makeCurrent();
+
+	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
+	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
+	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
+	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
+	//webBrowser->navigateSyncURL(L"http://scottbeebiwan.tk/g3d/toolbox/");
 }
 
 void clearInstances()
@@ -101,9 +154,10 @@ void OnError(int err, std::string msg = "")
 {
 	//usableApp->window()->setInputCaptureCount(0);
 	//usableApp->window()->setMouseVisible(true);
-	std::string emsg = "An unexpected error has occured and DUOM 5 has to quit. We're sorry!" + msg;
-	clearInstances();
-	MessageBox(NULL, emsg.c_str(),"Dynamica Crash", MB_OK);
+	std::string emsg = "An unexpected error has occured and "+PlaceholderName+" has to quit. We're sorry!" + msg;
+	std::string title = PlaceholderName+"Crash";
+	//clearInstances();
+	MessageBox(NULL, emsg.c_str(), title.c_str(), MB_OK);
 	exit(err);
 }
 
@@ -168,8 +222,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = usableApp->cameraController.getCamera()->getCoordinateFrame();
-	if(button->name == "CenterCam")
-		usableApp->cameraController.centerCamera(selectedInstance);
+	if(button->name == "CenterCam" && g_selectedInstances.size() > 0)
+		usableApp->cameraController.centerCamera(g_selectedInstances.at(0));
 	else if(button->name == "ZoomIn")
 		usableApp->cameraController.Zoom(1);
 	else if(button->name == "ZoomOut")
@@ -191,15 +245,30 @@ public:
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstance != NULL)
+	if(g_selectedInstances.size() > 0)
 	{
 		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
 		{
+			std::vector<Instance*> newinst;
+			for(size_t i = 0; i < g_selectedInstances.size(); i++)
+			{
+				if(g_selectedInstances.at(i) != dataModel->getWorkspace())
+				{
+				Instance* tempinst = g_selectedInstances.at(i);
+				
+				Instance* clonedInstance = g_selectedInstances.at(i)->clone();
 
+				newinst.push_back(tempinst);
+				}
+				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
+				usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
+			}
+			g_selectedInstances = newinst;
+			if(g_selectedInstances.size() > 0)
+				usableApp->_propWindow->SetProperties(newinst.at(0));
 		}
 	}
-		
 }
 
 class RotateButtonListener : public ButtonListener {
@@ -209,12 +278,12 @@ public:
 
 void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(selectedInstance != NULL)
+	if(g_selectedInstances.size() > 0)
 	{
+		Instance* selectedInstance = g_selectedInstances.at(0);
 		AudioPlayer::playSound(clickSound);
-		if(selectedInstance->getClassName() == "Part")
+		if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(selectedInstance))
 		{
-			PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
 			if(button->name == "Tilt")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
 			else if(button->name == "Rotate")
@@ -227,14 +296,29 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 
 void deleteInstance()
 {
-	if(selectedInstance != NULL)
+	if(g_selectedInstances.size() > 0)
 	{
-		if(selectedInstance->getParent() != NULL)
-			selectedInstance->getParent()->removeChild(selectedInstance);
-		delete selectedInstance;
-		selectedInstance = NULL;
-		AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+		size_t undeletable = 0;
+		while(g_selectedInstances.size() > undeletable)
+		{
+			if(g_selectedInstances.at(0) != dataModel && g_selectedInstances.at(0) != dataModel->getWorkspace())
+			{
+				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+				Instance* selectedInstance = g_selectedInstances.at(0);
+				if(selectedInstance->getParent() != NULL)
+					selectedInstance->getParent()->removeChild(selectedInstance);
+				delete selectedInstance;
+				selectedInstance = NULL;
+				g_selectedInstances.erase(g_selectedInstances.begin());
+			}
+			else
+			{
+				undeletable++;
+			}
+		}
 	}
+	if(g_selectedInstances.size() == 0)
+		usableApp->_propWindow->ClearProperties();
 }
 
 
@@ -452,14 +536,15 @@ void Demo::initGUI()
 	button->name = "Duplicate";
 	button->setButtonListener(new GUDButtonListener());
 
-
-	ImageButtonInstance* instance = makeImageButton(go, go_ovr, go_dn);
+	ImageButtonInstance* instance = makeImageButton(
+		Texture::fromFile(GetFileInPath("/content/images/Run.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Run_dn.png")));
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
 	instance->setParent(dataModel->getGuiRoot());
 
-	
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/ArrowTool.png")),
@@ -614,7 +699,7 @@ void Demo::initGUI()
 void Demo::onInit()  {
 	
     // Called before Demo::run() beings
-	cameraController.setFrame(cameraPos);
+	cameraController.setFrame(Vector3(0,2,10));
 	dataModel = new DataModelInstance();
 	dataModel->setParent(NULL);
 	dataModel->name = "undefined";
@@ -629,7 +714,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(40),toRadians(40)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	
 
 	
@@ -721,15 +806,6 @@ void Demo::onInit()  {
 
 void Demo::onCleanup() {
     clearInstances();
-	go->~Texture();
-	go_ovr->~Texture();
-	go_dn->~Texture();
-	go_dn.~ReferenceCountedPointer();
-	delete go_dn.pointer();
-	go.~ReferenceCountedPointer();
-	delete go.pointer();
-	go_ovr.~ReferenceCountedPointer();
-	delete go_ovr.pointer();
 	sky->~Sky();
 }
 
@@ -738,16 +814,8 @@ void Demo::onCleanup() {
 
 void Demo::onLogic() {
     // Add non-simulation game logic and AI code here
-	
-	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
-		if(obj != NULL)
-		{
-			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(selectedInstance == NULL)
-				button->disabled = true;
-			else
-				button->disabled = false;	
-		}
+
+		
 
 
 }
@@ -763,16 +831,28 @@ void Demo::onNetwork() {
 //	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 //}
 
-Instance* Demo::getSelection()
+std::vector<Instance*> Demo::getSelection()
 {
-	return selectedInstance;
+	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
+
+	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
+		if(obj != NULL)
+		{
+			ImageButtonInstance* button = (ImageButtonInstance*)obj;
+			if(g_selectedInstances.size() <= 0 || g_selectedInstances.at(0) == dataModel->getWorkspace())
+				button->disabled = true;
+			else
+				button->disabled = false;	
+		}
+
+
 	if(dataModel->name != title)
 	{
 		title = dataModel->name;
 		std::string text = "Game \"" + title + "\"";
-		SetWindowText(hWndMain, text.c_str());
+		SetWindowText(_hWndMain, text.c_str());
 		
 	}
 
@@ -796,8 +876,13 @@ bool IsHolding(int button)
 	return (GetKeyState(button) >> 1)>0;
 }
 
+BOOL GetKPBool(int VK) {
+	return (GetKeyState(VK) & 0x8000);
+}
+
 void Demo::onUserInput(UserInput* ui) {
 
+	/*
 	if(GetHoldKeyState(VK_LCONTROL))
 	{
 		if(GetHoldKeyState('D'))
@@ -806,15 +891,17 @@ void Demo::onUserInput(UserInput* ui) {
 			if(debugMode())
 				message = "Debug Mode Disabled";
 			else
-				message = "Debug Mode Enabled, Soon to be depricated";
+				message = "Debug Mode Enabled";
 			setDebugMode(!debugMode());
 		}
 	}
-	//if(ui->keyPressed(SDLK_F8))
-	//{
-	//	messageTime = System::time();
-	//	message = "FPS has been locked at " + Convert(FPSVal[index]);
-		//setDesiredFrameRate(FPSVal[index]);
+	*/
+	if(GetHoldKeyState(VK_F8))
+	{
+		messageTime = System::time();
+		message = "FOV Set to 10";
+		
+	}
 	//}
 
 	//dataModel->mousex = ui->getMouseX();
@@ -823,14 +910,15 @@ void Demo::onUserInput(UserInput* ui) {
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
 		if (dragging) {
-		PhysicalInstance* part = (PhysicalInstance*) selectedInstance;
+			PhysicalInstance* part = NULL;
+			if(g_selectedInstances.size() > 0)
+				part = (PhysicalInstance*) g_selectedInstances.at(0);
 		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(instances.at(i)->getClassName() == "Part")
+				if(PhysicalInstance* moveTo = dynamic_cast<PhysicalInstance*>(instances.at(i)))
 				{
-					PhysicalInstance* moveTo = (PhysicalInstance*)instances.at(i);
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
 					if (__time != inf()) 
@@ -847,15 +935,20 @@ void Demo::onUserInput(UserInput* ui) {
 			Sleep(10);
 		}
 	}
-
+	// Camera KB Handling {
+		if (GetKPBool(VK_OEM_COMMA)) //Left
+			usableApp->cameraController.panLeft();
+		else if (GetKPBool(VK_OEM_PERIOD)) // Right
+			usableApp->cameraController.panRight();
+		else if (GetKPBool(0x49)) // Zoom In (I)
+			usableApp->cameraController.Zoom(1);
+		else if (GetKPBool(0x4F)) // Zoom Out (O)
+			usableApp->cameraController.Zoom(-1);
+	// }
 
 	//readMouseGUIInput();
 	// Add other key handling here
 }
-
-
-
-
 
 void makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
@@ -997,7 +1090,7 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 void Demo::exitApplication()
 {
 	//endApplet = true;
-    endProgram = true;
+    //endProgram = true;
 }
 
 
@@ -1005,10 +1098,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 	
 	G3D::uint8 num = 0;
 	POINT mousepos;
-	bool mouseOnScreen = true;
+	mouseOnScreen = true;
 	if (GetCursorPos(&mousepos))
 	{
-	if (ScreenToClient(hWndMain, &mousepos))
+	if (ScreenToClient(_hWndMain, &mousepos))
 	{
 		//mouseOnScreen = true;
 		
@@ -1016,20 +1109,25 @@ void Demo::onGraphics(RenderDevice* rd) {
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
-			window()->setMouseVisible(true);
+			_window->setMouseVisible(true);
 			//rd->window()->setInputCaptureCount(0);
 		}
 		else
 		{
 			mouseOnScreen = true;
 			//SetCursor(NULL);
-			window()->setMouseVisible(false);
+			_window->setMouseVisible(false);
 			//rd->window()->setInputCaptureCount(1);
 		}
 		
 	}
 	}
 	
+	if(Globals::useMousePoint)
+	{
+		mousepos = Globals::mousepoint;
+		ScreenToClient(_hWndMain, &mousepos);
+	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
@@ -1055,12 +1153,17 @@ void Demo::onGraphics(RenderDevice* rd) {
 	dataModel->getWorkspace()->render(rd);
 	rd->afterPrimitive();
 
-	if(selectedInstance != NULL)
+	if(g_selectedInstances.size() > 0)
 	{
-		PhysicalInstance* part = (PhysicalInstance*)selectedInstance;
-		Vector3 size = part->getSize();
-		Vector3 pos = part->getPosition();
-		drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+		for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		{
+			if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(g_selectedInstances.at(i)))
+			{
+			Vector3 size = part->getSize();
+			Vector3 pos = part->getPosition();
+			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+			}
+		}
 	}
 	
 
@@ -1111,7 +1214,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		rd->pushState();
 			rd->beforePrimitive();
 
-			if(showMouse && mouseOnScreen)
+			if(Globals::showMouse && mouseOnScreen)
 			{
 			glEnable( GL_TEXTURE_2D );
 			glEnable(GL_BLEND);// you enable blending function
@@ -1152,17 +1255,18 @@ void Demo::onKeyUp(int key)
 
 }
 
-void Demo::onMouseLeftPressed(int x,int y)
+void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 {
+	SetFocus(hwnd);
+
 	std::cout << "Click: " << x << "," << y << std::endl;
 
 	bool onGUI = false;
 	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
-		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D.at(i)))
 		{
-			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 			if(button->mouseInButton(x,y, renderDevice))
 			{
 				onGUI = true;
@@ -1172,29 +1276,55 @@ void Demo::onMouseLeftPressed(int x,int y)
 	}
 	if(!onGUI)
 	{
-		selectedInstance = NULL;
 		testRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		float nearest=std::numeric_limits<float>::infinity();
 		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-        for(size_t i = 0; i < instances.size(); i++)
+        bool objFound = false;
+		for(size_t i = 0; i < instances.size(); i++)
 		{
-			if(instances.at(i)->getClassName() == "Part")
+			if(PhysicalInstance* test = dynamic_cast<PhysicalInstance*>(instances.at(i)))
 			{
-				PhysicalInstance* test = (PhysicalInstance*)instances.at(i);
 				float time = testRay.intersectionTime(test->getBox());
+				
 				if (time != inf()) 
 				{
+					objFound = true;
 					if (nearest>time)
 					{
 						nearest=time;
-						selectedInstance = test;
+						bool found = false;
+						for(size_t i = 0; i < g_selectedInstances.size(); i++)
+						{
+							if(g_selectedInstances.at(i) == test)
+							{
+								found = true;
+								ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+								SetActiveWindow(_propWindow->_hwndProp);
+								SetForegroundWindow(_propWindow->_hwndProp);
+								break;
+							}
+						}
+						if(!found)
+						{while(g_selectedInstances.size() > 0)
+							g_selectedInstances.erase(g_selectedInstances.begin());
+						g_selectedInstances.push_back(test);
+						}
+						_propWindow->SetProperties(test);
 						//message = "Dragging = true.";
 						//messageTime = System::time();
 						//dragging = true;
 					}
 				}
-			}
+			}		
+		}
+		if(!objFound)
+		{
+			while(g_selectedInstances.size() > 0)
+					g_selectedInstances.erase(g_selectedInstances.begin());
+			g_selectedInstances.push_back(dataModel->getWorkspace());
+			_propWindow->SetProperties(dataModel->getWorkspace());
+			
 		}
 	}
 }
@@ -1209,9 +1339,8 @@ void Demo::onMouseLeftUp(int x,int y)
 	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
-		if(instances_2D.at(i)->getClassName() == "TextButton" || instances_2D.at(i)->getClassName() == "ImageButton")
+		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D[i]))
 		{
-			BaseButtonInstance* button = (BaseButtonInstance*)instances_2D.at(i);
 			if(button->mouseInButton(x, y, renderDevice))
 			{
 				button->onMouseClick();
@@ -1234,6 +1363,7 @@ void Demo::onMouseMoved(int x,int y)
 }
 void Demo::onMouseWheel(int x,int y,short delta)
 {
+	if (mouseOnScreen==true)
 	if (cameraController.onMouseWheel(x, y, delta))
 	{
 		AudioPlayer::playSound(cameraSound);
@@ -1262,7 +1392,67 @@ App::~App() {
 }
 */
 
+void Boop()
+{
+	OnError(1, "Test");
+}
+
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	if (app==NULL)
+	{
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+    switch(msg)
+    {
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_MOUSEWHEEL:
+			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		break;
+		case WM_SIZE:
+			app->resizeWithParent(hwnd);
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+
+LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
+	MessageBox(NULL, (LPCSTR)wParam, (LPCSTR)lParam, 1);
+	//if (app==NULL)
+	//{
+		//return DefWindowProc(hwnd, msg, wParam, lParam);
+	//}
+	switch(msg)
+    {
+		case WM_SIZE:
+		break;
+        default:
+		{
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+    }
+    return 0;
+}
+
+LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
 	if (app==NULL)
@@ -1277,22 +1467,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             app->QuitApp();
         break;
-		case WM_KEYDOWN:
-			if ((HIWORD(lParam)&0x4000)==0) // single key press
-			{
-				app->onKeyPressed(wParam);
-			}
-		break;
-		case WM_KEYUP:
-		{
-			app->onKeyUp(wParam);
-		}
-		break;
 		case WM_LBUTTONDOWN:
-			app->onMouseLeftPressed(LOWORD(lParam),HIWORD(lParam));
-		break;
-		case WM_MOUSEMOVE:
-			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
+			app->onMouseLeftPressed(hwnd,LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_LBUTTONUP:
 			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
@@ -1303,16 +1479,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_RBUTTONUP:
 			app->onMouseRightUp(LOWORD(lParam),HIWORD(lParam));
 		break;
-		case WM_MOUSEWHEEL:
-			app->onMouseWheel(LOWORD(lParam),HIWORD(lParam),HIWORD(wParam));
+		case WM_MOUSEMOVE:
+			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_SIZE:
 		{
-			int viewWidth = LOWORD(lParam);
-			int viewHeight = HIWORD(lParam);
-			app->renderDevice->notifyResize(viewWidth,viewHeight);
-			Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
-			app->renderDevice->setViewport(viewportRect);
 			app->onGraphics(app->renderDevice);
 		}
 		break;
@@ -1324,46 +1495,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
-
-LRESULT CALLBACK ToolProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    //Demo *app = (Demo *)GetWindowLongPtr(hwnd, GWL_USERDATA);
-    switch(msg)
-    {
-		case WM_SIZE:
-		break;
-        default:
-		{
-            return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
-    }
-    return 0;
-}
-
-bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
-{
-	WNDCLASSEX wc;
-	wc.cbSize        = sizeof(WNDCLASSEX);
-	wc.style         = 0;
-	wc.lpfnWndProc   = proc;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
-	wc.hInstance     = hInstance;
-	wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-	wc.lpszMenuName  = NULL;
-	wc.lpszClassName = name;
-	wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-	if (!RegisterClassEx (&wc))
-		return false;
-	return true;
-}
-
-void Demo::main() {
+void Demo::run() {
 	usableApp = this;
-	setDebugMode(false);
-	debugController.setActive(false);
+	//setDebugMode(false);
+	//debugController.setActive(false);
 	/*
 	if (!createWindowClass("ToolWindowClass",ToolProc,GetModuleHandle(0)))
 	{
@@ -1378,13 +1513,12 @@ void Demo::main() {
 
 	ShowWindow(propertyHWnd,SW_SHOW);
 	*/
-	UpdateWindow(hWndMain);
+	UpdateWindow(_hWndMain);
 
     // Load objects here=
-	go = Texture::fromFile(GetFileInPath("/content/images/Run.png"));
-	go_ovr = Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png"));
-	go_dn = Texture::fromFile(GetFileInPath("/content/images/Run_dn.png"));
 	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
+	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
+	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
@@ -1402,13 +1536,13 @@ void Demo::main() {
 	RealTime    lastWaitTime=0;
 
 	MSG			messages;
-	RECT cRect;
-	GetClientRect(hWndMain,&cRect);
-
-	renderDevice->notifyResize(cRect.right,cRect.bottom);
-	Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
-	renderDevice->setViewport(viewportRect);
+	//RECT cRect;
+	//GetClientRect(_hWndMain,&cRect);
+	//renderDevice->notifyResize(cRect.right,cRect.bottom);
+	//Rect2D viewportRect = Rect2D::xywh(0,0,cRect.right,cRect.bottom);
+	//renderDevice->setViewport(viewportRect);
 	//window()->setInputCaptureCount(1);
+	resizeWithParent(_hWndMain);
 
 	while (!quit)
 	{
@@ -1419,7 +1553,7 @@ void Demo::main() {
 		
 		m_userInputWatch.tick();
 			onUserInput(userInput);
-			m_moduleManager->onUserInput(userInput);
+			//m_moduleManager->onUserInput(userInput);
 		m_userInputWatch.tock();
 		
 		m_simulationWatch.tick();
@@ -1449,14 +1583,14 @@ void Demo::main() {
 				renderDevice->pushState();
 					onGraphics(renderDevice);
 				renderDevice->popState();
-				renderDebugInfo();
+				//renderDebugInfo();
 			renderDevice->endFrame();
-			debugText.clear();
+			//debugText.clear();
 		m_graphicsWatch.tock();
 
 		while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
 		{
-			if (IsDialogMessage(hWndMain, &messages) == 0)
+			if (IsDialogMessage(_hWndMain, &messages) == 0)
 			{
 				TranslateMessage(&messages);
 				DispatchMessage(&messages);
@@ -1465,18 +1599,55 @@ void Demo::main() {
 	}
 	onCleanup();
 }
+void Demo::resizeWithParent(HWND parentWindow)
+{
+	RECT rect;
+	GetClientRect(parentWindow,&rect);
+	SetWindowPos(_hwndRenderer,NULL,0,0,rect.right,rect.bottom-60,SWP_NOMOVE);
+	SetWindowPos(_hwndToolbox,NULL,0,rect.bottom-60,rect.right,60,SWP_NOACTIVATE | SWP_SHOWWINDOW);
+	GetClientRect(_hwndRenderer,&rect);
+	int viewWidth=rect.right;
+	int viewHeight=rect.bottom;
+	renderDevice->notifyResize(viewWidth,viewHeight);
+	Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
+	renderDevice->setViewport(viewportRect);
+
+}
 
 void Demo::QuitApp()
 {
 	PostQuitMessage(0);
 	quit=true;
 }
+void Demo::onCreate(HWND parentWindow)
+{
+	//SetWindowLongPtr(hwndRenderer,GWL_USERDATA,(LONG)this);
+	//SetWindowLongPtr(hwndToolbox,GWL_USERDATA,(LONG)this);
+	//SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
+}
 
 int main(int argc, char** argv) {
 	try{
-		tempPath = ((std::string)getenv("temp")) + "/Dynamica";
+		hresult = OleInitialize(NULL);
+		if (!AXRegister())
+			return 0;
+
+			
+		INITCOMMONCONTROLSEX icc;
+//		WNDCLASSEX wcx;
+
+		/* Initialize common controls. Also needed for MANIFEST's */
+
+		icc.dwSize = sizeof(icc);
+		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
+					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
+		InitCommonControlsEx(&icc);
+
+		tempPath = ((std::string)getenv("temp")) + "/"+PlaceholderName;
 		CreateDirectory(tempPath.c_str(), NULL);
-	    
+	
+		
+
 		message = tempPath;
 		messageTime = System::time();
 		AudioPlayer::init();
@@ -1488,13 +1659,13 @@ int main(int argc, char** argv) {
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
-		{
-			MessageBox(NULL, "Failed to register mainHWND","Dynamica Crash", MB_OK);
 			return false;
-		}
+		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
+			return false;
+		if (!createWindowClass("G3DWindow",G3DProc,hThisInstance))
+			return false;
 
-		
-			HWND hwndMain = CreateWindowEx(
+		HWND hwndMain = CreateWindowEx(
 			WS_EX_ACCEPTFILES,
 			"mainHWND",
 			"Main test",
@@ -1502,26 +1673,23 @@ int main(int argc, char** argv) {
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			800,
-			600,
+			660,
 			NULL, // parent
 			NULL, // menu
 			hThisInstance,
 			NULL
 		);
-		
+
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Failed to create HWND","Dynamica Crash", MB_OK);
+			MessageBox(NULL, "Failed to create HWND", (PlaceholderName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
-		ShowWindow(hwndMain, SW_SHOW);
 		
-		Win32Window* win32Window = Win32Window::create(settings.window,hwndMain);
-		Demo demo = Demo(settings,win32Window);
-
-		SetWindowLongPtr(hwndMain,GWL_USERDATA,(LONG)&demo);
-		demo.run();		
+		
+		Demo demo = Demo(settings,hwndMain);
+		demo.run();	
 	}
 	catch(...)
 	{

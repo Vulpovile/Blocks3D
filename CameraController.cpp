@@ -196,10 +196,16 @@ void CameraController::update(Demo* demo)
 	}
 
 	if(rightButtonHolding) {
+		Globals::useMousePoint = true;
+		Globals::mousepoint = oldDesktopMouse;
 		POINT mouse;
 		GetCursorPos(&mouse);
 		pan(&frame,(mouse.x-oldDesktopMouse.x)/100.f,(mouse.y-oldDesktopMouse.y)/100.f);
 		SetCursorPos(oldDesktopMouse.x,oldDesktopMouse.y);
+	}
+	else
+	{
+		Globals::useMousePoint = false;
 	}
 
 	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT)) {

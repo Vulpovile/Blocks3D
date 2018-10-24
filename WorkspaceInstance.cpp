@@ -1,10 +1,11 @@
 #include "WorkspaceInstance.h"
-float timer = 60.0F;
-int score = 0;
+
 
 WorkspaceInstance::WorkspaceInstance(void)
 {
-	className = "Workspace";
+	Instance::Instance();
+	name = "Instance";
+	className = "Level";
 	timer = 60.0F;
 	score = 0;
 }
