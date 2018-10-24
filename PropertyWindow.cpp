@@ -11,6 +11,7 @@
 } PRGP;*/
 
 std::vector<PROPGRIDITEM> prop;
+std::vector<Instance*> children;
 Instance* selectedInstance;
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -30,6 +31,18 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			propWind->onResize();
 		}
+		break;
+		case WM_COMMAND:
+			{
+				if(HIWORD(wParam) == CBN_SELCHANGE)
+				{ 
+					int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+					CHAR  ListItem[256];
+					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem);
+					MessageBox(hwnd, ListItem, "Item Selected", MB_OK);  
+					//SetProperties(children.at(ItemIndex-1));
+				}
+			}
 		break;
 		case WM_NOTIFY:
 		{
@@ -60,6 +73,11 @@ void PropertyWindow::refreshExplorer()
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
 	for (unsigned int i=0;i<g_selectedInstances.size();i++) {
 		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)g_selectedInstances[i]->name.c_str()); 
+		children = g_selectedInstances[i]->getChildren();
+		for(size_t z = 0; z < children.size(); z++)
+		{
+			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(i)->name.c_str()); 
+		}
 		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0); 
 	}
 }
