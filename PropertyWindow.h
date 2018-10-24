@@ -7,7 +7,7 @@ public:
 	void	SetProperties(Instance *);
 	void	ClearProperties();
 	void	onResize();
-	
+	void	refreshExplorer();
 	HWND	_hwndProp;
 private:
 	HWND	_propGrid;

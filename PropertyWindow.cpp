@@ -3,6 +3,7 @@
 #include "WindowFunctions.h"
 #include "resource.h"
 #include "PropertyWindow.h"
+#include "Globals.h"
 
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
@@ -54,6 +55,15 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0; 
 }
 
+void PropertyWindow::refreshExplorer()
+{
+	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
+	for (unsigned int i=0;i<selectedInstances.size();i++) {
+		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)selectedInstances[i]->name.c_str()); 
+		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0); 
+	}
+}
+
 bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance) {
 
 	if (!createWindowClass("propHWND",PropProc,hThisInstance))
@@ -81,13 +91,14 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST,
 			0,
 			0,
-			280,
-			20,
+			0,
+			0,
 			_hwndProp, // parent
 			NULL, // menu
 			hThisInstance,
 			NULL
 		);
+		SendMessage(_explorerComboBox, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0);
 
 		_propGrid = New_PropertyGrid(_hwndProp,IDC_PROPERTYGRID);
 
@@ -131,8 +142,11 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		PropGrid_ShowToolTips(_propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
 		PropGrid_ExpandAllCatalogs(_propGrid);
-
+		
+		
 		SetWindowLongPtr(_hwndProp,GWL_USERDATA,(LONG)this);
+
+		refreshExplorer();
 		_resize();
 
 		return true;
@@ -152,7 +166,7 @@ void PropertyWindow::_resize()
 	RECT rect;
 	GetClientRect(_hwndProp,&rect);
 	SetWindowPos(_propGrid, NULL, 0, 20, rect.right, rect.bottom-20, SWP_NOZORDER | SWP_NOACTIVATE);
-	SetWindowPos(_explorerComboBox, NULL, 0, 0, rect.right, 20, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+	SetWindowPos(_explorerComboBox, NULL, 0, 0, rect.right, 400, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 void PropertyWindow::SetProperties(Instance * instance)
@@ -169,7 +183,9 @@ void PropertyWindow::SetProperties(Instance * instance)
 		//propgp.prop = prop.at(i);
 	}
 	PropGrid_ExpandAllCatalogs(_propGrid);
-	SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
+	//SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
+
+	refreshExplorer();
 	_resize();
 }
 

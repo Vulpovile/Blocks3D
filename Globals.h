@@ -19,3 +19,5 @@ public:
 	static int surfaceId;
 	static const std::string PlaceholderName;
 };
+
+extern std::vector<Instance*> selectedInstances;
