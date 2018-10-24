@@ -1262,7 +1262,10 @@ void Demo::onKeyUp(int key)
 
 void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 {
-	SetFocus(hwnd);
+	//Removed set focus 
+	
+	
+
 
 	std::cout << "Click: " << x << "," << y << std::endl;
 
