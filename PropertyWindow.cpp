@@ -40,7 +40,10 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					CHAR  ListItem[256];
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem);
 					MessageBox(hwnd, ListItem, "Item Selected", MB_OK);  
+					if(ItemIndex != 0)
+					{
 					//SetProperties(children.at(ItemIndex-1));
+					}
 				}
 			}
 		break;

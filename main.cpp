@@ -295,7 +295,7 @@ void deleteInstance()
 {
 	if(g_selectedInstances.size() > 0)
 	{
-		int undeletable = 0;
+		size_t undeletable = 0;
 		while(g_selectedInstances.size() > undeletable)
 		{
 			if(g_selectedInstances.at(0) != dataModel && g_selectedInstances.at(0) != dataModel->getWorkspace())
@@ -1629,7 +1629,7 @@ int main(int argc, char** argv) {
 
 			
 		INITCOMMONCONTROLSEX icc;
-		WNDCLASSEX wcx;
+//		WNDCLASSEX wcx;
 
 		/* Initialize common controls. Also needed for MANIFEST's */
 
