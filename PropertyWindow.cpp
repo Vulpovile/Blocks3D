@@ -4,7 +4,6 @@
 #include "resource.h"
 #include "PropertyWindow.h"
 #include "Globals.h"
-
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
     Property &prop;
@@ -14,7 +13,6 @@ std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
 Instance* selectedInstance;
 
-PropertyWindow * thisCls;
 
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -28,6 +26,13 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_CLOSE:
 		{
 			ShowWindow(hwnd, SW_HIDE);
+		}
+		break;
+		case WM_MEASUREITEM:
+		{
+			LPMEASUREITEMSTRUCT lpmis = (LPMEASUREITEMSTRUCT) lParam;
+			if (lpmis->itemHeight < 18)
+				lpmis->itemHeight = 18;
 		}
 		break;
 		case WM_SIZE:
@@ -44,11 +49,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
 					if(ItemIndex != 0)
 					{
-						thisCls->ClearProperties();
+						propWind->ClearProperties();
 						while(g_selectedInstances.size() != 0)
 							g_selectedInstances.erase(g_selectedInstances.begin());
 						g_selectedInstances.push_back(children.at(ItemIndex-1));
-						thisCls->SetProperties(children.at(ItemIndex-1));
+						propWind->SetProperties(children.at(ItemIndex-1));
 					}
 				}
 			}
@@ -92,7 +97,6 @@ void PropertyWindow::refreshExplorer()
 }
 
 bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance) {
-	thisCls = this;
 	if (!createWindowClass("propHWND",PropProc,hThisInstance))
 			return false;
 
