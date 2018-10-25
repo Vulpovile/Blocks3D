@@ -21,3 +21,4 @@ public:
 };
 
 extern std::vector<Instance*> g_selectedInstances;
+extern bool running;

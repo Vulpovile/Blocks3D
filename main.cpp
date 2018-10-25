@@ -72,7 +72,6 @@ static int cursorOvrid = 0;
 static int currentcursorid = 0;
 static G3D::TextureRef cursor = NULL;
 static G3D::TextureRef cursorOvr = NULL;
-static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -852,8 +851,23 @@ std::vector<Instance*> Demo::getSelection()
 	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-
-	
+	if(!running)
+	{
+		std::vector <Instance* > objects = dataModel->getWorkspace()->getAllChildren();
+		for(size_t i = 0; i < objects.size(); i++)
+		{
+			if(PartInstance* moveTo = dynamic_cast<PartInstance*>(objects.at(i)))
+			{
+				moveTo->velocity.y -= (196.2F/30);
+				moveTo->setPosition(Vector3(moveTo->getPosition().x, moveTo->getPosition().y+(moveTo->velocity.y)/30, moveTo->getPosition().z));
+				if(moveTo->getPosition().y < -128)
+				{
+					moveTo->setParent(NULL);
+					delete moveTo;
+				}
+			}
+		}
+	}
 		
 		Instance * obj6 = dataModel->getGuiRoot()->findFirstChild("Delete");
 		Instance * obj = dataModel->getGuiRoot()->findFirstChild("Duplicate");
