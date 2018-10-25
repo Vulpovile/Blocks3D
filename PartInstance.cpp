@@ -152,6 +152,7 @@ bool PartInstance::collides(Box box)
 
 void PartInstance::render(RenderDevice* rd)
 {
+	
 	if(changed)
 		Box box = getBox();
 	
@@ -257,7 +258,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
 			LPCSTR str = LPCSTR(pto);
 			item->lpCurValue = (LPARAM)str;
-			MessageBox(NULL, "NO","NO", MB_OK);
 		}
 		else
 		{
@@ -286,7 +286,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
 			LPCSTR str = LPCSTR(pto);
 			item->lpCurValue = (LPARAM)str;
-			MessageBox(NULL, "NO","NO", MB_OK);
 		}
 		else
 		{

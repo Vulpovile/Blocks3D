@@ -786,7 +786,7 @@ void Demo::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
 	
-
+	//dataModel->setMessageBrickCount();
 	
 
 	test = makePart();
@@ -851,7 +851,7 @@ std::vector<Instance*> Demo::getSelection()
 	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-	if(!running)
+	if(running)
 	{
 		std::vector <Instance* > objects = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < objects.size(); i++)
@@ -1182,6 +1182,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	}
 	
+
+
 	if(Globals::useMousePoint)
 	{
 		mousepos = Globals::mousepoint;
@@ -1208,9 +1210,24 @@ void Demo::onGraphics(RenderDevice* rd) {
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
 	
+
+	Vector3 gamepoint = Vector3(0, 5, 0);
+	Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+	float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+	if(distance < 50 && distance > -50)
+	
+	{
+		if(distance < 0)
+		distance = distance*-1;
+		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+	}
+
 	rd->beforePrimitive();
+
+
 	dataModel->getWorkspace()->render(rd);
 	rd->afterPrimitive();
+
 
 	if(g_selectedInstances.size() > 0)
 	{
@@ -1226,16 +1243,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
 
-	//Vector3 gamepoint = Vector3(0, 5, 0);
-	//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-	//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-	//if(distance < 50 && distance > -50)
 	
-	//{
-	//	if(distance < 0)
-	//	distance = distance*-1;
-	//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-	//}
 
     renderDevice->disableLighting();
 

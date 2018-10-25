@@ -1,6 +1,7 @@
 #pragma once
 #include "WorkspaceInstance.h"
 #include "LevelInstance.h"
+#include "PartInstance.h"
 
 class DataModelInstance :
 	public Instance
@@ -9,6 +10,7 @@ public:
 	DataModelInstance(void);
 	~DataModelInstance(void);
 	void setMessage(std::string);
+	void setMessageBrickCount();
 	void clearMessage();
 	void drawMessage(RenderDevice*);
 	WorkspaceInstance* getWorkspace();
@@ -26,6 +28,7 @@ public:
 	void setMousePos(int x,int y);
 	void setMousePos(Vector2 pos);
 	bool mouseButton1Down;
-	
+private:
+	bool isBrickCount;
 	
 };

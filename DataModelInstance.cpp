@@ -31,17 +31,50 @@ DataModelInstance::~DataModelInstance(void)
 void DataModelInstance::setMessage(std::string msg)
 {
 	message = msg;
+	isBrickCount = false;
 	showMessage = true;
 }
 
 void DataModelInstance::clearMessage()
 {
 	showMessage = false;
+	isBrickCount = false;
 	message = "";
+}
+
+void DataModelInstance::setMessageBrickCount()
+{
+	isBrickCount = true;
+	showMessage = true;
 }
 
 void DataModelInstance::drawMessage(RenderDevice* rd)
 {
+	if(isBrickCount)
+	{
+		int brickCount = 0;
+		int instCount = 0;
+		std::vector<Instance*> inst = getAllChildren();
+		for(size_t i = 0; i < inst.size(); i++)
+		{
+			if(PartInstance* moveTo = dynamic_cast<PartInstance*>(inst.at(i)))
+			{
+				brickCount++;
+			}
+			else
+			{
+				instCount++;
+			}
+		}
+		char brkc[12];
+		sprintf(brkc, "%d", brickCount);
+		char instc[12];
+		sprintf(instc, "%d", instCount);
+		message = "Bricks: ";
+		message += brkc;
+		message += "	Snaps: ";
+		message += instc;
+	}
 	if(showMessage && !font.isNull())
 	{
 		int x = rd->getWidth()/2;
