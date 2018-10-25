@@ -68,7 +68,10 @@ static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
 static int cursorid = 0;
+static int cursorOvrid = 0;
+static int currentcursorid = 0;
 static G3D::TextureRef cursor = NULL;
+static G3D::TextureRef cursorOvr = NULL;
 static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static const int CURSOR = 0;
@@ -1234,9 +1237,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//TODO--Move these to their own instance
 
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
+		stream << std::fixed << std::setprecision(1) << dataModel->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
-		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
+		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
 		
 		//GUI Boxes	
 		Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
@@ -1262,19 +1265,34 @@ void Demo::onGraphics(RenderDevice* rd) {
 			glEnable(GL_BLEND);// you enable blending function
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 			
+			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+			for(size_t i = 0; i < instances.size(); i++)
+			{
+				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
+				{
+					float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
+					//float time = testRay.intersectionTime(test->getBox());
+					if (time != inf()) 
+					{
+						currentcursorid = cursorOvrid;
+						break;
+					}
+					else currentcursorid = cursorid;
+				}
+			}
 			
-			glBindTexture( GL_TEXTURE_2D, cursorid);
+			glBindTexture( GL_TEXTURE_2D, currentcursorid);
 
 			
 			glBegin( GL_QUADS );
 			glTexCoord2d(0.0,0.0);
-			glVertex2f(mousepos.x-40, mousepos.y-40);
+			glVertex2f(mousepos.x-64, mousepos.y-64);
 			glTexCoord2d( 1.0,0.0 );
-			glVertex2f(mousepos.x+40, mousepos.y-40);
+			glVertex2f(mousepos.x+64, mousepos.y-64);
 			glTexCoord2d(1.0,1.0 );
-			glVertex2f(mousepos.x+40, mousepos.y+40 );
+			glVertex2f(mousepos.x+64, mousepos.y+64 );
 			glTexCoord2d( 0.0,1.0 );
-			glVertex2f( mousepos.x-40, mousepos.y+40 );
+			glVertex2f( mousepos.x-64, mousepos.y+64 );
 			glEnd();
 
 			glDisable( GL_TEXTURE_2D );
@@ -1367,8 +1385,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		{
 			while(g_selectedInstances.size() > 0)
 					g_selectedInstances.erase(g_selectedInstances.begin());
-			g_selectedInstances.push_back(dataModel->getWorkspace());
-			_propWindow->SetProperties(dataModel->getWorkspace());
+			g_selectedInstances.push_back(dataModel);
+			_propWindow->SetProperties(dataModel);
 			
 		}
 	}
@@ -1381,7 +1399,7 @@ void Demo::onMouseLeftUp(int x,int y)
 	//message = "Dragging = false.";
 	//messageTime = System::time();
 	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+	//std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
 		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D[i]))
@@ -1582,7 +1600,8 @@ void Demo::run() {
 	UpdateWindow(_hWndMain);
 
     // Load objects here=
-	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
+	cursorOvr = Texture::fromFile(GetFileInPath("/content/images/DragCursor.png"));
 	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
 	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
@@ -1592,7 +1611,8 @@ void Demo::run() {
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	cursorid = cursor->openGLID();
-
+	currentcursorid = cursorid;
+	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
 	float		fps=30.0f;

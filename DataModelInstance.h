@@ -24,4 +24,11 @@ public:
 	void setMousePos(int x,int y);
 	void setMousePos(Vector2 pos);
 	bool mouseButton1Down;
+	
+	float timer;
+	int score;
+	virtual std::vector<PROPGRIDITEM> getProperties();
+	std::string winMessage;
+	std::string loseMessage;
+	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 };
