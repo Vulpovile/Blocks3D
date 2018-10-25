@@ -17,6 +17,7 @@ public:
 	Enum::SurfaceType::Value back;
 	Enum::SurfaceType::Value left;
 	Enum::SurfaceType::Value bottom;
+	Enum::Shape::Value shape;
 	CoordinateFrame cFrame;
 	Color3 color;
 	Vector3 getPosition();

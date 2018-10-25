@@ -20,6 +20,7 @@ PartInstance::PartInstance(void)
 	back = Enum::SurfaceType::Smooth;
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
+	shape = Enum::Shape::Block;
 }
 
 PartInstance::PartInstance(const PartInstance &oinst)
@@ -42,6 +43,7 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	back = oinst.back;
 	left = oinst.left;
 	bottom = oinst.bottom;
+	shape = oinst.shape;
 }
 
 void PartInstance::setSize(Vector3 newSize)
@@ -66,6 +68,16 @@ void PartInstance::setSize(Vector3 newSize)
 		sizez = 1;
 	if(sizez > 512)
 		sizez = 512;
+
+	if(shape != Enum::Shape::Block)
+	{
+		int max = sizex;
+		if(sizey > max)
+			max = sizey;
+		if(sizez > max)
+			max = sizez;
+		sizex = sizey = sizez = max;
+	}
 
 	size = Vector3(sizex, sizey, sizez);
 

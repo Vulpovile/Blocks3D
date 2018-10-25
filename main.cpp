@@ -1266,6 +1266,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 			
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+			currentcursorid = cursorid;
 			for(size_t i = 0; i < instances.size(); i++)
 			{
 				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
@@ -1277,7 +1278,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 						currentcursorid = cursorOvrid;
 						break;
 					}
-					else currentcursorid = cursorid;
+					
 				}
 			}
 			
