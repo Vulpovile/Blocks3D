@@ -1,7 +1,7 @@
 #include "CameraController.h"
 #include "win32Defines.h"
 #include <iostream>
-#include "PhysicalInstance.h"
+#include "PartInstance.h"
 #include "Demo.h"
 #include "AudioPlayer.h"
 
@@ -141,7 +141,7 @@ void CameraController::centerCamera(Instance* selection)
 	}
 	else
 	{
-		Vector3 partPos = ((PhysicalInstance*)selection)->getPosition()/2;
+		Vector3 partPos = ((PartInstance*)selection)->getPosition()/2;
 		lookAt(partPos);
 		focusPosition=partPos;
 		zoom=((partPos-frame.translation).magnitude());

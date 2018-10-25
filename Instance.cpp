@@ -9,6 +9,7 @@ Instance::Instance(void)
 	name = "Default Game Instance";
 	className = "BaseInstance";
 	listicon = 0;
+	canDelete = true;
 }
 
 Instance::Instance(const Instance &oinst)
@@ -16,6 +17,7 @@ Instance::Instance(const Instance &oinst)
 	
 	name = oinst.name;
 	className = oinst.className;
+	canDelete = oinst.canDelete;
 	//setParent(oinst.parent);
 }
 

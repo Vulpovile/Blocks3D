@@ -1,15 +1,14 @@
 #pragma once
-#include "instance.h"
+#include "PVInstance.h"
 #include "Enum.h"
 
-class PhysicalInstance :
-	public Instance
+class PartInstance : public PVInstance
 {
 public:
-	PhysicalInstance(void);
-	PhysicalInstance(const PhysicalInstance &oinst);
-	Instance* clone() const { return new PhysicalInstance(*this); }
-	~PhysicalInstance(void);
+	PartInstance(void);
+	PartInstance(const PartInstance &oinst);
+	Instance* clone() const { return new PartInstance(*this); }
+	~PartInstance(void);
 	virtual void render(RenderDevice*);
 	Vector3 velocity;
 	Enum::SurfaceType::Value top;
@@ -18,6 +17,7 @@ public:
 	Enum::SurfaceType::Value back;
 	Enum::SurfaceType::Value left;
 	Enum::SurfaceType::Value bottom;
+	Enum::Shape::Value shape;
 	CoordinateFrame cFrame;
 	Color3 color;
 	Vector3 getPosition();

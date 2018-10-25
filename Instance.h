@@ -5,6 +5,7 @@
 class Instance
 {
 public:
+	bool canDelete;
 	Instance(void);
 	Instance(const Instance&);
 	virtual ~Instance(void);
@@ -12,7 +13,7 @@ public:
 	virtual void render(RenderDevice*);
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();
-	virtual Instance* findFirstChild(std::string);
+	Instance* findFirstChild(std::string);
 	std::vector<Instance* > getChildren();
 	std::vector<Instance* > getAllChildren();
 	void setParent(Instance*);

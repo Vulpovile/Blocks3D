@@ -6,4 +6,10 @@ namespace Enum
 			Smooth, Bumps, Welds, Glue
 		};
 	}
+	namespace Shape
+	{
+		enum Value {
+			Block, Sphere, Cylinder
+		};
+	}
 }
