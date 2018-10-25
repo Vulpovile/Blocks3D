@@ -12,8 +12,8 @@
 
 std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
-Instance* selectedInstance;
-
+Instance * selectedInstance;
+Instance * parent = NULL;
 const int CX_BITMAP = 16;
 const int CY_BITMAP = 16;
 
@@ -128,8 +128,26 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						propWind->ClearProperties();
 						while(g_selectedInstances.size() != 0)
 							g_selectedInstances.erase(g_selectedInstances.begin());
-						g_selectedInstances.push_back(children.at(ItemIndex-1));
-						propWind->SetProperties(children.at(ItemIndex-1));
+						if(parent != NULL)
+						{
+							std::cout << ItemIndex << std::endl;
+							if(ItemIndex == 1)
+							{
+								g_selectedInstances.push_back(parent);
+								propWind->SetProperties(parent);
+							}
+							else
+							{
+								g_selectedInstances.push_back(children.at(ItemIndex+2));
+								propWind->SetProperties(children.at(ItemIndex+2));
+							}
+
+						}
+						else
+						{
+							g_selectedInstances.push_back(children.at(ItemIndex-1));
+							propWind->SetProperties(children.at(ItemIndex-1));
+						}
 					}
 				}
 			}
@@ -162,15 +180,24 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 void PropertyWindow::refreshExplorer()
 {
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
+	parent = NULL;
 	for (unsigned int i=0;i<g_selectedInstances.size();i++) {
+		
 		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)g_selectedInstances[i]->name.c_str()); 
+		if(g_selectedInstances[i]->getParent() != NULL)
+		{
+			std::string title = ".. (";
+			title += g_selectedInstances[i]->getParent()->name;
+			title += ")";
+			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)title.c_str());
+			parent = g_selectedInstances[i]->getParent();
+		}
 		children = g_selectedInstances[i]->getChildren();
 		for(size_t z = 0; z < children.size(); z++)
 		{
 			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(z)->name.c_str()); 
 		}
 		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
-		InvalidateRect(_explorerComboBox, NULL, NULL);
 	}
 }
 

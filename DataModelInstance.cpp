@@ -10,14 +10,17 @@ DataModelInstance::DataModelInstance(void)
 	workspace = new WorkspaceInstance();
 	guiRoot = new Instance();
 	level = new LevelInstance();
-	children.push_back(workspace);
-	children.push_back(level);
+	//children.push_back(workspace);
+	//children.push_back(level);
 	className = "dataModel";
 	mousex = 0;
 	mousey = 0;
 	mouseButton1Down = false;
 	showMessage = false;
 	canDelete = false;
+
+	workspace->setParent(this);
+	level->setParent(this);
 	
 }
 
