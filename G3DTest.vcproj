@@ -314,6 +314,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GroupInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\ImageButtonInstance.cpp"
 					>
 				</File>
@@ -322,7 +326,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\PhysicalInstance.cpp"
+					RelativePath=".\PartInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PVInstance.cpp"
 					>
 				</File>
 				<File
@@ -411,6 +419,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GroupInstance.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ImageButtonInstance.h"
 					>
 				</File>
@@ -419,7 +431,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\PhysicalInstance.h"
+					RelativePath=".\PartInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PVInstance.h"
 					>
 				</File>
 				<File

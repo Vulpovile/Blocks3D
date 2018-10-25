@@ -58,6 +58,10 @@ void TextButtonInstance::setAllColorsSame()
 	textOutlineColorDn = textOutlineColor;
 	boxColorDn = boxColor;
 	boxOutlineColorDn = boxOutlineColor;
+	textColorDis = textColor;
+	textOutlineColorDis = textOutlineColor;
+	boxColorDis = boxColor;
+	boxOutlineColorDis = boxOutlineColor;
 }
 
 TextButtonInstance::~TextButtonInstance(void)
@@ -80,7 +84,12 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 		point2 = Vector3(boxEnd.x, boxEnd.y,0);
 	}
 	Vector2 RelativeTo = Vector2(point1.x + fontLocationRelativeTo.x, point1.y + fontLocationRelativeTo.y);
-	if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y) && mouseDown)
+	if(disabled)
+	{
+		Draw::box(Box(point1, point2), rd, boxColorDis, boxOutlineColorDis);
+		font->draw2D(rd, title, RelativeTo, textSize, textColorDis, textOutlineColorDis);
+	}
+	else if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y) && mouseDown)
 	{
 		Draw::box(Box(point1, point2), rd, boxColorDn, boxOutlineColorDn);
 		font->draw2D(rd, title, RelativeTo, textSize, textColorDn, textOutlineColorDn);

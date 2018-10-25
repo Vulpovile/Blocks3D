@@ -1,11 +1,11 @@
-#include "PhysicalInstance.h"
+#include "PartInstance.h"
 #include "Globals.h"
 
 
-PhysicalInstance::PhysicalInstance(void)
+PartInstance::PartInstance(void)
 {
-	Instance::Instance();
-    name = "Default PhysicalInstance";
+	PVInstance::PVInstance();
+    name = "Default PartInstance";
 	className = "Part";
 	canCollide = true;
 	anchored = true;
@@ -22,11 +22,12 @@ PhysicalInstance::PhysicalInstance(void)
 	bottom = Enum::SurfaceType::Smooth;
 }
 
-PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
+PartInstance::PartInstance(const PartInstance &oinst)
 {
-	Instance::Instance(oinst);
+	PVInstance::PVInstance(oinst);
 	//name = oinst.name;
 	//className = "Part";
+	name = oinst.name;
 	canCollide = oinst.canCollide;
 	setParent(oinst.parent);
 	anchored = oinst.anchored;
@@ -43,7 +44,7 @@ PhysicalInstance::PhysicalInstance(const PhysicalInstance &oinst)
 	bottom = oinst.bottom;
 }
 
-void PhysicalInstance::setSize(Vector3 newSize)
+void PartInstance::setSize(Vector3 newSize)
 {
 	int minsize = 1;
 	int maxsize = 512;
@@ -71,37 +72,37 @@ void PhysicalInstance::setSize(Vector3 newSize)
 
 
 }
-Vector3 PhysicalInstance::getSize()
+Vector3 PartInstance::getSize()
 {
 	return size;
 }
-Vector3 PhysicalInstance::getPosition()
+Vector3 PartInstance::getPosition()
 {
 	return position;
 }
-void PhysicalInstance::setPosition(Vector3 pos)
+void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	cFrame = CoordinateFrame(pos);
 	changed = true;
 }
-CoordinateFrame PhysicalInstance::getCFrame()
+CoordinateFrame PartInstance::getCFrame()
 {
 	return cFrame;
 }
-void PhysicalInstance::setCFrame(CoordinateFrame coordinateFrame)
+void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;
 	changed = true;
 }
 
-CoordinateFrame PhysicalInstance::getCFrameRenderBased()
+CoordinateFrame PartInstance::getCFrameRenderBased()
 {
 	return CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x/2, getCFrame().translation.y/2, getCFrame().translation.z/2));
 }
 
-Box PhysicalInstance::getBox()
+Box PartInstance::getBox()
 {
 	if(changed)
 	{
@@ -132,12 +133,12 @@ Box PhysicalInstance::getBox()
 	return itemBox;
 }
 
-bool PhysicalInstance::collides(Box box)
+bool PartInstance::collides(Box box)
 {
 	return CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), box);
 }
 
-void PhysicalInstance::render(RenderDevice* rd)
+void PartInstance::render(RenderDevice* rd)
 {
 	if(changed)
 		Box box = getBox();
@@ -211,14 +212,14 @@ void PhysicalInstance::render(RenderDevice* rd)
 	
 }
 
-PhysicalInstance::~PhysicalInstance(void)
+PartInstance::~PartInstance(void)
 {
 }
 char pto[512];
 char pto2[512];
 #include <sstream>
 
-void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
+void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
@@ -285,7 +286,7 @@ void PhysicalInstance::PropUpdate(LPPROPGRIDITEM &item)
 	else Instance::PropUpdate(item);
 }
 
-std::vector<PROPGRIDITEM> PhysicalInstance::getProperties()
+std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = Instance::getProperties();
 	
