@@ -5,7 +5,7 @@
 PartInstance::PartInstance(void)
 {
 	PVInstance::PVInstance();
-    name = "Default PartInstance";
+    name = "Unnamed PVItem";
 	className = "Part";
 	canCollide = true;
 	anchored = true;
