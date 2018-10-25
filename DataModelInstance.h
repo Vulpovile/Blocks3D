@@ -1,6 +1,7 @@
 #pragma once
 #include "instance.h"
 #include "WorkspaceInstance.h"
+#include "LevelInstance.h"
 
 class DataModelInstance :
 	public Instance
@@ -13,6 +14,8 @@ public:
 	void drawMessage(RenderDevice*);
 	WorkspaceInstance* getWorkspace();
 	WorkspaceInstance* workspace;
+	LevelInstance * level;
+	LevelInstance * getLevel();
 	Instance* guiRoot;
 	std::string message;
 	bool showMessage;
@@ -25,10 +28,5 @@ public:
 	void setMousePos(Vector2 pos);
 	bool mouseButton1Down;
 	
-	float timer;
-	int score;
-	virtual std::vector<PROPGRIDITEM> getProperties();
-	std::string winMessage;
-	std::string loseMessage;
-	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	
 };

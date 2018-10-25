@@ -326,6 +326,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\LevelInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\PartInstance.cpp"
 					>
 				</File>
@@ -428,6 +432,10 @@
 				</File>
 				<File
 					RelativePath=".\Instance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\LevelInstance.h"
 					>
 				</File>
 				<File

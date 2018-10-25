@@ -3,6 +3,7 @@
 PVInstance::PVInstance(void)
 {
 	Instance::Instance();
+	className = "PVInstance";
 }
 
 PVInstance::PVInstance(const PVInstance &oinst)

@@ -3,6 +3,7 @@
 GroupInstance::GroupInstance(void)
 {
 	PVInstance::PVInstance();
+	className = "GroupInstance";
 }
 
 GroupInstance::GroupInstance(const GroupInstance &oinst)

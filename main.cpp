@@ -1237,9 +1237,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//TODO--Move these to their own instance
 
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(1) << dataModel->timer;
+		stream << std::fixed << std::setprecision(1) << dataModel->getLevel()->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
-		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
+		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getLevel()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
 		
 		//GUI Boxes	
 		Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
