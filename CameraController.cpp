@@ -7,18 +7,17 @@
 
 
 
-CameraController::CameraController(){
-	yaw=0;
-	pitch=0;
-	moveRate=0.5f;
-	forwards=false;
-	backwards=false;
-	left=false;
-	right=false;
-	zoom=7.f;
-	rightButtonHolding=false;
-	focusPosition=Vector3(0,0,0);
-}
+CameraController::CameraController() :
+yaw(0), 
+pitch(0),
+moveRate(1.0f),
+forwards(false),
+backwards(false),
+left(false),
+right(false),
+zoom(14.f),
+rightButtonHolding(false),
+focusPosition(Vector3(0,0,0)) {}
 
 GCamera* CameraController::getCamera()
 {
@@ -209,10 +208,10 @@ void CameraController::update(Demo* demo)
 	}
 
 	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT)) {
-		moveRate = 1;
+		moveRate = 2.f;
 	}
 	else {
-		moveRate = 0.5;
+		moveRate = 1.f;
 	}
 
 	if(GetHoldKeyState(VK_RBUTTON))
