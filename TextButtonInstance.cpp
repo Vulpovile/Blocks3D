@@ -72,6 +72,8 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 {
 	Vector3 point1;
 	Vector3 point2;
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
 	if(floatBottom)
 	{
 		point1 = Vector3(boxBegin.x, rd->getHeight() + boxBegin.y,0);
@@ -104,6 +106,8 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 		Draw::box(Box(point1, point2), rd, boxColor, boxOutlineColor);
 		font->draw2D(rd, title, RelativeTo, textSize, textColor, textOutlineColor);
 	}
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
 }
 
 void doNullCheck()

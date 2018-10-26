@@ -1064,18 +1064,18 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 {
 
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
-	float offsetSize = 0.05F;
+	float offsetSize = 0.1F;
 	//X
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	//Y
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	
 	//Z
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
@@ -1153,6 +1153,7 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
+
 	G3D::uint8 num = 0;
 	POINT mousepos;
 	mouseOnScreen = true;
@@ -1226,6 +1227,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 
 	dataModel->getWorkspace()->render(rd);
+	//if (dataModel->children[0]->children.size()>0)
+		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();
 
 
@@ -1237,7 +1240,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+			drawOutline(Vector3(size.x/2, size.y/2, size.z/2) ,Vector3(-size.x/2,-size.y/2,-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrameRenderBased());
 			}
 		}
 	}
@@ -1259,6 +1262,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//TODO--Move these to their own instance
 
 		std::stringstream stream;
+		stream << std::fixed << std::setprecision(3) << m_graphicsWatch.FPS();
+		fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
+		stream.str("");
+		stream.clear();
 		stream << std::fixed << std::setprecision(1) << dataModel->getLevel()->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
 		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getLevel()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());

@@ -25,10 +25,17 @@ Instance::Instance(const Instance &oinst)
 
 void Instance::render(RenderDevice* rd)
 {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
 	for(size_t i = 0; i < children.size(); i++)
 	{
 		children.at(i)->render(rd);
 	}
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 }
 
 
