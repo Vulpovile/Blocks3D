@@ -1342,6 +1342,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			rd->afterPrimitive();
 		rd->popState();
 	renderDevice->pop2D();
+	debugAssertGLOk();
 }
 
 void Demo::onKeyPressed(int key)

@@ -56,7 +56,7 @@ void PartInstance::postRender(RenderDevice *rd)
 	}
 }
 
-PartInstance::PartInstance(const PartInstance &oinst)
+PartInstance::PartInstance(const PartInstance &oinst)  : _bevelSize(0.07f), _parseVert(0), _debugTimer(0)
 {
 	PVInstance::PVInstance(oinst);
 	//name = oinst.name;
@@ -77,6 +77,7 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	left = oinst.left;
 	bottom = oinst.bottom;
 	shape = oinst.shape;
+	changed = true;
 }
 
 void PartInstance::setSize(Vector3 newSize)

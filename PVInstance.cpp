@@ -27,7 +27,7 @@ std::vector<PROPGRIDITEM> PVInstance::getProperties()
 		"Item",
 		"NameShown",
 		"This chooses whether the item name is shown",
-		false,
+		nameShown,
 		PIT_CHECK));
 	return properties;
 }
