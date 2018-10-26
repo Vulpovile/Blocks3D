@@ -27,18 +27,31 @@ PartInstance::PartInstance(void) : _bevelSize(0.03f), _parseVert(0), _debugTimer
 
 void PartInstance::postRender(RenderDevice *rd)
 {
-	G3D::GFontRef fntdominant = NULL;
-	if(fntdominant.notNull())
+	if(!nameShown)
+		return;
+	G3D::GFontRef fnt = NULL;
+	Instance* dm = parent;
+	while(dm != NULL)
 	{
-		Vector3 gamepoint = cFrame.translation;
+		if(DataModelInstance* mod = dynamic_cast<DataModelInstance*>(dm))
+		{
+			fnt = mod->font;
+			break;
+		}
+		dm = dm->getParent();
+	}
+	if(!fnt.isNull())
+	{
+		Vector3 gamepoint = position + Vector3(0,1.5,0);
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 50 && distance > -50)
-	    
+		if(distance < 100 && distance > -100)
 		{
 			if(distance < 0)
 			distance = distance*-1;
-			fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+			glDisable(GL_DEPTH_TEST); 
+			fnt->draw3D(rd, name, CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.03*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+			glEnable(GL_DEPTH_TEST); 
 		}
 	}
 }
@@ -131,7 +144,7 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 // Can probably be deleted
 CoordinateFrame PartInstance::getCFrameRenderBased()
 {
-	return CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
+	return cFrame;//CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
 }
 #ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
@@ -242,6 +255,8 @@ bool PartInstance::isUniqueVertex(Vector3 pos)
 
 #ifdef NEW_BOX_RENDER
 void PartInstance::render(RenderDevice* rd) {
+	if(nameShown)
+		postRenderStack.push_back(this);
  	if (changed)
 	{
 		getBox();
@@ -519,12 +534,12 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 		}
 	}
 
-	else Instance::PropUpdate(item);
+	else PVInstance::PropUpdate(item);
 }
 
 std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
-	std::vector<PROPGRIDITEM> properties = Instance::getProperties();
+	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
 	
 
 	properties.push_back(createPGI(
