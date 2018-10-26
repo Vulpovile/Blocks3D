@@ -164,7 +164,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         LPNMPROPGRID lpnmp = (LPNMPROPGRID)pnm;
                         LPPROPGRIDITEM item = PropGrid_GetItemData(pnm->hwndFrom,lpnmp->iIndex);
 						selectedInstance->PropUpdate(item);
-						propWind->SetProperties(selectedInstance);
+						//propWind->SetProperties(selectedInstance);
                     }
 				}
                 break;

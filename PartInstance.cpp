@@ -28,7 +28,7 @@ PartInstance::PartInstance(void) : _bevelSize(0.03f), _parseVert(0), _debugTimer
 void PartInstance::postRender(RenderDevice *rd)
 {
 	G3D::GFontRef fntdominant = NULL;
-	if(fntdominant != NULL)
+	if(fntdominant.notNull())
 	{
 		Vector3 gamepoint = cFrame.translation;
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
