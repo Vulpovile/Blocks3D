@@ -4,7 +4,7 @@
 #include <iomanip>
 
 
-PartInstance::PartInstance(void) : _bevelSize(0.03f), _parseVert(0), _debugTimer(0)
+PartInstance::PartInstance(void) : _bevelSize(0.08f), _parseVert(0), _debugTimer(0)
 {
 	PVInstance::PVInstance();
     name = "Unnamed PVItem";
