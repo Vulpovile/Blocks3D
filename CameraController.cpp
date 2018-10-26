@@ -133,7 +133,12 @@ void CameraController::tiltDown()
 void CameraController::centerCamera(Instance* selection)
 {
 	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().translation);
-	if(PartInstance* part = dynamic_cast<PartInstance*>(selection))
+	if(selection == NULL)
+	{
+		lookAt(Vector3(0,0,0));
+		focusPosition=Vector3(0,0,0);
+	}
+	else if(PartInstance* part = dynamic_cast<PartInstance*>(selection))
 	{
 		Vector3 partPos = (part)->getPosition()/2;
 		lookAt(partPos);
@@ -142,10 +147,8 @@ void CameraController::centerCamera(Instance* selection)
 	}
 	else
 	{
-		{
-			lookAt(Vector3(0,0,0));
-			focusPosition=Vector3(0,0,0);
-		}
+		lookAt(Vector3(0,0,0));
+		focusPosition=Vector3(0,0,0);
 	}
 }
 
