@@ -443,6 +443,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
 		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
+		changed=true;
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{
