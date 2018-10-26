@@ -1084,6 +1084,7 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	
 	if(mode == ARROWS)
 	{
+		glScalef(2,2,2);
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
 		
@@ -1091,23 +1092,24 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		c.toWorldSpace(Box(from, to)).getBounds(box);
 		float max = box.high().y - pos.y;
 
-		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
-		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
+		Draw::arrow(pos/2, Vector3(0, 1.5+max, 0), rd);
+		Draw::arrow(pos/2, Vector3(0, (-1.5)-max, 0), rd);
 		
 		max = box.high().x - pos.x;
 
-		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
+		Draw::arrow(pos/2, Vector3(1.5+max, 0, 0), rd);
+		Draw::arrow(pos/2, Vector3((-1.5)-max, 0, 0), rd);
 
 		max = box.high().z - pos.z;
 
-		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
+		Draw::arrow(pos/2, Vector3(0, 0, 1.5+max), rd);
+		Draw::arrow(pos/2, Vector3(0, 0, (-1.5)-max), rd);
 
 
 
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+		glScalef(1,1,1);
 	}
 	else if(mode == RESIZE)
 	{
@@ -1119,24 +1121,23 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 200)
 		{
-			
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			Vector3 position = pos + (c.lookVector()*((size.z)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.lookVector()*((size.z)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.rightVector()*((size.x/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos + (c.rightVector()*((size.x)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.rightVector()*((size.x)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.upVector()*((size.y/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos + (c.upVector()*((size.y)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 		}
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));

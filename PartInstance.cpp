@@ -380,13 +380,17 @@ void PartInstance::render(RenderDevice* rd) {
 		}		
  		changed=false;
 	}
+	//rd->setObjectToWorldMatrix(cFrame);
+	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
+	rd->setObjectToWorldMatrix(cFrame);
  	glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
 	glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
 	glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
  	glPushMatrix();
-	glTranslatef(position.x,position.y,position.z);
+	//glTranslatef(2,7,0);
 	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
 	glPopMatrix();
+	rd->setObjectToWorldMatrix(forDraw);
 }
 #else
 void PartInstance::render(RenderDevice* rd)
