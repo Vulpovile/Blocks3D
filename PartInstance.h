@@ -10,6 +10,7 @@ public:
 	PartInstance(void);
 	PartInstance(const PartInstance &oinst);
 	Instance* clone() const { return new PartInstance(*this); }
+	void PartInstance::postRender(RenderDevice* rd);
 	~PartInstance(void);
 	virtual void render(RenderDevice*);
 	Vector3 velocity;

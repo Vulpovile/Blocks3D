@@ -1246,7 +1246,12 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
 
-	
+	while(!postRenderStack.empty())
+	{
+		Instance* inst = postRenderStack.top();
+		postRenderStack.pop();
+		
+	}
 
     renderDevice->disableLighting();
 
