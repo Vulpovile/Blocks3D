@@ -79,7 +79,8 @@ static const int RESIZE = 2;
 static POINT oldGlobalMouse;
 static int mode = CURSOR;
 bool dragging = false;
-Vector2 oldMouse = Vector2(0,0);
+#include <math.h>
+Vector2 mouseDownOn = Vector2(nan(), 0);
 float moveRate = 0.5;
 static const std::string PlaceholderName = "HyperCube";
 
@@ -967,6 +968,17 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
+		if(!G3D::isNaN(mouseDownOn.x))
+		{
+			if(abs(mouseDownOn.x - dataModel->mousex) > 4 || abs(mouseDownOn.y - dataModel->mousey) > 4)
+			{
+				dragging = true;
+			}
+		}
+		else
+		{
+			mouseDownOn = Vector2(dataModel->mousex, dataModel->mousey);
+		}
 		if (dragging) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
@@ -983,7 +995,7 @@ void Demo::onUserInput(UserInput* ui) {
 					{
 						if (__nearest>__time)
 						{
-							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
+							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()));
 							part->setPosition(closest);
 							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
 						}
@@ -992,6 +1004,11 @@ void Demo::onUserInput(UserInput* ui) {
 			}
 			Sleep(10);
 		}
+	}
+	else
+	{
+		dragging = false;
+		mouseDownOn = Vector2(nan(), 0);
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -1483,7 +1500,7 @@ void Demo::onMouseRightUp(int x,int y)
 }
 void Demo::onMouseMoved(int x,int y)
 {
-	oldMouse = dataModel->getMousePos();
+	//oldMouse = dataModel->getMousePos();
 	dataModel->mousex = x;
 	dataModel->mousey = y;
 
