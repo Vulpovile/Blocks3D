@@ -86,6 +86,7 @@ static const std::string PlaceholderName = "HyperCube";
 Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
+	lightProjX = 17; lightProjY = 17; lightProjNear = 1; lightProjFar = 40;
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
@@ -729,7 +730,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
 	
 
 	
@@ -1154,6 +1155,7 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
+	
 
 	G3D::uint8 num = 0;
 	POINT mousepos;
@@ -1193,6 +1195,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
+
+	Matrix4 lightProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+
+    CoordinateFrame lightCFrame;
+    lightCFrame.lookAt(-lighting.lightDirection, Vector3::unitY());
+    lightCFrame.translation = lighting.lightDirection * 20;
+
+    Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
+
+    if (GLCaps::supports_GL_ARB_shadow()) {
+        generateShadowMap(lightCFrame);
+    } 
+
+
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
@@ -1224,6 +1240,16 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 	}
 */
+
+	rd->setAmbientLightColor(Color3::black());
+    rd->setDepthTest(RenderDevice::DEPTH_LEQUAL);
+    rd->disableDepthWrite();
+    rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+
+    rd->setBlendFunc(RenderDevice::BLEND_ONE, RenderDevice::BLEND_ONE);
+	if (GLCaps::supports_GL_ARB_shadow()) {
+            rd->configureShadowMap(1, lightMVP, shadowMap);
+        }
 	rd->beforePrimitive();
 
 
@@ -1622,6 +1648,37 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
+
+void Demo::generateShadowMap(const CoordinateFrame& lightViewMatrix) const {
+
+
+    //debugAssert(shadowMapSize < app->renderDevice->getHeight());
+    //debugAssert(shadowMapSize < app->renderDevice->getWidth());
+
+    //app->renderDevice->clear(debugLightMap, true, false);
+    
+    Rect2D rect = Rect2D::xywh(0, 0, 512, 512);
+    renderDevice->pushState();
+        renderDevice->setViewport(rect);
+
+	    // Draw from the light's point of view
+        renderDevice->setProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+        renderDevice->setCameraToWorldMatrix(lightViewMatrix);
+
+        renderDevice->disableColorWrite();
+
+        // We can choose to use a large bias or render from
+        // the backfaces in order to avoid front-face self
+        // shadowing.  Here, we use a large offset.
+        renderDevice->setPolygonOffset(8);
+
+    dataModel->render(renderDevice);
+    renderDevice->popState();
+
+    shadowMap->copyFromScreen(rect);
+}
+
+
 void Demo::run() {
 	usableApp = this;
 	//setDebugMode(false);
@@ -1653,6 +1710,14 @@ void Demo::run() {
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
+
+
+	if (GLCaps::supports_GL_ARB_shadow()) {
+        shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
+            Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
+    }
+
+
 	cursorid = cursor->openGLID();
 	currentcursorid = cursorid;
 	cursorOvrid = cursorOvr->openGLID();

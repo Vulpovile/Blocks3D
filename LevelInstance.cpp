@@ -8,6 +8,7 @@ LevelInstance::LevelInstance(void)
 	loseMessage = "You Lost. Try Again";
 	timer = 60.0F;
 	score = 0;
+	canDelete = false;
 }
 
 LevelInstance::~LevelInstance(void)
