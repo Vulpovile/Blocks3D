@@ -390,6 +390,7 @@ void Demo::initGUI()
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -402,6 +403,7 @@ void Demo::initGUI()
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -414,6 +416,7 @@ void Demo::initGUI()
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -426,6 +429,7 @@ void Demo::initGUI()
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -434,10 +438,10 @@ void Demo::initGUI()
 	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
-	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
@@ -451,6 +455,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -464,6 +469,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -477,6 +483,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -490,6 +497,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -503,6 +511,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 
 
@@ -991,13 +1000,13 @@ void Demo::onUserInput(UserInput* ui) {
 				{
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
-					if (__time != inf()) 
+					if (__time != inf() && moveTo != part) 
 					{
 						if (__nearest>__time)
 						{
 							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()));
-							part->setPosition(closest);
-							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
+							//part->setPosition(closest);
+							part->setPosition(Vector3(floor(closest.x),floor(closest.y),floor(closest.z)));
 						}
 					}
 				}
@@ -1346,6 +1355,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 			
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 			currentcursorid = cursorid;
+			bool onGUI = false;
+			std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
+			for(size_t i = 0; i < guis.size(); i++)
+			{
+				if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
+				{
+					if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
+					{
+						onGUI = true;
+						break;
+					}
+				}
+			}
+			if(!onGUI)
 			for(size_t i = 0; i < instances.size(); i++)
 			{
 				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
