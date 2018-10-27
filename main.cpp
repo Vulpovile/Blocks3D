@@ -1240,13 +1240,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 	}
 */
-
-	rd->setAmbientLightColor(Color3::black());
-    rd->setDepthTest(RenderDevice::DEPTH_LEQUAL);
-    rd->disableDepthWrite();
-    rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-
-    rd->setBlendFunc(RenderDevice::BLEND_ONE, RenderDevice::BLEND_ONE);
+	
+	rd->pushState();
 	if (GLCaps::supports_GL_ARB_shadow()) {
             rd->configureShadowMap(1, lightMVP, shadowMap);
         }
@@ -1258,7 +1253,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();
 
-
+	rd->popState();
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
