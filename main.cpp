@@ -994,10 +994,22 @@ void Demo::onUserInput(UserInput* ui) {
 				part = (PartInstance*) g_selectedInstances.at(0);
 		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+
 		for(size_t i = 0; i < instances.size(); i++)
 			{
 				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
 				{
+					Vector3 outLocation=Vector3(0,0,0);
+					Vector3 outNormal=Vector3(0,0,0);
+					
+					if (moveTo!=part) {
+						if (CollisionDetection::collisionTimeForMovingPointFixedBox(dragRay.origin,dragRay.direction*100,moveTo->getBox(),outLocation,outNormal)!=inf())
+						{
+							part->setPosition(Vector3(floor(outLocation.x),floor(outLocation.y+1),floor(outLocation.z)));
+							break;
+						}
+					}
+					/*
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
 					if (__time != inf() && moveTo != part) 
@@ -1009,6 +1021,7 @@ void Demo::onUserInput(UserInput* ui) {
 							part->setPosition(Vector3(floor(closest.x),floor(closest.y),floor(closest.z)));
 						}
 					}
+					*/
 				}
 			}
 			Sleep(10);
