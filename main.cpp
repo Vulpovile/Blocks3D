@@ -1031,7 +1031,7 @@ void Demo::onUserInput(UserInput* ui) {
 
 
 
-			if(moveTo != NULL)
+			if(nearest != inf())
 				{
 					Vector3 outLocation=Vector3(0,0,0);
 					Vector3 outNormal=Vector3(0,0,0);
