@@ -992,12 +992,46 @@ void Demo::onUserInput(UserInput* ui) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
 				part = (PartInstance*) g_selectedInstances.at(0);
-		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
-		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-
-		for(size_t i = 0; i < instances.size(); i++)
+			Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
+			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+			PartInstance* moveTo;
+			for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
+				
+			}	
+			
+
+
+
+
+
+		float nearest=std::numeric_limits<float>::infinity();
+		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
+			{
+				float time = dragRay.intersectionTime(test->getBox());
+				
+				if (time != inf()) 
+				{
+					if (nearest>time && test != part)
+					{
+						nearest=time;
+						moveTo = test;
+						//message = "Dragging = true.";
+						//messageTime = System::time();
+						//dragging = true;
+					}
+				}
+			}		
+		}
+
+
+
+
+
+			if(moveTo != NULL)
 				{
 					Vector3 outLocation=Vector3(0,0,0);
 					Vector3 outNormal=Vector3(0,0,0);
@@ -1006,7 +1040,7 @@ void Demo::onUserInput(UserInput* ui) {
 						if (CollisionDetection::collisionTimeForMovingPointFixedBox(dragRay.origin,dragRay.direction*100,moveTo->getBox(),outLocation,outNormal)!=inf())
 						{
 							part->setPosition(Vector3(floor(outLocation.x),floor(outLocation.y+1),floor(outLocation.z)));
-							break;
+							//break;
 						}
 					}
 					/*
@@ -1023,8 +1057,9 @@ void Demo::onUserInput(UserInput* ui) {
 					}
 					*/
 				}
-			}
-			Sleep(10);
+
+
+		Sleep(10);
 		}
 	}
 	else
