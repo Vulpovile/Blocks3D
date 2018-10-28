@@ -1278,9 +1278,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 
     Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
 
-    if (GLCaps::supports_GL_ARB_shadow()) {
+    /*if (GLCaps::supports_GL_ARB_shadow()) {
         generateShadowMap(lightCFrame);
-    } 
+    } */
 
 
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
@@ -1316,9 +1316,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 */
 	
 	rd->pushState();
-	if (GLCaps::supports_GL_ARB_shadow()) {
+	/*if (GLCaps::supports_GL_ARB_shadow()) {
             rd->configureShadowMap(1, lightMVP, shadowMap);
-        }
+        }*/
 	rd->beforePrimitive();
 
 
