@@ -79,13 +79,15 @@ static const int RESIZE = 2;
 static POINT oldGlobalMouse;
 static int mode = CURSOR;
 bool dragging = false;
-Vector2 oldMouse = Vector2(0,0);
+#include <math.h>
+Vector2 mouseDownOn = Vector2(nan(), 0);
 float moveRate = 0.5;
 static const std::string PlaceholderName = "HyperCube";
 
 Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
+	lightProjX = 17; lightProjY = 17; lightProjNear = 1; lightProjFar = 40;
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
@@ -388,6 +390,7 @@ void Demo::initGUI()
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -400,6 +403,7 @@ void Demo::initGUI()
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -412,6 +416,7 @@ void Demo::initGUI()
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -424,6 +429,7 @@ void Demo::initGUI()
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -432,10 +438,10 @@ void Demo::initGUI()
 	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
-	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
@@ -449,6 +455,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -462,6 +469,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -475,6 +483,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -488,6 +497,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -501,6 +511,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 
 
@@ -729,7 +740,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
 	
 
 	
@@ -966,31 +977,95 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
+		if(!G3D::isNaN(mouseDownOn.x))
+		{
+			if(abs(mouseDownOn.x - dataModel->mousex) > 4 || abs(mouseDownOn.y - dataModel->mousey) > 4)
+			{
+				dragging = true;
+			}
+		}
+		else
+		{
+			mouseDownOn = Vector2(dataModel->mousex, dataModel->mousey);
+		}
 		if (dragging) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
 				part = (PartInstance*) g_selectedInstances.at(0);
-		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
-		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-		for(size_t i = 0; i < instances.size(); i++)
+			Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
+			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+			PartInstance* moveTo;
+			for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
+				
+			}	
+			
+
+
+
+
+
+		float nearest=std::numeric_limits<float>::infinity();
+		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
+		for(size_t i = 0; i < instances.size(); i++)
+		{
+			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
+			{
+				float time = dragRay.intersectionTime(test->getBox());
+				
+				if (time != inf()) 
 				{
+					if (nearest>time && test != part)
+					{
+						nearest=time;
+						moveTo = test;
+						//message = "Dragging = true.";
+						//messageTime = System::time();
+						//dragging = true;
+					}
+				}
+			}		
+		}
+
+
+
+
+
+			if(nearest != inf())
+				{
+					Vector3 outLocation=Vector3(0,0,0);
+					Vector3 outNormal=Vector3(0,0,0);
+					
+					if (moveTo!=part) {
+						if (CollisionDetection::collisionTimeForMovingPointFixedBox(dragRay.origin,dragRay.direction*100,moveTo->getBox(),outLocation,outNormal)!=inf())
+						{
+							part->setPosition(Vector3(floor(outLocation.x),floor(outLocation.y+1),floor(outLocation.z)));
+							//break;
+						}
+					}
+					/*
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
-					if (__time != inf()) 
+					if (__time != inf() && moveTo != part) 
 					{
 						if (__nearest>__time)
 						{
-							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
-							part->setPosition(closest);
-							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
+							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()));
+							//part->setPosition(closest);
+							part->setPosition(Vector3(floor(closest.x),floor(closest.y),floor(closest.z)));
 						}
 					}
+					*/
 				}
-			}
-			Sleep(10);
+
+
+		Sleep(10);
 		}
+	}
+	else
+	{
+		dragging = false;
+		mouseDownOn = Vector2(nan(), 0);
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -1154,6 +1229,7 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
+	
 
 	G3D::uint8 num = 0;
 	POINT mousepos;
@@ -1193,6 +1269,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
+
+	Matrix4 lightProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+
+    CoordinateFrame lightCFrame;
+    lightCFrame.lookAt(-lighting.lightDirection, Vector3::unitY());
+    lightCFrame.translation = lighting.lightDirection * 20;
+
+    Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
+
+    /*if (GLCaps::supports_GL_ARB_shadow()) {
+        generateShadowMap(lightCFrame);
+    } */
+
+
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
@@ -1224,6 +1314,11 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 	}
 */
+	
+	rd->pushState();
+	/*if (GLCaps::supports_GL_ARB_shadow()) {
+            rd->configureShadowMap(1, lightMVP, shadowMap);
+        }*/
 	rd->beforePrimitive();
 
 
@@ -1232,7 +1327,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();
 
-
+	rd->popState();
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
@@ -1308,6 +1403,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 			
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 			currentcursorid = cursorid;
+			bool onGUI = false;
+			std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
+			for(size_t i = 0; i < guis.size(); i++)
+			{
+				if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
+				{
+					if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
+					{
+						onGUI = true;
+						break;
+					}
+				}
+			}
+			if(!onGUI)
 			for(size_t i = 0; i < instances.size(); i++)
 			{
 				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
@@ -1462,7 +1571,7 @@ void Demo::onMouseRightUp(int x,int y)
 }
 void Demo::onMouseMoved(int x,int y)
 {
-	oldMouse = dataModel->getMousePos();
+	//oldMouse = dataModel->getMousePos();
 	dataModel->mousex = x;
 	dataModel->mousey = y;
 
@@ -1622,6 +1731,37 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
+
+void Demo::generateShadowMap(const CoordinateFrame& lightViewMatrix) const {
+
+
+    //debugAssert(shadowMapSize < app->renderDevice->getHeight());
+    //debugAssert(shadowMapSize < app->renderDevice->getWidth());
+
+    //app->renderDevice->clear(debugLightMap, true, false);
+    
+    Rect2D rect = Rect2D::xywh(0, 0, 512, 512);
+    renderDevice->pushState();
+        renderDevice->setViewport(rect);
+
+	    // Draw from the light's point of view
+        renderDevice->setProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+        renderDevice->setCameraToWorldMatrix(lightViewMatrix);
+
+        renderDevice->disableColorWrite();
+
+        // We can choose to use a large bias or render from
+        // the backfaces in order to avoid front-face self
+        // shadowing.  Here, we use a large offset.
+        renderDevice->setPolygonOffset(8);
+
+    dataModel->render(renderDevice);
+    renderDevice->popState();
+
+    shadowMap->copyFromScreen(rect);
+}
+
+
 void Demo::run() {
 	usableApp = this;
 	//setDebugMode(false);
@@ -1653,6 +1793,14 @@ void Demo::run() {
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
+
+
+	if (GLCaps::supports_GL_ARB_shadow()) {
+        shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
+            Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
+    }
+
+
 	cursorid = cursor->openGLID();
 	currentcursorid = cursorid;
 	cursorOvrid = cursorOvr->openGLID();

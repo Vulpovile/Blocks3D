@@ -35,6 +35,7 @@ class Demo { // : public GApp {
 		RenderDevice*		renderDevice;
 		UserInput*			userInput;
 		PropertyWindow*		_propWindow;
+		void generateShadowMap(const CoordinateFrame& lightViewMatrix) const;
 	private:
 		void				initGUI();
 		HWND				_hWndMain;
@@ -47,7 +48,8 @@ class Demo { // : public GApp {
 		HWND				_hwndToolbox;
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
-		
+		G3D::TextureRef		shadowMap;
+		double lightProjX, lightProjY, lightProjNear, lightProjFar;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;
