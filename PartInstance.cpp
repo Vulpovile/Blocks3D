@@ -129,7 +129,7 @@ Vector3 PartInstance::getPosition()
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(pos);
+	cFrame = CoordinateFrame(cFrame.rotation,pos);
 	changed = true;
 }
 CoordinateFrame PartInstance::getCFrame()

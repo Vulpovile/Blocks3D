@@ -69,9 +69,11 @@ static std::string clickSound = "";
 static std::string dingSound = "";
 static int cursorid = 0;
 static int cursorOvrid = 0;
+static int cursorDragid = 0;
 static int currentcursorid = 0;
 static G3D::TextureRef cursor = NULL;
 static G3D::TextureRef cursorOvr = NULL;
+static G3D::TextureRef cursorDrag = NULL;
 static bool mouseMovedBeginMotion = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -740,7 +742,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
+	//test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
 	
 
 	
@@ -1403,33 +1405,40 @@ void Demo::onGraphics(RenderDevice* rd) {
 			
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 			currentcursorid = cursorid;
-			bool onGUI = false;
-			std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
-			for(size_t i = 0; i < guis.size(); i++)
+			if(!dragging)
 			{
-				if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
+				bool onGUI = false;
+				std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
+				for(size_t i = 0; i < guis.size(); i++)
 				{
-					if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
+					if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
 					{
-						onGUI = true;
-						break;
+						if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
+						{
+							onGUI = true;
+							break;
+						}
+					}
+				}
+				if(!onGUI)
+				for(size_t i = 0; i < instances.size(); i++)
+				{
+					if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
+					{
+						float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
+						//float time = testRay.intersectionTime(test->getBox());
+						if (time != inf()) 
+						{
+							currentcursorid = cursorOvrid;
+							break;
+						}
+						
 					}
 				}
 			}
-			if(!onGUI)
-			for(size_t i = 0; i < instances.size(); i++)
+			else
 			{
-				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
-				{
-					float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
-					//float time = testRay.intersectionTime(test->getBox());
-					if (time != inf()) 
-					{
-						currentcursorid = cursorOvrid;
-						break;
-					}
-					
-				}
+				currentcursorid = cursorDragid;
 			}
 			
 			glBindTexture( GL_TEXTURE_2D, currentcursorid);
@@ -1460,6 +1469,60 @@ void Demo::onKeyPressed(int key)
 	if(key==VK_DELETE)
 	{
 		deleteInstance();
+	}
+	if(dragging)
+	{
+		if(key == 'T')
+		{
+			if(g_selectedInstances.size() > 0)
+			{
+				Instance* selectedInstance = g_selectedInstances.at(0);
+				AudioPlayer::playSound(clickSound);
+				if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
+				{
+					part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
+				}
+			}
+		}
+		if(key == 'R')
+		{
+			if(g_selectedInstances.size() > 0)
+			{
+				Instance* selectedInstance = g_selectedInstances.at(0);
+				AudioPlayer::playSound(clickSound);
+				if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
+				{
+					part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+				}
+			}
+		}
+	}
+	if(GetHoldKeyState(VK_LCONTROL))
+	{
+		if(key == 'D')
+		{
+			if(g_selectedInstances.size() > 0)
+			{
+				AudioPlayer::playSound(dingSound);
+				std::vector<Instance*> newinst;
+				for(size_t i = 0; i < g_selectedInstances.size(); i++)
+				{
+					if(g_selectedInstances.at(i)->canDelete)
+					{
+					Instance* tempinst = g_selectedInstances.at(i);
+					
+					Instance* clonedInstance = g_selectedInstances.at(i)->clone();
+
+					newinst.push_back(tempinst);
+					}
+					/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
+					usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
+				}
+				g_selectedInstances = newinst;
+				if(g_selectedInstances.size() > 0)
+					usableApp->_propWindow->SetProperties(newinst.at(0));
+			}
+		}
 	}
 }
 void Demo::onKeyUp(int key)
@@ -1785,6 +1848,7 @@ void Demo::run() {
     // Load objects here=
 	cursor = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
 	cursorOvr = Texture::fromFile(GetFileInPath("/content/images/DragCursor.png"));
+	cursorDrag = Texture::fromFile(GetFileInPath("/content/images/GrabRotateCursor.png"));
 	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
 	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
@@ -1795,14 +1859,15 @@ void Demo::run() {
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 
 
-	if (GLCaps::supports_GL_ARB_shadow()) {
+	/*if (GLCaps::supports_GL_ARB_shadow()) {
         shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
             Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
-    }
+    }*/
 
 
 	cursorid = cursor->openGLID();
 	currentcursorid = cursorid;
+	cursorDragid = cursorDrag->openGLID();
 	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
