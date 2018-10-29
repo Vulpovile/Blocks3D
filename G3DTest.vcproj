@@ -388,6 +388,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rapidxml\rapidxml.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_iterators.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_print.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_utils.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
