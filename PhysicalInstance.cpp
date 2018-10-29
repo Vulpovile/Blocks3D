@@ -56,9 +56,9 @@ void PhysicalInstance::setSize(Vector3 newSize)
 	if(sizex > 512)
 		sizex = 512;
 
-	int sizey = (int)newSize.y;
+	float sizey = newSize.y;
 	if(sizey <= 0)
-		sizey = 1;
+		sizey = 0.4;
 	if(sizey > 512)
 		sizey = 512;
 

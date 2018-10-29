@@ -708,7 +708,10 @@ void Demo::onInit()  {
 	
 	initGUI();
 
-	
+	dataModel->load();
+
+	// Say bye bye to this soon...
+	/*
 	PhysicalInstance* test = makePart();
 	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
@@ -784,7 +787,7 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
-
+*/
 	
 
 
