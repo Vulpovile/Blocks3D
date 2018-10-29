@@ -1,13 +1,10 @@
 #pragma once
-#include "instance.h"
+#include "GroupInstance.h"
 
 class WorkspaceInstance :
-	public Instance
+	public GroupInstance
 {
 public:
-	float timer;
-	int score;
 	WorkspaceInstance(void);
 	~WorkspaceInstance(void);
-	
 };

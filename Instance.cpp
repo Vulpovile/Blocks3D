@@ -9,6 +9,7 @@ Instance::Instance(void)
 	name = "Default Game Instance";
 	className = "BaseInstance";
 	listicon = 0;
+	canDelete = true;
 }
 
 Instance::Instance(const Instance &oinst)
@@ -16,13 +17,14 @@ Instance::Instance(const Instance &oinst)
 	
 	name = oinst.name;
 	className = oinst.className;
+	canDelete = oinst.canDelete;
 	//setParent(oinst.parent);
 }
 
 
 
 void Instance::render(RenderDevice* rd)
-{	
+{
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -31,7 +33,6 @@ void Instance::render(RenderDevice* rd)
 	{
 		children.at(i)->render(rd);
 	}
-
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

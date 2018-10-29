@@ -21,6 +21,10 @@ public:
 	Color4 textOutlineColorDn;
 	Color4 boxColorDn;
 	Color4 boxOutlineColorDn;
+	Color4 textColorDis;
+	Color4 textOutlineColorDis;
+	Color4 boxColorDis;
+	Color4 boxOutlineColorDis;
 	bool centeredWithinBox;
 	std::string title;
 	G3D::GFontRef font;

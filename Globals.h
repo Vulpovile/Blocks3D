@@ -20,4 +20,6 @@ public:
 	static const std::string PlaceholderName;
 };
 
+extern std::vector<Instance*> postRenderStack;
 extern std::vector<Instance*> g_selectedInstances;
+extern bool running;

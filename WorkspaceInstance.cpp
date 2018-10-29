@@ -3,11 +3,10 @@
 
 WorkspaceInstance::WorkspaceInstance(void)
 {
-	Instance::Instance();
-	name = "Instance";
-	className = "Level";
-	timer = 60.0F;
-	score = 0;
+	GroupInstance::GroupInstance();
+	name = "Workspace";
+	className = "Workspace";
+	canDelete = false;
 }
 
 WorkspaceInstance::~WorkspaceInstance(void)

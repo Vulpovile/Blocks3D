@@ -7,9 +7,34 @@
 using namespace std;
 using namespace rapidxml;
 
-PhysicalInstance* DataModelInstance::makePart()
+
+DataModelInstance::DataModelInstance(void)
 {
-	PhysicalInstance* part = new PhysicalInstance();
+	Instance::Instance();
+	workspace = new WorkspaceInstance();
+	guiRoot = new Instance();
+	level = new LevelInstance();
+	//children.push_back(workspace);
+	//children.push_back(level);
+	className = "dataModel";
+	mousex = 0;
+	mousey = 0;
+	mouseButton1Down = false;
+	showMessage = false;
+	canDelete = false;
+
+	workspace->setParent(this);
+	level->setParent(this);
+	
+}
+
+DataModelInstance::~DataModelInstance(void)
+{
+}
+
+PartInstance* DataModelInstance::makePart()
+{
+	PartInstance* part = new PartInstance();
 	return part;
 }
 
@@ -50,6 +75,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 	
 	for (xml_node<> *node = scanNode->first_node();node; node = node->next_sibling())
 	{
+
 		if (strncmp(node->name(),"Item",4)==0)
 		{
 			xml_attribute<> *classAttr = node->first_attribute("class");
@@ -135,11 +161,15 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				float sizeZ = getFloatValue(sizeNode,"Z");
 
 				if (_successfulLoad) {
-					PhysicalInstance* test = makePart();
+					PartInstance* test = makePart();
 					test->setParent(getWorkspace());
 					test->color = Color3(R,G,B);
 					test->setSize(Vector3(sizeX,sizeY,sizeZ));
-					test->setCFrame(Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22)*Vector3(X,Y,Z));
+
+					CoordinateFrame what;
+					what.translation = Vector3(X,Y,Z);
+					what.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
+					test->setCFrame(what);
 				}
 				else
 				{
@@ -163,7 +193,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 
 bool DataModelInstance::load()
 {
-	ifstream levelFile("skooter.rbxm");
+	ifstream levelFile("..//skooterFix.rbxm",ios::binary);
 	if (levelFile) {
 		levelFile.seekg(0,levelFile.end);
 		int length = levelFile.tellg();
@@ -184,37 +214,53 @@ bool DataModelInstance::load()
 	return true;
 }
 
-DataModelInstance::DataModelInstance(void)
-{
-	Instance::Instance();
-	workspace = new WorkspaceInstance();
-	guiRoot = new Instance();
-	children.push_back(workspace);
-	className = "dataModel";
-	mousex = 0;
-	mousey = 0;
-	mouseButton1Down = false;
-	showMessage = false;
-}
-
-DataModelInstance::~DataModelInstance(void)
-{
-}
-
 void DataModelInstance::setMessage(std::string msg)
 {
 	message = msg;
+	isBrickCount = false;
 	showMessage = true;
 }
 
 void DataModelInstance::clearMessage()
 {
 	showMessage = false;
+	isBrickCount = false;
 	message = "";
+}
+
+void DataModelInstance::setMessageBrickCount()
+{
+	isBrickCount = true;
+	showMessage = true;
 }
 
 void DataModelInstance::drawMessage(RenderDevice* rd)
 {
+	if(isBrickCount)
+	{
+		int brickCount = 0;
+		int instCount = 0;
+		std::vector<Instance*> inst = getAllChildren();
+		for(size_t i = 0; i < inst.size(); i++)
+		{
+			if(PartInstance* moveTo = dynamic_cast<PartInstance*>(inst.at(i)))
+			{
+				brickCount++;
+			}
+			else
+			{
+				instCount++;
+			}
+		}
+		char brkc[12];
+		sprintf(brkc, "%d", brickCount);
+		char instc[12];
+		sprintf(instc, "%d", instCount);
+		message = "Bricks: ";
+		message += brkc;
+		message += "	Snaps: ";
+		message += instc;
+	}
 	if(showMessage && !font.isNull())
 	{
 		int x = rd->getWidth()/2;
@@ -247,4 +293,10 @@ void DataModelInstance::setMousePos(Vector2 pos)
 Instance* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;
+}
+
+
+LevelInstance* DataModelInstance::getLevel()
+{
+	return level;
 }

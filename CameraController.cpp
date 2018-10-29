@@ -1,7 +1,7 @@
 #include "CameraController.h"
 #include "win32Defines.h"
 #include <iostream>
-#include "PhysicalInstance.h"
+#include "PartInstance.h"
 #include "Demo.h"
 #include "AudioPlayer.h"
 
@@ -138,12 +138,17 @@ void CameraController::centerCamera(Instance* selection)
 		lookAt(Vector3(0,0,0));
 		focusPosition=Vector3(0,0,0);
 	}
-	else
+	else if(PartInstance* part = dynamic_cast<PartInstance*>(selection))
 	{
-		Vector3 partPos = ((PhysicalInstance*)selection)->getPosition()/2;
+		Vector3 partPos = (part)->getPosition()/2;
 		lookAt(partPos);
 		focusPosition=partPos;
 		zoom=((partPos-frame.translation).magnitude());
+	}
+	else
+	{
+		lookAt(Vector3(0,0,0));
+		focusPosition=Vector3(0,0,0);
 	}
 }
 
@@ -208,10 +213,10 @@ void CameraController::update(Demo* demo)
 	}
 
 	if(GetHoldKeyState(VK_RSHIFT) || GetHoldKeyState(VK_LSHIFT)) {
-		moveRate = 2.f;
+		moveRate = 2;
 	}
 	else {
-		moveRate = 1.f;
+		moveRate = 1;
 	}
 
 	if(GetHoldKeyState(VK_RBUTTON))

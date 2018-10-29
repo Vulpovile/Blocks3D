@@ -21,6 +21,7 @@ TextButtonInstance::TextButtonInstance(void)
 	visible = true;
 	className = "TextButton";
 	disabled = false;
+	selected = false;
 }
 
 bool TextButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice* rd)
@@ -58,6 +59,10 @@ void TextButtonInstance::setAllColorsSame()
 	textOutlineColorDn = textOutlineColor;
 	boxColorDn = boxColor;
 	boxOutlineColorDn = boxOutlineColor;
+	textColorDis = textColor;
+	textOutlineColorDis = textOutlineColor;
+	boxColorDis = boxColor;
+	boxOutlineColorDis = boxOutlineColor;
 }
 
 TextButtonInstance::~TextButtonInstance(void)
@@ -68,9 +73,9 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 {
 	Vector3 point1;
 	Vector3 point2;
-
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
+	
 	if(floatBottom)
 	{
 		point1 = Vector3(boxBegin.x, rd->getHeight() + boxBegin.y,0);
@@ -83,12 +88,22 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 		point2 = Vector3(boxEnd.x, boxEnd.y,0);
 	}
 	Vector2 RelativeTo = Vector2(point1.x + fontLocationRelativeTo.x, point1.y + fontLocationRelativeTo.y);
-	if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y) && mouseDown)
+	if(disabled)
+	{
+		Draw::box(Box(point1, point2), rd, boxColorDis, boxOutlineColorDis);
+		font->draw2D(rd, title, RelativeTo, textSize, textColorDis, textOutlineColorDis);
+	}
+	else if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y) && mouseDown)
 	{
 		Draw::box(Box(point1, point2), rd, boxColorDn, boxOutlineColorDn);
 		font->draw2D(rd, title, RelativeTo, textSize, textColorDn, textOutlineColorDn);
 	}
 	else if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y))
+	{
+		Draw::box(Box(point1, point2), rd, boxColorOvr, boxOutlineColorOvr);
+		font->draw2D(rd, title, RelativeTo, textSize, textColorOvr, textOutlineColorOvr);
+	}
+	else if(selected)
 	{
 		Draw::box(Box(point1, point2), rd, boxColorOvr, boxOutlineColorOvr);
 		font->draw2D(rd, title, RelativeTo, textSize, textColorOvr, textOutlineColorOvr);

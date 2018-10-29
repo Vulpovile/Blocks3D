@@ -14,13 +14,14 @@
 // TODO: Move toolbar buttons with resized window.
 
 #define _WIN32_WINNT 0x0400
+//#define LEGACY_LOAD_G3DFUN_LEVEL
 
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
 #include "Instance.h"
 #include "resource.h"
-#include "PhysicalInstance.h"
+#include "PartInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "DataModelInstance.h"
@@ -41,10 +42,12 @@
 #include "PropertyWindow.h"
 #include <commctrl.h>
 
+
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
 HWND hwnd;
+
 
 DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
 HRESULT hresult;
@@ -67,8 +70,10 @@ static std::string cameraSound = "";
 static std::string clickSound = "";
 static std::string dingSound = "";
 static int cursorid = 0;
+static int cursorOvrid = 0;
+static int currentcursorid = 0;
 static G3D::TextureRef cursor = NULL;
-static bool running = true;
+static G3D::TextureRef cursorOvr = NULL;
 static bool mouseMovedBeginMotion = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -76,13 +81,15 @@ static const int RESIZE = 2;
 static POINT oldGlobalMouse;
 static int mode = CURSOR;
 bool dragging = false;
-Vector2 oldMouse = Vector2(0,0);
+#include <math.h>
+Vector2 mouseDownOn = Vector2(nan(), 0);
 float moveRate = 0.5;
 static const std::string PlaceholderName = "HyperCube";
 
 Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
+	lightProjX = 17; lightProjY = 17; lightProjNear = 1; lightProjFar = 40;
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
@@ -191,9 +198,9 @@ std::string Convert (float number){
 }
 
 
-PhysicalInstance* makePart()
+PartInstance* makePart()
 {
-	PhysicalInstance* part = new PhysicalInstance();
+	PartInstance* part = new PartInstance();
 	return part;
 }
 
@@ -245,7 +252,14 @@ public:
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(g_selectedInstances.size() > 0)
+	bool cont = false;
+	for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		if(g_selectedInstances.at(i)->canDelete)
+		{
+			cont = true;	
+			break;
+		}
+	if(cont)
 	{
 		AudioPlayer::playSound(dingSound);
 		if(button->name == "Duplicate")
@@ -253,7 +267,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			std::vector<Instance*> newinst;
 			for(size_t i = 0; i < g_selectedInstances.size(); i++)
 			{
-				if(g_selectedInstances.at(i) != dataModel->getWorkspace())
+				if(g_selectedInstances.at(i)->canDelete)
 				{
 				Instance* tempinst = g_selectedInstances.at(i);
 				
@@ -282,7 +296,7 @@ void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 	{
 		Instance* selectedInstance = g_selectedInstances.at(0);
 		AudioPlayer::playSound(clickSound);
-		if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(selectedInstance))
+		if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
 		{
 			if(button->name == "Tilt")
 				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
@@ -301,7 +315,7 @@ void deleteInstance()
 		size_t undeletable = 0;
 		while(g_selectedInstances.size() > undeletable)
 		{
-			if(g_selectedInstances.at(0) != dataModel && g_selectedInstances.at(0) != dataModel->getWorkspace())
+			if(g_selectedInstances.at(0)->canDelete)
 			{
 				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 				Instance* selectedInstance = g_selectedInstances.at(0);
@@ -378,6 +392,7 @@ void Demo::initGUI()
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -390,6 +405,7 @@ void Demo::initGUI()
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -402,6 +418,7 @@ void Demo::initGUI()
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -414,6 +431,7 @@ void Demo::initGUI()
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -422,10 +440,10 @@ void Demo::initGUI()
 	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
-	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
@@ -439,6 +457,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -452,6 +471,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -465,6 +485,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -478,6 +499,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -491,6 +513,7 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 
 
@@ -502,7 +525,9 @@ void Demo::initGUI()
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "Group";
-	button->setAllColorsSame();
+	button->name = "Group";
+	button->setAllColorsSame();	
+	button->textColorDis = Color3(0.8F,0.8F,0.8F);
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(dataModel->getGuiRoot());
@@ -516,7 +541,9 @@ void Demo::initGUI()
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "UnGroup";
+	button->name = "UnGroup";
 	button->setAllColorsSame();
+	button->textColorDis = Color3(0.8F,0.8F,0.8F);
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(dataModel->getGuiRoot());
@@ -530,6 +557,7 @@ void Demo::initGUI()
 	button->textSize = 12;
 	button->title = "Duplicate";
 	button->setAllColorsSame();
+	button->textColorDis = Color3(0.8F,0.8F,0.8F);
 	button->font = fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(dataModel->getGuiRoot());
@@ -708,17 +736,16 @@ void Demo::onInit()  {
 	
 	initGUI();
 
-	dataModel->load();
-
-	// Say bye bye to this soon...
-	/*
-	PhysicalInstance* test = makePart();
+#ifdef LEGACY_LOAD_G3DFUN_LEVEL
+	PartInstance* test = makePart();
 	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
+	
 
+	
 	test = makePart();
 	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
@@ -730,7 +757,6 @@ void Demo::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(10,1,0));
 
-	
 	test = makePart();
 	test->setParent(dataModel->getWorkspace());
 	test->color = Color3::gray();
@@ -773,7 +799,7 @@ void Demo::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
 	
-
+	//dataModel->setMessageBrickCount();
 	
 
 	test = makePart();
@@ -787,7 +813,9 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
-*/
+#else
+	dataModel->load();
+#endif
 	
 
 
@@ -838,15 +866,55 @@ std::vector<Instance*> Demo::getSelection()
 	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-
-	Instance* obj = dataModel->getGuiRoot()->findFirstChild("Delete");
-		if(obj != NULL)
+	if(running)
+	{
+		std::vector <Instance* > objects = dataModel->getWorkspace()->getAllChildren();
+		for(size_t i = 0; i < objects.size(); i++)
 		{
-			ImageButtonInstance* button = (ImageButtonInstance*)obj;
-			if(g_selectedInstances.size() <= 0 || g_selectedInstances.at(0) == dataModel->getWorkspace())
-				button->disabled = true;
-			else
-				button->disabled = false;	
+			if(PartInstance* moveTo = dynamic_cast<PartInstance*>(objects.at(i)))
+			{
+				moveTo->velocity.y -= (196.2F/30);
+				moveTo->setPosition(Vector3(moveTo->getPosition().x, moveTo->getPosition().y+(moveTo->velocity.y)/30, moveTo->getPosition().z));
+				if(moveTo->getPosition().y < -128)
+				{
+					moveTo->setParent(NULL);
+					delete moveTo;
+				}
+			}
+		}
+	}
+		
+		Instance * obj6 = dataModel->getGuiRoot()->findFirstChild("Delete");
+		Instance * obj = dataModel->getGuiRoot()->findFirstChild("Duplicate");
+		Instance * obj2 = dataModel->getGuiRoot()->findFirstChild("Group");
+		Instance * obj3 = dataModel->getGuiRoot()->findFirstChild("UnGroup");
+		Instance * obj4 = dataModel->getGuiRoot()->findFirstChild("Rotate");
+		Instance * obj5 = dataModel->getGuiRoot()->findFirstChild("Tilt");
+		if(obj != NULL && obj2 != NULL && obj3 != NULL && obj4 !=NULL && obj5 != NULL && obj6 != NULL)
+		{
+			BaseButtonInstance* button = (BaseButtonInstance*)obj;
+			BaseButtonInstance* button2 = (BaseButtonInstance*)obj2;
+			BaseButtonInstance* button3 = (BaseButtonInstance*)obj3;
+			BaseButtonInstance* button4 = (BaseButtonInstance*)obj4;
+			BaseButtonInstance* button5 = (BaseButtonInstance*)obj5;
+			BaseButtonInstance* button6 = (BaseButtonInstance*)obj6;
+			button->disabled = true;
+			button2->disabled = true;
+			button3->disabled = true;
+			button4->disabled = true;
+			button5->disabled = true;
+			button6->disabled = true;
+			for(size_t i = 0; i < g_selectedInstances.size(); i++)
+				if(g_selectedInstances.at(i)->canDelete)
+				{
+					button->disabled = false;
+					button2->disabled = false;
+					button3->disabled = false;
+					button4->disabled = false;
+					button5->disabled = false;
+					button6->disabled = false;
+					break;
+				}
 		}
 
 
@@ -877,6 +945,8 @@ bool IsHolding(int button)
 {
 	return (GetKeyState(button) >> 1)>0;
 }
+
+
 
 BOOL GetKPBool(int VK) {
 	return (GetKeyState(VK) & 0x8000);
@@ -911,31 +981,60 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
+		if(!G3D::isNaN(mouseDownOn.x))
+		{
+			if(abs(mouseDownOn.x - dataModel->mousex) > 4 || abs(mouseDownOn.y - dataModel->mousey) > 4)
+			{
+				dragging = true;
+			}
+		}
+		else
+		{
+			mouseDownOn = Vector2(dataModel->mousex, dataModel->mousey);
+		}
 		if (dragging) {
-			PhysicalInstance* part = NULL;
+			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
-				part = (PhysicalInstance*) g_selectedInstances.at(0);
+				part = (PartInstance*) g_selectedInstances.at(0);
 		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
 		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+
 		for(size_t i = 0; i < instances.size(); i++)
 			{
-				if(PhysicalInstance* moveTo = dynamic_cast<PhysicalInstance*>(instances.at(i)))
+				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
 				{
+					Vector3 outLocation=Vector3(0,0,0);
+					Vector3 outNormal=Vector3(0,0,0);
+					
+					if (moveTo!=part) {
+						if (CollisionDetection::collisionTimeForMovingPointFixedBox(dragRay.origin,dragRay.direction*100,moveTo->getBox(),outLocation,outNormal)!=inf())
+						{
+							part->setPosition(Vector3(floor(outLocation.x),floor(outLocation.y+1),floor(outLocation.z)));
+							break;
+						}
+					}
+					/*
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
-					if (__time != inf()) 
+					if (__time != inf() && moveTo != part) 
 					{
 						if (__nearest>__time)
 						{
-							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
-							part->setPosition(closest);
-							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
+							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()));
+							//part->setPosition(closest);
+							part->setPosition(Vector3(floor(closest.x),floor(closest.y),floor(closest.z)));
 						}
 					}
+					*/
 				}
 			}
 			Sleep(10);
 		}
+	}
+	else
+	{
+		dragging = false;
+		mouseDownOn = Vector2(nan(), 0);
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -981,7 +1080,7 @@ void makeFlag(Vector3 &vec, RenderDevice* &rd)
 
 
 
-bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
+/*bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 {
 	
 
@@ -993,7 +1092,7 @@ bool mouseInArea(float point1x, float point1y, float point2x, float point2y)
 		}
 	}
 	return false;
-}
+}*/
 
 
 void drawButtons(RenderDevice* rd)
@@ -1020,7 +1119,7 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
-
+	
 	//Z
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
@@ -1029,6 +1128,7 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	
 	if(mode == ARROWS)
 	{
+		glScalef(2,2,2);
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
 		
@@ -1036,23 +1136,24 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		c.toWorldSpace(Box(from, to)).getBounds(box);
 		float max = box.high().y - pos.y;
 
-		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
-		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
+		Draw::arrow(pos/2, Vector3(0, 1.5+max, 0), rd);
+		Draw::arrow(pos/2, Vector3(0, (-1.5)-max, 0), rd);
 		
 		max = box.high().x - pos.x;
 
-		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
+		Draw::arrow(pos/2, Vector3(1.5+max, 0, 0), rd);
+		Draw::arrow(pos/2, Vector3((-1.5)-max, 0, 0), rd);
 
 		max = box.high().z - pos.z;
 
-		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
+		Draw::arrow(pos/2, Vector3(0, 0, 1.5+max), rd);
+		Draw::arrow(pos/2, Vector3(0, 0, (-1.5)-max), rd);
 
 
 
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+		glScalef(1,1,1);
 	}
 	else if(mode == RESIZE)
 	{
@@ -1064,24 +1165,23 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 200)
 		{
-			
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			Vector3 position = pos + (c.lookVector()*((size.z)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.lookVector()*((size.z)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.rightVector()*((size.x/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos + (c.rightVector()*((size.x)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.rightVector()*((size.x)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.upVector()*((size.y/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos + (c.upVector()*((size.y)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y)+2));
+			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
 		}
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
@@ -1098,16 +1198,20 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
+	
+
 	G3D::uint8 num = 0;
 	POINT mousepos;
 	mouseOnScreen = true;
 	if (GetCursorPos(&mousepos))
 	{
+		POINT pointm = mousepos;
 	if (ScreenToClient(_hWndMain, &mousepos))
 	{
 		//mouseOnScreen = true;
-		
-		if(mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1)
+		//POINT pointm;
+		///GetCursorPos(&pointm);
+		if(_hwndRenderer != WindowFromPoint(pointm)) //OLD: mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
@@ -1125,6 +1229,8 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	}
 	
+
+
 	if(Globals::useMousePoint)
 	{
 		mousepos = Globals::mousepoint;
@@ -1132,6 +1238,20 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
+
+	Matrix4 lightProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+
+    CoordinateFrame lightCFrame;
+    lightCFrame.lookAt(-lighting.lightDirection, Vector3::unitY());
+    lightCFrame.translation = lighting.lightDirection * 20;
+
+    Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
+
+    if (GLCaps::supports_GL_ARB_shadow()) {
+        generateShadowMap(lightCFrame);
+    } 
+
+
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
@@ -1150,20 +1270,38 @@ void Demo::onGraphics(RenderDevice* rd) {
 
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
-
+	
+/*
+	Vector3 gamepoint = Vector3(0, 5, 0);
+	Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+	float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+	if(distance < 50 && distance > -50)
+	
+	{
+		if(distance < 0)
+		distance = distance*-1;
+		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+	}
+*/
+	
+	rd->pushState();
+	if (GLCaps::supports_GL_ARB_shadow()) {
+            rd->configureShadowMap(1, lightMVP, shadowMap);
+        }
 	rd->beforePrimitive();
+
+
 	dataModel->getWorkspace()->render(rd);
-
-
 	//if (dataModel->children[0]->children.size()>0)
-		//((PhysicalInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
+		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();
 
+	rd->popState();
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
 		{
-			if(PhysicalInstance* part = dynamic_cast<PhysicalInstance*>(g_selectedInstances.at(i)))
+			if(PartInstance* part = dynamic_cast<PartInstance*>(g_selectedInstances.at(i)))
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
@@ -1173,16 +1311,18 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
 
-	//Vector3 gamepoint = Vector3(0, 5, 0);
-	//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-	//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-	//if(distance < 50 && distance > -50)
-	
-	//{
-	//	if(distance < 0)
-	//	distance = distance*-1;
-	//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-	//}
+	while(!postRenderStack.empty())
+	{
+		Instance* inst = postRenderStack.at(0);
+		postRenderStack.erase(postRenderStack.begin());
+		if(PVInstance* pinst = dynamic_cast<PVInstance*>(inst))
+		{
+			pinst->postRender(rd);
+		}
+		
+	}
+
+
 
     renderDevice->disableLighting();
 
@@ -1202,9 +1342,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 		fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
 		stream.str("");
 		stream.clear();
-		stream << std::fixed << std::setprecision(1) << dataModel->getWorkspace()->timer;
+		stream << std::fixed << std::setprecision(1) << dataModel->getLevel()->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
-		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getWorkspace()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
+		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getLevel()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
 		
 		//GUI Boxes	
 		Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
@@ -1230,19 +1370,49 @@ void Demo::onGraphics(RenderDevice* rd) {
 			glEnable(GL_BLEND);// you enable blending function
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 			
+			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+			currentcursorid = cursorid;
+			bool onGUI = false;
+			std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
+			for(size_t i = 0; i < guis.size(); i++)
+			{
+				if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
+				{
+					if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
+					{
+						onGUI = true;
+						break;
+					}
+				}
+			}
+			if(!onGUI)
+			for(size_t i = 0; i < instances.size(); i++)
+			{
+				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
+				{
+					float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
+					//float time = testRay.intersectionTime(test->getBox());
+					if (time != inf()) 
+					{
+						currentcursorid = cursorOvrid;
+						break;
+					}
+					
+				}
+			}
 			
-			glBindTexture( GL_TEXTURE_2D, cursorid);
+			glBindTexture( GL_TEXTURE_2D, currentcursorid);
 
 			
 			glBegin( GL_QUADS );
 			glTexCoord2d(0.0,0.0);
-			glVertex2f(mousepos.x-40, mousepos.y-40);
+			glVertex2f(mousepos.x-64, mousepos.y-64);
 			glTexCoord2d( 1.0,0.0 );
-			glVertex2f(mousepos.x+40, mousepos.y-40);
+			glVertex2f(mousepos.x+64, mousepos.y-64);
 			glTexCoord2d(1.0,1.0 );
-			glVertex2f(mousepos.x+40, mousepos.y+40 );
+			glVertex2f(mousepos.x+64, mousepos.y+64 );
 			glTexCoord2d( 0.0,1.0 );
-			glVertex2f( mousepos.x-40, mousepos.y+40 );
+			glVertex2f( mousepos.x-64, mousepos.y+64 );
 			glEnd();
 
 			glDisable( GL_TEXTURE_2D );
@@ -1251,6 +1421,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			rd->afterPrimitive();
 		rd->popState();
 	renderDevice->pop2D();
+	debugAssertGLOk();
 }
 
 void Demo::onKeyPressed(int key)
@@ -1267,7 +1438,10 @@ void Demo::onKeyUp(int key)
 
 void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 {
-	SetFocus(hwnd);
+	//Removed set focus 
+	
+	
+
 
 	std::cout << "Click: " << x << "," << y << std::endl;
 
@@ -1293,7 +1467,7 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
         bool objFound = false;
 		for(size_t i = 0; i < instances.size(); i++)
 		{
-			if(PhysicalInstance* test = dynamic_cast<PhysicalInstance*>(instances.at(i)))
+			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
 			{
 				float time = testRay.intersectionTime(test->getBox());
 				
@@ -1332,8 +1506,8 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		{
 			while(g_selectedInstances.size() > 0)
 					g_selectedInstances.erase(g_selectedInstances.begin());
-			g_selectedInstances.push_back(dataModel->getWorkspace());
-			_propWindow->SetProperties(dataModel->getWorkspace());
+			g_selectedInstances.push_back(dataModel);
+			_propWindow->SetProperties(dataModel);
 			
 		}
 	}
@@ -1346,7 +1520,7 @@ void Demo::onMouseLeftUp(int x,int y)
 	//message = "Dragging = false.";
 	//messageTime = System::time();
 	std::vector<Instance*> instances_2D = dataModel->getGuiRoot()->getAllChildren();
-	std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
+	//std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
 	{
 		if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(instances_2D[i]))
@@ -1366,7 +1540,7 @@ void Demo::onMouseRightUp(int x,int y)
 }
 void Demo::onMouseMoved(int x,int y)
 {
-	oldMouse = dataModel->getMousePos();
+	//oldMouse = dataModel->getMousePos();
 	dataModel->mousex = x;
 	dataModel->mousey = y;
 
@@ -1492,6 +1666,27 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_MOUSEMOVE:
 			app->onMouseMoved(LOWORD(lParam),HIWORD(lParam));
 		break;
+		case WM_KEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_KEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
+		break;
+		case WM_SYSKEYDOWN:
+			if ((HIWORD(lParam)&0x4000)==0) // single key press
+			{
+				app->onKeyPressed(wParam);
+			}
+		break;
+		case WM_SYSKEYUP:
+		{
+			app->onKeyUp(wParam);
+		}
 		case WM_SIZE:
 		{
 			app->onGraphics(app->renderDevice);
@@ -1505,6 +1700,37 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
+
+void Demo::generateShadowMap(const CoordinateFrame& lightViewMatrix) const {
+
+
+    //debugAssert(shadowMapSize < app->renderDevice->getHeight());
+    //debugAssert(shadowMapSize < app->renderDevice->getWidth());
+
+    //app->renderDevice->clear(debugLightMap, true, false);
+    
+    Rect2D rect = Rect2D::xywh(0, 0, 512, 512);
+    renderDevice->pushState();
+        renderDevice->setViewport(rect);
+
+	    // Draw from the light's point of view
+        renderDevice->setProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
+        renderDevice->setCameraToWorldMatrix(lightViewMatrix);
+
+        renderDevice->disableColorWrite();
+
+        // We can choose to use a large bias or render from
+        // the backfaces in order to avoid front-face self
+        // shadowing.  Here, we use a large offset.
+        renderDevice->setPolygonOffset(8);
+
+    dataModel->render(renderDevice);
+    renderDevice->popState();
+
+    shadowMap->copyFromScreen(rect);
+}
+
+
 void Demo::run() {
 	usableApp = this;
 	//setDebugMode(false);
@@ -1526,7 +1752,8 @@ void Demo::run() {
 	UpdateWindow(_hWndMain);
 
     // Load objects here=
-	cursor = Texture::fromFile(GetFileInPath("/content/cursor2.png"));
+	cursor = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
+	cursorOvr = Texture::fromFile(GetFileInPath("/content/images/DragCursor.png"));
 	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
 	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
@@ -1535,8 +1762,17 @@ void Demo::run() {
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
-	cursorid = cursor->openGLID();
 
+
+	if (GLCaps::supports_GL_ARB_shadow()) {
+        shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
+            Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
+    }
+
+
+	cursorid = cursor->openGLID();
+	currentcursorid = cursorid;
+	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
 	float		fps=30.0f;
