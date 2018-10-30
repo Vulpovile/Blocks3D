@@ -1247,9 +1247,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 
     Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
 
-    if (GLCaps::supports_GL_ARB_shadow()) {
+    //if (GLCaps::supports_GL_ARB_shadow()) {
         //generateShadowMap(lightCFrame);
-    } 
+    //} 
 
 
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
@@ -1285,9 +1285,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 */
 	
 	rd->pushState();
-	if (GLCaps::supports_GL_ARB_shadow()) {
+	/*if (GLCaps::supports_GL_ARB_shadow()) {
             rd->configureShadowMap(1, lightMVP, shadowMap);
-        }
+        }*/
 	rd->beforePrimitive();
 
 
@@ -1774,10 +1774,10 @@ void Demo::run() {
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
 
 
-	if (GLCaps::supports_GL_ARB_shadow()) {
+	/*if (GLCaps::supports_GL_ARB_shadow()) {
         shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
             Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
-    }
+    }*/
 
 
 	cursorid = cursor->openGLID();
