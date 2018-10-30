@@ -228,11 +228,13 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 	return true;
 }
 
-bool DataModelInstance::load(const char* filename)
+bool DataModelInstance::load(const char* filename, bool clearObjects)
 {
 	ifstream levelFile(filename,ios::binary);
 	if (levelFile)
 	{
+		if (clearObjects)
+			clearLevel();
 		readXMLFileStream(&levelFile);
 		return true;
 	}
@@ -290,7 +292,7 @@ bool DataModelInstance::getOpen()
 	if (file)
 	{
 		_loadedFileName = of.lpstrFile;
-		load(of.lpstrFile);
+		load(of.lpstrFile,true);
 	}
 	return true;
 }
