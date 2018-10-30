@@ -13,7 +13,10 @@ public:
 	void					setMessage(std::string);
 	void					setMessageBrickCount();
 	void					clearMessage();
-	bool					load();	
+	bool					debugGetOpen();
+	bool					getOpen();
+	bool					load(const char* filename);	
+	bool					readXMLFileStream(std::ifstream* file);
 	void					drawMessage(RenderDevice*);
 	WorkspaceInstance*		getWorkspace();
 	WorkspaceInstance*		workspace;
@@ -21,6 +24,7 @@ public:
 	LevelInstance *			getLevel();
 	Instance*				guiRoot;
 	std::string				message;
+	std::string				_loadedFileName;
 	bool					showMessage;
 	G3D::GFontRef			font;
 	Instance*				getGuiRoot();

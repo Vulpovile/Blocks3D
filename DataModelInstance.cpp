@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <commdlg.h>
 
 using namespace std;
 using namespace rapidxml;
@@ -25,6 +26,7 @@ DataModelInstance::DataModelInstance(void)
 	_modY=0;
 	workspace->setParent(this);
 	level->setParent(this);
+	_loadedFileName="..//skooter.rbxm";
 	
 }
 
@@ -37,7 +39,7 @@ void DataModelInstance::modXMLLevel(float modY)
 {
 	_modY += modY;
 	clearLevel();
-	load();
+	debugGetOpen();
 
 }
 #endif
@@ -226,31 +228,72 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 	return true;
 }
 
-bool DataModelInstance::load()
+bool DataModelInstance::load(const char* filename)
 {
-	ifstream levelFile("..//skooter.rbxm",ios::binary);
-	if (levelFile) {
-		levelFile.seekg(0,levelFile.end);
-		int length = levelFile.tellg();
-		levelFile.seekg(0,levelFile.beg);
-		char * buffer = new char[length+1];
-		buffer[length]=0;
-		levelFile.read(buffer,length);
-		xml_document<> doc;
-		doc.parse<0>(buffer);
-		xml_node<> *mainNode = doc.first_node();
-		_legacyLoad=false;
-		//std::string xmlName = mainNode->name();
-		//node = node->first_node();
-		//xmlName = node->name();
-		scanXMLObject(mainNode);
-
-		delete[] buffer;
+	ifstream levelFile(filename,ios::binary);
+	if (levelFile)
+	{
+		readXMLFileStream(&levelFile);
+		return true;
 	}
+	else {
+		return false;
+	}
+}
 
+bool DataModelInstance::readXMLFileStream(std::ifstream* file)
+{
+	file->seekg(0,file->end);
+	int length = file->tellg();
+	file->seekg(0,file->beg);
+	char * buffer = new char[length+1];
+	buffer[length]=0;
+	file->read(buffer,length);
+	file->close();
+	xml_document<> doc;
+	doc.parse<0>(buffer);
+	xml_node<> *mainNode = doc.first_node();
+	_legacyLoad=false;
+	//std::string xmlName = mainNode->name();
+	//node = node->first_node();
+	//xmlName = node->name();
+	scanXMLObject(mainNode);
+	delete[] buffer;
 	return true;
 }
 
+bool DataModelInstance::debugGetOpen()
+{
+	ifstream levelFile(_loadedFileName.c_str(),ios::binary);
+	if (levelFile)
+		readXMLFileStream(&levelFile);
+	else
+		getOpen();
+	return true;
+}
+
+bool DataModelInstance::getOpen()
+{
+	_modY=0;
+	OPENFILENAME of;
+	ZeroMemory( &of , sizeof( of));
+	of.lStructSize = sizeof(OPENFILENAME);
+	of.lpstrFilter = "Roblox Files\0*.rbxm;*.rbxl\0\0";
+	char szFile[512];
+	of.lpstrFile = szFile ;
+	of.lpstrFile[0]='\0';
+	of.nMaxFile=500;
+	of.lpstrTitle="Hello";
+	of.Flags = OFN_FILEMUSTEXIST;
+	ShowCursor(TRUE);
+	BOOL file = GetOpenFileName(&of);
+	if (file)
+	{
+		_loadedFileName = of.lpstrFile;
+		load(of.lpstrFile);
+	}
+	return true;
+}
 void DataModelInstance::setMessage(std::string msg)
 {
 	message = msg;

@@ -814,7 +814,7 @@ void Demo::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
 #else
-	dataModel->load();
+	dataModel->debugGetOpen();
 #endif
 	
 
@@ -1429,6 +1429,13 @@ void Demo::onKeyPressed(int key)
 	if(key==VK_DELETE)
 	{
 		deleteInstance();
+	}
+	if (GetHoldKeyState(VK_RCONTROL))
+	{
+		if (key=='O')
+		{
+			dataModel->getOpen();
+		}
 	}
 #ifdef _DEBUG
 	if (key==VK_ADD)
