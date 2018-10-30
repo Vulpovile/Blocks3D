@@ -85,6 +85,11 @@ Instance::~Instance(void)
 	}
 }
 
+void Instance::setName(std::string newName)
+{
+	name = newName;
+}
+
 std::string Instance::getClassName()
 {
 	return className;
@@ -134,6 +139,10 @@ void Instance::addChild(Instance* newChild)
 	children.push_back(newChild);
 }
 
+void Instance::clearChildren()
+{
+	children.clear();
+}
 void Instance::removeChild(Instance* oldChild)
 {
 	for(size_t i = 0; i < children.size(); i++)

@@ -1248,7 +1248,7 @@ void Demo::onGraphics(RenderDevice* rd) {
     Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
 
     if (GLCaps::supports_GL_ARB_shadow()) {
-        generateShadowMap(lightCFrame);
+        //generateShadowMap(lightCFrame);
     } 
 
 
@@ -1430,6 +1430,16 @@ void Demo::onKeyPressed(int key)
 	{
 		deleteInstance();
 	}
+#ifdef _DEBUG
+	if (key==VK_ADD)
+	{
+		dataModel->modXMLLevel(1);
+	}
+	if (key==VK_SUBTRACT)
+	{
+		dataModel->modXMLLevel(-1);
+	}
+#endif
 }
 void Demo::onKeyUp(int key)
 {

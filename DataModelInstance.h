@@ -30,7 +30,11 @@ public:
 	void					setMousePos(int x,int y);
 	void					setMousePos(Vector2 pos);
 	bool					mouseButton1Down;
-	PartInstance*		makePart();
+	PartInstance*			makePart();
+	void					clearLevel();
+#if _DEBUG
+	void					modXMLLevel(float modY);
+#endif
 private:
 	bool isBrickCount;
 	bool					scanXMLObject(rapidxml::xml_node<>* node);
@@ -38,5 +42,6 @@ private:
 	float					getFloatValue(rapidxml::xml_node<> * node,const char* name);
 	bool					_successfulLoad;
 	std::string				_errMsg;
-	
+	bool					_legacyLoad;
+	float					_modY;
 };

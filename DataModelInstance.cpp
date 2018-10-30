@@ -22,7 +22,7 @@ DataModelInstance::DataModelInstance(void)
 	mouseButton1Down = false;
 	showMessage = false;
 	canDelete = false;
-
+	_modY=0;
 	workspace->setParent(this);
 	level->setParent(this);
 	
@@ -32,6 +32,20 @@ DataModelInstance::~DataModelInstance(void)
 {
 }
 
+#ifdef _DEBUG
+void DataModelInstance::modXMLLevel(float modY)
+{
+	_modY += modY;
+	clearLevel();
+	load();
+
+}
+#endif
+
+void DataModelInstance::clearLevel()
+{
+	workspace->clearChildren();
+}
 PartInstance* DataModelInstance::makePart()
 {
 	PartInstance* part = new PartInstance();
@@ -85,6 +99,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				xml_node<> *cFrameNode=0;
 				xml_node<> *sizeNode=0;
 				xml_node<> *colorNode=0;
+				xml_node<> *nameNode=0;
 
 				for (xml_node<> *partPropNode = propNode->first_node();partPropNode; partPropNode = partPropNode->next_sibling())
 				{
@@ -97,6 +112,10 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						{
 							 cFrameNode = partPropNode;
 						}
+						if (xmlValue=="Name")
+						{
+							 nameNode = partPropNode;
+						}
 						if (xmlValue=="Color")
 						{
 							colorNode=partPropNode;
@@ -104,6 +123,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						if (xmlValue=="size")
 						{
 							sizeNode = partPropNode;
+							_legacyLoad=false;
 						}
 						if (xmlValue=="Part")
 						{
@@ -116,6 +136,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 									if (xmlValue=="size")
 									{
 										sizeNode=featureNode;
+										_legacyLoad=true;
 									}
 								}
 							}
@@ -143,6 +164,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					B = getFloatValue(colorNode,"B");
 				}
 
+				std::string newName = nameNode->value();
 				float X = getFloatValue(cFrameNode,"X");
 				float Y = getFloatValue(cFrameNode,"Y");
 				float Z = getFloatValue(cFrameNode,"Z");
@@ -159,17 +181,30 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				float sizeX = getFloatValue(sizeNode,"X");
 				float sizeY = getFloatValue(sizeNode,"Y");
 				float sizeZ = getFloatValue(sizeNode,"Z");
-
+				//sizeX=1;
+				//sizeY=1;
+				//sizeZ=1;
 				if (_successfulLoad) {
 					PartInstance* test = makePart();
 					test->setParent(getWorkspace());
 					test->color = Color3(R,G,B);
-					test->setSize(Vector3(sizeX,sizeY,sizeZ));
-
-					CoordinateFrame what;
-					what.translation = Vector3(X,Y,Z);
-					what.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
-					test->setCFrame(what);
+					test->setSize(Vector3(sizeX,sizeY+_modY,sizeZ));
+					test->setName(newName);
+					CoordinateFrame cf;
+					
+					if (_legacyLoad)
+					{
+						
+						cf = CoordinateFrame(Vector3(-X,Y,Z))*CoordinateFrame(Vector3(-sizeX/2,(sizeY+_modY)/2,sizeZ/2)*Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22));
+						cf.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
+					}
+					else
+					{
+						cf.translation = Vector3(X,Y,Z);
+						cf.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
+					}
+					
+					test->setCFrame(cf);
 				}
 				else
 				{
@@ -193,7 +228,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 
 bool DataModelInstance::load()
 {
-	ifstream levelFile("..//skooterFix.rbxm",ios::binary);
+	ifstream levelFile("..//skooter.rbxm",ios::binary);
 	if (levelFile) {
 		levelFile.seekg(0,levelFile.end);
 		int length = levelFile.tellg();
@@ -204,13 +239,15 @@ bool DataModelInstance::load()
 		xml_document<> doc;
 		doc.parse<0>(buffer);
 		xml_node<> *mainNode = doc.first_node();
-		std::string xmlName = mainNode->name();
+		_legacyLoad=false;
+		//std::string xmlName = mainNode->name();
 		//node = node->first_node();
 		//xmlName = node->name();
 		scanXMLObject(mainNode);
 
 		delete[] buffer;
 	}
+
 	return true;
 }
 
