@@ -498,13 +498,14 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 				ss.ignore();
 		}
 
-		if(vect.size() != 3)
-		{
-			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
-			LPCSTR str = LPCSTR(pto);
-			item->lpCurValue = (LPARAM)str;
-		}
-		else
+		//if(vect.size() != 3)
+		//{
+			//sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
+			//LPCSTR str = LPCSTR(pto);
+			//item->lpCurValue = (LPARAM)str;
+		//}
+		//else
+		if(vect.size() == 3)
 		{
 			Vector3 pos(vect.at(0),vect.at(1),vect.at(2));
 			setPosition(pos);
@@ -526,13 +527,14 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 				ss.ignore();
 		}
 
-		if(vect.size() != 3)
+		/*if(vect.size() != 3)
 		{
 			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
 			LPCSTR str = LPCSTR(pto);
 			item->lpCurValue = (LPARAM)str;
 		}
-		else
+		else*/
+		if(vect.size() == 3)
 		{
 			Vector3 size(vect.at(0),vect.at(1),vect.at(2));
 			setSize(size);
@@ -555,7 +557,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		PIT_COLOR
 		));
 	
-	sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z);
+	sprintf_s(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",
@@ -563,7 +565,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)pto,
 		PIT_EDIT
 		));
-	sprintf(pto2, "%g, %g, %g", size.x, size.y, size.z);
+	sprintf_s(pto2, "%g, %g, %g", size.x, size.y, size.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Size",
