@@ -1470,6 +1470,10 @@ void Demo::onKeyPressed(int key)
 	{
 		deleteInstance();
 	}
+	if(key=='R')
+	{
+		running = true;
+	}
 	if(dragging)
 	{
 		if(key == 'T')
