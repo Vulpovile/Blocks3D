@@ -69,11 +69,10 @@ static std::string clickSound = "";
 static std::string dingSound = "";
 static int cursorid = 0;
 static int cursorOvrid = 0;
-static int cursorDragid = 0;
 static int currentcursorid = 0;
 static G3D::TextureRef cursor = NULL;
 static G3D::TextureRef cursorOvr = NULL;
-static G3D::TextureRef cursorDrag = NULL;
+static bool running = true;
 static bool mouseMovedBeginMotion = false;
 static const int CURSOR = 0;
 static const int ARROWS = 1;
@@ -81,15 +80,13 @@ static const int RESIZE = 2;
 static POINT oldGlobalMouse;
 static int mode = CURSOR;
 bool dragging = false;
-#include <math.h>
-Vector2 mouseDownOn = Vector2(nan(), 0);
+Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 static const std::string PlaceholderName = "HyperCube";
 
 Demo *usableApp = NULL;
 
 Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,window) {
-	lightProjX = 17; lightProjY = 17; lightProjNear = 1; lightProjFar = 40;
 	_hWndMain = parentWindow;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
@@ -392,7 +389,6 @@ void Demo::initGUI()
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -405,7 +401,6 @@ void Demo::initGUI()
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -418,7 +413,6 @@ void Demo::initGUI()
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -431,7 +425,6 @@ void Demo::initGUI()
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -440,10 +433,10 @@ void Demo::initGUI()
 	button->setParent(dataModel->getGuiRoot());
 	button->font = fntlighttrek;
 	button->textColor = Color3(0,255,255);
+	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
@@ -457,7 +450,6 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -471,7 +463,6 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -485,7 +476,6 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -499,7 +489,6 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -513,7 +502,6 @@ void Demo::initGUI()
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 
 
@@ -742,7 +730,7 @@ void Demo::onInit()  {
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
-	//test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(54),toRadians(0)));
+	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	
 
 	
@@ -799,7 +787,7 @@ void Demo::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
 	
-	//dataModel->setMessageBrickCount();
+
 	
 
 	test = makePart();
@@ -864,23 +852,8 @@ std::vector<Instance*> Demo::getSelection()
 	return g_selectedInstances;
 }
 void Demo::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
-	if(running)
-	{
-		std::vector <Instance* > objects = dataModel->getWorkspace()->getAllChildren();
-		for(size_t i = 0; i < objects.size(); i++)
-		{
-			if(PartInstance* moveTo = dynamic_cast<PartInstance*>(objects.at(i)))
-			{
-				moveTo->velocity.y -= (196.2F/30);
-				moveTo->setPosition(Vector3(moveTo->getPosition().x, moveTo->getPosition().y+(moveTo->velocity.y)/30, moveTo->getPosition().z));
-				if(moveTo->getPosition().y < -128)
-				{
-					moveTo->setParent(NULL);
-					delete moveTo;
-				}
-			}
-		}
-	}
+
+	
 		
 		Instance * obj6 = dataModel->getGuiRoot()->findFirstChild("Delete");
 		Instance * obj = dataModel->getGuiRoot()->findFirstChild("Duplicate");
@@ -979,95 +952,31 @@ void Demo::onUserInput(UserInput* ui) {
 	dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
-		if(!G3D::isNaN(mouseDownOn.x))
-		{
-			if(abs(mouseDownOn.x - dataModel->mousex) > 4 || abs(mouseDownOn.y - dataModel->mousey) > 4)
-			{
-				dragging = true;
-			}
-		}
-		else
-		{
-			mouseDownOn = Vector2(dataModel->mousex, dataModel->mousey);
-		}
 		if (dragging) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
 				part = (PartInstance*) g_selectedInstances.at(0);
-			Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
-			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
-			PartInstance* moveTo;
-			for(size_t i = 0; i < instances.size(); i++)
-			{
-				
-			}	
-			
-
-
-
-
-
-		float nearest=std::numeric_limits<float>::infinity();
-		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
+		Ray dragRay = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport());
+		std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
-		{
-			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
 			{
-				float time = dragRay.intersectionTime(test->getBox());
-				
-				if (time != inf()) 
+				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
 				{
-					if (nearest>time && test != part)
-					{
-						nearest=time;
-						moveTo = test;
-						//message = "Dragging = true.";
-						//messageTime = System::time();
-						//dragging = true;
-					}
-				}
-			}		
-		}
-
-
-
-
-
-			if(nearest != inf())
-				{
-					Vector3 outLocation=Vector3(0,0,0);
-					Vector3 outNormal=Vector3(0,0,0);
-					
-					if (moveTo!=part) {
-						if (CollisionDetection::collisionTimeForMovingPointFixedBox(dragRay.origin,dragRay.direction*100,moveTo->getBox(),outLocation,outNormal)!=inf())
-						{
-							part->setPosition(Vector3(floor(outLocation.x),floor(outLocation.y+1),floor(outLocation.z)));
-							//break;
-						}
-					}
-					/*
 					float __time = testRay.intersectionTime(moveTo->getBox());
 					float __nearest=std::numeric_limits<float>::infinity();
-					if (__time != inf() && moveTo != part) 
+					if (__time != inf()) 
 					{
 						if (__nearest>__time)
 						{
-							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()));
-							//part->setPosition(closest);
-							part->setPosition(Vector3(floor(closest.x),floor(closest.y),floor(closest.z)));
+							Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
+							part->setPosition(closest);
+							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
 						}
 					}
-					*/
 				}
-
-
-		Sleep(10);
+			}
+			Sleep(10);
 		}
-	}
-	else
-	{
-		dragging = false;
-		mouseDownOn = Vector2(nan(), 0);
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -1141,18 +1050,18 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 {
 
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
-	float offsetSize = 0.1F;
+	float offsetSize = 0.05F;
 	//X
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	//Y
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
+
 	//Z
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
@@ -1161,7 +1070,6 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 	
 	if(mode == ARROWS)
 	{
-		glScalef(2,2,2);
 		rd->setLight(0, NULL);
 		rd->setAmbientLightColor(Color3(1,1,1));
 		
@@ -1169,24 +1077,23 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		c.toWorldSpace(Box(from, to)).getBounds(box);
 		float max = box.high().y - pos.y;
 
-		Draw::arrow(pos/2, Vector3(0, 1.5+max, 0), rd);
-		Draw::arrow(pos/2, Vector3(0, (-1.5)-max, 0), rd);
+		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
+		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
 		
 		max = box.high().x - pos.x;
 
-		Draw::arrow(pos/2, Vector3(1.5+max, 0, 0), rd);
-		Draw::arrow(pos/2, Vector3((-1.5)-max, 0, 0), rd);
+		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
+		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
 
 		max = box.high().z - pos.z;
 
-		Draw::arrow(pos/2, Vector3(0, 0, 1.5+max), rd);
-		Draw::arrow(pos/2, Vector3(0, 0, (-1.5)-max), rd);
+		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
+		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
 
 
 
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
-		glScalef(1,1,1);
 	}
 	else if(mode == RESIZE)
 	{
@@ -1198,23 +1105,24 @@ void drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters 
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 200)
 		{
+			
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.lookVector()*((size.z/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.rightVector()*((size.x)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos + (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.rightVector()*((size.x/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.upVector()*((size.y)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y)+2));
-			Draw::sphere(Sphere(position, multiplier*2), rd, sphereColor, Color4::clear());
+			position = pos + (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y/2)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
 		}
 		rd->setAmbientLightColor(lighting.ambient);
 		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
@@ -1231,8 +1139,6 @@ void Demo::exitApplication()
 
 void Demo::onGraphics(RenderDevice* rd) {
 	
-	
-
 	G3D::uint8 num = 0;
 	POINT mousepos;
 	mouseOnScreen = true;
@@ -1262,8 +1168,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	}
 	
-
-
 	if(Globals::useMousePoint)
 	{
 		mousepos = Globals::mousepoint;
@@ -1271,20 +1175,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
-
-	Matrix4 lightProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
-
-    CoordinateFrame lightCFrame;
-    lightCFrame.lookAt(-lighting.lightDirection, Vector3::unitY());
-    lightCFrame.translation = lighting.lightDirection * 20;
-
-    Matrix4 lightMVP = lightProjectionMatrix * lightCFrame.inverse();
-
-    /*if (GLCaps::supports_GL_ARB_shadow()) {
-        generateShadowMap(lightCFrame);
-    } */
-
-
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
@@ -1304,32 +1194,10 @@ void Demo::onGraphics(RenderDevice* rd) {
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
 	
-/*
-	Vector3 gamepoint = Vector3(0, 5, 0);
-	Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-	float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-	if(distance < 50 && distance > -50)
-	
-	{
-		if(distance < 0)
-		distance = distance*-1;
-		fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-	}
-*/
-	
-	rd->pushState();
-	/*if (GLCaps::supports_GL_ARB_shadow()) {
-            rd->configureShadowMap(1, lightMVP, shadowMap);
-        }*/
 	rd->beforePrimitive();
-
-
 	dataModel->getWorkspace()->render(rd);
-	//if (dataModel->children[0]->children.size()>0)
-		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();
 
-	rd->popState();
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
@@ -1338,24 +1206,22 @@ void Demo::onGraphics(RenderDevice* rd) {
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(size.x/2, size.y/2, size.z/2) ,Vector3(-size.x/2,-size.y/2,-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrameRenderBased());
+			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 			}
 		}
 	}
 	
 
-	while(!postRenderStack.empty())
-	{
-		Instance* inst = postRenderStack.at(0);
-		postRenderStack.erase(postRenderStack.begin());
-		if(PVInstance* pinst = dynamic_cast<PVInstance*>(inst))
-		{
-			pinst->postRender(rd);
-		}
-		
-	}
-
-
+	//Vector3 gamepoint = Vector3(0, 5, 0);
+	//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
+	//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
+	//if(distance < 50 && distance > -50)
+	
+	//{
+	//	if(distance < 0)
+	//	distance = distance*-1;
+	//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+	//}
 
     renderDevice->disableLighting();
 
@@ -1371,10 +1237,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 		//TODO--Move these to their own instance
 
 		std::stringstream stream;
-		stream << std::fixed << std::setprecision(3) << m_graphicsWatch.FPS();
-		fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
-		stream.str("");
-		stream.clear();
 		stream << std::fixed << std::setprecision(1) << dataModel->getLevel()->timer;
 		fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
 		fntdominant->draw2D(rd, "Score: " + Convert(dataModel->getLevel()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
@@ -1405,40 +1267,19 @@ void Demo::onGraphics(RenderDevice* rd) {
 			
 			std::vector<Instance*> instances = dataModel->getWorkspace()->getAllChildren();
 			currentcursorid = cursorid;
-			if(!dragging)
+			for(size_t i = 0; i < instances.size(); i++)
 			{
-				bool onGUI = false;
-				std::vector<Instance*> guis = dataModel->getGuiRoot()->getAllChildren();
-				for(size_t i = 0; i < guis.size(); i++)
+				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
 				{
-					if(BaseButtonInstance* button = dynamic_cast<BaseButtonInstance*>(guis.at(i)))
+					float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
+					//float time = testRay.intersectionTime(test->getBox());
+					if (time != inf()) 
 					{
-						if(button->mouseInButton(dataModel->mousex,dataModel->mousey, renderDevice))
-						{
-							onGUI = true;
-							break;
-						}
+						currentcursorid = cursorOvrid;
+						break;
 					}
+					
 				}
-				if(!onGUI)
-				for(size_t i = 0; i < instances.size(); i++)
-				{
-					if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
-					{
-						float time = cameraController.getCamera()->worldRay(dataModel->mousex, dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
-						//float time = testRay.intersectionTime(test->getBox());
-						if (time != inf()) 
-						{
-							currentcursorid = cursorOvrid;
-							break;
-						}
-						
-					}
-				}
-			}
-			else
-			{
-				currentcursorid = cursorDragid;
 			}
 			
 			glBindTexture( GL_TEXTURE_2D, currentcursorid);
@@ -1461,7 +1302,6 @@ void Demo::onGraphics(RenderDevice* rd) {
 			rd->afterPrimitive();
 		rd->popState();
 	renderDevice->pop2D();
-	debugAssertGLOk();
 }
 
 void Demo::onKeyPressed(int key)
@@ -1469,64 +1309,6 @@ void Demo::onKeyPressed(int key)
 	if(key==VK_DELETE)
 	{
 		deleteInstance();
-	}
-	if(key=='R')
-	{
-		running = true;
-	}
-	if(dragging)
-	{
-		if(key == 'T')
-		{
-			if(g_selectedInstances.size() > 0)
-			{
-				Instance* selectedInstance = g_selectedInstances.at(0);
-				AudioPlayer::playSound(clickSound);
-				if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
-				{
-					part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
-				}
-			}
-		}
-		if(key == 'R')
-		{
-			if(g_selectedInstances.size() > 0)
-			{
-				Instance* selectedInstance = g_selectedInstances.at(0);
-				AudioPlayer::playSound(clickSound);
-				if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
-				{
-					part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
-				}
-			}
-		}
-	}
-	if(GetHoldKeyState(VK_LCONTROL))
-	{
-		if(key == 'D')
-		{
-			if(g_selectedInstances.size() > 0)
-			{
-				AudioPlayer::playSound(dingSound);
-				std::vector<Instance*> newinst;
-				for(size_t i = 0; i < g_selectedInstances.size(); i++)
-				{
-					if(g_selectedInstances.at(i)->canDelete)
-					{
-					Instance* tempinst = g_selectedInstances.at(i);
-					
-					Instance* clonedInstance = g_selectedInstances.at(i)->clone();
-
-					newinst.push_back(tempinst);
-					}
-					/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-					usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
-				}
-				g_selectedInstances = newinst;
-				if(g_selectedInstances.size() > 0)
-					usableApp->_propWindow->SetProperties(newinst.at(0));
-			}
-		}
 	}
 }
 void Demo::onKeyUp(int key)
@@ -1638,7 +1420,7 @@ void Demo::onMouseRightUp(int x,int y)
 }
 void Demo::onMouseMoved(int x,int y)
 {
-	//oldMouse = dataModel->getMousePos();
+	oldMouse = dataModel->getMousePos();
 	dataModel->mousex = x;
 	dataModel->mousey = y;
 
@@ -1798,37 +1580,6 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
-
-void Demo::generateShadowMap(const CoordinateFrame& lightViewMatrix) const {
-
-
-    //debugAssert(shadowMapSize < app->renderDevice->getHeight());
-    //debugAssert(shadowMapSize < app->renderDevice->getWidth());
-
-    //app->renderDevice->clear(debugLightMap, true, false);
-    
-    Rect2D rect = Rect2D::xywh(0, 0, 512, 512);
-    renderDevice->pushState();
-        renderDevice->setViewport(rect);
-
-	    // Draw from the light's point of view
-        renderDevice->setProjectionMatrix(Matrix4::orthogonalProjection(-lightProjX, lightProjX, -lightProjY, lightProjY, lightProjNear, lightProjFar));
-        renderDevice->setCameraToWorldMatrix(lightViewMatrix);
-
-        renderDevice->disableColorWrite();
-
-        // We can choose to use a large bias or render from
-        // the backfaces in order to avoid front-face self
-        // shadowing.  Here, we use a large offset.
-        renderDevice->setPolygonOffset(8);
-
-    dataModel->render(renderDevice);
-    renderDevice->popState();
-
-    shadowMap->copyFromScreen(rect);
-}
-
-
 void Demo::run() {
 	usableApp = this;
 	//setDebugMode(false);
@@ -1852,7 +1603,6 @@ void Demo::run() {
     // Load objects here=
 	cursor = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
 	cursorOvr = Texture::fromFile(GetFileInPath("/content/images/DragCursor.png"));
-	cursorDrag = Texture::fromFile(GetFileInPath("/content/images/GrabRotateCursor.png"));
 	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
 	Globals::surfaceId = Globals::surface->getOpenGLID();
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
@@ -1861,17 +1611,8 @@ void Demo::run() {
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
-
-
-	/*if (GLCaps::supports_GL_ARB_shadow()) {
-        shadowMap = Texture::createEmpty(512, 512, "Shadow map", TextureFormat::depth(),
-            Texture::CLAMP, Texture::BILINEAR_NO_MIPMAP, Texture::DIM_2D, Texture::DEPTH_LEQUAL);
-    }*/
-
-
 	cursorid = cursor->openGLID();
 	currentcursorid = cursorid;
-	cursorDragid = cursorDrag->openGLID();
 	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
