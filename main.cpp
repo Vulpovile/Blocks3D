@@ -1290,8 +1290,9 @@ void Demo::onGraphics(RenderDevice* rd) {
         }*/
 	rd->beforePrimitive();
 
-
+	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	dataModel->getWorkspace()->render(rd);
+	rd->setObjectToWorldMatrix(forDraw);
 	//if (dataModel->children[0]->children.size()>0)
 		//((PartInstance*)dataModel->children[0]->children[0])->debugPrintVertexIDs(rd,fntdominant,-cameraController.getCoordinateFrame().rotation);
 	rd->afterPrimitive();

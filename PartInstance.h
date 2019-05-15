@@ -40,6 +40,7 @@ public:
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 	void addVertex(Vector3 vertexPos,Color3 color);
 	void addNormals(Vector3 normal);
+	void addSingularNormal(Vector3 normal);
 	void addTriangle(Vector3 vertexPos,Vector3 vertexPos2, Vector3 vertexPos3);
 	void debugPrintVertexIDs(RenderDevice* rd, GFontRef font, Matrix3 camRot);
 	void makeFace(int vertex1, int vertex2, int vertex3);
@@ -60,4 +61,5 @@ private:
 	std::vector<GLushort> _indices;
 	bool changed;
 	Box itemBox;
+	GLuint glList;
 };
