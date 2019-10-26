@@ -45,6 +45,7 @@ public:
 	void debugPrintVertexIDs(RenderDevice* rd, GFontRef font, Matrix3 camRot);
 	void makeFace(int vertex1, int vertex2, int vertex3);
 	bool isUniqueVertex(Vector3 pos);
+	float getMass();
 private:
 	Vector3 position;
 	Vector3 size;

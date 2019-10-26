@@ -149,6 +149,18 @@ CoordinateFrame PartInstance::getCFrameRenderBased()
 {
 	return cFrame;//CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
 }
+
+// Start Physics stuff
+float PartInstance::getMass()
+{
+	if(shape == Enum::Shape::Sphere || shape == Enum::Shape::Cylinder){
+		return (4/3) * 3.1415926535 * pow(size.x/2, 3);
+	}
+	return size.x * size.y * size.z;
+}
+
+
+
 #ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
 {	

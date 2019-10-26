@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="G3DTest"
-	ProjectGUID="{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
+	ProjectGUID="{277D185B-AEBA-4F75-A7FC-F1EBE787C200}"
 	RootNamespace="G3DTest"
 	>
 	<Platforms>
