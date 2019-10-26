@@ -7,7 +7,8 @@
 PartInstance::PartInstance(void) : _bevelSize(0.07f), _parseVert(0), _debugTimer(0)
 {
 	PVInstance::PVInstance();
-    name = "Unnamed PVItem";
+    glList = glGenLists(1);
+	name = "Unnamed PVItem";
 	className = "Part";
 	canCollide = true;
 	anchored = true;
@@ -59,6 +60,7 @@ void PartInstance::postRender(RenderDevice *rd)
 PartInstance::PartInstance(const PartInstance &oinst)  : _bevelSize(0.07f), _parseVert(0), _debugTimer(0)
 {
 	PVInstance::PVInstance(oinst);
+	glList = glGenLists(1);
 	//name = oinst.name;
 	//className = "Part";
 	name = oinst.name;
@@ -129,7 +131,7 @@ Vector3 PartInstance::getPosition()
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(cFrame.rotation,pos);
+	cFrame = CoordinateFrame(pos);
 	changed = true;
 }
 CoordinateFrame PartInstance::getCFrame()
@@ -210,12 +212,21 @@ void PartInstance::addVertex(Vector3 vertexPos,Color3 color)
 		_normals.push_back(normal.z);
 	}
 }
+ void PartInstance::addSingularNormal(Vector3 normal)
+{
+		_normals.push_back(normal.x);
+		_normals.push_back(normal.y);
+		_normals.push_back(normal.z);
+}
  void PartInstance::addTriangle(Vector3 v1,Vector3 v2,Vector3 v3)
 {
 	addVertex(v1,color);
 	addVertex(v2,color);
 	addVertex(v3,color);
-	addNormals(cross(v2-v1,v3-v1).direction());
+	//addNormals(cross(v2-v1,v3-v1).direction());
+	addSingularNormal(cross(v2-v1,v3-v1).direction());
+	addSingularNormal(cross(v3-v2,v1-v2).direction());
+	addSingularNormal(cross(v1-v3,v2-v3).direction());
 }
  void PartInstance::debugPrintVertexIDs(RenderDevice* rd,GFontRef font,Matrix3 rot)
 {
@@ -379,18 +390,21 @@ void PartInstance::render(RenderDevice* rd) {
 			_indices.push_back(i);
 		}		
  		changed=false;
+		
+		glNewList(glList, GL_COMPILE);
+		glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
+		glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
+		glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
+ 		glPushMatrix();
+		//glTranslatef(2,7,0);
+		glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
+		glPopMatrix();
+		glEndList();
 	}
-	//rd->setObjectToWorldMatrix(cFrame);
-	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	rd->setObjectToWorldMatrix(cFrame);
- 	glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
-	glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
-	glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
- 	glPushMatrix();
-	//glTranslatef(2,7,0);
-	glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
-	glPopMatrix();
-	rd->setObjectToWorldMatrix(forDraw);
+	glCallList(glList);
+	//rd->setObjectToWorldMatrix(cFrame);
+	
 }
 #else
 void PartInstance::render(RenderDevice* rd)
@@ -471,6 +485,7 @@ void PartInstance::render(RenderDevice* rd)
 
 PartInstance::~PartInstance(void)
 {
+	glDeleteLists(glList, 1);
 }
 char pto[512];
 char pto2[512];

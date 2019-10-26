@@ -1,3 +1,5 @@
+#pragma once
+
 namespace Enum
 {
 	namespace SurfaceType

@@ -17,8 +17,10 @@ public:
 	std::vector<Instance* > getChildren();
 	std::vector<Instance* > getAllChildren();
 	void setParent(Instance*);
+	void setName(std::string newName);
 	void addChild(Instance*);
 	void removeChild(Instance*);
+	void clearChildren();
 	Instance* getParent();
 	virtual Instance* clone() const { return new Instance(*this); }
 	virtual std::vector<PROPGRIDITEM> getProperties();

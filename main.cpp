@@ -724,7 +724,7 @@ void Demo::onInit()  {
 	
 	initGUI();
 
-	
+#ifdef LEGACY_LOAD_G3DFUN_LEVEL
 	PartInstance* test = makePart();
 	test->setParent(dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
@@ -801,7 +801,9 @@ void Demo::onInit()  {
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
-
+#else
+	dataModel->debugGetOpen();
+#endif
 	
 
 
@@ -1195,7 +1197,9 @@ void Demo::onGraphics(RenderDevice* rd) {
 	renderDevice->setAmbientLightColor(lighting.ambient);
 	
 	rd->beforePrimitive();
+	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	dataModel->getWorkspace()->render(rd);
+	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
 
 	if(g_selectedInstances.size() > 0)
@@ -1206,7 +1210,7 @@ void Demo::onGraphics(RenderDevice* rd) {
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
+			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x/2, pos.y/2, pos.z/2), part->getCFrameRenderBased());
 			}
 		}
 	}
@@ -1310,6 +1314,23 @@ void Demo::onKeyPressed(int key)
 	{
 		deleteInstance();
 	}
+	if (GetHoldKeyState(VK_RCONTROL))
+	{
+		if (key=='O')
+		{
+			dataModel->getOpen();
+		}
+	}
+	#ifdef _DEBUG
+	if (key==VK_ADD)
+	{
+		dataModel->modXMLLevel(1);
+	}
+	if (key==VK_SUBTRACT)
+	{
+		dataModel->modXMLLevel(-1);
+	}
+	#endif
 }
 void Demo::onKeyUp(int key)
 {

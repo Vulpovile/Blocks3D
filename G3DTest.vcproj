@@ -259,6 +259,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GroupInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IEBrowser.cpp"
 				>
 			</File>
@@ -268,6 +272,10 @@
 			</File>
 			<File
 				RelativePath=".\IEDispatcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LevelInstance.cpp"
 				>
 			</File>
 			<File
@@ -291,11 +299,19 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\PartInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\propertyGrid.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\PropertyWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PVInstance.cpp"
 				>
 			</File>
 			<File
@@ -314,27 +330,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\GroupInstance.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\ImageButtonInstance.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\Instance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\LevelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PartInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PVInstance.cpp"
 					>
 				</File>
 				<File
@@ -388,7 +388,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GroupInstance.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IEDispatcher.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LevelInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PartInstance.h"
 				>
 			</File>
 			<File
@@ -397,6 +409,26 @@
 			</File>
 			<File
 				RelativePath=".\PropertyWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PVInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_iterators.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_print.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rapidxml\rapidxml_utils.hpp"
 				>
 			</File>
 			<File
@@ -423,27 +455,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\GroupInstance.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ImageButtonInstance.h"
 					>
 				</File>
 				<File
 					RelativePath=".\Instance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\LevelInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PartInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PVInstance.h"
 					>
 				</File>
 				<File
