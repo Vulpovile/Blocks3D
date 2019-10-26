@@ -400,6 +400,12 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		if (clearObjects)
 			clearLevel();
 		readXMLFileStream(&levelFile);
+		std::string sfilename = std::string(filename);
+		std::size_t begin = sfilename.rfind('\\') + 1;
+		std::size_t end = sfilename.find(".rbx");
+		std::string hname = sfilename.substr(begin);
+		std::string tname = hname.substr(0, hname.length() - 5);
+		name = tname;
 		return true;
 	}
 }
