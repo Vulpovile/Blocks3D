@@ -7,6 +7,7 @@ WorkspaceInstance::WorkspaceInstance(void)
 	name = "Workspace";
 	className = "Workspace";
 	canDelete = false;
+	listicon = 8;
 }
 
 WorkspaceInstance::~WorkspaceInstance(void)

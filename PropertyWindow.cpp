@@ -5,6 +5,7 @@
 #include "PropertyWindow.h"
 #include "Globals.h"
 #include "strsafe.h"
+
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
     Property &prop;
@@ -16,6 +17,49 @@ Instance * selectedInstance;
 Instance * parent = NULL;
 const int CX_BITMAP = 16;
 const int CY_BITMAP = 16;
+
+
+HBITMAP CreateBitmapMask(HBITMAP hbmColour, COLORREF crTransparent)
+{
+    HDC hdcMem, hdcMem2;
+    HBITMAP hbmMask;
+    BITMAP bm;
+
+    // Create monochrome (1 bit) mask bitmap.  
+
+    GetObject(hbmColour, sizeof(BITMAP), &bm);
+    hbmMask = CreateBitmap(bm.bmWidth, bm.bmHeight, 1, 1, NULL);
+
+    // Get some HDCs that are compatible with the display driver
+
+    hdcMem = CreateCompatibleDC(0);
+    hdcMem2 = CreateCompatibleDC(0);
+
+    SelectObject(hdcMem, hbmColour);
+    SelectObject(hdcMem2, hbmMask);
+
+    // Set the background colour of the colour image to the colour
+    // you want to be transparent.
+    SetBkColor(hdcMem, crTransparent);
+
+    // Copy the bits from the colour image to the B+W mask... everything
+    // with the background colour ends up white while everythig else ends up
+    // black...Just what we wanted.
+
+    BitBlt(hdcMem2, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+    // Take our new mask and use it to turn the transparent colour in our
+    // original colour image to black so the transparency effect will
+    // work right.
+    BitBlt(hdcMem, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem2, 0, 0, SRCINVERT);
+
+    // Clean up.
+
+    DeleteDC(hdcMem);
+    DeleteDC(hdcMem2);
+
+    return hbmMask;
+}
 
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -50,7 +94,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 				// Get the food icon from the item data.
 				HBITMAP hbmIcon = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
-				HBITMAP hbmMask = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
+				HBITMAP hbmMask = CreateBitmapMask(hbmIcon, RGB(255, 0, 220));
 				// The colors depend on whether the item is selected.
 				clrForeground = SetTextColor(lpdis->hDC, 
 					GetSysColor(lpdis->itemState & ODS_SELECTED ?
@@ -66,7 +110,21 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				x = LOWORD(GetDialogBaseUnits()) / 4;
 
 				// Get and display the text for the list item.
+				int mul = 0;
 				SendMessage(lpdis->hwndItem, CB_GETLBTEXT, lpdis->itemID, (LPARAM) achTemp);
+				if(lpdis->itemID == 0)
+				{
+					mul = selectedInstance->listicon;
+				}
+				else if(lpdis->itemID == 1 && parent != NULL)
+				{
+					mul = parent->listicon;
+				}
+				else if(parent != NULL)
+				{
+					mul = children[lpdis->itemID-2]->listicon;
+				}
+				else mul = children[lpdis->itemID-1]->listicon;
 
 				hr = StringCchLength(achTemp, 256, &cch);
 				if (FAILED(hr))
@@ -89,11 +147,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			 
 				SelectObject(hdc, hbmMask); 
 				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
-					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCAND); 
+					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCAND); 
 			 
 				SelectObject(hdc, hbmIcon); 
 				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
-					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCPAINT); 
+					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCPAINT); 
 			 
 				DeleteDC(hdc); 
 			  
@@ -225,7 +283,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 			NULL,
 			"COMBOBOX",
 			"Combo",
-			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST,
+			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS ,
 			0,
 			0,
 			0,
