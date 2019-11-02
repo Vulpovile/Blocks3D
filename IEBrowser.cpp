@@ -2,11 +2,13 @@
 	#define WIN32_LEAN_AND_MEAN
 #endif
 
+
 #include <windows.h>
 
 #include "IEBrowser.h"
 #include "Globals.h"
 #include "ax.h"
+//#include "IEDispatcher.h"
 
 void IEBrowser::Boop(char* test)
 {
@@ -36,6 +38,12 @@ IEBrowser::~IEBrowser(void) {
 	}
 }
 
+// Something goes here
+int IEBrowser::setExternal(IDispatch** ext)
+{
+	return 1;
+}
+
 bool IEBrowser::navigateSyncURL(wchar_t* url)
 {
 	MSG messages;
@@ -52,10 +60,39 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 					DispatchMessage(&messages);
 				}
 			}
+
 			Sleep(30);
+
 			HRESULT hresult = webBrowser->get_Document(&spDocument);
-			if (&spDocument!=0)
+			if (SUCCEEDED(hresult) && (spDocument != 0))
 			{
+				
+				IOleObject* spOleObject;
+				if (SUCCEEDED(spDocument->QueryInterface(IID_IOleObject,(void**)&spOleObject)))
+				{
+					IOleClientSite* spClientSite;
+					hresult = spOleObject->GetClientSite(&spClientSite);
+					if (SUCCEEDED(hresult) && spClientSite)
+					{
+						m_spDefaultDocHostUIHandler = spClientSite;
+						ICustomDoc* spCustomDoc;
+
+						//IEDispatcher* spIEDispatcher;
+						if (SUCCEEDED(m_spDefaultDocHostUIHandler->QueryInterface(IID_IDocHostUIHandler,(void**)&m_spHandler)))
+						{
+							if (SUCCEEDED(spDocument->QueryInterface(IID_ICustomDoc,(void**)&spCustomDoc)))
+							{
+								spCustomDoc->SetUIHandler(m_spHandler);
+				
+								m_spHandler->GetExternal(&m_spExternal);
+								
+							}
+						}
+					}
+				}
+				
+
+
 				return true;
 			}
 		}

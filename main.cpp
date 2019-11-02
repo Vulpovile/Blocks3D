@@ -13,6 +13,7 @@
 
 // TODO: Move toolbar buttons with resized window.
 
+
 #define _WIN32_WINNT 0x0400
 
 #include <G3DAll.h>
@@ -46,8 +47,6 @@
 #endif
 HWND hwnd;
 
-
-DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
 HRESULT hresult;
 OLECHAR dat = ((OLECHAR)"SayHello");
 OLECHAR * szMember = &dat;
@@ -1321,16 +1320,6 @@ void Demo::onKeyPressed(int key)
 			dataModel->getOpen();
 		}
 	}
-	#ifdef _DEBUG
-	if (key==VK_ADD)
-	{
-		dataModel->modXMLLevel(1);
-	}
-	if (key==VK_SUBTRACT)
-	{
-		dataModel->modXMLLevel(-1);
-	}
-	#endif
 }
 void Demo::onKeyUp(int key)
 {

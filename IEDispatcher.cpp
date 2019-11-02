@@ -33,7 +33,6 @@ HRESULT STDMETHODCALLTYPE IEDispatcher::GetIDsOfNames(const IID &, LPOLESTR *, U
 	return NULL;
 }
 HRESULT STDMETHODCALLTYPE IEDispatcher::Invoke(DISPID, const IID &, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, UINT *)
-
 {
 	return NULL;
 }

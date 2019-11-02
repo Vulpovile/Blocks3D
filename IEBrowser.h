@@ -2,7 +2,7 @@
 #pragma once
 #include <mshtml.h>
 #include <exdisp.h>
-//#include <Mshtmhst.h>
+#include <Mshtmhst.h>
 
 class IEBrowser {
 	public:
@@ -14,4 +14,10 @@ class IEBrowser {
 		IWebBrowser2* webBrowser;
 		HWND hwnd;
 		IDispatch* spDocument;
+		IHTMLDocument* spDocument2;
+		IDocHostUIHandler* m_spHandler;
+		IDispatch* m_spExternal;
+		IDispatch* m_newExternal;
+		IOleClientSite* m_spDefaultDocHostUIHandler;
+		int setExternal(IDispatch** ext);
 };
