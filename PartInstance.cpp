@@ -266,6 +266,7 @@ bool PartInstance::isUniqueVertex(Vector3 pos)
 }
 
 #ifdef NEW_BOX_RENDER
+
 void PartInstance::render(RenderDevice* rd) {
 	if(nameShown)
 		postRenderStack.push_back(this);
@@ -332,7 +333,8 @@ void PartInstance::render(RenderDevice* rd) {
 			Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
 			Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize)
 			);
-		
+				
+
  		// Bevel Top Front
 		makeFace(0,36,48);
 		makeFace(48,18,0);
@@ -403,6 +405,7 @@ void PartInstance::render(RenderDevice* rd) {
 	}
 	rd->setObjectToWorldMatrix(cFrame);
 	glCallList(glList);
+	postRender(rd);
 	//rd->setObjectToWorldMatrix(cFrame);
 	
 }
