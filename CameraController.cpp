@@ -140,7 +140,7 @@ void CameraController::centerCamera(Instance* selection)
 	}
 	else if(PartInstance* part = dynamic_cast<PartInstance*>(selection))
 	{
-		Vector3 partPos = (part)->getPosition()/2;
+		Vector3 partPos = (part)->getPosition();
 		lookAt(partPos);
 		focusPosition=partPos;
 		zoom=((partPos-frame.translation).magnitude());
