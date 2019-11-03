@@ -276,7 +276,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			}
 			g_selectedInstances = newinst;
 			if(g_selectedInstances.size() > 0)
-				usableApp->_propWindow->SetProperties(newinst.at(0));
+				usableApp->_propWindow->UpdateSelected(newinst.at(0));
 		}
 	}
 }
@@ -1380,11 +1380,11 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 							}
 						}
 						if(!found)
-						{while(g_selectedInstances.size() > 0)
-							g_selectedInstances.erase(g_selectedInstances.begin());
-						g_selectedInstances.push_back(test);
+						{
+							g_selectedInstances.clear();
+							g_selectedInstances.push_back(test);
 						}
-						_propWindow->SetProperties(test);
+						_propWindow->UpdateSelected(test);
 						//message = "Dragging = true.";
 						//messageTime = System::time();
 						//dragging = true;
@@ -1394,10 +1394,9 @@ void Demo::onMouseLeftPressed(HWND hwnd,int x,int y)
 		}
 		if(!objFound)
 		{
-			while(g_selectedInstances.size() > 0)
-					g_selectedInstances.erase(g_selectedInstances.begin());
+			g_selectedInstances.clear();
 			g_selectedInstances.push_back(dataModel);
-			_propWindow->SetProperties(dataModel);
+			_propWindow->UpdateSelected(dataModel);
 			
 		}
 	}
