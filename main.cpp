@@ -1,14 +1,10 @@
 /**
-  @file demos/main.cpp
+	Roblox 2005 Recreation Project
+	© 2018-2019 Roblox 2005 Recreation Project Team
+	
+	Licensed under GPLv2
 
-  This is a sample main.cpp to get you started with G3D.  It is
-  designed to make writing an application easy.  Although the
-  GApp/GApplet infrastructure is helpful for most projects,
-  you are not restricted to using it-- choose the level of
-  support that is best for your project (see the G3D Map in the
-  documentation).
-
-  @author Morgan McGuire, matrix@graphics3d.com
+	Based on G3D 6.10 © 2003-2006 Morgan McGuire.
  */
 
 // TODO: Move toolbar buttons with resized window.
@@ -138,7 +134,7 @@ Demo::Demo(const GAppSettings& settings,HWND parentWindow) { //: GApp(settings,w
 	}
 	else
 	{
-		MessageBox(NULL,"Window not found!","Error",MB_OK);
+		MessageBox(NULL,"Window not found!","Error",MB_OK | MB_ICONSTOP);
 		return;
 	}
 
