@@ -41,6 +41,10 @@
 #include "IEBrowser.h"
 #include "PropertyWindow.h"
 #include <commctrl.h>
+#include <exception>
+#include <fstream>
+#include <string>
+#include <iostream>
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
@@ -1787,9 +1791,12 @@ int main(int argc, char** argv) {
 		Demo demo = Demo(settings,hwndMain);
 		demo.run();	
 	}
-	catch(...)
+	catch(std::exception w)
 	{
 		//TODO Figure how to save the error to file
+		std::ofstream out("C:\\Dynamica\\error.txt");
+		out << w.what();
+		out.close();
 		OnError(-1);
 	}
     return 0;
