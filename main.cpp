@@ -1727,7 +1727,9 @@ void Demo::onCreate(HWND parentWindow)
 }
 
 int main(int argc, char** argv) {
+	#ifndef _DEBUG
 	try{
+	#endif
 		hresult = OleInitialize(NULL);
 		if (!AXRegister())
 			return 0;
@@ -1790,7 +1792,9 @@ int main(int argc, char** argv) {
 		
 		Demo demo = Demo(settings,hwndMain);
 		demo.run();	
+	#ifndef _DEBUG
 	}
+	
 	catch(std::exception w)
 	{
 		//TODO Figure how to save the error to file
@@ -1799,5 +1803,6 @@ int main(int argc, char** argv) {
 		out.close();
 		OnError(-1);
 	}
+	#endif
     return 0;
 }
