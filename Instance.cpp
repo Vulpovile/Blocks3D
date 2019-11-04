@@ -8,7 +8,7 @@ Instance::Instance(void)
 	parent = NULL;
 	name = "Default Game Instance";
 	className = "BaseInstance";
-	listicon = 0;
+	listicon = 1;
 	canDelete = true;
 }
 

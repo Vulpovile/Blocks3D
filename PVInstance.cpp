@@ -5,6 +5,7 @@ PVInstance::PVInstance(void)
 	Instance::Instance();
 	nameShown = false;
 	className = "PVInstance";
+	listicon = 0;
 }
 
 PVInstance::PVInstance(const PVInstance &oinst)

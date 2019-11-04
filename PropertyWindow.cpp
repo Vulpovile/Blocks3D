@@ -141,11 +141,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					break; 
 			 
 				SelectObject(hdc, hbmMask); 
-				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
+				BitBlt(lpdis->hDC, x, lpdis->rcItem.top, 
 					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCAND); 
 			 
 				SelectObject(hdc, hbmIcon); 
-				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
+				BitBlt(lpdis->hDC, x, lpdis->rcItem.top, 
 					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCPAINT); 
 			 
 				DeleteDC(hdc); 

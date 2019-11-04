@@ -4,11 +4,13 @@ GroupInstance::GroupInstance(void)
 {
 	PVInstance::PVInstance();
 	className = "GroupInstance";
+	listicon = 12;
 }
 
 GroupInstance::GroupInstance(const GroupInstance &oinst)
 {
 	PVInstance::PVInstance(oinst);
+	listicon = 12;
 }
 
 GroupInstance::~GroupInstance(void)

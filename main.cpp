@@ -926,20 +926,20 @@ BOOL GetKPBool(int VK) {
 
 void Demo::onUserInput(UserInput* ui) {
 
-	/*
-	if(GetHoldKeyState(VK_LCONTROL))
+	
+	/*if(GetHoldKeyState(VK_LCONTROL))
 	{
 		if(GetHoldKeyState('D'))
 		{
 			messageTime = System::time();
-			if(debugMode())
+			if()
 				message = "Debug Mode Disabled";
 			else
 				message = "Debug Mode Enabled";
 			setDebugMode(!debugMode());
 		}
-	}
-	*/
+	}*/
+	
 	if(GetHoldKeyState(VK_F8))
 	{
 		messageTime = System::time();
@@ -1789,6 +1789,7 @@ int main(int argc, char** argv) {
 	}
 	catch(...)
 	{
+		//TODO Figure how to save the error to file
 		OnError(-1);
 	}
     return 0;
