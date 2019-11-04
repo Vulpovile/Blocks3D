@@ -5,6 +5,7 @@
 #include "PropertyWindow.h"
 #include "Globals.h"
 #include "strsafe.h"
+
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
     Property &prop;
@@ -16,6 +17,49 @@ Instance * selectedInstance;
 Instance * parent = NULL;
 const int CX_BITMAP = 16;
 const int CY_BITMAP = 16;
+
+
+HBITMAP CreateBitmapMask(HBITMAP hbmColour, COLORREF crTransparent)
+{
+    HDC hdcMem, hdcMem2;
+    HBITMAP hbmMask;
+    BITMAP bm;
+
+    // Create monochrome (1 bit) mask bitmap.  
+
+    GetObject(hbmColour, sizeof(BITMAP), &bm);
+    hbmMask = CreateBitmap(bm.bmWidth, bm.bmHeight, 1, 1, NULL);
+
+    // Get some HDCs that are compatible with the display driver
+
+    hdcMem = CreateCompatibleDC(0);
+    hdcMem2 = CreateCompatibleDC(0);
+
+    SelectObject(hdcMem, hbmColour);
+    SelectObject(hdcMem2, hbmMask);
+
+    // Set the background colour of the colour image to the colour
+    // you want to be transparent.
+    SetBkColor(hdcMem, crTransparent);
+
+    // Copy the bits from the colour image to the B+W mask... everything
+    // with the background colour ends up white while everythig else ends up
+    // black...Just what we wanted.
+
+    BitBlt(hdcMem2, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+    // Take our new mask and use it to turn the transparent colour in our
+    // original colour image to black so the transparency effect will
+    // work right.
+    BitBlt(hdcMem, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem2, 0, 0, SRCINVERT);
+
+    // Clean up.
+
+    DeleteDC(hdcMem);
+    DeleteDC(hdcMem2);
+
+    return hbmMask;
+}
 
 LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -50,7 +94,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 				// Get the food icon from the item data.
 				HBITMAP hbmIcon = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
-				HBITMAP hbmMask = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
+				HBITMAP hbmMask = CreateBitmapMask(hbmIcon, RGB(255, 0, 220));
 				// The colors depend on whether the item is selected.
 				clrForeground = SetTextColor(lpdis->hDC, 
 					GetSysColor(lpdis->itemState & ODS_SELECTED ?
@@ -66,7 +110,16 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				x = LOWORD(GetDialogBaseUnits()) / 4;
 
 				// Get and display the text for the list item.
+				int mul = 0;
 				SendMessage(lpdis->hwndItem, CB_GETLBTEXT, lpdis->itemID, (LPARAM) achTemp);
+				
+				if(lpdis->itemID >= 0)
+				{
+					mul = children[lpdis->itemID]->listicon;
+				}
+				//else mul = children[lpdis->itemID-1]->listicon;
+
+				//mul = children[lpdis->itemID]->listicon;
 
 				hr = StringCchLength(achTemp, 256, &cch);
 				if (FAILED(hr))
@@ -89,11 +142,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			 
 				SelectObject(hdc, hbmMask); 
 				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
-					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCAND); 
+					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCAND); 
 			 
 				SelectObject(hdc, hbmIcon); 
 				BitBlt(lpdis->hDC, x, lpdis->rcItem.top + 1, 
-					CX_BITMAP, CY_BITMAP, hdc, 0, 0, SRCPAINT); 
+					CX_BITMAP, CY_BITMAP, hdc, mul*16, 0, SRCPAINT); 
 			 
 				DeleteDC(hdc); 
 			  
@@ -123,32 +176,8 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
 					CHAR  ListItem[256];
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
-					if(ItemIndex != 0)
-					{
-						propWind->ClearProperties();
-						while(g_selectedInstances.size() != 0)
-							g_selectedInstances.erase(g_selectedInstances.begin());
-						if(parent != NULL)
-						{
-							std::cout << ItemIndex << std::endl;
-							if(ItemIndex == 1)
-							{
-								g_selectedInstances.push_back(parent);
-								propWind->SetProperties(parent);
-							}
-							else
-							{
-								g_selectedInstances.push_back(children.at(ItemIndex+2));
-								propWind->SetProperties(children.at(ItemIndex+2));
-							}
-
-						}
-						else
-						{
-							g_selectedInstances.push_back(children.at(ItemIndex-1));
-							propWind->SetProperties(children.at(ItemIndex-1));
-						}
-					}
+					propWind->ClearProperties();
+					propWind->UpdateSelected(children.at(ItemIndex));
 				}
 			}
 		break;
@@ -164,7 +193,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         LPNMPROPGRID lpnmp = (LPNMPROPGRID)pnm;
                         LPPROPGRIDITEM item = PropGrid_GetItemData(pnm->hwndFrom,lpnmp->iIndex);
 						selectedInstance->PropUpdate(item);
-						//propWind->SetProperties(selectedInstance);
+						//propWind->UpdateSelected(selectedInstance);
                     }
 				}
                 break;
@@ -178,28 +207,35 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0; 
 }
 
-void PropertyWindow::refreshExplorer()
+void PropertyWindow::refreshExplorer(Instance* selectedInstance)
 {
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
 	parent = NULL;
-	for (unsigned int i=0;i<g_selectedInstances.size();i++) {
-		
-		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)g_selectedInstances[i]->name.c_str()); 
-		if(g_selectedInstances[i]->getParent() != NULL)
-		{
-			std::string title = ".. (";
-			title += g_selectedInstances[i]->getParent()->name;
-			title += ")";
-			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)title.c_str());
-			parent = g_selectedInstances[i]->getParent();
-		}
-		children = g_selectedInstances[i]->getChildren();
-		for(size_t z = 0; z < children.size(); z++)
-		{
-			SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)children.at(z)->name.c_str()); 
-		}
-		SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+	children.clear();
+	g_selectedInstances.clear();
+	//for (unsigned int i=0;i<g_selectedInstances.size();i++) {
+	children.push_back(selectedInstance);
+	SendMessage(_explorerComboBox, CB_ADDSTRING, 0, (LPARAM)selectedInstance->name.c_str()); 
+	if(selectedInstance->getParent() != NULL)
+	{
+		std::string title = ".. (";
+		title += selectedInstance->getParent()->name;
+		title += ")";
+		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)title.c_str());
+		parent = selectedInstance->getParent();
+		children.push_back(selectedInstance->getParent());
 	}
+	//children = g_selectedInstances[i]->getChildren();
+
+	std::vector<Instance*> selectedChildren = selectedInstance->getChildren();
+	for(size_t z = 0; z < selectedChildren.size(); z++)
+	{
+		children.push_back(selectedChildren.at(z));
+		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)selectedChildren.at(z)->name.c_str()); 
+	}
+	g_selectedInstances.push_back(selectedInstance);
+	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+	//}
 }
 
 bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance) {
@@ -225,7 +261,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 			NULL,
 			"COMBOBOX",
 			"Combo",
-			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST,
+			WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS ,
 			0,
 			0,
 			0,
@@ -283,7 +319,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		
 		SetWindowLongPtr(_hwndProp,GWL_USERDATA,(LONG)this);
 
-		refreshExplorer();
+		//refreshExplorer();
 		_resize();
 
 		return true;
@@ -306,7 +342,7 @@ void PropertyWindow::_resize()
 	SetWindowPos(_explorerComboBox, NULL, 0, 0, rect.right, 400, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-void PropertyWindow::SetProperties(Instance * instance)
+void PropertyWindow::UpdateSelected(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
 	prop = instance->getProperties();
@@ -322,7 +358,7 @@ void PropertyWindow::SetProperties(Instance * instance)
 	PropGrid_ExpandAllCatalogs(_propGrid);
 	//SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 
-	refreshExplorer();
+	refreshExplorer(instance);
 	_resize();
 }
 

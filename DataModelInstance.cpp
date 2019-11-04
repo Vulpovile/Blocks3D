@@ -27,6 +27,7 @@ DataModelInstance::DataModelInstance(void)
 	workspace->setParent(this);
 	level->setParent(this);
 	_loadedFileName="..//skooter.rbxm";
+	listicon = 1;
 	
 }
 

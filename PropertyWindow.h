@@ -4,10 +4,10 @@ class PropertyWindow {
 public:
 	PropertyWindow(int x, int y, int sx, int sy, HMODULE hThisInstance);
 	bool	onCreate(int x, int y, int sx, int sy, HMODULE hThisInstance);
-	void	SetProperties(Instance *);
+	void	UpdateSelected(Instance *);
 	void	ClearProperties();
 	void	onResize();
-	void	refreshExplorer();
+	void	refreshExplorer(Instance* selectedInstance);
 	HWND	_hwndProp;
 private:
 	HWND	_propGrid;

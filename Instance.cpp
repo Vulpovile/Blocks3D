@@ -18,6 +18,7 @@ Instance::Instance(const Instance &oinst)
 	name = oinst.name;
 	className = oinst.className;
 	canDelete = oinst.canDelete;
+	listicon = oinst.listicon;
 	//setParent(oinst.parent);
 }
 
