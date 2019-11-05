@@ -620,7 +620,7 @@ void Application::onGraphics(RenderDevice* rd) {
         sky->renderLensFlare(renderDevice, lighting);
     }
 	renderDevice->push2D();
-		_dataModel->getGuiRoot()->renderGUI(renderDevice);
+		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
 		rd->pushState();
 			rd->beforePrimitive();
 

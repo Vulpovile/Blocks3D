@@ -386,7 +386,7 @@ void GuiRoot::setDebugMessage(std::string msg, G3D::RealTime msgTime)
 
 //void GuiRoot::render(G3D::RenderDevice* renderDevice) {}
 
-void GuiRoot::renderGUI(G3D::RenderDevice* rd)
+void GuiRoot::renderGUI(G3D::RenderDevice* rd, double fps)
 {
 	//TODO--Move these to their own instance
 
@@ -398,8 +398,8 @@ void GuiRoot::renderGUI(G3D::RenderDevice* rd)
 #ifdef _DEBUG
 	stream.str("");
     stream.clear();
-    stream << std::fixed << std::setprecision(3) << m_graphicsWatch.FPS();
-    fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
+    stream << std::fixed << std::setprecision(3) << fps;
+    g_fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
 #endif
 	//GUI Boxes	
 	Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
