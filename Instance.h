@@ -1,7 +1,7 @@
-
 #pragma once
 #include <G3DAll.h>
 #include "propertyGrid.h"
+
 class Instance
 {
 public:

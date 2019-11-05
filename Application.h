@@ -1,23 +1,37 @@
 #pragma once
 #include <G3DAll.h>
-#include "CameraController.h"
 #include "PropertyWindow.h"
+#include "TextButtonInstance.h"
+#include "ImageButtonInstance.h"
+#include "CameraController.h"
 
-class Demo { // : public GApp {
+class TextButtonInstance;
+class ImageButtonInstance;
+class PartInstance;
+class CameraController;
+
+class Application { // : public GApp {
 	public:
-		Demo(const GAppSettings& settings,HWND parentWindow);
+		Application(HWND parentWindow);
 		void Boop();
-		virtual				~Demo() {}
-		virtual void		exitApplication();
-		virtual void		onInit();
-		virtual void		onLogic();
-		virtual void		onNetwork();
-		virtual void		onSimulation(RealTime rdt, SimTime sdt, SimTime idt);
-		virtual void		onGraphics(RenderDevice* rd);
-		virtual void		onUserInput(UserInput* ui);
-		virtual void		onCleanup();
-
+		virtual			~Application() {}
+		virtual void	exitApplication();
+		virtual void	onInit();
+		virtual void	onLogic();
+		virtual void	onNetwork();
+		virtual void	onSimulation(RealTime rdt, SimTime sdt, SimTime idt);
+		virtual void	onGraphics(RenderDevice* rd);
+		virtual void	onUserInput(UserInput* ui);
+		virtual void	onCleanup();
+		void			clearInstances();
+		PartInstance*	makePart();
+		void			drawButtons(RenderDevice* rd);
+		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
+		void			makeFlag(Vector3 &vec, RenderDevice* &rd);
+		TextButtonInstance*		makeTextButton();
+		ImageButtonInstance*	makeImageButton(G3D::TextureRef newImage, G3D::TextureRef overImage, G3D::TextureRef downImage, G3D::TextureRef disableImage);
 		std::vector<Instance*>	getSelection();
+		void		deleteInstance();
 		void		run();
 		void		QuitApp();
 		void		resizeWithParent(HWND parentWindow);
@@ -30,7 +44,7 @@ class Demo { // : public GApp {
 		void		onMouseRightUp(int x, int y);
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
-
+		int			getMode();
 		CameraController	cameraController;
 		RenderDevice*		renderDevice;
 		UserInput*			userInput;
@@ -48,7 +62,14 @@ class Demo { // : public GApp {
 		HWND				_hwndToolbox;
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
+		DataModelInstance*	_dataModel;
+		std::string			_message;
+		G3D::RealTime		_messageTime;
 		G3D::TextureRef		shadowMap;
+		std::string			_title;
+		bool				_dragging;
+		int					_mode;
+		GAppSettings		_settings;
 		double lightProjX, lightProjY, lightProjNear, lightProjFar;
 	protected:
 		Stopwatch           m_graphicsWatch;

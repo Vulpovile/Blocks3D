@@ -1,6 +1,6 @@
 #include "Globals.h"
+#include "Application.h"
 
-DataModelInstance* Globals::dataModel = NULL;
 int const Globals::gen = 0;
 int const Globals::major = 0;
 int const Globals::minor = 4;
@@ -9,11 +9,23 @@ int Globals::surfaceId = 2;
 bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;
 std::vector<Instance*> postRenderStack = std::vector<Instance*>();
-const std::string Globals::PlaceholderName = "Dynamica";
+
 std::vector<Instance*> g_selectedInstances = std::vector<Instance*>();
+DataModelInstance* g_dataModel = NULL;
+
 bool running = false;
 G3D::TextureRef Globals::surface;
 POINT Globals::mousepoint;
+
+GFontRef fntdominant = NULL;
+GFontRef fntlighttrek = NULL;
+
 Globals::Globals(void){}
 
 Globals::~Globals(void){}
+
+std::string cameraSound="";
+std::string clickSound="";
+std::string dingSound="";
+
+Application *g_usableApp = NULL;

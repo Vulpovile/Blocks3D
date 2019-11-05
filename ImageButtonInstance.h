@@ -1,5 +1,8 @@
 #pragma once
 #include "BaseButtonInstance.h"
+
+class BaseButtonInstance;
+
 class ImageButtonInstance : public BaseButtonInstance
 {
 public:

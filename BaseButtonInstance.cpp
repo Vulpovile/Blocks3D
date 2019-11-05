@@ -12,7 +12,7 @@ BaseButtonInstance::BaseButtonInstance(void)
 
 void BaseButtonInstance::render(RenderDevice* rd)
 {
-	DataModelInstance* dataModel = Globals::dataModel;
+	DataModelInstance* dataModel = g_dataModel;
 	Vector2 pos = Vector2(dataModel->mousex,dataModel->mousey);
 	drawObj(rd, pos, dataModel->mouseButton1Down);
 	Instance::render(rd);

@@ -99,7 +99,7 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 	}
 	else
 	{
-		MessageBox(NULL,"Cannot read IWebBrowser2...",(Globals::PlaceholderName+" Crash").c_str(),MB_OK);
+		MessageBox(NULL,"Cannot read IWebBrowser2...",(g_PlaceholderName+" Crash").c_str(),MB_OK);
 	}
 	return false;
 }

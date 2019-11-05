@@ -2,6 +2,8 @@
 #include "DataModelInstance.h"
 #include <G3DAll.h>
 
+class Application;
+
 class Globals
 {
 public:
@@ -17,9 +19,19 @@ public:
 	static const int patch;
 	static G3D::TextureRef surface;
 	static int surfaceId;
-	static const std::string PlaceholderName;
+	static const std::string g_PlaceholderName;
 };
 
 extern std::vector<Instance*> postRenderStack;
 extern std::vector<Instance*> g_selectedInstances;
 extern bool running;
+extern DataModelInstance* g_dataModel;
+extern Application* g_usableApp;
+
+extern GFontRef fntdominant;
+extern GFontRef fntlighttrek;
+
+extern std::string cameraSound;
+extern std::string clickSound;
+extern std::string dingSound;
+const std::string g_PlaceholderName = "HyperCube";

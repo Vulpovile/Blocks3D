@@ -1,8 +1,10 @@
 #pragma once
 #include "instance.h"
-#pragma once
 #include "ButtonListener.h"
+
 class ButtonListener;
+class Instance;
+
 class BaseButtonInstance : public Instance
 {
 public:

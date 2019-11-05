@@ -2,7 +2,7 @@
 #include "win32Defines.h"
 #include <iostream>
 #include "PartInstance.h"
-#include "Demo.h"
+#include "Application.h"
 #include "AudioPlayer.h"
 
 
@@ -152,7 +152,7 @@ void CameraController::centerCamera(Instance* selection)
 	}
 }
 
-void CameraController::update(Demo* demo)
+void CameraController::update(Application* app)
 {
 	float offsetSize = 0.05F;
 

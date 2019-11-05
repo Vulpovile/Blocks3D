@@ -8,7 +8,7 @@
 #define CAM_ZOOM_MIN 0.1f
 #define CAM_ZOOM_MAX 100.f
 
-class Demo;
+class Application;
 
 class CameraController {
 	public:
@@ -19,7 +19,7 @@ class CameraController {
 		void lookAt(const Vector3& position);
 		void refreshZoom(const CoordinateFrame& frame);
 		void pan(CoordinateFrame* frame,float spdX,float spdY);
-		void update(Demo* demo);
+		void update(Application* app);
 		void centerCamera(Instance* selection);
 		void panLeft();
 		void panRight();
