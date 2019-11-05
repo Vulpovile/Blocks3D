@@ -2,7 +2,7 @@
 #include "PVInstance.h"
 #include "Enum.h"
 
-#define NEW_BOX_RENDER
+//#define NEW_BOX_RENDER
 
 class PartInstance : public PVInstance
 {
@@ -38,6 +38,7 @@ public:
 	bool collides(Box);
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	#ifdef NEW_BOX_RENDER
 	void addVertex(Vector3 vertexPos,Color3 color);
 	void addNormals(Vector3 normal);
 	void addSingularNormal(Vector3 normal);
@@ -45,6 +46,7 @@ public:
 	void debugPrintVertexIDs(RenderDevice* rd, GFontRef font, Matrix3 camRot);
 	void makeFace(int vertex1, int vertex2, int vertex3);
 	bool isUniqueVertex(Vector3 pos);
+	#endif
 private:
 	Vector3 position;
 	Vector3 size;

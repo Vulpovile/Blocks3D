@@ -194,7 +194,7 @@ bool PartInstance::collides(Box box)
 {
 	return CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), box);
 }
-
+#ifdef NEW_BOX_RENDER
 void PartInstance::addVertex(Vector3 vertexPos,Color3 color)
 {
 	_vertices.push_back(vertexPos.x);
@@ -265,15 +265,15 @@ bool PartInstance::isUniqueVertex(Vector3 pos)
 	return true;
 }
 
-#ifdef NEW_BOX_RENDER
-
 void PartInstance::render(RenderDevice* rd) {
-	if(nameShown)
-		postRenderStack.push_back(this);
+	//if(nameShown)
+		//postRenderStack.push_back(this);
  	if (changed)
 	{
+		
 		getBox();
 		_vertices.clear();
+		//std::vector<GLfloat>(_vertices).swap(_vertices); //Clear the memory
 		Vector3 renderSize = size/2;
  		// Front
 		addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z),

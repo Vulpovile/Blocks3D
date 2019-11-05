@@ -56,6 +56,7 @@ PartInstance* Application::makePart()
 
 Application::Application(HWND parentWindow) { //: GApp(settings,window) {
 	
+
 	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_PlaceholderName;
 	CreateDirectory(tempPath.c_str(), NULL);
 	
@@ -585,7 +586,13 @@ void Application::onGraphics(RenderDevice* rd) {
 	
 	rd->beforePrimitive();
 	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 	_dataModel->getWorkspace()->render(rd);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
 
