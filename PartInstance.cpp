@@ -414,8 +414,10 @@ void PartInstance::render(RenderDevice* rd)
 {
 	
 	if(changed)
+	{
 		Box box = getBox();
-	
+	changed = false;
+	glNewList(glList, GL_COMPILE);
 	glColor(color);
 	/*glEnable( GL_TEXTURE_2D );
 	glEnable(GL_BLEND);// you enable blending function
@@ -455,10 +457,8 @@ void PartInstance::render(RenderDevice* rd)
 		glTexCoord2f(0.0F,0.25F);
 		glVertex3fv(v3);*/
 
-		glEnable( GL_TEXTURE_2D );
 		glEnable(GL_BLEND);// you enable blending function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-		glBindTexture( GL_TEXTURE_2D, Globals::surfaceId);
 		glBegin( GL_QUADS );
 		glNormal3fv((v1 - v0).cross(v3 - v0).direction());
 		glTexCoord2d(0.0,0.0+add);
@@ -472,8 +472,11 @@ void PartInstance::render(RenderDevice* rd)
 		glEnd();
 		glDisable( GL_TEXTURE_2D );
 	}
+	glEndList();
 	/*glEnd();
 	glDisable(GL_TEXTURE_2D);*/
+	}
+	glCallList(glList);
 	glColor(Color3::white());
 	if(!children.empty())
 	{

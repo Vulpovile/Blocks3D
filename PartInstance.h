@@ -2,7 +2,7 @@
 #include "PVInstance.h"
 #include "Enum.h"
 
-//#define NEW_BOX_RENDER
+#define NEW_BOX_RENDER
 
 class PartInstance : public PVInstance
 {
