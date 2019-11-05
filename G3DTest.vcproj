@@ -271,6 +271,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GuiRoot.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IEBrowser.cpp"
 				>
 			</File>
@@ -304,6 +308,10 @@
 			</File>
 			<File
 				RelativePath=".\PropertyWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StringFunctions.cpp"
 				>
 			</File>
 			<File
@@ -417,6 +425,10 @@
 			</File>
 			<File
 				RelativePath=".\Globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GuiRoot.h"
 				>
 			</File>
 			<File

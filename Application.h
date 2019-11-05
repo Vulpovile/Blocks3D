@@ -4,6 +4,7 @@
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "CameraController.h"
+//#include "GuiRoot.h"
 
 class TextButtonInstance;
 class ImageButtonInstance;
@@ -28,8 +29,6 @@ class Application { // : public GApp {
 		void			drawButtons(RenderDevice* rd);
 		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
 		void			makeFlag(Vector3 &vec, RenderDevice* &rd);
-		TextButtonInstance*		makeTextButton();
-		ImageButtonInstance*	makeImageButton(G3D::TextureRef newImage, G3D::TextureRef overImage, G3D::TextureRef downImage, G3D::TextureRef disableImage);
 		std::vector<Instance*>	getSelection();
 		void		deleteInstance();
 		void		run();
@@ -39,19 +38,22 @@ class Application { // : public GApp {
 		void		onKeyPressed(int key);
 		void		onKeyUp(int key);
 		void		onMouseLeftPressed(HWND hwnd,int x, int y);
-		void		onMouseLeftUp(int x, int y);
+		void		onMouseLeftUp(RenderDevice* renderDevice, int x, int y);
 		void		onMouseRightPressed(int x, int y);
 		void		onMouseRightUp(int x, int y);
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
 		int			getMode();
 		CameraController	cameraController;
-		RenderDevice*		renderDevice;
 		UserInput*			userInput;
 		PropertyWindow*		_propWindow;
 		void generateShadowMap(const CoordinateFrame& lightViewMatrix) const;
+		RenderDevice*		getRenderDevice();
+		void				selectInstance(Instance* selectedInstance,PropertyWindow* propWindow);
+		void				setMode(int mode);
 	private:
-		void				initGUI();
+		RenderDevice*		renderDevice;
+		//void				initGUI();
 		HWND				_hWndMain;
 		SkyRef				sky;
 		bool				quit;
@@ -63,8 +65,6 @@ class Application { // : public GApp {
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
 		DataModelInstance*	_dataModel;
-		std::string			_message;
-		G3D::RealTime		_messageTime;
 		G3D::TextureRef		shadowMap;
 		std::string			_title;
 		bool				_dragging;

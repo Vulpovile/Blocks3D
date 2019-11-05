@@ -3,6 +3,9 @@
 #include "LevelInstance.h"
 #include "PartInstance.h"
 #include "rapidxml/rapidxml.hpp"
+#include "GuiRoot.h"
+
+class GuiRoot;
 
 class DataModelInstance :
 	public Instance
@@ -22,12 +25,12 @@ public:
 	WorkspaceInstance*		workspace;
 	LevelInstance *			level;
 	LevelInstance *			getLevel();
-	Instance*				guiRoot;
+	GuiRoot*				guiRoot;
 	std::string				message;
 	std::string				_loadedFileName;
 	bool					showMessage;
 	G3D::GFontRef			font;
-	Instance*				getGuiRoot();
+	GuiRoot*				getGuiRoot();
 	float					mousex;
 	float					mousey;
 	Vector2					getMousePos();

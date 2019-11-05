@@ -1,3 +1,4 @@
+#pragma once
 #include "ButtonListener.h"
 
 class RotateButtonListener : public ButtonListener {

@@ -28,8 +28,8 @@ extern bool running;
 extern DataModelInstance* g_dataModel;
 extern Application* g_usableApp;
 
-extern GFontRef fntdominant;
-extern GFontRef fntlighttrek;
+extern GFontRef g_fntdominant;
+extern GFontRef g_fntlighttrek;
 
 extern std::string cameraSound;
 extern std::string clickSound;

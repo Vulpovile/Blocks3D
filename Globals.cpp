@@ -17,8 +17,8 @@ bool running = false;
 G3D::TextureRef Globals::surface;
 POINT Globals::mousepoint;
 
-GFontRef fntdominant = NULL;
-GFontRef fntlighttrek = NULL;
+GFontRef g_fntdominant = NULL;
+GFontRef g_fntlighttrek = NULL;
 
 Globals::Globals(void){}
 

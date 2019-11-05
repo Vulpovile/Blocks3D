@@ -20,9 +20,9 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 
 	button->selected = true;
 	if(button->name == "Cursor")
-		mode = CURSOR;
+		g_usableApp->setMode(CURSOR);
 	else if(button->name == "Resize")
-		mode = RESIZE;
+		g_usableApp->setMode(RESIZE);
 	else if(button->name == "Arrows")
-		mode = ARROWS;
+		g_usableApp->setMode(ARROWS);
 }

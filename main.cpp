@@ -121,7 +121,7 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			app->onMouseLeftPressed(hwnd,LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_LBUTTONUP:
-			app->onMouseLeftUp(LOWORD(lParam),HIWORD(lParam));
+			app->onMouseLeftUp(app->getRenderDevice(),LOWORD(lParam),HIWORD(lParam));
 		break;
 		case WM_RBUTTONDOWN:
 			app->onMouseRightPressed(LOWORD(lParam),HIWORD(lParam));
@@ -155,7 +155,7 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_SIZE:
 		{
-			app->onGraphics(app->renderDevice);
+			app->onGraphics(app->getRenderDevice());
 		}
 		break;
         default:

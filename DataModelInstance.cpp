@@ -1,4 +1,5 @@
 #include <string>
+#include "GuiRoot.h"
 #include "DataModelInstance.h"
 #include <fstream>
 #include <iostream>
@@ -13,7 +14,7 @@ DataModelInstance::DataModelInstance(void)
 {
 	Instance::Instance();
 	workspace = new WorkspaceInstance();
-	guiRoot = new Instance();
+	guiRoot = new GuiRoot();
 	level = new LevelInstance();
 	//children.push_back(workspace);
 	//children.push_back(level);
@@ -540,7 +541,7 @@ void DataModelInstance::setMousePos(Vector2 pos)
 	mousex=pos.x;
 	mousey=pos.y;
 }
-Instance* DataModelInstance::getGuiRoot()
+GuiRoot* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;
 }

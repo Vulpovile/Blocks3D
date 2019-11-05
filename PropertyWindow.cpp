@@ -5,6 +5,7 @@
 #include "PropertyWindow.h"
 #include "Globals.h"
 #include "strsafe.h"
+#include "Application.h"
 
 /*typedef struct typPRGP {
     Instance* instance;   // Declare member types
@@ -177,7 +178,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					CHAR  ListItem[256];
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
 					propWind->ClearProperties();
-					propWind->UpdateSelected(children.at(ItemIndex));
+					g_usableApp->selectInstance(children.at(ItemIndex),propWind);
 				}
 			}
 		break;
@@ -212,7 +213,7 @@ void PropertyWindow::refreshExplorer(Instance* selectedInstance)
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
 	parent = NULL;
 	children.clear();
-	g_selectedInstances.clear();
+	//g_selectedInstances.clear();
 	//for (unsigned int i=0;i<g_selectedInstances.size();i++) {
 	children.push_back(selectedInstance);
 	SendMessage(_explorerComboBox, CB_ADDSTRING, 0, (LPARAM)selectedInstance->name.c_str()); 
@@ -233,7 +234,7 @@ void PropertyWindow::refreshExplorer(Instance* selectedInstance)
 		children.push_back(selectedChildren.at(z));
 		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)selectedChildren.at(z)->name.c_str()); 
 	}
-	g_selectedInstances.push_back(selectedInstance);
+	//g_usableApp->selectInstance(selectedInstance, this);
 	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
 	//}
 }
@@ -346,20 +347,23 @@ void PropertyWindow::UpdateSelected(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
 	prop = instance->getProperties();
-	selectedInstance = instance;
-	for(size_t i = 0; i < prop.size(); i++)
+	if (selectedInstance != instance)
 	{
-		::PROPGRIDITEM item = prop.at(i);
-		PropGrid_AddItem(_propGrid, &item);
-		//PRGP propgp;
-		//propgp.instance = instance;
-		//propgp.prop = prop.at(i);
-	}
-	PropGrid_ExpandAllCatalogs(_propGrid);
-	//SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
+		selectedInstance = instance;
+		for(size_t i = 0; i < prop.size(); i++)
+		{
+			::PROPGRIDITEM item = prop.at(i);
+			PropGrid_AddItem(_propGrid, &item);
+			//PRGP propgp;
+			//propgp.instance = instance;
+			//propgp.prop = prop.at(i);
+		}
+		PropGrid_ExpandAllCatalogs(_propGrid);
+		//SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 
-	refreshExplorer(instance);
-	_resize();
+		refreshExplorer(instance);
+		_resize();
+	}
 }
 
 void PropertyWindow::ClearProperties()

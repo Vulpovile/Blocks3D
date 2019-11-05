@@ -1,3 +1,4 @@
+#pragma once
 #include "ButtonListener.h"
 
 #define CURSOR 0

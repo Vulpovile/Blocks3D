@@ -39,7 +39,9 @@ void Instance::render(RenderDevice* rd)
 	glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-
+void Instance::update()
+{
+}
 
 PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type)
 {
