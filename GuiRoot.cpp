@@ -394,7 +394,13 @@ void GuiRoot::renderGUI(G3D::RenderDevice* rd)
 	stream << std::fixed << std::setprecision(1) << g_dataModel->getLevel()->timer;
 	g_fntdominant->draw2D(rd, "Timer: " + stream.str(), Vector2(rd->getWidth() - 120, 25), 20, Color3::fromARGB(0x81C518), Color3::black());
 	g_fntdominant->draw2D(rd, "Score: " + Convert(g_dataModel->getLevel()->score), Vector2(rd->getWidth() - 120, 50), 20, Color3::fromARGB(0x81C518), Color3::black());
-	
+	//FPS
+#ifdef _DEBUG
+	stream.str("");
+    stream.clear();
+    stream << std::fixed << std::setprecision(3) << m_graphicsWatch.FPS();
+    fntdominant->draw2D(rd, "FPS: " + stream.str(), Vector2(120, 25), 10, Color3::fromARGB(0xFFFF00), Color3::black());
+#endif
 	//GUI Boxes	
 	Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
