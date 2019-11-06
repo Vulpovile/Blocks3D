@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <commdlg.h>
+#include "ErrorFunctions.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -409,6 +410,12 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		std::string tname = hname.substr(0, hname.length() - 5);
 		name = tname;
 		return true;
+	}
+	else
+	{
+		std::stringstream msg;
+		msg << "Failed to load file:" << std::endl << filename << std::endl << strerror(errno);
+		MessageBoxStr(msg.str());
 	}
 }
 
