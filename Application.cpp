@@ -42,6 +42,7 @@ static bool mouseMovedBeginMotion = false;
 static POINT oldGlobalMouse;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
+bool ready = false;
 
 void Application::clearInstances()
 {
@@ -56,7 +57,7 @@ PartInstance* Application::makePart()
 
 void Application::setFocus(bool focus)
 {
-	if(_propWindow != NULL && _propWindow->_hwndProp != NULL)
+	if(_propWindow != NULL && ready)
 		if(focus)
 		{
 			ShowWindow(_propWindow->_hwndProp, SW_SHOW);
@@ -137,6 +138,7 @@ Application::Application(HWND parentWindow) { //: GApp(settings,window) {
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
 	//webBrowser->navigateSyncURL(L"http://scottbeebiwan.tk/g3d/toolbox/");
+	ready = true;
 }
 
 
