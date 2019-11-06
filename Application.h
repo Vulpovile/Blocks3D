@@ -43,6 +43,7 @@ class Application { // : public GApp {
 		void		onMouseRightUp(int x, int y);
 		void		onMouseMoved(int x, int y);
 		void		onMouseWheel(int x, int y, short delta);
+		void		setFocus(bool isFocused);
 		int			getMode();
 		CameraController	cameraController;
 		UserInput*			userInput;

@@ -54,6 +54,16 @@ PartInstance* Application::makePart()
 	return part;
 }
 
+void Application::setFocus(bool focus)
+{
+	if(focus)
+	{
+		MessageBox(NULL, "NO", "NO", MB_OK);
+		SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	}
+	else SetWindowPos(_propWindow->_hwndProp, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+}
+
 Application::Application(HWND parentWindow) { //: GApp(settings,window) {
 	
 
@@ -730,9 +740,9 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 							if(g_selectedInstances.at(i) == test)
 							{
 								found = true;
-								ShowWindow(_propWindow->_hwndProp, SW_SHOW);
-								SetActiveWindow(_propWindow->_hwndProp);
-								SetForegroundWindow(_propWindow->_hwndProp);
+								//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+								//SetActiveWindow(_propWindow->_hwndProp);
+								//SetForegroundWindow(_propWindow->_hwndProp);
 								break;
 							}
 						}
