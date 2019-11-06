@@ -58,10 +58,13 @@ void Application::setFocus(bool focus)
 {
 	if(focus)
 	{
-		MessageBox(NULL, "NO", "NO", MB_OK);
-		SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+		ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+		SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 	}
-	else SetWindowPos(_propWindow->_hwndProp, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	else 
+	{
+		SetWindowPos(_propWindow->_hwndProp, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
 }
 
 Application::Application(HWND parentWindow) { //: GApp(settings,window) {

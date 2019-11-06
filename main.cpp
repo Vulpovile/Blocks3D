@@ -74,10 +74,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_SIZE:
 			app->resizeWithParent(hwnd);
 		break;
-		case WM_ACTIVATEAPP:
-			if(wParam == FALSE) app->setFocus(false);
+		case WM_ACTIVATE:
+			if(wParam > WA_INACTIVE) app->setFocus(false);
 			else app->setFocus(true);
-			break;
         default:
 		{
             return DefWindowProc(hwnd, msg, wParam, lParam);
