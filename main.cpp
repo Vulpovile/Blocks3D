@@ -1,6 +1,6 @@
 /**
 	Licensed under GPLv2
-	Based on G3D 6.10 © 2003-2006 Morgan McGuire.
+	Based on G3D 6.10 Â© 2000-2006 Morgan McGuire.
  */
 
 // TODO: Move toolbar buttons with resized window.
@@ -218,7 +218,7 @@ int main(int argc, char** argv) {
 
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Failed to create HWND", (g_PlaceholderName + " Crash").c_str() , MB_OK);
+			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_PlaceholderName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
