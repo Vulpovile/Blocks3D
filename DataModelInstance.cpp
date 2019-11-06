@@ -65,7 +65,7 @@ rapidxml::xml_node<>* DataModelInstance::getNode(xml_node<> * node,const char* n
 		_errMsg = "Expected <";
 		_errMsg += name;
 		_errMsg+="> tag.";
-		_successfulLoad=true;
+		_successfulLoad=false;
 		return 0;
 	}
 	return tempNode;
@@ -78,7 +78,7 @@ float DataModelInstance::getFloatValue(xml_node<> * node,const char* name)
 		_errMsg = "Expected <";
 		_errMsg += name;
 		_errMsg+="> tag.";
-		_successfulLoad=true;
+		_successfulLoad=false;
 		return 0;
 	}
 	float newFloat;
@@ -424,19 +424,26 @@ bool DataModelInstance::readXMLFileStream(std::ifstream* file)
 	file->seekg(0,file->end);
 	int length = file->tellg();
 	if (length<0)
+	{
 		MessageBoxStr("File is empty");
+		file->close();
+		return false;
+	}
 	file->seekg(0,file->beg);
 	char * buffer = new char[length+1];
 	buffer[length]=0;
 
 	file->read(buffer,length);
+	file->close();
+
 	if (!file)
 	{
 		stringstream msg;
 		msg << "Something went wrong." << endl << strerror(errno);
 		MessageBoxStr(msg.str());
+		return false;
 	}
-	file->close();
+	_successfulLoad = true;
 	xml_document<> doc;
 	doc.parse<0>(buffer);
 	xml_node<> *mainNode = doc.first_node();
