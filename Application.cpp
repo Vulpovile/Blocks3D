@@ -42,7 +42,6 @@ static bool mouseMovedBeginMotion = false;
 static POINT oldGlobalMouse;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
-bool ready = false;
 
 void Application::clearInstances()
 {
@@ -57,7 +56,7 @@ PartInstance* Application::makePart()
 
 void Application::setFocus(bool focus)
 {
-	if(_propWindow != NULL && ready)
+	if(_propWindow != NULL)
 		if(focus)
 		{
 			ShowWindow(_propWindow->_hwndProp, SW_SHOW);
@@ -69,7 +68,7 @@ void Application::setFocus(bool focus)
 		}
 }
 
-Application::Application(HWND parentWindow) { //: GApp(settings,window) {
+Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(settings,window) {
 	
 
 	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_PlaceholderName;
@@ -138,7 +137,6 @@ Application::Application(HWND parentWindow) { //: GApp(settings,window) {
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
 	//webBrowser->navigateSyncURL(L"http://scottbeebiwan.tk/g3d/toolbox/");
-	ready = true;
 }
 
 
