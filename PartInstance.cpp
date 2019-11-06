@@ -426,7 +426,7 @@ void PartInstance::render(RenderDevice* rd)
 	glBegin(GL_QUADS);*/
     for(int i = 0; i < 96; i+=16)
 	{
-		double add = 0.8;
+		/*double add = 0.8;
 		Enum::SurfaceType::Value face;
 		if(i == 0)//Back
 			face = back;
@@ -461,16 +461,16 @@ void PartInstance::render(RenderDevice* rd)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 		glBegin( GL_QUADS );
 		glNormal3fv((v1 - v0).cross(v3 - v0).direction());
-		glTexCoord2d(0.0,0.0+add);
+		//glTexCoord2d(0.0,0.0+add);
 		glVertex3fv(v0);
-		glTexCoord2d( 1.0,0.0+add);
+		//glTexCoord2d( 1.0,0.0+add);
 		glVertex3fv(v1);
-		glTexCoord2d(1.0,0.2+add);
+		//glTexCoord2d(1.0,0.2+add);
 		glVertex3f(_vertices[i+6], _vertices[i+7], _vertices[i+8]);
-		glTexCoord2d( 0.0,0.2+add);
+		//glTexCoord2d( 0.0,0.2+add);
 		glVertex3fv(v3);
 		glEnd();
-		glDisable( GL_TEXTURE_2D );
+		//glDisable( GL_TEXTURE_2D );
 	}
 	glEndList();
 	/*glEnd();
