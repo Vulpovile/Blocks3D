@@ -423,10 +423,19 @@ bool DataModelInstance::readXMLFileStream(std::ifstream* file)
 {
 	file->seekg(0,file->end);
 	int length = file->tellg();
+	if (length<0)
+		MessageBoxStr("File is empty");
 	file->seekg(0,file->beg);
 	char * buffer = new char[length+1];
 	buffer[length]=0;
+
 	file->read(buffer,length);
+	if (!file)
+	{
+		stringstream msg;
+		msg << "Something went wrong." << endl << strerror(errno);
+		MessageBoxStr(msg.str());
+	}
 	file->close();
 	xml_document<> doc;
 	doc.parse<0>(buffer);
