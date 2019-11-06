@@ -56,7 +56,7 @@ PartInstance* Application::makePart()
 
 void Application::setFocus(bool focus)
 {
-	if(_propWindow->_hwndProp != NULL)
+	if(_propWindow != NULL && _propWindow->_hwndProp != NULL)
 		if(focus)
 		{
 			ShowWindow(_propWindow->_hwndProp, SW_SHOW);
