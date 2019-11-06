@@ -56,15 +56,16 @@ PartInstance* Application::makePart()
 
 void Application::setFocus(bool focus)
 {
-	if(focus)
-	{
-		ShowWindow(_propWindow->_hwndProp, SW_SHOW);
-		SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
-	else 
-	{
-		SetWindowPos(_propWindow->_hwndProp, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
+	if(_propWindow->_hwndProp != NULL)
+		if(focus)
+		{
+			ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+			SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+		}
+		else 
+		{
+			SetWindowPos(_propWindow->_hwndProp, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+		}
 }
 
 Application::Application(HWND parentWindow) { //: GApp(settings,window) {
