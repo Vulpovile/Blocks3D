@@ -303,10 +303,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PartType.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\propertyGrid.cpp"
 				>
 			</File>
