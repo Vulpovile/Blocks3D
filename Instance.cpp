@@ -36,7 +36,7 @@ void Instance::update()
 {
 }
 
-PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type)
+PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type, TCHAR choices[])
 {
 	PROPGRIDITEM pItem;
 	PropGrid_ItemInit(pItem);
@@ -45,6 +45,8 @@ PROPGRIDITEM Instance::createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, 
 	pItem.lpszPropDesc=propDesc;
 	pItem.lpCurValue=curVal;
 	pItem.iItemType=type;
+	if(choices != NULL)
+		pItem.lpszzCmbItems = choices;
 	return pItem;
 }
 

@@ -1,3 +1,4 @@
+#ifdef UENUMS
 #ifndef ENUM_H
 #define ENUM_H
 static enum BinType {GameTool, Grab, Clone, Hammer};
@@ -11,4 +12,5 @@ static enum SurfaceType{Smooth, Snaps, Inlets, Glue, Weld, Spawn, Hinge, Motor, 
 static enum SoundType {NoSound, Boing, Bomb, Break, Click, Clock, Slingshot, Page, Ping, Snap, Splat, Step, StepOn, Swoosh, Victory};
 static enum PartType {Ball, Block, Cylinder};
 static enum KeywordFilterType {Include, Exclude};
+#endif
 #endif
