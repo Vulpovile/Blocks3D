@@ -162,7 +162,7 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 // Can probably be deleted
 CoordinateFrame PartInstance::getCFrameRenderBased()
 {
-	return cFrame;//CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
+	return CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
 }
 #ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
@@ -239,6 +239,18 @@ void PartInstance::addVertex(Vector3 vertexPos,Color3 color)
 	addVertex(v2,color);
 	addVertex(v3,color);
 	//addNormals(cross(v2-v1,v3-v1).direction());
+	addSingularNormal(cross(v2-v1,v3-v1).direction());
+	addSingularNormal(cross(v3-v2,v1-v2).direction());
+	addSingularNormal(cross(v1-v3,v2-v3).direction());
+}
+
+void PartInstance::addSmoothTriangle(Vector3 v1,Vector3 v2,Vector3 v3)
+{
+	addVertex(v1,color);
+	addVertex(v2,color);
+	addVertex(v3,color);
+	//addNormals(cross(v2-v1,v3-v1).direction());
+	
 	addSingularNormal(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(v3-v2,v1-v2).direction());
 	addSingularNormal(cross(v1-v3,v2-v3).direction());
@@ -376,6 +388,12 @@ void PartInstance::addPlus2(Vector3 v1)
 		Vector3(_vertices[vertex2],_vertices[vertex2+1],_vertices[vertex2+2]),
 		Vector3(_vertices[vertex3],_vertices[vertex3+1],_vertices[vertex3+2]));
 }
+void PartInstance::makeSmoothFace(int vertex1,int vertex2, int vertex3)
+{
+	addSmoothTriangle(Vector3(_vertices[vertex1],_vertices[vertex1+1],_vertices[vertex1+2]),
+		Vector3(_vertices[vertex2],_vertices[vertex2+1],_vertices[vertex2+2]),
+		Vector3(_vertices[vertex3],_vertices[vertex3+1],_vertices[vertex3+2]));
+}
 bool PartInstance::isUniqueVertex(Vector3 pos)
 {
 	for (unsigned int i=0;i<_debugUniqueVertices.size();i+=1)
@@ -402,6 +420,126 @@ void PartInstance::render(RenderDevice* rd) {
 		Vector3 renderSize = size/2;
 		switch(this->shape)
 		{
+			case Enum::Shape::Ball:
+				{
+				int obv = _bevelSize;
+				_bevelSize = this->size.y / 3.14159F;
+					// Front
+				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
+					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,renderSize.z)
+					);
+			
+				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,renderSize.z),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
+					Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z)
+					);
+				
+				// Top
+				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y,renderSize.z-_bevelSize),
+					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
+					Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize)
+					);
+				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize),
+					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
+					Vector3(-renderSize.x+_bevelSize,renderSize.y,-renderSize.z+_bevelSize)
+					);
+				
+				// Back
+				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
+					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z)
+					);
+				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
+					Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,-renderSize.z)
+					);
+		 		
+				// Bottom
+				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
+					Vector3(renderSize.x-_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize)
+					);
+				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
+					Vector3(-renderSize.x+_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
+					Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize)
+					);
+ 				// Left
+				addSmoothTriangle(Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
+					Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
+					Vector3(-renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize)
+					);
+				addSmoothTriangle(Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
+					Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
+					Vector3(-renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize)
+					);
+				
+ 				// Right
+				addSmoothTriangle(Vector3(renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize),
+					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
+					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize)
+					);
+				addSmoothTriangle(Vector3(renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize),
+					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
+					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize)
+					);
+						
+
+ 				// Bevel Top Front
+				makeSmoothFace(0,36,48);
+				makeSmoothFace(48,18,0);
+ 				// Bevel Left Front Corner
+				makeSmoothFace(18,156,162);
+				makeSmoothFace(24,18,162);
+ 				// Bevel Left Front Top Corner
+				makeSmoothFace(48,156,18);
+ 				// Bevel Left Front Bottom Corner
+				makeSmoothFace(120,6,150);
+ 				// Bevel Left Top
+				makeSmoothFace(48,66,156);
+				makeSmoothFace(144,156,66);
+ 				// Bevel Bottom
+				makeSmoothFace(6,120,114);
+				makeSmoothFace(114,12,6);
+ 				// Left Bottom
+				makeSmoothFace(120,150,174);
+				makeSmoothFace(174,132,120);
+ 				// Right Front Top Corner
+				makeSmoothFace(36,0,180);
+ 				// Right Front Corner
+				makeSmoothFace(180,0,12);
+				makeSmoothFace(186,180,12);
+ 				// Right Front Bottom Corner
+				makeSmoothFace(186,12,114);
+ 				// Right Bottom
+				makeSmoothFace(186,114,108);
+				makeSmoothFace(108,198,186);
+ 				// Right Top Corner
+				makeSmoothFace(180,192,36);
+				makeSmoothFace(192,42,36);
+ 				// Right Back Top Corner
+				makeSmoothFace(72,42,192);
+ 				// Right Back Bottom Corner
+				makeSmoothFace(78,198,108);
+ 				// Right Back Corner
+				makeSmoothFace(72,192,198);
+				makeSmoothFace(198,78,72);
+ 				// Back Bottom Corner
+				makeSmoothFace(78,108,132);
+				makeSmoothFace(132,84,78);
+ 				// Back Top
+				makeSmoothFace(42,72,102);
+				makeSmoothFace(102,66,42);
+ 				// Back Left Top Corner
+				makeSmoothFace(144,66,102);
+ 				// Back Left Corner
+				makeSmoothFace(144,102,84);
+				makeSmoothFace(84,174,144);
+ 				// Back Left Bottom Corner
+				makeSmoothFace(174,84,132);
+				_bevelSize = obv;
+				}
+				break;
 			case Enum::Shape::Block:
 				{
  			// Front
@@ -516,14 +654,7 @@ void PartInstance::render(RenderDevice* rd) {
 				makeFace(144,102,84);
 				makeFace(84,174,144);
  				// Back Left Bottom Corner
-				makeFace(174,84,132);
-			
-
-				
-
-				for (unsigned short i=0;i<_vertices.size()/6;i++) {
-					_indices.push_back(i);
-				}		
+				makeFace(174,84,132);	
 			}
 			break;
 			case Enum::Shape::Cylinder:
@@ -645,12 +776,13 @@ void PartInstance::render(RenderDevice* rd) {
 				addPlus(Vector3(-renderSize.x-0.01,0,0));
 				addPlus2(Vector3(renderSize.x+0.01,0,0));
 
-				for (unsigned short i=0;i<_vertices.size()/6;i++) {
-					_indices.push_back(i);
-				}		
+						
 			}
 			break;
 		}
+		for (unsigned short i=0;i<_vertices.size()/6;i++) {
+					_indices.push_back(i);
+				}
  		changed=false;
 		
 		glNewList(glList, GL_COMPILE);

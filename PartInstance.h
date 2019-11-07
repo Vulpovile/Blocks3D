@@ -44,6 +44,8 @@ public:
 	void addNormals(Vector3 normal);
 	void addSingularNormal(Vector3 normal);
 	void addTriangle(Vector3 vertexPos,Vector3 vertexPos2, Vector3 vertexPos3);
+	void addSmoothTriangle(Vector3 vertexPos,Vector3 vertexPos2, Vector3 vertexPos3);
+	void makeSmoothFace(int vertex1, int vertex2, int vertex3);
 	void addPlus(Vector3 v1);
 	void addPlus2(Vector3 v1);
 	void debugPrintVertexIDs(RenderDevice* rd, GFontRef font, Matrix3 camRot);
