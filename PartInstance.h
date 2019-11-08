@@ -1,12 +1,15 @@
 #pragma once
 #include "PVInstance.h"
 #include "Enum.h"
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #define NEW_BOX_RENDER
 
 class PartInstance : public PVInstance
 {
 public:
+	
 	PartInstance(void);
 	PartInstance(const PartInstance &oinst);
 	Instance* clone() const { return new PartInstance(*this); }
