@@ -114,6 +114,21 @@ std::vector<Instance* > Instance::getAllChildren()
 	return children;
 }
 
+std::vector<Instance* > Instance::compileAndGetPVVector()
+{
+	std::vector<Instance* > totalchildren;
+	if(!children.empty())
+	{
+		for(size_t i = 0; i < children.size(); i++)
+		{
+			std::vector<Instance* > subchildren = children.at(i)->compileAndGetPVVector();
+			if(!subchildren.empty())
+				totalchildren.insert(totalchildren.end(), subchildren.begin(), subchildren.end());
+		}
+	}
+	return totalchildren;
+}
+
 void Instance::setParent(Instance* newParent)
 {
 	if(parent != NULL)

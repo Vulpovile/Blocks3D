@@ -1,4 +1,5 @@
 #include "PVInstance.h"
+#include "WorkspaceInstance.h"
 
 PVInstance::PVInstance(void)
 {
@@ -19,6 +20,43 @@ PVInstance::~PVInstance(void)
 
 void PVInstance::postRender(RenderDevice* rd)
 {
+}
+
+void PVInstance::render(RenderDevice* rd)
+{
+}
+
+void PVInstance::setParent(Instance* newParent)
+{
+	if(parent != NULL)
+	{
+		Instance* workspace = parent;
+		while(workspace != NULL)
+		{
+			if(WorkspaceInstance* wsp = dynamic_cast<WorkspaceInstance*>(workspace))
+			{
+				wsp->removeFromPVector(this);
+				break;
+			}
+			workspace = workspace->getParent();
+		}
+		parent->removeChild(this);
+	}
+	parent = newParent;
+	if(newParent != NULL)
+	{
+		Instance* workspace = parent;
+		while(workspace != NULL)
+		{
+			if(WorkspaceInstance* wsp = dynamic_cast<WorkspaceInstance*>(workspace))
+			{
+				wsp->addToPVector(this);
+				break;
+			}
+			workspace = workspace->getParent();
+		}
+		newParent->addChild(this);
+	}
 }
 
 std::vector<PROPGRIDITEM> PVInstance::getProperties()

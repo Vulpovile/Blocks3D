@@ -603,7 +603,15 @@ void Application::onGraphics(RenderDevice* rd) {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	_dataModel->getWorkspace()->render(rd);
+	
+	
+	
+
+	for (unsigned int i = 0; i < _dataModel->getWorkspace()->__pvVector.size(); i++)
+	{
+		_dataModel->getWorkspace()->__pvVector[i]->render(rd);
+	}
+	//_dataModel->getWorkspace()->render(rd);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -846,7 +854,7 @@ void Application::run() {
 	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
-	float		fps=30.0f;
+	float		fps=3000.0f;
 
 	RealTime	desiredFrameDuration=1.0/fps;
 	onInit();

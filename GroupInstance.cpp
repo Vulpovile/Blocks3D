@@ -17,6 +17,8 @@ GroupInstance::~GroupInstance(void)
 {
 }
 
+
+
 std::vector<PROPGRIDITEM> GroupInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
