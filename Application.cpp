@@ -650,7 +650,7 @@ void Application::onGraphics(RenderDevice* rd) {
 			glEnable( GL_TEXTURE_2D );
 			glEnable(GL_BLEND);// you enable blending function
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-			
+			/*
 			std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
 			currentcursorid = cursorid;
 			for(size_t i = 0; i < instances.size(); i++)
@@ -667,7 +667,7 @@ void Application::onGraphics(RenderDevice* rd) {
 					
 				}
 			}
-			
+			*/
 			glBindTexture( GL_TEXTURE_2D, currentcursorid);
 
 			
