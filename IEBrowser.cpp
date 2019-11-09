@@ -8,6 +8,7 @@
 #include "IEBrowser.h"
 #include "Globals.h"
 #include "ax.h"
+
 //#include "IEDispatcher.h"
 
 void IEBrowser::Boop(char* test)
@@ -41,6 +42,17 @@ IEBrowser::~IEBrowser(void) {
 // Something goes here
 int IEBrowser::setExternal(IDispatch** ext)
 {
+	
+	std::cout << &m_IEDispatcher;
+	IInternetHostSecurityManager* spSecMan;
+	spDocument2->QueryInterface(IID_IInternetHostSecurityManager,
+			(void **) &spSecMan);
+
+	// TODO: hr needs to say: 'S_OK'
+	HRESULT hr = spSecMan->ProcessUrlAction(URLACTION_ACTIVEX_OVERRIDE_OBJECT_SAFETY,
+		NULL, 0, NULL, 0, 0, PUAF_DEFAULT);
+
+	(*ext) = &m_IEDispatcher;
 	return 1;
 }
 
@@ -83,9 +95,9 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 							if (SUCCEEDED(spDocument->QueryInterface(IID_ICustomDoc,(void**)&spCustomDoc)))
 							{
 								spCustomDoc->SetUIHandler(m_spHandler);
-				
 								m_spHandler->GetExternal(&m_spExternal);
-								
+								spDocument->QueryInterface(IID_IHTMLDocument2, (void **) &spDocument2);
+								setExternal(&m_spExternal);
 							}
 						}
 					}

@@ -2,11 +2,9 @@
 #include "oaidl.h"
 //DEFINE_GUID(CLSID_G3d, 0xB323F8E0L, 0x2E68, 0x11D0, 0x90, 0xEA, 0x00, 0xAA, 0x00, 0x60, 0xF8, 0x6F);
 
-/*
 class IEDispatcher : public IDispatch
 {
-*/
-
+/*
 EXTERN_C const IID IID_IDispatch;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
@@ -14,6 +12,7 @@ EXTERN_C const IID IID_IDispatch;
     MIDL_INTERFACE("B323F8E0-2E68-11D0-90EA-00AA0060F86F")
     IEDispatcher : public IDispatch
 	{
+*/
 public:
 	IEDispatcher(void);
 	~IEDispatcher(void);
@@ -27,4 +26,4 @@ public:
 	
 };
 
-#endif
+//#endif

@@ -3,6 +3,7 @@
 #include <mshtml.h>
 #include <exdisp.h>
 #include <Mshtmhst.h>
+#include "IEDispatcher.h"
 
 class IEBrowser {
 	public:
@@ -18,6 +19,7 @@ class IEBrowser {
 		IDocHostUIHandler* m_spHandler;
 		IDispatch* m_spExternal;
 		IDispatch* m_newExternal;
+		IEDispatcher m_IEDispatcher;
 		IOleClientSite* m_spDefaultDocHostUIHandler;
 		int setExternal(IDispatch** ext);
 };
