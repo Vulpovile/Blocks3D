@@ -22,10 +22,7 @@ public:
 	bool					readXMLFileStream(std::ifstream* file);
 	void					drawMessage(RenderDevice*);
 	WorkspaceInstance*		getWorkspace();
-	WorkspaceInstance*		workspace;
-	LevelInstance *			level;
 	LevelInstance *			getLevel();
-	GuiRoot*				guiRoot;
 	std::string				message;
 	std::string				_loadedFileName;
 	bool					showMessage;
@@ -51,4 +48,7 @@ private:
 	std::string				_errMsg;
 	bool					_legacyLoad;
 	float					_modY;
+	WorkspaceInstance*		workspace;
+	LevelInstance *			level;
+	GuiRoot*				guiRoot;
 };
