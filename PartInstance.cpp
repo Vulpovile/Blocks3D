@@ -265,7 +265,7 @@ void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 
 void PartInstance::addPlus(Vector3 v1)
 {
-	float renderY = max(size.z, max(size.x, size.y))/2 * 0.85;
+	float renderY = max(size.z, max(size.x, size.y))/2 * 0.775;
 	Vector3 vx1 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx3 = v1 + Vector3(0, renderY, 0.1f);
@@ -319,7 +319,7 @@ void PartInstance::addPlus(Vector3 v1)
 
 void PartInstance::addPlus2(Vector3 v1)
 {
-	float renderY = max(size.z, max(size.x, size.y))/2 * 0.85;
+	float renderY = max(size.z, max(size.x, size.y))/2 * 0.775;
 	Vector3 vx3 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx1 = v1 + Vector3(0, renderY, 0.1f);
