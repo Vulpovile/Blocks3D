@@ -603,7 +603,9 @@ void Application::onGraphics(RenderDevice* rd) {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	_dataModel->getWorkspace()->render(rd);
+	//if(_dataModel->getWorkspace() != NULL)
+		_dataModel->getWorkspace()->render(rd);
+	//else throw std::exception("Workspace not found");
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

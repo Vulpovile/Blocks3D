@@ -62,7 +62,12 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 				if(g_selectedInstances.at(i)->canDelete)
 				{
 					if(GroupInstance* model = dynamic_cast<GroupInstance*>(g_selectedInstances.at(i)))
+					{
 						newinst = model->unGroup();
+						model->setParent(NULL);
+						delete model;
+						model = NULL;
+					}
 				}
 				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
 				g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
