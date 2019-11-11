@@ -244,7 +244,13 @@ void PartInstance::addVertex(Vector3 vertexPos,Color3 color)
 	addSingularNormal(cross(v1-v3,v2-v3).direction());
 }
 
-void PartInstance::addSmoothTriangle(Vector3 v1,Vector3 v2,Vector3 v3)
+void PartInstance::addQuad(Vector3 v1,Vector3 v2, Vector3 v3, Vector3 v4)
+{
+	addTriangle(v1, v2, v3);
+	addTriangle(v1, v3, v4);
+}
+
+void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 {
 	addVertex(v1,color);
 	addVertex(v2,color);
@@ -259,7 +265,7 @@ void PartInstance::addSmoothTriangle(Vector3 v1,Vector3 v2,Vector3 v3)
 
 void PartInstance::addPlus(Vector3 v1)
 {
-	float renderY = size.y/2 - 0.25f;
+	float renderY = size.y/2 * 0.95f - 0.25;
 	Vector3 vx1 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx3 = v1 + Vector3(0, renderY, 0.1f);
@@ -313,7 +319,7 @@ void PartInstance::addPlus(Vector3 v1)
 
 void PartInstance::addPlus2(Vector3 v1)
 {
-	float renderY = max(size.z, max(size.x, size.y))/2 - 0.25f;
+	float renderY = max(size.z, max(size.x, size.y))/2 * 0.95f - 0.25;
 	Vector3 vx3 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx1 = v1 + Vector3(0, renderY, 0.1f);
@@ -387,6 +393,19 @@ void PartInstance::addPlus2(Vector3 v1)
 	addTriangle(Vector3(_vertices[vertex1],_vertices[vertex1+1],_vertices[vertex1+2]),
 		Vector3(_vertices[vertex2],_vertices[vertex2+1],_vertices[vertex2+2]),
 		Vector3(_vertices[vertex3],_vertices[vertex3+1],_vertices[vertex3+2]));
+}
+ void PartInstance::fromArrays(float verts[], float norms[], float ind[], unsigned int countVN, unsigned int countInd)
+{
+	for(unsigned int i = 0; i < countVN; i++)
+	{
+		_vertices.push_back(verts[i]);
+		_normals.push_back(norms[i]);
+	}
+	for(unsigned int i = 0; i < countInd; i++)
+	{
+		_indices.push_back(ind[i]);
+	}
+
 }
 void PartInstance::makeSmoothFace(int vertex1,int vertex2, int vertex3)
 {
@@ -703,7 +722,7 @@ void PartInstance::render(RenderDevice* rd) {
 			break;
 			case Enum::Shape::Cylinder:
 				{
-					int fsize = renderSize.y/(pi()/2);
+					/*int fsize = renderSize.y/(pi()/2);
 					//makeFace(0,0,48);
  			// Front
 				addTriangle(Vector3(renderSize.x,renderSize.y-fsize,renderSize.z),
@@ -817,13 +836,67 @@ void PartInstance::render(RenderDevice* rd) {
 				makeFace(84,174,144);
  				// Back Left Bottom Corner
 				makeFace(174,84,132);*/
-				
+
+				float radius = renderSize.y;
+				Vector2 xy[13];
+				for(int i = 0; i < 13; i++)
+				{	
+					float y = radius * cos(((double)i-0.523599) * pi()/6);
+					float z = radius * sin(((double)i-0.523599) * pi()/6);
+					xy[i] = Vector2(y,z);
+				}
+				for(int i = 0; i < 12; i++)
+				{
+					addSmoothTriangle(
+						Vector3(renderSize.x, xy[i].x, xy[i].y),
+						Vector3(-renderSize.x, xy[i].x, xy[i].y),
+						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y));
+					addSmoothTriangle(
+						Vector3(renderSize.x, xy[i].x, xy[i].y),
+						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
+						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
+					addTriangle(
+						Vector3(renderSize.x, xy[0].x, xy[0].y),
+						Vector3(renderSize.x, xy[i].x, xy[i].y),
+						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
+					addTriangle(
+						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
+						Vector3(-renderSize.x, xy[i].x, xy[i].y),
+						Vector3(-renderSize.x, xy[0].x, xy[0].y));
+				}
+				/*float facetRatio = renderSize.x / (pi() * 0.5F);
+				addQuad(
+					Vector3(renderSize.x, renderSize.y, renderSize.z-facetRatio),
+					Vector3(renderSize.x, renderSize.y, -renderSize.z+facetRatio),
+					Vector3(-renderSize.x, renderSize.y, -renderSize.z+facetRatio),
+					Vector3(-renderSize.x, renderSize.y, renderSize.z-facetRatio));
+
+				addQuad(
+					Vector3(renderSize.x, renderSize.y-facetRatio, renderSize.z),
+					Vector3(-renderSize.x, renderSize.y-facetRatio, renderSize.z),
+					Vector3(-renderSize.x, -renderSize.y+facetRatio, renderSize.z),
+					Vector3(renderSize.x, -renderSize.y+facetRatio, renderSize.z));
+				addQuad(
+					Vector3(-renderSize.x, -renderSize.y, renderSize.z-facetRatio),
+					Vector3(-renderSize.x, -renderSize.y, -renderSize.z+facetRatio),
+					Vector3(renderSize.x, -renderSize.y, -renderSize.z+facetRatio),
+					Vector3(renderSize.x, -renderSize.y, renderSize.z-facetRatio));
+				addQuad(
+					Vector3(renderSize.x, -renderSize.y+facetRatio, -renderSize.z),
+					Vector3(-renderSize.x, -renderSize.y+facetRatio, -renderSize.z),
+					Vector3(-renderSize.x, renderSize.y-facetRatio, -renderSize.z),
+					Vector3(renderSize.x, renderSize.y-facetRatio, -renderSize.z));*/
 
 				addPlus(Vector3(-renderSize.x-0.01,0,0));
 				addPlus2(Vector3(renderSize.x+0.01,0,0));
+
 				for (unsigned short i=0;i<_vertices.size()/6;i++) {
 					_indices.push_back(i);
 				}
+				//std::reverse(_vertices.begin(), _vertices.end());
+				//std::reverse(_normals.begin(), _normals.end());
+				
+				
 						
 			}
 			break;
