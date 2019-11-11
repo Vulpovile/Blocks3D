@@ -696,7 +696,7 @@ void Application::onKeyPressed(int key)
 	{
 		deleteInstance();
 	}
-	if (GetHoldKeyState(VK_RCONTROL) && key=='O')
+	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='O')
 	{
 			_dataModel->getOpen();
 	}
