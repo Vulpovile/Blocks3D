@@ -255,11 +255,11 @@ void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 	addVertex(v1,color);
 	addVertex(v2,color);
 	addVertex(v3,color);
-	//addNormals(cross(v2-v1,v3-v1).direction());
-	
-	addSingularNormal(v1.direction());
-	addSingularNormal(v2.direction());
-	addSingularNormal(v3.direction());
+	addNormals(cross(v2-v1,v3-v1).direction());
+	//addSingularNormal(Vector3(cross(v2-v1,v3-v1) + cross(v3-v2,v1-v2) + cross(v1-v3,v2-v3)).direction());
+	//addSingularNormal(v1.direction());
+	//addSingularNormal(v2.direction());
+	//addSingularNormal(v3.direction());
 }
 
 
@@ -837,16 +837,18 @@ void PartInstance::render(RenderDevice* rd) {
  				// Back Left Bottom Corner
 				makeFace(174,84,132);*/
 
-				float radius = renderSize.y;
+				float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
 				Vector2 xy[13];
 				for(int i = 0; i < 13; i++)
 				{	
+					//Get the next point
 					float y = radius * cos(((double)i-0.523599) * pi()/6);
 					float z = radius * sin(((double)i-0.523599) * pi()/6);
 					xy[i] = Vector2(y,z);
 				}
 				for(int i = 0; i < 12; i++)
 				{
+					//Create a Quad for the face (i to i+1)
 					addSmoothTriangle(
 						Vector3(renderSize.x, xy[i].x, xy[i].y),
 						Vector3(-renderSize.x, xy[i].x, xy[i].y),
@@ -855,10 +857,12 @@ void PartInstance::render(RenderDevice* rd) {
 						Vector3(renderSize.x, xy[i].x, xy[i].y),
 						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
 						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
+					//Cap on the right
 					addTriangle(
 						Vector3(renderSize.x, xy[0].x, xy[0].y),
 						Vector3(renderSize.x, xy[i].x, xy[i].y),
 						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
+					//Cap on the left
 					addTriangle(
 						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
 						Vector3(-renderSize.x, xy[i].x, xy[i].y),
