@@ -405,8 +405,8 @@ bool PartInstance::isUniqueVertex(Vector3 pos)
 	}
 	return true;
 }
-int rings = 15;
-int sectors = 15;
+//int rings = 15;
+//int sectors = 15;
 void PartInstance::render(RenderDevice* rd) {
 	//if(nameShown)
 		//postRenderStack.push_back(this);
@@ -737,13 +737,13 @@ void PartInstance::render(RenderDevice* rd) {
 					);
 		 		
 				// Bottom
-				addTriangle(Vector3(renderSize.x,-renderSize.y,-renderSize.z-fsize),
+				addTriangle(Vector3(renderSize.x,-renderSize.y,-renderSize.z+fsize),
 					Vector3(renderSize.x,-renderSize.y,renderSize.z-fsize),
 					Vector3(-renderSize.x,-renderSize.y,renderSize.z-fsize)
 					);
 				addTriangle(Vector3(-renderSize.x,-renderSize.y,renderSize.z-fsize),
-					Vector3(-renderSize.x,-renderSize.y,-renderSize.z-fsize),
-					Vector3(renderSize.x,-renderSize.y,-renderSize.z-fsize)
+					Vector3(-renderSize.x,-renderSize.y,-renderSize.z+fsize),
+					Vector3(renderSize.x,-renderSize.y,-renderSize.z+fsize)
 					);
  				// Left
 				/*addTriangle(Vector3(-renderSize.x,renderSize.y-fsize,-renderSize.z+fsize),
