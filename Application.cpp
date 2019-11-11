@@ -592,7 +592,7 @@ void Application::onGraphics(RenderDevice* rd) {
     // Setup lighting
     renderDevice->enableLighting();
 
-	//renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
+	renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 	renderDevice->setAmbientLightColor(Color3(1,1,1));
 
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
