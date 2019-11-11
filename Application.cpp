@@ -711,13 +711,14 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 	//Removed set focus 
 
 
-	std::cout << "Click: " << x << "," << y << std::endl;
+	//std::cout << "Click: " << x << "," << y << std::endl;
 
 	bool onGUI = _dataModel->getGuiRoot()->mouseInGUI(renderDevice, x, y);
 	
 	
 	if(!onGUI)
 	{
+		Instance * selectedInstance = NULL;
 		testRay = cameraController.getCamera()->worldRay(_dataModel->mousex, _dataModel->mousey, renderDevice->getViewport());
 		float nearest=std::numeric_limits<float>::infinity();
 		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
@@ -735,8 +736,9 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 					if (nearest>time)
 					{
 						nearest=time;
-						bool found = false;
-						for(size_t i = 0; i < g_selectedInstances.size(); i++)
+						//bool found = false;
+						selectedInstance = test;
+						/*for(size_t i = 0; i < g_selectedInstances.size(); i++)
 						{
 							if(g_selectedInstances.at(i) == test)
 							{
@@ -749,26 +751,43 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 						}
 						if(!found)
 						{
-							g_selectedInstances.clear();
-							g_selectedInstances.push_back(test);
+							selectedInstance = test;
+							//if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
+								//g_selectedInstances.clear();
+							//if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),test)==g_selectedInstances.end())
+								//g_selectedInstances.push_back(test);
 						}
-						selectInstance(test, _propWindow);
+						//selectInstance(test, _propWindow);
 						//_message = "Dragging = true.";
 						//_messageTime = System::time();
-						//_dragging = true;
+						//_dragging = true;*/
 					}
 				}
 			}		
 		}
 		if(!objFound)
 			selectInstance(_dataModel,_propWindow);
+		else 
+		{
+			while(selectedInstance->getParent() != g_dataModel->getWorkspace())
+			{
+				selectedInstance = selectedInstance->getParent();
+			}
+			selectInstance(selectedInstance, _propWindow);
+		}
 	}
 }
 
 void Application::selectInstance(Instance* selectedInstance, PropertyWindow* propWindow)
 {
-	g_selectedInstances.clear();
-	g_selectedInstances.push_back(selectedInstance);
+	if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
+	{
+		printf("No control key hold \n");
+		g_selectedInstances.clear();
+	}
+	else printf("Control held\n");
+	if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),selectedInstance)==g_selectedInstances.end())
+		g_selectedInstances.push_back(selectedInstance);
 	propWindow->UpdateSelected(selectedInstance);
 
 }

@@ -10,4 +10,5 @@ public:
 	GroupInstance(const GroupInstance &oinst);
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	std::vector<Instance *> unGroup();
 };

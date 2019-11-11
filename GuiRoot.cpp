@@ -176,7 +176,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
-
+	button->setButtonListener(new GUDButtonListener());
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,240);
@@ -192,6 +192,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
+	button->setButtonListener(new GUDButtonListener());
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,265);

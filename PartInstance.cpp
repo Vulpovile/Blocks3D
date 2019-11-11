@@ -479,66 +479,66 @@ void PartInstance::render(RenderDevice* rd) {
 					}
 					//*/
 					
-				int obv = _bevelSize;
-				_bevelSize = this->size.y / 3.14159F;
+				
+				float sphFace = this->size.y / 3.14159F;
 					// Front
-				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,renderSize.z)
+				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,renderSize.z),
+					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,renderSize.z),
+					Vector3(renderSize.x-sphFace,-renderSize.y+sphFace,renderSize.z)
 					);
 			
-				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
-					Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z)
+				addSmoothTriangle(Vector3(-renderSize.x+sphFace,renderSize.y-sphFace,renderSize.z),
+					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,renderSize.z),
+					Vector3(renderSize.x-sphFace,renderSize.y-sphFace,renderSize.z)
 					);
 				
 				// Top
-				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y,renderSize.z-_bevelSize),
-					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize)
+				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y,renderSize.z-sphFace),
+					Vector3(renderSize.x-sphFace,renderSize.y,-renderSize.z+sphFace),
+					Vector3(-renderSize.x+sphFace,renderSize.y,renderSize.z-sphFace)
 					);
-				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize),
-					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y,-renderSize.z+_bevelSize)
+				addSmoothTriangle(Vector3(-renderSize.x+sphFace,renderSize.y,renderSize.z-sphFace),
+					Vector3(renderSize.x-sphFace,renderSize.y,-renderSize.z+sphFace),
+					Vector3(-renderSize.x+sphFace,renderSize.y,-renderSize.z+sphFace)
 					);
 				
 				// Back
-				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z)
+				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,-renderSize.z),
+					Vector3(renderSize.x-sphFace,-renderSize.y+sphFace,-renderSize.z),
+					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,-renderSize.z)
 					);
-				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,-renderSize.z)
+				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,-renderSize.z),
+					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,-renderSize.z),
+					Vector3(-renderSize.x+sphFace,renderSize.y-sphFace,-renderSize.z)
 					);
 		 		
 				// Bottom
-				addSmoothTriangle(Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize)
+				addSmoothTriangle(Vector3(renderSize.x-sphFace,-renderSize.y,-renderSize.z+sphFace),
+					Vector3(renderSize.x-sphFace,-renderSize.y,renderSize.z-sphFace),
+					Vector3(-renderSize.x+sphFace,-renderSize.y,renderSize.z-sphFace)
 					);
-				addSmoothTriangle(Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize)
+				addSmoothTriangle(Vector3(-renderSize.x+sphFace,-renderSize.y,renderSize.z-sphFace),
+					Vector3(-renderSize.x+sphFace,-renderSize.y,-renderSize.z+sphFace),
+					Vector3(renderSize.x-sphFace,-renderSize.y,-renderSize.z+sphFace)
 					);
  				// Left
-				addSmoothTriangle(Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize)
+				addSmoothTriangle(Vector3(-renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
+					Vector3(-renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
+					Vector3(-renderSize.x,renderSize.y-sphFace,renderSize.z-sphFace)
 					);
-				addSmoothTriangle(Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize)
+				addSmoothTriangle(Vector3(-renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
+					Vector3(-renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
+					Vector3(-renderSize.x,-renderSize.y+sphFace,-renderSize.z+sphFace)
 					);
 				
  				// Right
-				addSmoothTriangle(Vector3(renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize),
-					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize)
+				addSmoothTriangle(Vector3(renderSize.x,renderSize.y-sphFace,renderSize.z-sphFace),
+					Vector3(renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
+					Vector3(renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace)
 					);
-				addSmoothTriangle(Vector3(renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize)
+				addSmoothTriangle(Vector3(renderSize.x,-renderSize.y+sphFace,-renderSize.z+sphFace),
+					Vector3(renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
+					Vector3(renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace)
 					);
 						
 
@@ -594,7 +594,6 @@ void PartInstance::render(RenderDevice* rd) {
 				makeSmoothFace(84,174,144);
  				// Back Left Bottom Corner
 				makeSmoothFace(174,84,132);
-				_bevelSize = obv;//*/
 				for (unsigned short i=0;i<_vertices.size()/6;i++) {
 					_indices.push_back(i);
 				}
