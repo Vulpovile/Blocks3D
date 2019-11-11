@@ -57,6 +57,35 @@ void CameraController::refreshZoom(const CoordinateFrame& frame)
 
 void CameraController::pan(CoordinateFrame* frame,float spdX, float spdY)
 {
+	
+		yaw+=spdX;
+		pitch+=spdY;
+
+		if (pitch>1.4f) pitch=1.4f;
+		if (pitch<-1.4f) pitch=-1.4f;
+		frame->translation = Vector3(sin(-yaw)*zoom*cos(pitch),sin(pitch)*zoom,cos(-yaw)*zoom*cos(pitch))+focusPosition;
+		frame->lookAt(focusPosition);
+}
+
+void CameraController::panLock(CoordinateFrame* frame,float spdX, float spdY)
+{
+		int sign = 0;	
+		
+		
+		yaw = toDegrees(yaw);
+		if((((yaw - fmod(yaw, 45)) / 45) * 45) < 0)
+		{
+			sign = 1;
+		}
+		yaw = fabs(yaw);
+		yaw = ((yaw - fmod(yaw, 45)) / 45) * 45;
+		yaw = toRadians(yaw);
+
+		if(sign==1)
+		{
+			yaw = yaw * -1;
+		}
+	
 		yaw+=spdX;
 		pitch+=spdY;
 
@@ -105,14 +134,14 @@ void CameraController::Zoom(short delta)
 void CameraController::panLeft()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-	pan(&frame,toRadians(-45),0);
+	panLock(&frame,toRadians(-45),0);
 	setFrame(frame);
 	
 }
 void CameraController::panRight()
 {
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
-	pan(&frame,toRadians(45),0);
+	panLock(&frame,toRadians(45),0);
 	setFrame(frame);
 }
 

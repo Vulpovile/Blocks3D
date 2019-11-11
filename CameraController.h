@@ -19,6 +19,7 @@ class CameraController {
 		void lookAt(const Vector3& position);
 		void refreshZoom(const CoordinateFrame& frame);
 		void pan(CoordinateFrame* frame,float spdX,float spdY);
+		void panLock(CoordinateFrame* frame,float spdX,float spdY);
 		void update(Application* app);
 		void centerCamera(Instance* selection);
 		void panLeft();

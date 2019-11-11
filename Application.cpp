@@ -136,7 +136,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
-	webBrowser->navigateSyncURL(L"http://androdome.com/g3d/toolbox/");
+	webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
 }
 
 

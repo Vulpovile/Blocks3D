@@ -257,6 +257,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				xml_node<> *propNode = node->first_node();
 				xml_node<> *cFrameNode=0;
 				xml_node<> *sizeNode=0;
+				xml_node<> *shapeNode=0;
 				xml_node<> *colorNode=0;
 				xml_node<> *brickColorNode=0;
 				xml_node<> *nameNode=0;
@@ -275,6 +276,11 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						if (xmlValue=="Name")
 						{
 							 nameNode = partPropNode;
+						}
+						if (xmlValue=="shape")
+						{
+							 shapeNode = partPropNode;
+							 _legacyLoad=false;
 						}
 						if (xmlValue=="Color")
 						{
@@ -297,11 +303,16 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 								{
 									std::string xmlName = attr->name();
 									std::string xmlValue = attr->value();
+									if (xmlValue=="shape")
+									{
+										 shapeNode = featureNode;
+										 _legacyLoad=true;
+									}
 									if (xmlValue=="size")
 									{
 										sizeNode=featureNode;
 										_legacyLoad=true;
-									}
+									}									
 								}
 							}
 						}
@@ -328,7 +339,21 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					B = getFloatValue(colorNode,"B");
 				}
 				
-
+				Enum::Shape::Value partshape = Enum::Shape::Block;
+				std::string pshape = shapeNode->value();
+				if (shapeNode)
+				{					
+					if(pshape == "0" || pshape == "Ball"){
+						partshape = Enum::Shape::Ball;
+					}
+					if(pshape == "1" || pshape == "Block"){
+						partshape = Enum::Shape::Block;
+					}
+					if(pshape == "2" || pshape == "Cylinder"){
+						partshape = Enum::Shape::Cylinder;
+					}
+				}
+				
 				std::string newName = nameNode->value();
 				float X = getFloatValue(cFrameNode,"X");
 				float Y = getFloatValue(cFrameNode,"Y");
@@ -353,6 +378,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					PartInstance* test = makePart();
 					test->setParent(getWorkspace());
 					test->color = Color3(R,G,B);
+					test->shape = partshape;
 					if(brickColorNode)
 					{
 						test->color = bcToRGB(atoi(brickColorNode->value()));
