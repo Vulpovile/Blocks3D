@@ -250,16 +250,24 @@ void PartInstance::addQuad(Vector3 v1,Vector3 v2, Vector3 v3, Vector3 v4)
 	addTriangle(v1, v3, v4);
 }
 
+void PartInstance::genSmoothNormals(int count = -1)
+{
+	if(count < 0)
+	{
+		
+	}
+}
+
 void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 {
 	addVertex(v1,color);
 	addVertex(v2,color);
 	addVertex(v3,color);
-	addNormals(cross(v2-v1,v3-v1).direction());
+	//addNormals(cross(v2-v1,v3-v1).direction());
 	//addSingularNormal(Vector3(cross(v2-v1,v3-v1) + cross(v3-v2,v1-v2) + cross(v1-v3,v2-v3)).direction());
-	//addSingularNormal(v1.direction());
-	//addSingularNormal(v2.direction());
-	//addSingularNormal(v3.direction());
+	addSingularNormal(v1.direction());
+	addSingularNormal(v2.direction());
+	addSingularNormal(v3.direction());
 }
 
 

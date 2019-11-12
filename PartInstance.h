@@ -48,6 +48,7 @@ public:
 	void addSingularNormal(Vector3 normal);
 	void addTriangle(Vector3 vertexPos,Vector3 vertexPos2, Vector3 vertexPos3);
 	void addQuad(Vector3 v1,Vector3 v2, Vector3 v3, Vector3 v4);
+	void genSmoothNormals(int);
 	void addSmoothTriangle(Vector3 vertexPos,Vector3 vertexPos2, Vector3 vertexPos3);
 	void makeSmoothFace(int vertex1, int vertex2, int vertex3);
 	void addPlus(Vector3 v1);
