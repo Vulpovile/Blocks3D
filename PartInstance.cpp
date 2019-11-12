@@ -841,8 +841,8 @@ void PartInstance::render(RenderDevice* rd) {
 				for(int i = 0; i < 13; i++)
 				{	
 					//Get the next point
-					float y = radius * cos(((double)i-0.523599) * pi()/6);
-					float z = radius * sin(((double)i-0.523599) * pi()/6);
+					float y = radius * cos(((double)i-G3D::toRadians(29)) * pi()/6);
+					float z = radius * sin(((double)i-G3D::toRadians(29)) * pi()/6);
 					xy[i] = Vector2(y,z);
 				}
 				for(int i = 0; i < 12; i++)
