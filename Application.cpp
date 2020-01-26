@@ -578,7 +578,7 @@ void Application::onGraphics(RenderDevice* rd) {
 		ScreenToClient(_hWndMain, &mousepos);
 	}
 	
-    LightingParameters lighting(G3D::toSeconds(11, 00, 00, AM));
+    LightingParameters lighting(G3D::toSeconds(2, 00, 00, PM));
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
