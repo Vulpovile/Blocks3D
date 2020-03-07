@@ -1,5 +1,6 @@
 // AX.H
 #include <mshtmhst.h>
+#include <string>
 
 // messages
 #define AX_QUERYINTERFACE (WM_USER + 1)
@@ -9,6 +10,7 @@
 #define AX_DISCONNECTOBJECT (WM_USER + 5)
 #define AX_SETDATAADVISE (WM_USER + 6)
 #define AX_DOVERB (WM_USER + 7)
+#define AX_SETEXTERNALDISP (WM_USER + 8)
 
 
 // Registration function
@@ -29,7 +31,6 @@ class AXClientSite :
 		int refNum;
 
    public:
-
 
 		HWND Window;
 		HWND Parent;
@@ -149,14 +150,13 @@ class AXClientSite :
 	   STDMETHODIMP EnableModeless(BOOL f);
 	   STDMETHODIMP TranslateAccelerator(LPMSG,WORD);
 	
-	
+	   std::wstring m_lastExternalName;
+
 	   // IDispatch Methods
 	   HRESULT _stdcall GetTypeInfoCount(unsigned int * pctinfo);
 	   HRESULT _stdcall GetTypeInfo(unsigned int iTInfo,LCID lcid,ITypeInfo FAR* FAR* ppTInfo);
 		HRESULT _stdcall GetIDsOfNames(REFIID riid,OLECHAR FAR* FAR*,unsigned int cNames,LCID lcid,DISPID FAR* );
 		HRESULT _stdcall Invoke(DISPID dispIdMember,REFIID riid,LCID lcid,WORD wFlags,DISPPARAMS FAR* pDispParams,VARIANT FAR* pVarResult,EXCEPINFO FAR* pExcepInfo,unsigned int FAR* puArgErr);
-
-		// IOleControlSite Methods
    };
 
 
@@ -187,12 +187,12 @@ class AX
 	   bool AddMenu;
 	   DWORD AdviseToken;
 		DWORD DAdviseToken[100];
-
-
-
+		void SetExternalDispatch(IDispatch* externalDisp);
+		IDispatch* GetExternalDispatch();
+		
 
 	private:
-
+		IDispatch* m_externalDisp;
 		CLSID clsid;
 
 

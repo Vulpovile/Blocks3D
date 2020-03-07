@@ -62,56 +62,11 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 	if (webBrowser)
 	{
 		webBrowser->Navigate(url,0,0,0,0);
-		for (int i=1;i<1000;i++)
-		{
-			while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
-			{
-				if (IsDialogMessage(hwnd, &messages) == 0)
-				{
-					TranslateMessage(&messages);
-					DispatchMessage(&messages);
-				}
-			}
-
-			Sleep(30);
-
-			HRESULT hresult = webBrowser->get_Document(&spDocument);
-			if (SUCCEEDED(hresult) && (spDocument != 0))
-			{
-				
-				IOleObject* spOleObject;
-				if (SUCCEEDED(spDocument->QueryInterface(IID_IOleObject,(void**)&spOleObject)))
-				{
-					IOleClientSite* spClientSite;
-					hresult = spOleObject->GetClientSite(&spClientSite);
-					if (SUCCEEDED(hresult) && spClientSite)
-					{
-						m_spDefaultDocHostUIHandler = spClientSite;
-						ICustomDoc* spCustomDoc;
-
-						//IEDispatcher* spIEDispatcher;
-						if (SUCCEEDED(m_spDefaultDocHostUIHandler->QueryInterface(IID_IDocHostUIHandler,(void**)&m_spHandler)))
-						{
-							if (SUCCEEDED(spDocument->QueryInterface(IID_ICustomDoc,(void**)&spCustomDoc)))
-							{
-								spCustomDoc->SetUIHandler(m_spHandler);
-								m_spHandler->GetExternal(&m_spExternal);
-								spDocument->QueryInterface(IID_IHTMLDocument2, (void **) &spDocument2);
-								setExternal(&m_spExternal);
-							}
-						}
-					}
-				}
-				
-
-
-				return true;
-			}
-		}
 	}
 	else
 	{
 		MessageBox(NULL,"Cannot read IWebBrowser2...",(g_PlaceholderName+" Crash").c_str(),MB_OK);
 	}
+
 	return false;
 }

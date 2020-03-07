@@ -11,7 +11,6 @@
 #pragma warning (disable: 4244)
 #pragma warning (disable: 4800)
 
-
 // AXClientSite class
 // ------- Implement member functions
 AXClientSite :: AXClientSite()
@@ -83,7 +82,14 @@ STDMETHODIMP AXClientSite :: GetDropTarget( IDropTarget *pDropTarget, IDropTarge
 
 STDMETHODIMP AXClientSite :: GetExternal(IDispatch **ppDispatch)
 {
-	return E_NOTIMPL;
+	//IDispatch* disp = ax->GetExternalDispatch();
+	*ppDispatch = this;
+	/* if (disp!=NULL)
+	{
+		*ppDispatch = this;
+		return S_OK;
+	} */
+	return S_OK;
 }
 
 STDMETHODIMP AXClientSite ::TranslateUrl( DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut)
@@ -330,12 +336,13 @@ HRESULT _stdcall AXClientSite :: GetTypeInfo(
 
 HRESULT _stdcall AXClientSite :: GetIDsOfNames(
   REFIID riid,
-  OLECHAR FAR* FAR*,
+  OLECHAR FAR* FAR* ext_function_name,
   unsigned int cNames,
   LCID lcid,
   DISPID FAR* )
 {
-	return E_NOTIMPL;
+	m_lastExternalName = *ext_function_name;
+	return S_OK;
 }
 
 
@@ -355,7 +362,7 @@ void AX :: Init(char* cls)
    AdviseToken = 0;
    memset(DAdviseToken,0,sizeof(DAdviseToken));
    Site.ax = this;
-
+	m_externalDisp = 0;
 	}
 
 AX :: AX(char* cls)
@@ -364,6 +371,15 @@ AX :: AX(char* cls)
    }
 
 
+void AX :: SetExternalDispatch(IDispatch* externalDisp)
+{
+	m_externalDisp = externalDisp;
+}
+
+IDispatch* AX :: GetExternalDispatch()
+{
+	return m_externalDisp;
+}
 
 void AX :: Clean()
       {
@@ -501,9 +517,24 @@ HRESULT _stdcall AXClientSite :: Invoke(
   VARIANT FAR* pVarResult,
   EXCEPINFO FAR* pExcepInfo,
   unsigned int FAR* puArgErr)
-  	{
-	return E_NOTIMPL;
-   }
+{
+
+	if (m_lastExternalName==L"Insert")
+	{
+		
+		MessageBoxW(NULL, pDispParams->rgvarg->bstrVal,L"Add insert here...",MB_OK);
+		return S_OK;
+	}
+	else if (m_lastExternalName==L"Boop")
+	{
+		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+	}
+	else
+	{
+		return E_NOTIMPL;
+	}
+	return S_OK;
+}
 
 
 void _stdcall AXClientSite :: OnDataChange(FORMATETC *pFormatEtc,STGMEDIUM *pStgmed)
@@ -610,6 +641,11 @@ LRESULT CALLBACK AXWndProc(HWND hh,UINT mm,WPARAM ww,LPARAM ll)
 
       return true;
       }
+	if (mm == AX_SETEXTERNALDISP)
+	{
+		AX* ax = (AX*)GetWindowLong(hh,GWL_USERDATA);
+		ax->SetExternalDispatch((IDispatch*)ll);
+	}
 
    if (mm == AX_GETAXINTERFACE)
       {
