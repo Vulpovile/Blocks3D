@@ -26,6 +26,76 @@ AXClientSite :: ~AXClientSite()
    }
 
 
+STDMETHODIMP AXClientSite :: ShowContextMenu(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetHostInfo(DOCHOSTUIINFO *pInfo)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: ShowUI( DWORD dwID, IOleInPlaceActiveObject *pActiveObject, IOleCommandTarget *pCommandTarget, IOleInPlaceFrame *pFrame, IOleInPlaceUIWindow *pDoc)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: HideUI( void)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: UpdateUI( void)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: OnDocWindowActivate(BOOL fActivate)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: OnFrameWindowActivate(BOOL fActivate)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: ResizeBorder( LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fRameWindow)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: TranslateAccelerator( LPMSG lpMsg, const GUID *pguidCmdGroup, DWORD nCmdID)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetOptionKeyPath( LPOLESTR *pchKey, DWORD dw)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetDropTarget( IDropTarget *pDropTarget, IDropTarget **ppDropTarget)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetExternal(IDispatch **ppDispatch)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite ::TranslateUrl( DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: FilterDataObject( IDataObject *pDO, IDataObject **ppDORet)
+{
+	return E_NOTIMPL;
+}
+
 // IUnknown methods
 STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
       {
@@ -46,6 +116,8 @@ STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
 	         *ppvObject = (IOleInPlaceFrame*)this;
 	      if (iid == IID_IOleInPlaceUIWindow)
 	         *ppvObject = (IOleInPlaceUIWindow*)this;
+		  if (iid == IID_IDocHostUIHandler)
+	         *ppvObject = (IDocHostUIHandler*)this;
          }
 
       //* Log Call
@@ -229,9 +301,9 @@ STDMETHODIMP AXClientSite :: SetActiveObject(IOleInPlaceActiveObject*pV,LPCOLEST
 
 
 STDMETHODIMP AXClientSite :: SetStatusText(LPCOLESTR t)
-      {
+{
       return E_NOTIMPL;
-      }
+}
 
 STDMETHODIMP AXClientSite :: EnableModeless(BOOL f)
       {
@@ -251,14 +323,20 @@ HRESULT _stdcall AXClientSite :: GetTypeInfoCount(
 HRESULT _stdcall AXClientSite :: GetTypeInfo(
   unsigned int iTInfo,
   LCID lcid,
-  ITypeInfo FAR* FAR* ppTInfo) {return E_NOTIMPL;}
+  ITypeInfo FAR* FAR* ppTInfo)
+{
+	  return E_NOTIMPL;
+}
 
 HRESULT _stdcall AXClientSite :: GetIDsOfNames(
   REFIID riid,
   OLECHAR FAR* FAR*,
   unsigned int cNames,
   LCID lcid,
-  DISPID FAR* ) {return E_NOTIMPL;}
+  DISPID FAR* )
+{
+	return E_NOTIMPL;
+}
 
 
 // Other Methods
@@ -277,6 +355,7 @@ void AX :: Init(char* cls)
    AdviseToken = 0;
    memset(DAdviseToken,0,sizeof(DAdviseToken));
    Site.ax = this;
+
 	}
 
 AX :: AX(char* cls)

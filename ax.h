@@ -1,4 +1,5 @@
 // AX.H
+#include <mshtmhst.h>
 
 // messages
 #define AX_QUERYINTERFACE (WM_USER + 1)
@@ -20,7 +21,8 @@ class AXClientSite :
    public IDispatch,
    public IAdviseSink,
    public IOleInPlaceSite,
-   public IOleInPlaceFrame
+   public IOleInPlaceFrame,
+   public IDocHostUIHandler
    {
    protected:
 
@@ -55,7 +57,64 @@ class AXClientSite :
 		STDMETHODIMP ShowObject();
 		STDMETHODIMP OnShowWindow(BOOL f);
 		STDMETHODIMP RequestNewObjectLayout();
-	
+
+		// IDDocHandler methods
+		STDMETHODIMP ShowContextMenu( 
+            /* [in] */ DWORD dwID,
+            /* [in] */ POINT *ppt,
+            /* [in] */ IUnknown *pcmdtReserved,
+            /* [in] */ IDispatch *pdispReserved);
+        
+        STDMETHODIMP GetHostInfo( 
+            /* [out][in] */ DOCHOSTUIINFO *pInfo);
+        
+        STDMETHODIMP ShowUI( 
+            /* [in] */ DWORD dwID,
+            /* [in] */ IOleInPlaceActiveObject *pActiveObject,
+            /* [in] */ IOleCommandTarget *pCommandTarget,
+            /* [in] */ IOleInPlaceFrame *pFrame,
+            /* [in] */ IOleInPlaceUIWindow *pDoc);
+        
+        STDMETHODIMP HideUI( void);
+        
+        STDMETHODIMP UpdateUI( void);
+        
+        STDMETHODIMP OnDocWindowActivate( 
+            /* [in] */ BOOL fActivate);
+        
+        STDMETHODIMP OnFrameWindowActivate( 
+            /* [in] */ BOOL fActivate);
+        
+        STDMETHODIMP ResizeBorder( 
+            /* [in] */ LPCRECT prcBorder,
+            /* [in] */ IOleInPlaceUIWindow *pUIWindow,
+            /* [in] */ BOOL fRameWindow);
+        
+        STDMETHODIMP TranslateAccelerator( 
+            /* [in] */ LPMSG lpMsg,
+            /* [in] */ const GUID *pguidCmdGroup,
+            /* [in] */ DWORD nCmdID);
+        
+        STDMETHODIMP GetOptionKeyPath( 
+            /* [out] */ LPOLESTR *pchKey,
+            /* [in] */ DWORD dw);
+        
+        STDMETHODIMP GetDropTarget( 
+            /* [in] */ IDropTarget *pDropTarget,
+            /* [out] */ IDropTarget **ppDropTarget);
+        
+        STDMETHODIMP GetExternal( 
+            /* [out] */ IDispatch **ppDispatch);
+        
+        STDMETHODIMP TranslateUrl( 
+            /* [in] */ DWORD dwTranslate,
+            /* [in] */ OLECHAR *pchURLIn,
+            /* [out] */ OLECHAR **ppchURLOut);
+        
+        STDMETHODIMP FilterDataObject( 
+            /* [in] */ IDataObject *pDO,
+            /* [out] */ IDataObject **ppDORet);
+
 		// IAdviseSink methods
 		STDMETHODIMP_(void) OnDataChange(FORMATETC *pFormatEtc,STGMEDIUM *pStgmed);
 	
