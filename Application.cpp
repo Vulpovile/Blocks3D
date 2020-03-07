@@ -285,22 +285,70 @@ void Application::onCleanup() {
 
 
 
-double grav = 0.32666666666666666666666666666667;
-void Application::onLogic() {	
-	//PhysicsStart
+/*
 
-	for(size_t i = 0; i < this->_dataModel->getWorkspace()->physicalObjects.size(); i++)
+Class HyperSnapSolver
+
+function getCollisionDepth(Part colliding, part collider);
+function getFaceCollision(Part colliding, part collider);
+
+function eject(Part colliding, Part collider)
+{
+    if(!colliding.canCollide || !collider.canCollide)
+        return;
+    if(getCollisionDepth(colliding, collider) != 0)    {
+        int ejectMultiplier, ejectMultipliery = 1-(collider.Friction+colliding.Friction), ejectMultiplierz = 1-(collider.Friction/2+colliding.Friction/2);
+        if(colliding.Anchored)
+            ejectMultiplier = collider.elasticity;
+        int faceCollided = getFaceCollision(colliding, collider);
+        if(faceCollided % 3 == 1)
+        {
+            ejectMultipliery = ejectMultiplier;
+            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
+        }
+        else if(faceCollided % 3 == 2)
+        {
+            ejectMultiplierz = ejectMultiplier;
+            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
+        }
+
+        collider.Velocity *= Vector3.new(colliding.Velocity.x*ejectMultiplier,colliding.Velocity.y*ejectMultipliery,colliding.Velocity.z)
+    }
+}
+
+*/
+
+double grav = 0.32666666666666666666666666666667;
+void simGrav(PartInstance * collider)
+{
+	if(!collider->anchored)
 	{
-		if(PartInstance* collider = dynamic_cast<PartInstance*>(this->_dataModel->getWorkspace()->physicalObjects.at(i)))
-		{
-			if(!collider->anchored)
-			{
-				collider->setPosition(collider->getPosition()+collider->getVelocity());
-				collider->setVelocity(Vector3(collider->getVelocity().x,collider->getVelocity().y-grav,collider->getVelocity().z));
-			}	
-		}
+		collider->setPosition(collider->getPosition()+collider->getVelocity());
+		collider->setVelocity(collider->getVelocity()-Vector3(0,grav,0));
 	}
 }
+
+void eject(PartInstance * colliding, PartInstance * collider)
+{
+	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
+		return;
+
+}
+
+
+
+void Application::onLogic() {	
+	//PhysicsStart
+	for_each (_dataModel->getWorkspace()->partObjects.begin(), _dataModel->getWorkspace()->partObjects.end(), simGrav);
+	for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
+	{
+		for(size_t j = 0; j < _dataModel->getWorkspace()->partObjects.size(); j++)
+		{
+			eject(_dataModel->getWorkspace()->partObjects[i], _dataModel->getWorkspace()->partObjects[j]);
+		}
+	}	
+}
+
 
 
 void Application::onNetwork() {
@@ -319,7 +367,8 @@ std::vector<Instance*> Application::getSelection()
 }
 void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
-	onLogic();
+	if(_dataModel->isRunning())
+		onLogic();
 		
 	_dataModel->getGuiRoot()->update();
 

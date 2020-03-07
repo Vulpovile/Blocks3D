@@ -83,7 +83,7 @@ void PartInstance::setParent(Instance* parent)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
 		{
-			workspace->physicalObjects.erase(std::remove(workspace->physicalObjects.begin(), workspace->physicalObjects.end(), this), workspace->physicalObjects.end());
+			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
 			break;
 		}
 		cparent = cparent->getParent();
@@ -93,7 +93,7 @@ void PartInstance::setParent(Instance* parent)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
 		{
-			workspace->physicalObjects.push_back(this);
+			workspace->partObjects.push_back(this);
 			break;
 		}
 		parent = parent->getParent();
@@ -188,7 +188,7 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(pos);
+	cFrame = CoordinateFrame(cFrame.rotation, pos);
 	changed = true;
 }
 

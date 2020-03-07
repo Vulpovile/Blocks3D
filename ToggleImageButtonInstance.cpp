@@ -13,7 +13,7 @@ ToggleImageButtonInstance::ToggleImageButtonInstance(G3D::TextureRef newImage,
 	openGLID2 = image2->getOpenGLID();
 	image_ovr2 = overImage2;
 	if(!image_ovr2.isNull())
-		openGLID2_ovr = image_ovr2->getOpenGLID();
+	openGLID2_ovr = image_ovr2->getOpenGLID();
 	image_dn2 = downImage2;
 	if(!image_dn2.isNull())
 		openGLID2_dn = image_dn2->getOpenGLID();
@@ -62,7 +62,33 @@ void ToggleImageButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool
 		positionRelative = Vector2(rd->getWidth() + position.x, position.y);
 	}
 	int renderimage = openGLID;
-
+	if(checked)
+	{
+		renderimage = openGLID2;
+		if(selected == true && !image_dn2.isNull() && !disabled)
+		{
+			renderimage = openGLID2_dn;
+		}
+		else if(disabled)
+		{
+			if(!image_ds2.isNull())
+				renderimage = openGLID2_ds;
+			else
+				drawDisabledBox = true;
+		}
+		else if(mouseInArea(positionRelative.x, positionRelative.y, positionRelative.x + size.x, positionRelative.y + size.y, mousePos.x, mousePos.y))
+		{
+			if(mouseDown && !image_dn2.isNull())
+			{
+				renderimage = openGLID2_dn;
+			}
+			else if(!image_ovr2.isNull())
+			{
+				renderimage = openGLID2_ovr;
+			}
+		}
+	}
+	else
 	{
 		if(selected == true && !image_dn.isNull() && !disabled)
 		{

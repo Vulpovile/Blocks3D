@@ -1,7 +1,7 @@
 #include "MenuButtonListener.h"
 #include "toggleimagebuttoninstance.h"
 #include "Globals.h"
-void onButton1MouseClick(BaseButtonInstance* button)
+void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(button->name == "go")
 	{
