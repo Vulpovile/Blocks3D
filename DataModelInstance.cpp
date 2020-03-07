@@ -30,7 +30,17 @@ DataModelInstance::DataModelInstance(void)
 	level->setParent(this);
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
+	running = false;
 	
+}
+
+void DataModelInstance::toggleRun()
+{
+	running = !running;
+}
+bool DataModelInstance::isRunning()
+{
+	return running;
 }
 
 DataModelInstance::~DataModelInstance(void)

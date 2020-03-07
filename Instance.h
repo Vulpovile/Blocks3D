@@ -17,7 +17,7 @@ public:
 	Instance* findFirstChild(std::string);
 	std::vector<Instance* > getChildren();
 	std::vector<Instance* > getAllChildren();
-	void setParent(Instance*);
+	virtual void setParent(Instance*);
 	void setName(std::string newName);
 	void addChild(Instance*);
 	void removeChild(Instance*);

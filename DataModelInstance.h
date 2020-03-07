@@ -36,6 +36,8 @@ public:
 	bool					mouseButton1Down;
 	PartInstance*			makePart();
 	void					clearLevel();
+	void					toggleRun();
+	bool					isRunning();
 #if _DEBUG
 	void					modXMLLevel(float modY);
 #endif
@@ -51,4 +53,5 @@ private:
 	WorkspaceInstance*		workspace;
 	LevelInstance *			level;
 	GuiRoot*				guiRoot;
+	bool					running;
 };

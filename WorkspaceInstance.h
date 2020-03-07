@@ -7,4 +7,5 @@ class WorkspaceInstance :
 public:
 	WorkspaceInstance(void);
 	~WorkspaceInstance(void);
+	std::vector<PVInstance *> physicalObjects;
 };

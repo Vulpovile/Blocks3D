@@ -167,6 +167,7 @@ void Application::deleteInstance()
 		g_usableApp->_propWindow->ClearProperties();
 }
 
+
 void Application::onInit()  {
 	
     // Called before Application::run() beings
@@ -284,13 +285,21 @@ void Application::onCleanup() {
 
 
 
+double grav = 0.32666666666666666666666666666667;
+void Application::onLogic() {	
+	//PhysicsStart
 
-void Application::onLogic() {
-    // Add non-simulation game logic and AI code here
-
-		
-
-
+	for(size_t i = 0; i < this->_dataModel->getWorkspace()->physicalObjects.size(); i++)
+	{
+		if(PartInstance* collider = dynamic_cast<PartInstance*>(this->_dataModel->getWorkspace()->physicalObjects.at(i)))
+		{
+			if(!collider->anchored)
+			{
+				collider->setPosition(collider->getPosition()+collider->getVelocity());
+				collider->setVelocity(Vector3(collider->getVelocity().x,collider->getVelocity().y-grav,collider->getVelocity().z));
+			}	
+		}
+	}
 }
 
 
@@ -310,7 +319,7 @@ std::vector<Instance*> Application::getSelection()
 }
 void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
-	
+	onLogic();
 		
 	_dataModel->getGuiRoot()->update();
 

@@ -16,7 +16,6 @@ public:
 	virtual void PartInstance::postRender(RenderDevice* rd);
 	~PartInstance(void);
 	virtual void render(RenderDevice*);
-	Vector3 velocity;
 	Enum::SurfaceType::Value top;
 	Enum::SurfaceType::Value front;
 	Enum::SurfaceType::Value right;
@@ -27,7 +26,12 @@ public:
 	CoordinateFrame cFrame;
 	Color3 color;
 	Vector3 getPosition();
+	Vector3 getVelocity();
+	Vector3 getRotVelocity();
+	void setParent(Instance* parent);
 	void setPosition(Vector3);
+	void setVelocity(Vector3);
+	void setRotVelocity(Vector3);
 	CoordinateFrame getCFrame();
 	void setCFrame(CoordinateFrame);
 	Box getBox();
@@ -38,7 +42,6 @@ public:
 	void setShape(Enum::Shape::Value shape);
 	bool canCollide;
 	bool anchored;
-	Vector3 rotVelocity;
 	bool collides(Box);
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
@@ -61,6 +64,8 @@ public:
 private:
 	Vector3 position;
 	Vector3 size;
+	Vector3 velocity;
+	Vector3 rotVelocity;
 	float	_bevelSize;
 	int		_parseVert;
 	int		_debugTimer;
