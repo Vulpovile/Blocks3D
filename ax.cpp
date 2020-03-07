@@ -362,24 +362,12 @@ void AX :: Init(char* cls)
    AdviseToken = 0;
    memset(DAdviseToken,0,sizeof(DAdviseToken));
    Site.ax = this;
-	m_externalDisp = 0;
 	}
 
 AX :: AX(char* cls)
    {
 	Init(cls);
    }
-
-
-void AX :: SetExternalDispatch(IDispatch* externalDisp)
-{
-	m_externalDisp = externalDisp;
-}
-
-IDispatch* AX :: GetExternalDispatch()
-{
-	return m_externalDisp;
-}
 
 void AX :: Clean()
       {
@@ -641,12 +629,6 @@ LRESULT CALLBACK AXWndProc(HWND hh,UINT mm,WPARAM ww,LPARAM ll)
 
       return true;
       }
-	if (mm == AX_SETEXTERNALDISP)
-	{
-		AX* ax = (AX*)GetWindowLong(hh,GWL_USERDATA);
-		ax->SetExternalDispatch((IDispatch*)ll);
-	}
-
    if (mm == AX_GETAXINTERFACE)
       {
       AX* ax = (AX*)GetWindowLong(hh,GWL_USERDATA);

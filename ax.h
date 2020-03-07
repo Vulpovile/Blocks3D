@@ -10,8 +10,6 @@
 #define AX_DISCONNECTOBJECT (WM_USER + 5)
 #define AX_SETDATAADVISE (WM_USER + 6)
 #define AX_DOVERB (WM_USER + 7)
-#define AX_SETEXTERNALDISP (WM_USER + 8)
-
 
 // Registration function
 ATOM AXRegister();
@@ -186,13 +184,9 @@ class AX
 	   //AX_CONNECTSTRUCT* tcs;
 	   bool AddMenu;
 	   DWORD AdviseToken;
-		DWORD DAdviseToken[100];
-		void SetExternalDispatch(IDispatch* externalDisp);
-		IDispatch* GetExternalDispatch();
-		
+		DWORD DAdviseToken[100];	
 
 	private:
-		IDispatch* m_externalDisp;
 		CLSID clsid;
 
 
