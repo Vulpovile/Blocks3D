@@ -1,6 +1,7 @@
 #pragma once
 #include <G3DAll.h>
 #include "propertyGrid.h"
+#include "map"
 
 class Instance
 {
@@ -31,5 +32,6 @@ protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
 	PROPGRIDITEM createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type, TCHAR choices[] = NULL);
-	
+private:
+	static const std::map<std::string, Instance> g_logLevelsDescriptions;
 };

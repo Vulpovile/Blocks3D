@@ -332,8 +332,8 @@ void eject(PartInstance * colliding, PartInstance * collider)
 {
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
-	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()));
-		collider->setVelocity(collider->getVelocity() - colliding->cFrame.lookVector());
+	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3);
 
 }
 
