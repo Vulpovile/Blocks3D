@@ -1182,6 +1182,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)anchored,
 		PIT_CHECK
 		));
+	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",

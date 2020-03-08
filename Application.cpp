@@ -31,7 +31,7 @@
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-
+#define LEGACY_LOAD_G3DFUN_LEVEL
 Ray testRay;
 static int cursorid = 0;
 static int cursorOvrid = 0;
@@ -332,6 +332,8 @@ void eject(PartInstance * colliding, PartInstance * collider)
 {
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
+	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()));
+		collider->setVelocity(collider->getVelocity() - colliding->cFrame.lookVector());
 
 }
 
@@ -662,7 +664,8 @@ void Application::onGraphics(RenderDevice* rd) {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	//if(_dataModel->getWorkspace() != NULL)
-		_dataModel->getWorkspace()->render(rd);
+	
+	_dataModel->getWorkspace()->render(rd);
 	//else throw std::exception("Workspace not found");
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
