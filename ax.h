@@ -1,4 +1,6 @@
 // AX.H
+#include <mshtmhst.h>
+#include <string>
 
 // messages
 #define AX_QUERYINTERFACE (WM_USER + 1)
@@ -8,7 +10,6 @@
 #define AX_DISCONNECTOBJECT (WM_USER + 5)
 #define AX_SETDATAADVISE (WM_USER + 6)
 #define AX_DOVERB (WM_USER + 7)
-
 
 // Registration function
 ATOM AXRegister();
@@ -20,14 +21,14 @@ class AXClientSite :
    public IDispatch,
    public IAdviseSink,
    public IOleInPlaceSite,
-   public IOleInPlaceFrame
+   public IOleInPlaceFrame,
+   public IDocHostUIHandler
    {
    protected:
 
 		int refNum;
 
    public:
-
 
 		HWND Window;
 		HWND Parent;
@@ -55,7 +56,64 @@ class AXClientSite :
 		STDMETHODIMP ShowObject();
 		STDMETHODIMP OnShowWindow(BOOL f);
 		STDMETHODIMP RequestNewObjectLayout();
-	
+
+		// IDDocHandler methods
+		STDMETHODIMP ShowContextMenu( 
+            /* [in] */ DWORD dwID,
+            /* [in] */ POINT *ppt,
+            /* [in] */ IUnknown *pcmdtReserved,
+            /* [in] */ IDispatch *pdispReserved);
+        
+        STDMETHODIMP GetHostInfo( 
+            /* [out][in] */ DOCHOSTUIINFO *pInfo);
+        
+        STDMETHODIMP ShowUI( 
+            /* [in] */ DWORD dwID,
+            /* [in] */ IOleInPlaceActiveObject *pActiveObject,
+            /* [in] */ IOleCommandTarget *pCommandTarget,
+            /* [in] */ IOleInPlaceFrame *pFrame,
+            /* [in] */ IOleInPlaceUIWindow *pDoc);
+        
+        STDMETHODIMP HideUI( void);
+        
+        STDMETHODIMP UpdateUI( void);
+        
+        STDMETHODIMP OnDocWindowActivate( 
+            /* [in] */ BOOL fActivate);
+        
+        STDMETHODIMP OnFrameWindowActivate( 
+            /* [in] */ BOOL fActivate);
+        
+        STDMETHODIMP ResizeBorder( 
+            /* [in] */ LPCRECT prcBorder,
+            /* [in] */ IOleInPlaceUIWindow *pUIWindow,
+            /* [in] */ BOOL fRameWindow);
+        
+        STDMETHODIMP TranslateAccelerator( 
+            /* [in] */ LPMSG lpMsg,
+            /* [in] */ const GUID *pguidCmdGroup,
+            /* [in] */ DWORD nCmdID);
+        
+        STDMETHODIMP GetOptionKeyPath( 
+            /* [out] */ LPOLESTR *pchKey,
+            /* [in] */ DWORD dw);
+        
+        STDMETHODIMP GetDropTarget( 
+            /* [in] */ IDropTarget *pDropTarget,
+            /* [out] */ IDropTarget **ppDropTarget);
+        
+        STDMETHODIMP GetExternal( 
+            /* [out] */ IDispatch **ppDispatch);
+        
+        STDMETHODIMP TranslateUrl( 
+            /* [in] */ DWORD dwTranslate,
+            /* [in] */ OLECHAR *pchURLIn,
+            /* [out] */ OLECHAR **ppchURLOut);
+        
+        STDMETHODIMP FilterDataObject( 
+            /* [in] */ IDataObject *pDO,
+            /* [out] */ IDataObject **ppDORet);
+
 		// IAdviseSink methods
 		STDMETHODIMP_(void) OnDataChange(FORMATETC *pFormatEtc,STGMEDIUM *pStgmed);
 	
@@ -90,14 +148,13 @@ class AXClientSite :
 	   STDMETHODIMP EnableModeless(BOOL f);
 	   STDMETHODIMP TranslateAccelerator(LPMSG,WORD);
 	
-	
+	   std::wstring m_lastExternalName;
+
 	   // IDispatch Methods
 	   HRESULT _stdcall GetTypeInfoCount(unsigned int * pctinfo);
 	   HRESULT _stdcall GetTypeInfo(unsigned int iTInfo,LCID lcid,ITypeInfo FAR* FAR* ppTInfo);
 		HRESULT _stdcall GetIDsOfNames(REFIID riid,OLECHAR FAR* FAR*,unsigned int cNames,LCID lcid,DISPID FAR* );
 		HRESULT _stdcall Invoke(DISPID dispIdMember,REFIID riid,LCID lcid,WORD wFlags,DISPPARAMS FAR* pDispParams,VARIANT FAR* pVarResult,EXCEPINFO FAR* pExcepInfo,unsigned int FAR* puArgErr);
-
-		// IOleControlSite Methods
    };
 
 
@@ -127,13 +184,9 @@ class AX
 	   //AX_CONNECTSTRUCT* tcs;
 	   bool AddMenu;
 	   DWORD AdviseToken;
-		DWORD DAdviseToken[100];
-
-
-
+		DWORD DAdviseToken[100];	
 
 	private:
-
 		CLSID clsid;
 
 

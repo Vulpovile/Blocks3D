@@ -11,7 +11,6 @@
 #pragma warning (disable: 4244)
 #pragma warning (disable: 4800)
 
-
 // AXClientSite class
 // ------- Implement member functions
 AXClientSite :: AXClientSite()
@@ -25,6 +24,83 @@ AXClientSite :: ~AXClientSite()
 	{
    }
 
+
+STDMETHODIMP AXClientSite :: ShowContextMenu(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetHostInfo(DOCHOSTUIINFO *pInfo)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: ShowUI( DWORD dwID, IOleInPlaceActiveObject *pActiveObject, IOleCommandTarget *pCommandTarget, IOleInPlaceFrame *pFrame, IOleInPlaceUIWindow *pDoc)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: HideUI( void)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: UpdateUI( void)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: OnDocWindowActivate(BOOL fActivate)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: OnFrameWindowActivate(BOOL fActivate)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: ResizeBorder( LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fRameWindow)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: TranslateAccelerator( LPMSG lpMsg, const GUID *pguidCmdGroup, DWORD nCmdID)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetOptionKeyPath( LPOLESTR *pchKey, DWORD dw)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetDropTarget( IDropTarget *pDropTarget, IDropTarget **ppDropTarget)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: GetExternal(IDispatch **ppDispatch)
+{
+	//IDispatch* disp = ax->GetExternalDispatch();
+	*ppDispatch = this;
+	/* if (disp!=NULL)
+	{
+		*ppDispatch = this;
+		return S_OK;
+	} */
+	return S_OK;
+}
+
+STDMETHODIMP AXClientSite ::TranslateUrl( DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut)
+{
+	return E_NOTIMPL;
+}
+
+STDMETHODIMP AXClientSite :: FilterDataObject( IDataObject *pDO, IDataObject **ppDORet)
+{
+	return E_NOTIMPL;
+}
 
 // IUnknown methods
 STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
@@ -46,6 +122,8 @@ STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
 	         *ppvObject = (IOleInPlaceFrame*)this;
 	      if (iid == IID_IOleInPlaceUIWindow)
 	         *ppvObject = (IOleInPlaceUIWindow*)this;
+		  if (iid == IID_IDocHostUIHandler)
+	         *ppvObject = (IDocHostUIHandler*)this;
          }
 
       //* Log Call
@@ -229,9 +307,9 @@ STDMETHODIMP AXClientSite :: SetActiveObject(IOleInPlaceActiveObject*pV,LPCOLEST
 
 
 STDMETHODIMP AXClientSite :: SetStatusText(LPCOLESTR t)
-      {
+{
       return E_NOTIMPL;
-      }
+}
 
 STDMETHODIMP AXClientSite :: EnableModeless(BOOL f)
       {
@@ -251,14 +329,21 @@ HRESULT _stdcall AXClientSite :: GetTypeInfoCount(
 HRESULT _stdcall AXClientSite :: GetTypeInfo(
   unsigned int iTInfo,
   LCID lcid,
-  ITypeInfo FAR* FAR* ppTInfo) {return E_NOTIMPL;}
+  ITypeInfo FAR* FAR* ppTInfo)
+{
+	  return E_NOTIMPL;
+}
 
 HRESULT _stdcall AXClientSite :: GetIDsOfNames(
   REFIID riid,
-  OLECHAR FAR* FAR*,
+  OLECHAR FAR* FAR* ext_function_name,
   unsigned int cNames,
   LCID lcid,
-  DISPID FAR* ) {return E_NOTIMPL;}
+  DISPID FAR* )
+{
+	m_lastExternalName = *ext_function_name;
+	return S_OK;
+}
 
 
 // Other Methods
@@ -283,8 +368,6 @@ AX :: AX(char* cls)
    {
 	Init(cls);
    }
-
-
 
 void AX :: Clean()
       {
@@ -422,9 +505,24 @@ HRESULT _stdcall AXClientSite :: Invoke(
   VARIANT FAR* pVarResult,
   EXCEPINFO FAR* pExcepInfo,
   unsigned int FAR* puArgErr)
-  	{
-	return E_NOTIMPL;
-   }
+{
+
+	if (m_lastExternalName==L"Insert")
+	{
+		
+		MessageBoxW(NULL, pDispParams->rgvarg->bstrVal,L"Add insert here...",MB_OK);
+		return S_OK;
+	}
+	else if (m_lastExternalName==L"Boop")
+	{
+		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+	}
+	else
+	{
+		return E_NOTIMPL;
+	}
+	return S_OK;
+}
 
 
 void _stdcall AXClientSite :: OnDataChange(FORMATETC *pFormatEtc,STGMEDIUM *pStgmed)
@@ -531,7 +629,6 @@ LRESULT CALLBACK AXWndProc(HWND hh,UINT mm,WPARAM ww,LPARAM ll)
 
       return true;
       }
-
    if (mm == AX_GETAXINTERFACE)
       {
       AX* ax = (AX*)GetWindowLong(hh,GWL_USERDATA);

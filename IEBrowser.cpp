@@ -9,10 +9,9 @@
 #include "Globals.h"
 #include "ax.h"
 
-//#include "IEDispatcher.h"
-
 void IEBrowser::Boop(char* test)
 {
+	// External functions may end up here in the future
 }
 
 IEBrowser::IEBrowser(HWND attachHWnd) {
@@ -26,7 +25,6 @@ IEBrowser::IEBrowser(HWND attachHWnd) {
 		}
 	}
 	hwnd = attachHWnd;
-	spDocument = 0;
 	webBrowser = 0;
 	SendMessage(hwnd,AX_INPLACE,1,0);
 	SendMessage(hwnd,AX_QUERYINTERFACE,(WPARAM)&IID_IWebBrowser2,(LPARAM)&webBrowser);
@@ -39,79 +37,17 @@ IEBrowser::~IEBrowser(void) {
 	}
 }
 
-// Something goes here
-int IEBrowser::setExternal(IDispatch** ext)
-{
-	std::cout << &m_IEDispatcher;
-	IInternetHostSecurityManager* spSecMan;
-	spDocument2->QueryInterface(IID_IInternetHostSecurityManager,
-			(void **) &spSecMan);
-
-	// TODO: hr needs to say: 'S_OK'
-	//spSecMan->QueryCustomPolicy
-	HRESULT hr = spSecMan->ProcessUrlAction(URLACTION_ACTIVEX_OVERRIDE_OBJECT_SAFETY,
-		NULL, 0, NULL, 0, 0, PUAF_WARN_IF_DENIED);
-
-	(*ext) = &m_IEDispatcher;
-	return 1;
-}
-
 bool IEBrowser::navigateSyncURL(wchar_t* url)
 {
 	MSG messages;
 	if (webBrowser)
 	{
 		webBrowser->Navigate(url,0,0,0,0);
-		for (int i=1;i<1000;i++)
-		{
-			while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
-			{
-				if (IsDialogMessage(hwnd, &messages) == 0)
-				{
-					TranslateMessage(&messages);
-					DispatchMessage(&messages);
-				}
-			}
-
-			Sleep(30);
-
-			HRESULT hresult = webBrowser->get_Document(&spDocument);
-			if (SUCCEEDED(hresult) && (spDocument != 0))
-			{
-				
-				IOleObject* spOleObject;
-				if (SUCCEEDED(spDocument->QueryInterface(IID_IOleObject,(void**)&spOleObject)))
-				{
-					IOleClientSite* spClientSite;
-					hresult = spOleObject->GetClientSite(&spClientSite);
-					if (SUCCEEDED(hresult) && spClientSite)
-					{
-						m_spDefaultDocHostUIHandler = spClientSite;
-						ICustomDoc* spCustomDoc;
-
-						//IEDispatcher* spIEDispatcher;
-						if (SUCCEEDED(m_spDefaultDocHostUIHandler->QueryInterface(IID_IDocHostUIHandler,(void**)&m_spHandler)))
-						{
-							if (SUCCEEDED(spDocument->QueryInterface(IID_ICustomDoc,(void**)&spCustomDoc)))
-							{
-								spCustomDoc->SetUIHandler(m_spHandler);
-								m_spHandler->GetExternal(&m_spExternal);
-								spDocument->QueryInterface(IID_IHTMLDocument2, (void **) &spDocument2);
-								setExternal(&m_spExternal);
-							}
-						}
-					}
-				}
-				
-
-
-				return true;
-			}
-		}
 	}
 	else
 	{
 		MessageBox(NULL,"Cannot read IWebBrowser2...",(g_PlaceholderName+" Crash").c_str(),MB_OK);
 	}
+
 	return false;
 }
