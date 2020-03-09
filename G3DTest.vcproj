@@ -251,10 +251,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ButtonListener.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CameraController.cpp"
 				>
 			</File>
@@ -264,14 +260,6 @@
 			</File>
 			<File
 				RelativePath=".\Globals.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GroupInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GuiRoot.cpp"
 				>
 			</File>
 			<File
@@ -315,6 +303,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ToggleImageButtonInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WindowFunctions.cpp"
 				>
 			</File>
@@ -327,6 +319,14 @@
 				</File>
 				<File
 					RelativePath=".\DataModelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GroupInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GuiRoot.cpp"
 					>
 				</File>
 				<File
@@ -362,6 +362,10 @@
 				Name="Listeners"
 				>
 				<File
+					RelativePath=".\ButtonListener.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CameraButtonListener.cpp"
 					>
 				</File>
@@ -371,6 +375,10 @@
 				</File>
 				<File
 					RelativePath=".\GUDButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MenuButtonListener.cpp"
 					>
 				</File>
 				<File
@@ -428,10 +436,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GuiRoot.h"
-				>
-			</File>
-			<File
 				RelativePath=".\IEBrowser.h"
 				>
 			</File>
@@ -480,6 +484,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ToggleImageButtonInstance.h"
+				>
+			</File>
+			<File
 				RelativePath=".\win32Defines.h"
 				>
 			</File>
@@ -500,6 +508,10 @@
 				</File>
 				<File
 					RelativePath=".\GroupInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuiRoot.h"
 					>
 				</File>
 				<File
@@ -544,6 +556,10 @@
 				</File>
 				<File
 					RelativePath=".\GUDButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\MenuButtonListener.h"
 					>
 				</File>
 				<File

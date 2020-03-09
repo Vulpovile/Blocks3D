@@ -11,7 +11,7 @@ PartInstance::PartInstance(void) : _bevelSize(0.07f), _parseVert(0), _debugTimer
 	name = "Unnamed PVItem";
 	className = "Part";
 	canCollide = true;
-	anchored = true;
+	anchored = false;
 	size = Vector3(2,1,4);
 	setCFrame(CoordinateFrame(Vector3(0,0,0)));
 	color = Color3::gray();
@@ -24,6 +24,25 @@ PartInstance::PartInstance(void) : _bevelSize(0.07f), _parseVert(0), _debugTimer
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+}
+
+
+Vector3 PartInstance::getVelocity()
+{
+	return velocity;
+}
+Vector3 PartInstance::getRotVelocity()
+{
+	return rotVelocity;
+}
+
+void PartInstance::setVelocity(Vector3 v)
+{
+	velocity = v;
+}
+void PartInstance::setRotVelocity(Vector3 v)
+{
+	rotVelocity = v;
 }
 
 void PartInstance::postRender(RenderDevice *rd)
@@ -54,6 +73,30 @@ void PartInstance::postRender(RenderDevice *rd)
 			fnt->draw3D(rd, name, CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.03*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 			glEnable(GL_DEPTH_TEST); 
 		}
+	}
+}
+
+void PartInstance::setParent(Instance* parent)
+{
+	Instance * cparent = this->parent;
+	while(cparent != NULL)
+	{
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		{
+			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
+			break;
+		}
+		cparent = cparent->getParent();
+	}
+	Instance::setParent(parent);
+	while(parent != NULL)
+	{
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		{
+			workspace->partObjects.push_back(this);
+			break;
+		}
+		parent = parent->getParent();
 	}
 }
 
@@ -145,7 +188,7 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(pos);
+	cFrame = CoordinateFrame(cFrame.rotation, pos);
 	changed = true;
 }
 
@@ -1048,6 +1091,11 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
 		changed=true;
 	}
+	if(strcmp(item->lpszPropName, "Anchored") == 0)
+	{
+		anchored=(bool)item->lpCurValue;
+		changed=true;
+	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{
 		std::string str = (LPTSTR)item->lpCurValue;
@@ -1127,8 +1175,14 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		RGB((color.r*255),(color.g*255),(color.b*255)),
 		PIT_COLOR
 		));
-	
-	sprintf_s(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z);
+	properties.push_back(createPGI(
+		"Item",
+		"Anchored",
+		"Whether the block can move or not",
+		(LPARAM)anchored,
+		PIT_CHECK
+		));
+	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",

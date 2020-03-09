@@ -4,12 +4,14 @@
 #include "BaseButtonInstance.h"
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
+#include "ToggleImageButtonInstance.h"
 #include "GuiRoot.h"
 #include "Globals.h"
 #include "StringFunctions.h"
 
 #include "GUDButtonListener.h"
 #include "ModeSelectionListener.h"
+#include "MenuButtonListener.h"
 #include "RotateButtonListener.h"
 #include "CameraButtonListener.h"
 #include "DeleteListener.h"
@@ -210,10 +212,16 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->name = "Duplicate";
 	button->setButtonListener(new GUDButtonListener());
 
-	ImageButtonInstance* instance = makeImageButton(
+	ImageButtonInstance* instance = new ToggleImageButtonInstance(
 		Texture::fromFile(GetFileInPath("/content/images/Run.png")),
 		Texture::fromFile(GetFileInPath("/content/images/Run_ovr.png")),
-		Texture::fromFile(GetFileInPath("/content/images/Run_dn.png")));
+		Texture::fromFile(GetFileInPath("/content/images/Run_dn.png")),
+		NULL,		
+		Texture::fromFile(GetFileInPath("/content/images/Stop.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Stop_ovr.png")),
+		Texture::fromFile(GetFileInPath("/content/images/Stop_dn.png"))
+		);
+	instance->setButtonListener(new MenuButtonListener());
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);

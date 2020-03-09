@@ -1,5 +1,5 @@
 #pragma once
-#include "PVInstance.h"
+#include "PartInstance.h"
 
 class GroupInstance :
 	public PVInstance
@@ -11,4 +11,6 @@ public:
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 	std::vector<Instance *> unGroup();
+	PartInstance * primaryPart;
+	void render(RenderDevice * r);
 };

@@ -31,7 +31,7 @@
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-
+#define LEGACY_LOAD_G3DFUN_LEVEL
 Ray testRay;
 static int cursorid = 0;
 static int cursorOvrid = 0;
@@ -167,6 +167,7 @@ void Application::deleteInstance()
 		g_usableApp->_propWindow->ClearProperties();
 }
 
+
 void Application::onInit()  {
 	
     // Called before Application::run() beings
@@ -284,14 +285,72 @@ void Application::onCleanup() {
 
 
 
+/*
 
-void Application::onLogic() {
-    // Add non-simulation game logic and AI code here
+Class HyperSnapSolver
 
-		
+function getCollisionDepth(Part colliding, part collider);
+function getFaceCollision(Part colliding, part collider);
 
+function eject(Part colliding, Part collider)
+{
+    if(!colliding.canCollide || !collider.canCollide)
+        return;
+    if(getCollisionDepth(colliding, collider) != 0)    {
+        int ejectMultiplier, ejectMultipliery = 1-(collider.Friction+colliding.Friction), ejectMultiplierz = 1-(collider.Friction/2+colliding.Friction/2);
+        if(colliding.Anchored)
+            ejectMultiplier = collider.elasticity;
+        int faceCollided = getFaceCollision(colliding, collider);
+        if(faceCollided % 3 == 1)
+        {
+            ejectMultipliery = ejectMultiplier;
+            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
+        }
+        else if(faceCollided % 3 == 2)
+        {
+            ejectMultiplierz = ejectMultiplier;
+            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
+        }
+
+        collider.Velocity *= Vector3.new(colliding.Velocity.x*ejectMultiplier,colliding.Velocity.y*ejectMultipliery,colliding.Velocity.z)
+    }
+}
+
+*/
+
+double grav = 0.32666666666666666666666666666667;
+void simGrav(PartInstance * collider)
+{
+	if(!collider->anchored)
+	{
+		collider->setPosition(collider->getPosition()+collider->getVelocity());
+		collider->setVelocity(collider->getVelocity()-Vector3(0,grav,0));
+	}
+}
+
+void eject(PartInstance * colliding, PartInstance * collider)
+{
+	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
+		return;
+	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3);
 
 }
+
+
+
+void Application::onLogic() {	
+	//PhysicsStart
+	for_each (_dataModel->getWorkspace()->partObjects.begin(), _dataModel->getWorkspace()->partObjects.end(), simGrav);
+	for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
+	{
+		for(size_t j = 0; j < _dataModel->getWorkspace()->partObjects.size(); j++)
+		{
+			eject(_dataModel->getWorkspace()->partObjects[i], _dataModel->getWorkspace()->partObjects[j]);
+		}
+	}	
+}
+
 
 
 void Application::onNetwork() {
@@ -310,7 +369,8 @@ std::vector<Instance*> Application::getSelection()
 }
 void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
-	
+	if(_dataModel->isRunning())
+		onLogic();
 		
 	_dataModel->getGuiRoot()->update();
 
@@ -604,7 +664,8 @@ void Application::onGraphics(RenderDevice* rd) {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	//if(_dataModel->getWorkspace() != NULL)
-		_dataModel->getWorkspace()->render(rd);
+	
+	_dataModel->getWorkspace()->render(rd);
 	//else throw std::exception("Workspace not found");
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
