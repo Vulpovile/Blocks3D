@@ -4,6 +4,7 @@ PVInstance::PVInstance(void)
 {
 	Instance::Instance();
 	nameShown = false;
+	controllerFlagShown = true;
 	className = "PVInstance";
 	listicon = 0;
 }

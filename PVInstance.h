@@ -12,4 +12,5 @@ public:
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 	bool nameShown;
+	bool controllerFlagShown;
 };
