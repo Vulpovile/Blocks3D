@@ -37,6 +37,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	g_fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	g_fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 
+	//Bottom Left
 	TextButtonInstance* button = makeTextButton();
 	button->boxBegin = Vector2(0, -24);
 	button->boxEnd = Vector2(80, 0);
@@ -48,6 +49,9 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->title = "Hopper";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+
 	
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -48);
@@ -60,6 +64,9 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->title = "Controller";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -72,6 +79,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->title = "Color";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -84,6 +93,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->title = "Surface";
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -92,11 +103,14 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setParent(this);
 	button->font = g_fntlighttrek;
 	button->textColor = Color3(0,255,255);
-	button->boxOutlineColor = Color3(0,255,255);
 	button->title = "Model";
+	button->selected = true;
 	button->fontLocationRelativeTo = Vector2(10, 3);
 	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 
+	//Top bar
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, 0);
 	button->boxEnd = Vector2(125, 25);
@@ -109,6 +123,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -122,6 +137,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -135,6 +151,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -148,6 +165,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -161,9 +179,10 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->textSize = 16;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 
 
-
+	//Menu
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,215);
 	button->boxEnd = Vector2(80,235);
@@ -382,7 +401,7 @@ void GuiRoot::drawButtons(RenderDevice* rd)
 {
 	rd->pushState();
 	rd->beforePrimitive();
-			this->render(rd);
+			//this->render(rd);
 	rd->afterPrimitive();
 	rd->popState();
 }
@@ -422,7 +441,7 @@ void GuiRoot::renderGUI(G3D::RenderDevice* rd, double fps)
 	g_fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
 
 	
-	drawButtons(rd);
+	//drawButtons(rd);
 	if(System::time() - 3 < _messageTime)
 	{
 		g_fntdominant->draw2D(rd, _message, Vector2((rd->getWidth()/2)-(g_fntdominant->get2DStringBounds(_message, 20).x/2),(rd->getHeight()/2)-(g_fntdominant->get2DStringBounds(_message, 20).y/2)), 20, Color3::yellow(), Color3::black());

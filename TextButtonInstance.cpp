@@ -98,12 +98,7 @@ void TextButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseD
 		Draw::box(Box(point1, point2), rd, boxColorDn, boxOutlineColorDn);
 		font->draw2D(rd, title, RelativeTo, textSize, textColorDn, textOutlineColorDn);
 	}
-	else if(mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y))
-	{
-		Draw::box(Box(point1, point2), rd, boxColorOvr, boxOutlineColorOvr);
-		font->draw2D(rd, title, RelativeTo, textSize, textColorOvr, textOutlineColorOvr);
-	}
-	else if(selected)
+	else if(selected || mouseInArea(point1.x, point1.y, point2.x, point2.y, mousePos.x, mousePos.y))
 	{
 		Draw::box(Box(point1, point2), rd, boxColorOvr, boxOutlineColorOvr);
 		font->draw2D(rd, title, RelativeTo, textSize, textColorOvr, textOutlineColorOvr);
