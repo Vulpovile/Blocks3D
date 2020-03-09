@@ -12,4 +12,5 @@ public:
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 	std::vector<Instance *> unGroup();
 	PartInstance * primaryPart;
+	void render(RenderDevice * r);
 };
