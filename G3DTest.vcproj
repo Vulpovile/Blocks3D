@@ -307,6 +307,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Tool.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WindowFunctions.cpp"
 				>
 			</File>
@@ -485,6 +489,10 @@
 			</File>
 			<File
 				RelativePath=".\ToggleImageButtonInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool.h"
 				>
 			</File>
 			<File
