@@ -175,6 +175,18 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
+
+/*		IInternetSecurityManager *pSecurityMgr;
+		IInternetZoneManager *pZoneMgr;
+		LPCWSTR site1 = SysAllocString(L"http://www.androdome.com");
+
+		hr = CoCreateInstance(CLSID_InternetSecurityManager, NULL, CLSCTX_INPROC_SERVER, IID_IInternetSecurityManager, (void**)&pSecurityMgr);
+
+		pSecurityMgr->SetZoneMapping((DWORD)2, site1, (DWORD)0); // 2 = Trusted Site, site1 is the URL to add, and 0 is to create the entry.
+*/
+		
+
+
 		if (!AXRegister())
 			return 0;
 

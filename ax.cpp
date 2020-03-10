@@ -1,10 +1,7 @@
 // AX.CPP
-#include <windows.h>
-#include <comdef.h>
-#include <exdisp.h>
-#include <oledlg.h>
 #include "ax.h"
-
+#include "AudioPlayer.h"
+#include "Enum.h"
 
 #pragma warning (disable: 4311)
 #pragma warning (disable: 4312)
@@ -106,6 +103,8 @@ STDMETHODIMP AXClientSite :: FilterDataObject( IDataObject *pDO, IDataObject **p
 STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
       {
       *ppvObject = 0;
+	 // if (iid == IID_IOleInPlaceSite)
+       //  *ppvObject = (IOleInPlaceSite*)this;
       if (iid == IID_IOleClientSite)
          *ppvObject = (IOleClientSite*)this;
       if (iid == IID_IUnknown)
@@ -114,7 +113,7 @@ STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
          *ppvObject = (IAdviseSink*)this;
       if (iid == IID_IDispatch)
          *ppvObject = (IDispatch*)this;
-      if (ExternalPlace == false)
+      //if (ExternalPlace == false)
       	{
 	      if (iid == IID_IOleInPlaceSite)
 	         *ppvObject = (IOleInPlaceSite*)this;
@@ -506,22 +505,10 @@ HRESULT _stdcall AXClientSite :: Invoke(
   EXCEPINFO FAR* pExcepInfo,
   unsigned int FAR* puArgErr)
 {
-
-	if (m_lastExternalName==L"Insert")
-	{
-		
-		MessageBoxW(NULL, pDispParams->rgvarg->bstrVal,L"Add insert here...",MB_OK);
-		return S_OK;
-	}
-	else if (m_lastExternalName==L"Boop")
-	{
-		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
-	}
-	else
-	{
-		return E_NOTIMPL;
-	}
-	return S_OK;
+	IEBrowser * browser = (IEBrowser *)GetWindowLongPtr(Window,GWL_USERDATA+1);
+	return browser->doExternal(m_lastExternalName,dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
+	
+	//return S_OK;
 }
 
 

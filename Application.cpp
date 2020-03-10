@@ -20,7 +20,6 @@
 #include <string>
 #include "ax.h"
 #include <cguid.h>
-#include "IEBrowser.h"
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
@@ -114,7 +113,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	Win32Window* window = Win32Window::create(_settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);
 	ShowWindow(_hWndMain, SW_SHOW);
-
+	
 	quit=false;
 	rightButtonHolding=false;
 	mouseOnScreen=false;
@@ -135,10 +134,23 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
-	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
-	webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
+	webBrowser = new IEBrowser(_hwndToolbox);
+	
+	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
+	//webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
+	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
+	navigateToolbox(GetFileInPath("/content/page/surface.html"));
+
 }
 
+void Application::navigateToolbox(std::string path)
+{
+	int len = path.size() + 1;
+	wchar_t * nstr = new wchar_t[len];
+	MultiByteToWideChar(0, 0, path.c_str(), len, nstr, len);
+	webBrowser->navigateSyncURL(nstr);
+	delete[] nstr;
+}
 
 void Application::deleteInstance()
 {
@@ -333,7 +345,7 @@ void eject(PartInstance * colliding, PartInstance * collider)
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
 	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
-		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3);
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3F);
 
 }
 
@@ -512,7 +524,7 @@ int Application::getMode()
 
 void Application::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
 {
-
+	rd->disableLighting();
 	Color3 outline = Color3::cyan();//Color3(0.098F,0.6F,1.0F);
 	float offsetSize = 0.05F;
 	//X
@@ -534,8 +546,6 @@ void Application::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, Lighti
 	
 	if(_mode == ARROWS)
 	{
-		rd->setLight(0, NULL);
-		rd->setAmbientLightColor(Color3(1,1,1));
 		
 		AABox box;
 		c.toWorldSpace(Box(from, to)).getBounds(box);
@@ -556,14 +566,10 @@ void Application::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, Lighti
 
 
 
-		rd->setAmbientLightColor(lighting.ambient);
-		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
 	else if(_mode == RESIZE)
 	{
 		Color3 sphereColor = outline;
-		rd->setLight(0, NULL);
-		rd->setAmbientLightColor(Color3(1,1,1));
 		Vector3 gamepoint = pos;
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
@@ -573,25 +579,23 @@ void Application::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, Lighti
 			float multiplier = distance * 0.025F/2;
 			if(multiplier < 0.25F)
 				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z/2)+1));
+			Vector3 position = pos + (c.lookVector()*((size.z)+1));
 			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-
-			position = pos + (c.rightVector()*((size.x/2)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x/2)+1));
+			position = pos - (c.lookVector()*((size.z)+1));
 			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
 
-			position = pos + (c.upVector()*((size.y/2)+1));
+			position = pos + (c.rightVector()*((size.x)+1));
 			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y/2)+1));
+			position = pos - (c.rightVector()*((size.x)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+
+			position = pos + (c.upVector()*((size.y)+1));
+			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
+			position = pos - (c.upVector()*((size.y)+1));
 			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
 		}
-		rd->setAmbientLightColor(lighting.ambient);
-		rd->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	}
-	
+	rd->enableLighting();
 }
 
 void Application::exitApplication()

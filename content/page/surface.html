@@ -1,0 +1,23 @@
+<html>
+<script>
+	function toolOvr(image)
+	{
+		if(image.src.indexOf("_dn.png") == -1)
+			image.src = image.src.replace(".png", "_dn.png");
+	}
+	function toolOut(image)
+	{
+		if(image.src.indexOf("_dn.png") != -1)
+			image.src = image.src.replace("_dn.png",".png");
+	}
+</script>
+<body style="background-color: ButtonFace; margin: 0; padding: 5px; overflow: hidden; border:0;">
+	<img src="../images/FlatTool.png" onclick="window.external.SetSurface(0)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/BumpTool.png" onclick="window.external.SetSurface(1)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/HingeTool.png" onclick="window.external.SetSurface(2)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/LeftMotorTool.png" onclick="window.external.SetSurface(3)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/LeftMotorFastTool.png" onclick="window.external.SetSurface(4)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/RightMotorTool.png" onclick="window.external.SetSurface(5)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/RightMotorFastTool.png" onclick="window.external.SetSurface(6)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+</body>
+</html>
