@@ -7,11 +7,54 @@
 
 #include "IEBrowser.h"
 #include "Globals.h"
+#pragma once
 #include "ax.h"
 
-void IEBrowser::Boop(char* test)
+HRESULT IEBrowser::doExternal(std::wstring funcName,
+  DISPID dispIdMember,
+  REFIID riid,
+  LCID lcid,
+  WORD wFlags,
+  DISPPARAMS FAR* pDispParams,
+  VARIANT FAR* pVarResult,
+  EXCEPINFO FAR* pExcepInfo,
+  unsigned int FAR* puArgErr)
 {
-	// External functions may end up here in the future
+	if (funcName==L"Insert")
+	{
+		
+		MessageBoxW(NULL, pDispParams->rgvarg->bstrVal,L"Add insert here...",MB_OK);
+		return S_OK;
+	}
+	else if (funcName==L"Boop")
+	{
+		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+	}
+	else if (funcName==L"SetController")
+	{
+		bool ding = false;
+		//int len = SysStringLen(pDispParams->rgvarg->bstrVal)+1;
+		//char * args = new char[len];
+		//WideCharToMultiByte(CP_ACP, 0, pDispParams->rgvarg->bstrVal, len, args, len, NULL, (LPBOOL)TRUE);
+		if(pDispParams->rgvarg->intVal < 0 || pDispParams->rgvarg->intVal > 7)
+			return S_OK;
+		Enum::Controller::Value cont = (Enum::Controller::Value)pDispParams->rgvarg->intVal;
+		for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		{
+			if(PVInstance* part = dynamic_cast<PVInstance*>(g_selectedInstances.at(i)))
+			{
+				ding = true;
+				part->controller = cont;
+			}
+		}
+		if(ding)
+			AudioPlayer::playSound(dingSound);
+		return S_OK;
+	}
+	else
+	{
+		return E_NOTIMPL;
+	}
 }
 
 IEBrowser::IEBrowser(HWND attachHWnd) {
@@ -39,7 +82,7 @@ IEBrowser::~IEBrowser(void) {
 
 bool IEBrowser::navigateSyncURL(wchar_t* url)
 {
-	MSG messages;
+	//MSG messages;
 	if (webBrowser)
 	{
 		

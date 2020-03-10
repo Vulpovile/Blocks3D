@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include <mshtmhst.h>
 #include <string>
+#pragma once
+#include "IEBrowser.h"
 
 // messages
 #define AX_QUERYINTERFACE (WM_USER + 1)
@@ -40,7 +42,6 @@ class AXClientSite :
 		bool CalledCanInPlace;
 
 		class AX* ax;
-
 	   // MyClientSite Methods
 		AXClientSite();
 		virtual ~AXClientSite();

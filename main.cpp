@@ -176,7 +176,6 @@ int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
 
-			HRESULT hr;
 /*		IInternetSecurityManager *pSecurityMgr;
 		IInternetZoneManager *pZoneMgr;
 		LPCWSTR site1 = SysAllocString(L"http://www.androdome.com");

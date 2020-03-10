@@ -30,7 +30,7 @@
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-//#define LEGACY_LOAD_G3DFUN_LEVEL
+#define LEGACY_LOAD_G3DFUN_LEVEL
 Ray testRay;
 static int cursorid = 0;
 static int cursorOvrid = 0;
@@ -113,7 +113,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	Win32Window* window = Win32Window::create(_settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);
 	ShowWindow(_hWndMain, SW_SHOW);
-
+	
 	quit=false;
 	rightButtonHolding=false;
 	mouseOnScreen=false;
@@ -135,6 +135,8 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	webBrowser = new IEBrowser(_hwndToolbox);
+	
+	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
 	//webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
 	navigateToolbox(GetFileInPath("/content/page/controller.html"));
 
@@ -342,7 +344,7 @@ void eject(PartInstance * colliding, PartInstance * collider)
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
 	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
-		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3);
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3F);
 
 }
 
