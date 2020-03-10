@@ -2,20 +2,46 @@
 <script>
 	function toolOvr(image)
 	{
-		if(image.src.indexOf("_dn.png") == -1)
-			image.src = image.src.replace(".png", "_dn.png");
+		image.style.backgroundColor = "#cccccc";
 	}
 	function toolOut(image)
 	{
-		if(image.src.indexOf("_dn.png") != -1)
-			image.src = image.src.replace("_dn.png",".png");
+		
+		image.style.backgroundColor = "transparent";
 	}
 </script>
+<style>
+	img{
+		height: 100%;
+	}
+	.container
+	{
+		height: 47px;
+		width: 50px;
+		margin-right: 10px;
+	}
+</style>
 <body style="background-color: ButtonFace; margin: 0; padding: 5px; overflow: hidden; border:0;">
-	<img src="../images/Controller1Tool.png" onclick="window.external.SetController(1)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
-	<img src="../images/Controller2Tool.png" onclick="window.external.SetController(2)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
-	<img src="../images/ControllerAI1Tool.png" onclick="window.external.SetController(5)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
-	<img src="../images/ControllerAI2Tool.png" onclick="window.external.SetController(623423434234)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
-	<img src="../images/ControllerNoneTool.png" onclick="window.external.SetController(0)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(0)">
+		<img src="../images/GameTool.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(1)">
+		<img src="../images/Grab.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(2)">
+		<img src="../images/Clone.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(3)">
+		<img src="../images/Hammer.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(4)">
+		<img src="../images/Slingshot.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(5)">
+		<img src="../images/Rocket.png" />
+	</span>
+	<span class="container" onmousedown="toolOvr(this)" onmouseup="toolOut(this)" onclick="window.external.ToggleHopperBin(6)">
+		<img src="../images/Laser.png" />
+	</span>
 </body>
 </html>

@@ -139,6 +139,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
 	//webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
 	navigateToolbox(GetFileInPath("/content/page/controller.html"));
+	//navigateToolbox(GetFileInPath("/content/page/surface.html"));
 
 }
 

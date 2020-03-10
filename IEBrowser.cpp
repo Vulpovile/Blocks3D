@@ -26,7 +26,7 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 		MessageBoxW(NULL, pDispParams->rgvarg->bstrVal,L"Add insert here...",MB_OK);
 		return S_OK;
 	}
-	else if (funcName==L"Boop")
+	else if (funcName==L"ToggleHopperBin")
 	{
 		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
 	}
