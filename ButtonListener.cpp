@@ -4,6 +4,7 @@
 
 ButtonListener::ButtonListener()
 {
+	doDelete = true;
 }
 
 ButtonListener::~ButtonListener(void)

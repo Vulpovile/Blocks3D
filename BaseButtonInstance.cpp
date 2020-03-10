@@ -20,7 +20,11 @@ void BaseButtonInstance::render(RenderDevice* rd)
 
 BaseButtonInstance::~BaseButtonInstance(void)
 {
-	delete listener;
+	if(listener != NULL && listener->doDelete)
+	{
+		delete listener;
+		listener = NULL;
+	}
 }
 
 void BaseButtonInstance::setButtonListener(ButtonListener* buttonListener)

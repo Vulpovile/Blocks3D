@@ -11,6 +11,7 @@ public:
 	void OnButton1MouseUp();
 	void OnButton2MouseUp();
 	void OnButton3MouseUp();
-	void OnKeyPress();
-	void OnKeyRelease();
+	void OnMouseScroll();
+	void OnKeyDown();
+	void OnKeyUp();
 };

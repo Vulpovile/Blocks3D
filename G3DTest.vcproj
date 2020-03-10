@@ -303,10 +303,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ToggleImageButtonInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Tool.cpp"
 				>
 			</File>
@@ -358,6 +354,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ToggleImageButtonInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\WorkspaceInstance.cpp"
 					>
 				</File>
@@ -391,6 +391,10 @@
 				</File>
 				<File
 					RelativePath=".\RotateButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ToolbarListener.cpp"
 					>
 				</File>
 			</Filter>
@@ -572,6 +576,10 @@
 				</File>
 				<File
 					RelativePath=".\ModeSelectionListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ToolbarListener.h"
 					>
 				</File>
 			</Filter>

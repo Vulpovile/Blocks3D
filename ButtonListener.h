@@ -1,6 +1,6 @@
 #pragma once
 //#include "Application.h"
-//#include "BaseButtonInstance.h"
+#include "BaseButtonInstance.h"
 
 class BaseButtonInstance;
 
@@ -10,6 +10,7 @@ class ButtonListener
 		ButtonListener();
 		~ButtonListener(void);
 		virtual void onButton1MouseClick(BaseButtonInstance*);
+		bool doDelete;
 		//virtual void onMouseOver(); //TODO
 		//virtual void onMouseOut(); //TODO
 		//virtual void onButton1MouseDown(); //TODO

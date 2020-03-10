@@ -15,6 +15,7 @@
 #include "RotateButtonListener.h"
 #include "CameraButtonListener.h"
 #include "DeleteListener.h"
+#include "ToolbarListener.h"
 
 #include "ImageButtonInstance.h"
 
@@ -31,9 +32,11 @@ TextButtonInstance* GuiRoot::makeTextButton()
 	TextButtonInstance* part = new TextButtonInstance();
 	return part;
 }
-
+ToolbarListener * toolbar;
 GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 {
+	toolbar = new ToolbarListener();
+	toolbar->doDelete = false;
 	g_fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	g_fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 
@@ -51,6 +54,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+	button->setButtonListener(toolbar);
+	toolbar->addButtonRef(button);
 
 	
 	button = makeTextButton();
@@ -66,7 +71,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-
+	button->setButtonListener(toolbar);
+	toolbar->addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -81,6 +87,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+	button->setButtonListener(toolbar);
+	toolbar->addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -95,6 +103,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+	button->setButtonListener(toolbar);
+	toolbar->addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -109,6 +119,8 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+	button->setButtonListener(toolbar);
+	toolbar->addButtonRef(button);
 
 	//Top bar
 	button = makeTextButton();
@@ -501,6 +513,11 @@ void GuiRoot::update()
 				break;
 			}
 	}
+}
+
+GuiRoot::~GuiRoot()
+{
+	delete toolbar;
 }
 
 void GuiRoot::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x,int y)
