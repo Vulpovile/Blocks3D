@@ -42,6 +42,7 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 	MSG messages;
 	if (webBrowser)
 	{
+		
 		webBrowser->Navigate(url,0,0,0,0);
 	}
 	else

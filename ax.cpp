@@ -1,10 +1,7 @@
 // AX.CPP
-#include <windows.h>
-#include <comdef.h>
-#include <exdisp.h>
-#include <oledlg.h>
 #include "ax.h"
-
+#include "AudioPlayer.h"
+#include "Enum.h"
 
 #pragma warning (disable: 4311)
 #pragma warning (disable: 4312)
@@ -106,6 +103,8 @@ STDMETHODIMP AXClientSite :: FilterDataObject( IDataObject *pDO, IDataObject **p
 STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
       {
       *ppvObject = 0;
+	 // if (iid == IID_IOleInPlaceSite)
+       //  *ppvObject = (IOleInPlaceSite*)this;
       if (iid == IID_IOleClientSite)
          *ppvObject = (IOleClientSite*)this;
       if (iid == IID_IUnknown)
@@ -114,7 +113,7 @@ STDMETHODIMP AXClientSite :: QueryInterface(REFIID iid,void**ppvObject)
          *ppvObject = (IAdviseSink*)this;
       if (iid == IID_IDispatch)
          *ppvObject = (IDispatch*)this;
-      if (ExternalPlace == false)
+      //if (ExternalPlace == false)
       	{
 	      if (iid == IID_IOleInPlaceSite)
 	         *ppvObject = (IOleInPlaceSite*)this;
@@ -516,6 +515,27 @@ HRESULT _stdcall AXClientSite :: Invoke(
 	else if (m_lastExternalName==L"Boop")
 	{
 		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+	}
+	else if (m_lastExternalName==L"SetController")
+	{
+		bool ding = false;
+		//int len = SysStringLen(pDispParams->rgvarg->bstrVal)+1;
+		//char * args = new char[len];
+		//WideCharToMultiByte(CP_ACP, 0, pDispParams->rgvarg->bstrVal, len, args, len, NULL, (LPBOOL)TRUE);
+		if(pDispParams->rgvarg->intVal < 0 || pDispParams->rgvarg->intVal > 7)
+			return S_OK;
+		Enum::Controller::Value cont = (Enum::Controller::Value)pDispParams->rgvarg->intVal;
+		for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		{
+			if(PVInstance* part = dynamic_cast<PVInstance*>(g_selectedInstances.at(i)))
+			{
+				ding = true;
+				part->controller = cont;
+			}
+		}
+		if(ding)
+			AudioPlayer::playSound(dingSound);
+		return S_OK;
 	}
 	else
 	{

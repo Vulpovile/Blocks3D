@@ -1,4 +1,6 @@
 // AX.H
+#pragma once
+#include "Globals.h"
 #include <mshtmhst.h>
 #include <string>
 
