@@ -4,6 +4,7 @@
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "CameraController.h"
+#include "IEBrowser.h"
 //#include "GuiRoot.h"
 
 class TextButtonInstance;
@@ -25,6 +26,7 @@ class Application { // : public GApp {
 		virtual void	onUserInput(UserInput* ui);
 		virtual void	onCleanup();
 		void			clearInstances();
+		void			navigateToolbox(std::string);
 		PartInstance*	makePart();
 		void			drawButtons(RenderDevice* rd);
 		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
@@ -72,6 +74,7 @@ class Application { // : public GApp {
 		int					_mode;
 		GAppSettings		_settings;
 		double lightProjX, lightProjY, lightProjNear, lightProjFar;
+		IEBrowser*		webBrowser;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;

@@ -20,7 +20,6 @@
 #include <string>
 #include "ax.h"
 #include <cguid.h>
-#include "IEBrowser.h"
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
@@ -135,10 +134,20 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	SetWindowLongPtr(_hWndMain,GWL_USERDATA,(LONG)this);
 	SetWindowLongPtr(_hwndRenderer,GWL_USERDATA,(LONG)this);
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
-	IEBrowser* webBrowser = new IEBrowser(_hwndToolbox);
-	webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
+	webBrowser = new IEBrowser(_hwndToolbox);
+	//webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
+	navigateToolbox(GetFileInPath("/content/page/controller.html"));
+
 }
 
+void Application::navigateToolbox(std::string path)
+{
+	int len = path.size() + 1;
+	wchar_t * nstr = new wchar_t[len];
+	MultiByteToWideChar(0, 0, path.c_str(), len, nstr, len);
+	webBrowser->navigateSyncURL(nstr);
+	delete[] nstr;
+}
 
 void Application::deleteInstance()
 {

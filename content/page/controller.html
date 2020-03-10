@@ -1,0 +1,21 @@
+<html>
+<script>
+	function toolOvr(image)
+	{
+		if(image.src.indexOf("_dn.png") == -1)
+			image.src = image.src.replace(".png", "_dn.png");
+	}
+	function toolOut(image)
+	{
+		if(image.src.indexOf("_dn.png") != -1)
+			image.src = image.src.replace("_dn.png",".png");
+	}
+</script>
+<body style="background-color: ButtonFace; margin: 0; padding: 5px; overflow: hidden; border:0;">
+	<img src="../images/Controller1Tool.png" onclick="SetController(1)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/Controller2Tool.png" onclick="Insert(2)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/ControllerAI1Tool.png" onclick="SetController(3)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/ControllerAI2Tool.png" onclick="SetController(4)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+	<img src="../images/ControllerNoneTool.png" onclick="SetController(0)" onmousedown="toolOvr(this)" onmouseup="toolOut(this)"/>
+</body>
+</html>
