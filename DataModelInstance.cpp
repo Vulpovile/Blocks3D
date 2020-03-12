@@ -20,9 +20,9 @@ DataModelInstance::DataModelInstance(void)
 	//children.push_back(workspace);
 	//children.push_back(level);
 	className = "dataModel";
-	mousex = 0;
-	mousey = 0;
-	mouseButton1Down = false;
+	//mousex = 0;
+	//mousey = 0;
+	//mouseButton1Down = false;
 	showMessage = false;
 	canDelete = false;
 	_modY=0;
@@ -586,7 +586,7 @@ WorkspaceInstance* DataModelInstance::getWorkspace()
 {
 	return workspace;
 }
-Vector2 DataModelInstance::getMousePos()
+/*Vector2 DataModelInstance::getMousePos()
 {
 	return Vector2(mousex,mousey);
 }
@@ -599,7 +599,7 @@ void DataModelInstance::setMousePos(Vector2 pos)
 {
 	mousex=pos.x;
 	mousey=pos.y;
-}
+}*/
 GuiRoot* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;

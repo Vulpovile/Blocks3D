@@ -291,6 +291,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Mouse.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\propertyGrid.cpp"
 				>
 			</File>
@@ -300,10 +304,6 @@
 			</File>
 			<File
 				RelativePath=".\StringFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Tool.cpp"
 				>
 			</File>
 			<File
@@ -398,6 +398,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Tools"
+				>
+				<File
+					RelativePath=".\Tool.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -456,6 +464,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Mouse.h"
+				>
+			</File>
+			<File
 				RelativePath=".\propertyGrid.h"
 				>
 			</File>
@@ -493,10 +505,6 @@
 			</File>
 			<File
 				RelativePath=".\ToggleImageButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Tool.h"
 				>
 			</File>
 			<File
@@ -580,6 +588,14 @@
 				</File>
 				<File
 					RelativePath=".\ToolbarListener.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Tools"
+				>
+				<File
+					RelativePath=".\Tool.h"
 					>
 				</File>
 			</Filter>

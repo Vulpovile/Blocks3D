@@ -1,5 +1,6 @@
 #include "BaseButtonInstance.h"
 #include "Globals.h"
+#include "Application.h"
 
 
 ButtonListener* listener = NULL;
@@ -13,8 +14,8 @@ BaseButtonInstance::BaseButtonInstance(void)
 void BaseButtonInstance::render(RenderDevice* rd)
 {
 	DataModelInstance* dataModel = g_dataModel;
-	Vector2 pos = Vector2(dataModel->mousex,dataModel->mousey);
-	drawObj(rd, pos, dataModel->mouseButton1Down);
+	Vector2 pos = Vector2(g_usableApp->mouse.x,g_usableApp->mouse.y);
+	drawObj(rd, pos, g_usableApp->mouse.isMouseDown());
 	Instance::render(rd);
 }
 
