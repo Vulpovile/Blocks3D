@@ -452,6 +452,7 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		std::stringstream msg;
 		msg << "Failed to load file:" << std::endl << filename << std::endl << strerror(errno);
 		MessageBoxStr(msg.str());
+		return false;
 	}
 }
 

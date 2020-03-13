@@ -1082,6 +1082,7 @@ static TCHAR* enumStr(int shape)
 		case Enum::Shape::Cylinder:
 			return "Cylinder";
 	}
+	return "Block";
 }
 
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
