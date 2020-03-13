@@ -483,6 +483,15 @@ void Application::onUserInput(UserInput* ui) {
 	// Add other key handling here
 }
 
+void Application::changeTool(Tool * newTool)
+{
+	delete tool;
+	if(newTool != NULL)
+		tool = newTool;
+	else
+		tool = new Tool(); //Nulltool
+}
+
 void Application::makeFlag(Vector3 &vec, RenderDevice* &rd)
 {
 
