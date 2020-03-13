@@ -58,6 +58,7 @@ class Application { // : public GApp {
 		void				setMode(int mode);
 		Mouse mouse;
 		Tool * tool;
+		void changeTool(Tool *);
 	private:
 		RenderDevice*		renderDevice;
 		//void				initGUI();
