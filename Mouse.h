@@ -1,14 +1,18 @@
 #pragma once
 #include "PartInstance.h"
 #pragma once
+#include "WorkspaceInstance.h"
+
+#pragma once
 
 class Mouse
 {
 public:
-	Mouse(void);
+	Mouse();
 	~Mouse(void);
 	int x, y;
-	Instance * getTarget();
+	int oldx, oldy;
+	PartInstance * getTarget();
 	Vector3 getPosition();
 	bool isMouseOnScreen();
 	bool isMouseDown();

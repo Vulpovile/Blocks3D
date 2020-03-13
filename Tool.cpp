@@ -2,8 +2,8 @@
 
 Tool::Tool(void)
 {
-	cursorRef = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
-	cursorId = cursorRef->openGLID();
+	cursorString = GetFileInPath("/content/images/ArrowFarCursor.png");
+	//cursorId = cursorRef->openGLID();
 }
 
 Tool::~Tool(void)
@@ -22,14 +22,11 @@ void Tool::onDeselect(Mouse mouse){}
 void Tool::onMouseScroll(Mouse mouse){}
 void Tool::onKeyDown(char key){}
 void Tool::onKeyUp(char key){}
-void Tool::setCursor(std::string)
+void Tool::setCursor(std::string str)
 {
+	cursorString = str;
 }
 int Tool::getCursorId()
 {
-	return cursorId;
-}
-void Tool::setCursorId(int id)
-{
-	cursorId = id;
+	return TextureHandler::getTexturePermanent(cursorString);
 }

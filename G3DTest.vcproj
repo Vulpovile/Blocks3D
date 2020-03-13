@@ -307,6 +307,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TextureHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WindowFunctions.cpp"
 				>
 			</File>
@@ -401,6 +405,10 @@
 			<Filter
 				Name="Tools"
 				>
+				<File
+					RelativePath=".\ArrowTool.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\Tool.cpp"
 					>
@@ -504,6 +512,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TextureHandler.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ToggleImageButtonInstance.h"
 				>
 			</File>
@@ -594,6 +606,10 @@
 			<Filter
 				Name="Tools"
 				>
+				<File
+					RelativePath=".\ArrowTool.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Tool.h"
 					>

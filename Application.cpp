@@ -30,8 +30,8 @@
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-#define LEGACY_LOAD_G3DFUN_LEVEL
-Ray testRay;
+//#define LEGACY_LOAD_G3DFUN_LEVEL
+//Ray testRay;
 //static int cursorid = 0;
 //static int cursorOvrid = 0;
 //static int currentcursorid = 0;
@@ -161,8 +161,7 @@ void Application::deleteInstance()
 			{
 				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 				Instance* selectedInstance = g_selectedInstances.at(0);
-				if(selectedInstance->getParent() != NULL)
-					selectedInstance->getParent()->removeChild(selectedInstance);
+				selectedInstance->setParent(NULL);
 				delete selectedInstance;
 				selectedInstance = NULL;
 				g_selectedInstances.erase(g_selectedInstances.begin());
@@ -415,7 +414,11 @@ bool IsHolding(int button)
 */
 
 void Application::onUserInput(UserInput* ui) {
-	
+	if(mouseMoveState)
+	{
+		mouseMoveState = false;
+		tool->onMouseMoved(mouse);
+	}
 	/*
 	if(GetHoldKeyState(VK_LCONTROL))
 	{
@@ -441,7 +444,7 @@ void Application::onUserInput(UserInput* ui) {
 	mouse.setMouseDown((GetKeyState(VK_LBUTTON) & 0x100) != 0);
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
-		if (_dragging) {
+	/*	if (_dragging) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
 				part = (PartInstance*) g_selectedInstances.at(0);
@@ -466,7 +469,7 @@ void Application::onUserInput(UserInput* ui) {
 				}
 			}
 			Sleep(10);
-		}
+		}*/
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -485,11 +488,14 @@ void Application::onUserInput(UserInput* ui) {
 
 void Application::changeTool(Tool * newTool)
 {
+	tool->onDeselect(mouse);
 	delete tool;
 	if(newTool != NULL)
 		tool = newTool;
 	else
 		tool = new Tool(); //Nulltool
+	tool->onSelect(mouse);
+	
 }
 
 void Application::makeFlag(Vector3 &vec, RenderDevice* &rd)
@@ -795,63 +801,6 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 	if(!onGUI)
 	{
 		tool->onButton1MouseDown(mouse);
-		Instance * selectedInstance = NULL;
-		testRay = cameraController.getCamera()->worldRay(mouse.x, mouse.y, renderDevice->getViewport());
-		float nearest=std::numeric_limits<float>::infinity();
-		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
-		std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
-        bool objFound = false;
-		for(size_t i = 0; i < instances.size(); i++)
-		{
-			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
-			{
-				float time = testRay.intersectionTime(test->getBox());
-				
-				if (time != inf()) 
-				{
-					objFound = true;
-					if (nearest>time)
-					{
-						nearest=time;
-						//bool found = false;
-						selectedInstance = test;
-						/*for(size_t i = 0; i < g_selectedInstances.size(); i++)
-						{
-							if(g_selectedInstances.at(i) == test)
-							{
-								found = true;
-								//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
-								//SetActiveWindow(_propWindow->_hwndProp);
-								//SetForegroundWindow(_propWindow->_hwndProp);
-								break;
-							}
-						}
-						if(!found)
-						{
-							selectedInstance = test;
-							//if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
-								//g_selectedInstances.clear();
-							//if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),test)==g_selectedInstances.end())
-								//g_selectedInstances.push_back(test);
-						}
-						//selectInstance(test, _propWindow);
-						//_message = "Dragging = true.";
-						//_messageTime = System::time();
-						//_dragging = true;*/
-					}
-				}
-			}		
-		}
-		if(!objFound)
-			selectInstance(_dataModel,_propWindow);
-		else 
-		{
-			while(selectedInstance->getParent() != g_dataModel->getWorkspace())
-			{
-				selectedInstance = selectedInstance->getParent();
-			}
-			selectInstance(selectedInstance, _propWindow);
-		}
 	}
 }
 
@@ -895,9 +844,12 @@ void Application::onMouseRightUp(int x,int y)
 void Application::onMouseMoved(int x,int y)
 {
 	oldMouse = Vector2(mouse.x, mouse.y);
+	mouse.oldx = mouse.x;
+	mouse.oldy = mouse.y;
 	mouse.x = x;
 	mouse.y = y;
-	tool->onMouseMoved(mouse);
+	//tool->onMouseMoved(mouse);
+	mouseMoveState = true;
 	//_dataModel->mousex = x;
 	//_dataModel->mousey = y;
 

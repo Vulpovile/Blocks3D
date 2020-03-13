@@ -2,6 +2,7 @@
 #include "Instance.h"
 #include "ModeSelectionListener.h"
 #include "Application.h"
+#include "ArrowTool.h"
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
@@ -20,7 +21,7 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 
 	button->selected = true;
 	if(button->name == "Cursor")
-		g_usableApp->setMode(CURSOR);
+		g_usableApp->changeTool(new ArrowTool());
 	else if(button->name == "Resize")
 		g_usableApp->setMode(RESIZE);
 	else if(button->name == "Arrows")
