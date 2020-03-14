@@ -13,7 +13,7 @@ public:
 	int x, y;
 	int oldx, oldy;
 	PartInstance * getTarget();
-	Vector3 getPosition();
+	Vector3 getPosition(std::vector<Instance *> ignore = std::vector<Instance *>());
 	bool isMouseOnScreen();
 	bool isMouseDown();
 	void setMouseDown(bool mouseDown);

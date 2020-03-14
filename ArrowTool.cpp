@@ -50,7 +50,7 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		{
 			if(PartInstance * part = dynamic_cast<PartInstance *>(g_selectedInstances[i]))
 			{
-				part->setPosition(mouse.getPosition());
+				part->setPosition(mouse.getPosition(g_selectedInstances));
 			}
 		}
 		return;
