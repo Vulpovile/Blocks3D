@@ -76,19 +76,20 @@ void PartInstance::postRender(RenderDevice *rd)
 	}
 }
 
-void PartInstance::setParent(Instance* parent)
+void PartInstance::setParent(Instance* prnt)
 {
-	Instance * cparent = this->parent;
+	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
-		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
+			std::cout << "Removed from partarray " << std::endl;
 			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
 			break;
 		}
 		cparent = cparent->getParent();
 	}
-	Instance::setParent(parent);
+	Instance::setParent(prnt);
 	while(parent != NULL)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
