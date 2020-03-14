@@ -1,6 +1,7 @@
 #include "Mouse.h"
 #include "Application.h"
 #include "Globals.h"
+
 Mouse::Mouse(){
 	x = y = 0;
 }
@@ -34,14 +35,49 @@ PartInstance * Mouse::getTarget()
 }
 
 
-
-
-
+double getVectorDistance(Vector3 vector1, Vector3 vector2)
+{
+	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
+}
 
 Vector3 Mouse::getPosition()
 {
-	return Vector3();
-	//Not implemented
+	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	Vector3 pos = testRay.closestPoint(Vector3(0,0,0));
+	nearest=std::numeric_limits<float>::infinity();
+	//Vector3 camPos = g_usableApp->cameraController.getCamera()->getCoordinateFrame().translation;
+	for(size_t i = 0; i < g_dataModel->getWorkspace()->partObjects.size(); i++)
+	{
+		PartInstance * p = g_dataModel->getWorkspace()->partObjects[i];
+		if(G3D::isFinite(testRay.intersectionTime(p->getBox())))
+		{
+
+			if (nearest>testRay.intersectionTime(p->getBox()))
+			{
+
+				// BROKEN
+				pos = (testRay.closestPoint(p->getPosition()/2));
+			}
+
+			/* // This would be an overall better solution
+			for(char i = 0; i < 6; i++)
+			{
+				Vector3 side1;
+				Vector3 side2;
+				Vector3 side3;
+				Vector3 side4;
+				p->getBox().getFaceCorners(i, side1, side2, side3, side4);
+				Vector3 inter = testRay.intersection(G3D::Plane(side2, side3, side4));
+				float newdistance = testRay.distance(inter);
+				if(nearest > abs(newdistance))
+				{
+					nearest = newdistance;
+					pos = inter;
+				}
+			}*/
+		}
+	}
+	return pos;
 }
 bool Mouse::isMouseOnScreen()
 {

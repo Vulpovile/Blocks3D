@@ -689,7 +689,8 @@ void Application::onGraphics(RenderDevice* rd) {
 	glDisableClientState(GL_NORMAL_ARRAY);
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
-
+	
+	Draw::sphere(G3D::Sphere(mouse.getPosition(), 1), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
