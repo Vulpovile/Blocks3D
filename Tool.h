@@ -24,8 +24,8 @@ public:
 	virtual void onSelect(Mouse);//yes
 	virtual void onDeselect(Mouse);//yes
 	virtual void onMouseScroll(Mouse);//Kinda
-	virtual void onKeyDown(char);//yes
-	virtual void onKeyUp(char);//yes
+	virtual void onKeyDown(int);//yes
+	virtual void onKeyUp(int);//yes
 	virtual int getCursorId();//yes
 protected:
 	virtual void setCursor(std::string);

@@ -9,5 +9,10 @@ public:
 	~ArrowTool(void); //OnDeselect?
 	virtual void onButton1MouseDown(Mouse);
 	virtual void onMouseMoved(Mouse mouse);
-	virtual void onSelect(Mouse mouse); //Why is this not being called
+	virtual void onSelect(Mouse mouse); 
+	virtual void onKeyDown(int key);
+	virtual void onKeyUp(int key);
+private:
+	bool lctrlDown;
+	bool rctrlDown;
 };

@@ -20,8 +20,8 @@ void Tool::onMouseMoved(Mouse mouse){}
 void Tool::onSelect(Mouse mouse){}
 void Tool::onDeselect(Mouse mouse){}
 void Tool::onMouseScroll(Mouse mouse){}
-void Tool::onKeyDown(char key){}
-void Tool::onKeyUp(char key){}
+void Tool::onKeyDown(int key){}
+void Tool::onKeyUp(int key){}
 void Tool::setCursor(std::string str)
 {
 	cursorString = str;
