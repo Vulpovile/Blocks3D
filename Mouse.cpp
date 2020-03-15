@@ -54,15 +54,6 @@ Vector3 Mouse::getPosition(std::vector<Instance *> ignore)
 			continue;
 		if(G3D::isFinite(testRay.intersectionTime(p->getBox())))
 		{
-
-			/*if (nearest>testRay.intersectionTime(p->getBox()))
-			{
-
-				// BROKEN
-				pos = (testRay.closestPoint(p->getPosition()/2));
-			}*/
-
-			 // This would be an overall better solution
 			for(char i = 0; i < 6; i++)
 			{
 				Vector3 side1;
