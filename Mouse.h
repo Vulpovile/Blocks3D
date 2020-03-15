@@ -3,8 +3,17 @@
 #pragma once
 #include "WorkspaceInstance.h"
 
-#pragma once
+struct MousePoint{
+	Vector3 position;
+	PartInstance * target;
+	MousePoint(Vector3 pos, PartInstance * targ)
+	{
+		position = pos;
+		target = targ;
+	}
+};
 
+#pragma once
 class Mouse
 {
 public:
@@ -13,6 +22,7 @@ public:
 	int x, y;
 	int oldx, oldy;
 	PartInstance * getTarget();
+	MousePoint getPositionAndPart(std::vector<Instance *> ignore = std::vector<Instance *>());
 	Vector3 getPosition(std::vector<Instance *> ignore = std::vector<Instance *>());
 	bool isMouseOnScreen();
 	bool isMouseDown();

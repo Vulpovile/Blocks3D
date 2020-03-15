@@ -41,38 +41,36 @@ double getVectorDistance(Vector3 vector1, Vector3 vector2)
 	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 }
 
-Vector3 Mouse::getPosition(std::vector<Instance *> ignore)
+MousePoint Mouse::getPositionAndPart(std::vector<Instance *> ignore)
 {
 	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
-	Vector3 pos = Vector3(0,0,0);
+	PartInstance * currPart = NULL;
+	Vector3 pos = testRay.closestPoint(Vector3(0,0,0));
 	nearest=std::numeric_limits<float>::infinity();
-	//Vector3 camPos = g_usableApp->cameraController.getCamera()->getCoordinateFrame().translation;
 	for(size_t i = 0; i < g_dataModel->getWorkspace()->partObjects.size(); i++)
 	{
 		PartInstance * p = g_dataModel->getWorkspace()->partObjects[i];
 		if(std::find(ignore.begin(), ignore.end(), p) != ignore.end())
 			continue;
-		if(G3D::isFinite(testRay.intersectionTime(p->getBox())))
-		{
-			for(char i = 0; i < 6; i++)
-			{
-				Vector3 side1;
-				Vector3 side2;
-				Vector3 side3;
-				Vector3 side4;
-				p->getBox().getFaceCorners(i, side1, side2, side3, side4);
-				Vector3 inter = testRay.intersection(G3D::Plane(side1, side2, side3));
-				float newdistance = testRay.distance(inter);
-				if(nearest > abs(newdistance))
-				{
-					nearest = newdistance;
-					pos = inter;
-				}
-			}
-		}
+		float newdistance = testRay.intersectionTime(p->getBox()); //testRay.distance(inter);
+		if(G3D::isFinite(newdistance))
+        {
+			if(nearest > abs(newdistance))
+            {
+                nearest = newdistance;
+                pos = testRay.origin+(testRay.direction*nearest);
+				currPart = p;
+            }
+        }
 	}
-	return pos;
+	return MousePoint(pos, currPart);
 }
+
+Vector3 Mouse::getPosition(std::vector<Instance *> ignore)
+{
+	return getPositionAndPart(ignore).position;
+}
+
 bool Mouse::isMouseOnScreen()
 {
 	//hm
