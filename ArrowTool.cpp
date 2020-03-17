@@ -15,6 +15,8 @@ ArrowTool::~ArrowTool(void)
 
 void ArrowTool::onButton1MouseDown(Mouse mouse)
 {
+	mouseDownStartx = mouse.x;
+	mouseDownStarty = mouse.y;
 	mouseDown = true;
 	if(!lctrlDown && !rctrlDown)
 		g_selectedInstances.clear();

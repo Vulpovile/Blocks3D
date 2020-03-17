@@ -674,7 +674,9 @@ void Application::onGraphics(RenderDevice* rd) {
 
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
 	renderDevice->setAmbientLightColor(lighting.ambient);
-	
+	//renderDevice->setBlendFunc(RenderDevice::BLEND_ONE, RenderDevice::BLEND_ONE);
+
+
 	rd->beforePrimitive();
 	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -689,6 +691,9 @@ void Application::onGraphics(RenderDevice* rd) {
 	glDisableClientState(GL_NORMAL_ARRAY);
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
+
+
+
 	
 	Draw::sphere(G3D::Sphere(mouse.getPosition(), 1), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
