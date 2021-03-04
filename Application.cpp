@@ -137,9 +137,9 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	webBrowser = new IEBrowser(_hwndToolbox);
 	
 	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
-	//webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
+	webBrowser->navigateSyncURL(L"http://androdome.com/res/ClientToolbox.php");
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
-	navigateToolbox(GetFileInPath("/content/page/surface.html"));
+	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
 
 }
 
@@ -643,6 +643,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	}
 	
     LightingParameters lighting(G3D::toSeconds(2, 00, 00, PM));
+	lighting.ambient = Color3(0.6F,0.6F,0.6F);
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
     // Cyan background
@@ -659,8 +660,19 @@ void Application::onGraphics(RenderDevice* rd) {
 	renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
 	renderDevice->setAmbientLightColor(Color3(1,1,1));
 
-	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor));
+	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor, true, true));
 	renderDevice->setAmbientLightColor(lighting.ambient);
+	renderDevice->setShininess(70);
+	renderDevice->setSpecularCoefficient(Color3(0.1F, 0.1F, 0.1F));
+	
+	//float   lightAmbient[]  = { 0.5F, 0.6F, 0.9F, 1.0F };
+    //float   lightDiffuse[]  = { 0.6F, 0.4F, 0.9F, 1.0F };
+    //float   lightSpecular[] = { 0.8F, 0.6F, 1.0F, 1.0F };
+
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lightAmbient);
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, lightDiffuse);
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightSpecular);
+	//glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 70);
 	
 	rd->beforePrimitive();
 	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();

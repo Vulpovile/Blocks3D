@@ -229,7 +229,6 @@ int main(int argc, char** argv) {
 			hThisInstance,
 			NULL
 		);
-
 		if(hwndMain == NULL)
 		{
 			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_PlaceholderName + " Crash").c_str() , MB_OK);
