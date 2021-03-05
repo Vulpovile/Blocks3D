@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include\DataModel&quot;;&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -248,19 +248,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\BaseButtonInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\BrowserCallHandler.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\source\CameraController.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\DataModelInstance.cpp"
 				>
 			</File>
 			<File
@@ -272,31 +264,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\GroupInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\GuiRootInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\IEBrowser.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\source\IEDispatcher.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\ImageButtonInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\Instance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\LevelInstance.cpp"
 				>
 			</File>
 			<File
@@ -308,10 +280,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\PartInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\propertyGrid.cpp"
 				>
 			</File>
@@ -320,15 +288,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\PVInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\StringFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\TextButtonInstance.cpp"
 				>
 			</File>
 			<File
@@ -336,15 +296,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\ToggleImageButtonInstance.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\WindowFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\WorkspaceInstance.cpp"
 				>
 			</File>
 			<Filter
@@ -395,6 +347,58 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="DataModel"
+				>
+				<File
+					RelativePath=".\src\source\DataModel\BaseButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\DataModelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\GroupInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\GuiRootInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\ImageButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\Instance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\LevelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\PartInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\PVInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\TextButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\ToggleImageButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\WorkspaceInstance.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -413,19 +417,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\BaseButtonInstance.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\BrowserCallHandler.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\include\CameraController.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\DataModelInstance.h"
 				>
 			</File>
 			<File
@@ -445,14 +441,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\GroupInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\GuiRootInstance.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\IEBrowser.h"
 				>
 			</File>
@@ -461,23 +449,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\ImageButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\Instance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\LevelInstance.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\Mouse.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\PartInstance.h"
 				>
 			</File>
 			<File
@@ -489,10 +461,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\PVInstance.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\resource.h"
 				>
 			</File>
@@ -501,15 +469,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\TextButtonInstance.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\TextureHandler.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\ToggleImageButtonInstance.h"
 				>
 			</File>
 			<File
@@ -518,10 +478,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\WindowFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\WorkspaceInstance.h"
 				>
 			</File>
 			<Filter
@@ -589,6 +545,58 @@
 				</File>
 				<File
 					RelativePath=".\src\include\Tool\Tool.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModel"
+				>
+				<File
+					RelativePath=".\src\include\DataModel\BaseButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\DataModelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\GroupInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\GuiRootInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\ImageButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\Instance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\LevelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\PartInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\PVInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\TextButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\ToggleImageButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\WorkspaceInstance.h"
 					>
 				</File>
 			</Filter>
