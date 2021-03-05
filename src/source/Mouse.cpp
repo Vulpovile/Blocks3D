@@ -1,7 +1,6 @@
 #include "Mouse.h"
 #include "Application.h"
 #include "Globals.h"
-#include <algorithm>
 
 Mouse::Mouse(){
 	x = y = 0;

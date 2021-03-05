@@ -24,5 +24,5 @@ class IEBrowser {
   unsigned int FAR* puArgErr);
 	private:
 		IWebBrowser2* webBrowser;
-		HWND hwnd;
+		HWND parentHwnd;
 };

@@ -1,7 +1,6 @@
 
 #include "WindowFunctions.h"
 #include <sstream>
-#include <string>
 
 using namespace std;
 
