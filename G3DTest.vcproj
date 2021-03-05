@@ -400,6 +400,32 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="DataModelV2"
+				>
+				<File
+					RelativePath=".\src\source\DataModelV2\Instance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -536,6 +562,10 @@
 					RelativePath=".\src\include\Listener\ToolbarListener.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\include\DataModel\WorkspaceInstance.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Tool"
@@ -596,8 +626,12 @@
 					RelativePath=".\src\include\DataModel\ToggleImageButtonInstance.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="DataModelV2"
+				>
 				<File
-					RelativePath=".\src\include\DataModel\WorkspaceInstance.h"
+					RelativePath=".\src\include\DataModelV2\Instance.h"
 					>
 				</File>
 			</Filter>
