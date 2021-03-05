@@ -2,7 +2,6 @@
 #include <sstream>
 #include "ErrorFunctions.h"
 #include "StringFunctions.h"
-#include <windows.h>
 
 std::string Convert (float number)
 {
