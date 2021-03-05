@@ -9,13 +9,13 @@
 #include "Globals.h"
 #include "StringFunctions.h"
 
-#include "GUDButtonListener.h"
-#include "ModeSelectionListener.h"
-#include "MenuButtonListener.h"
-#include "RotateButtonListener.h"
-#include "CameraButtonListener.h"
-#include "DeleteListener.h"
-#include "ToolbarListener.h"
+#include "Listener/GUDButtonListener.h"
+#include "Listener/ModeSelectionListener.h"
+#include "Listener/MenuButtonListener.h"
+#include "Listener/RotateButtonListener.h"
+#include "Listener/CameraButtonListener.h"
+#include "Listener/DeleteListener.h"
+#include "Listener/ToolbarListener.h"
 
 #include "ImageButtonInstance.h"
 

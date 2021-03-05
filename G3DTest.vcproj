@@ -256,23 +256,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\ButtonListener.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\CameraButtonListener.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\CameraController.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\source\DataModelInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\DeleteListener.cpp"
 				>
 			</File>
 			<File
@@ -285,10 +273,6 @@
 			</File>
 			<File
 				RelativePath=".\src\source\GroupInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\GUDButtonListener.cpp"
 				>
 			</File>
 			<File
@@ -320,14 +304,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\MenuButtonListener.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\ModeSelectionListener.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\Mouse.cpp"
 				>
 			</File>
@@ -348,10 +324,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\RotateButtonListener.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\StringFunctions.cpp"
 				>
 			</File>
@@ -365,10 +337,6 @@
 			</File>
 			<File
 				RelativePath=".\src\source\ToggleImageButtonInstance.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\ToolbarListener.cpp"
 				>
 			</File>
 			<File
@@ -388,6 +356,42 @@
 				</File>
 				<File
 					RelativePath=".\src\source\Tool\Tool.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Listener"
+				>
+				<File
+					RelativePath=".\src\source\Listener\ButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\CameraButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\DeleteListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\GUDButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\MenuButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\ModeSelectionListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\RotateButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\ToolbarListener.cpp"
 					>
 				</File>
 			</Filter>
@@ -417,23 +421,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\ButtonListener.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\CameraButtonListener.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\CameraController.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\include\DataModelInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\DeleteListener.h"
 				>
 			</File>
 			<File
@@ -454,10 +446,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\GroupInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\GUDButtonListener.h"
 				>
 			</File>
 			<File
@@ -485,14 +473,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\MenuButtonListener.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\ModeSelectionListener.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\Mouse.h"
 				>
 			</File>
@@ -517,10 +497,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\RotateButtonListener.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\StringFunctions.h"
 				>
 			</File>
@@ -534,10 +510,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\ToggleImageButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\ToolbarListener.h"
 				>
 			</File>
 			<File
@@ -569,6 +541,42 @@
 				</File>
 				<File
 					RelativePath=".\src\include\rapidxml\rapidxml_utils.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Listener"
+				>
+				<File
+					RelativePath=".\src\include\Listener\ButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\CameraButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\DeleteListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\GUDButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\MenuButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\ModeSelectionListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\RotateButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\ToolbarListener.h"
 					>
 				</File>
 			</Filter>

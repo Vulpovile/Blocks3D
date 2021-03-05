@@ -25,11 +25,11 @@
 #include "StringFunctions.h"
 #include "GuiRootInstance.h"
 
-#include "GUDButtonListener.h"
-#include "ModeSelectionListener.h"
-#include "DeleteListener.h"
-#include "CameraButtonListener.h"
-#include "RotateButtonListener.h"
+#include "Listener/GUDButtonListener.h"
+#include "Listener/ModeSelectionListener.h"
+#include "Listener/DeleteListener.h"
+#include "Listener/CameraButtonListener.h"
+#include "Listener/RotateButtonListener.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
 //Ray testRay;
 //static int cursorid = 0;
