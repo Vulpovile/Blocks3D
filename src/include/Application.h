@@ -6,7 +6,7 @@
 #include "CameraController.h"
 #include "IEBrowser.h"
 #include "Mouse.h"
-#include "Tool.h"
+#include "Tool/Tool.h"
 //#include "GuiRoot.h"
 
 class TextButtonInstance;

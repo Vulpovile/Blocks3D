@@ -2,7 +2,7 @@
 #include "Instance.h"
 #include "ModeSelectionListener.h"
 #include "Application.h"
-#include "ArrowTool.h"
+#include "Tool/ArrowTool.h"
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {

@@ -240,10 +240,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\ArrowTool.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\AudioPlayer.cpp"
 				>
 			</File>
@@ -372,10 +368,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\Tool.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\ToolbarListener.cpp"
 				>
 			</File>
@@ -387,6 +379,18 @@
 				RelativePath=".\src\source\WorkspaceInstance.cpp"
 				>
 			</File>
+			<Filter
+				Name="Tool"
+				>
+				<File
+					RelativePath=".\src\source\Tool\ArrowTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Tool\Tool.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -394,10 +398,6 @@
 			>
 			<File
 				RelativePath=".\src\include\Application.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\ArrowTool.h"
 				>
 			</File>
 			<File
@@ -537,10 +537,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\Tool.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\ToolbarListener.h"
 				>
 			</File>
@@ -577,16 +573,16 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="DataModel"
-				>
-			</Filter>
-			<Filter
 				Name="Tool"
 				>
-			</Filter>
-			<Filter
-				Name="Listener"
-				>
+				<File
+					RelativePath=".\src\include\Tool\ArrowTool.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Tool\Tool.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
