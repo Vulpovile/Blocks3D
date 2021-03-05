@@ -31,10 +31,12 @@ public:
 	void setParent(Instance* parent);
 	void setPosition(Vector3);
 	void setVelocity(Vector3);
+	bool collides(PartInstance * part);
 	void setRotVelocity(Vector3);
 	CoordinateFrame getCFrame();
 	void setCFrame(CoordinateFrame);
 	Box getBox();
+	Sphere getSphere();
 	Box getScaledBox();
 	CoordinateFrame getCFrameRenderBased();
 	Vector3 getSize();

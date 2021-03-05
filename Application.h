@@ -5,6 +5,8 @@
 #include "ImageButtonInstance.h"
 #include "CameraController.h"
 #include "IEBrowser.h"
+#include "Mouse.h"
+#include "Tool.h"
 //#include "GuiRoot.h"
 
 class TextButtonInstance;
@@ -54,7 +56,12 @@ class Application { // : public GApp {
 		RenderDevice*		getRenderDevice();
 		void				selectInstance(Instance* selectedInstance,PropertyWindow* propWindow);
 		void				setMode(int mode);
+		
+		Tool * tool;
+		void changeTool(Tool *);
+		Mouse mouse;
 	private:
+		bool				mouseMoveState;
 		RenderDevice*		renderDevice;
 		//void				initGUI();
 		HWND				_hWndMain;

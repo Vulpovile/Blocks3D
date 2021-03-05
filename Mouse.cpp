@@ -1,0 +1,116 @@
+#include "Mouse.h"
+#include "Application.h"
+#include "Globals.h"
+#include <algorithm>
+
+Mouse::Mouse(){
+	x = y = 0;
+}
+Mouse::~Mouse(){}
+
+PartInstance * selectedInstance = NULL;
+Ray testRay;
+float nearest=std::numeric_limits<float>::infinity();
+void eprt(PartInstance * instance)
+{
+		float time = testRay.intersectionTime(instance->getBox());
+		if (time != inf()) 
+		{
+			if (nearest>time)
+			{
+				nearest=time;
+				selectedInstance = instance;
+				//This is where dead code below was
+			}
+		}
+}
+
+PartInstance * Mouse::getTarget()
+{
+	selectedInstance = NULL;
+	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	nearest=std::numeric_limits<float>::infinity();
+	//Vector3 camPos = g_usableApp->cameraController.getCamera()->getCoordinateFrame().translation;
+	for_each (g_dataModel->getWorkspace()->partObjects.begin(), g_dataModel->getWorkspace()->partObjects.end(), eprt);
+	return selectedInstance;
+}
+
+
+double getVectorDistance(Vector3 vector1, Vector3 vector2)
+{
+	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
+}
+
+MousePoint Mouse::getPositionAndPart(std::vector<Instance *> ignore)
+{
+	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	PartInstance * currPart = NULL;
+	Vector3 pos = testRay.closestPoint(Vector3(0,0,0));
+	nearest=std::numeric_limits<float>::infinity();
+	for(size_t i = 0; i < g_dataModel->getWorkspace()->partObjects.size(); i++)
+	{
+		PartInstance * p = g_dataModel->getWorkspace()->partObjects[i];
+		if(std::find(ignore.begin(), ignore.end(), p) != ignore.end())
+			continue;
+		float newdistance = testRay.intersectionTime(p->getBox()); //testRay.distance(inter);
+		if(G3D::isFinite(newdistance))
+        {
+			if(nearest > abs(newdistance))
+            {
+                nearest = newdistance;
+                pos = testRay.origin+(testRay.direction*nearest);
+				currPart = p;
+            }
+        }
+	}
+	return MousePoint(pos, currPart);
+}
+
+Vector3 Mouse::getPosition(std::vector<Instance *> ignore)
+{
+	return getPositionAndPart(ignore).position;
+}
+
+bool Mouse::isMouseOnScreen()
+{
+	//hm
+	return true;
+}
+
+bool Mouse::isMouseDown()
+{
+	return mouseDown;
+}
+
+void Mouse::setMouseDown(bool bval)
+{
+	mouseDown = bval;
+}
+
+
+
+				//bool found = false;
+				/*for(size_t i = 0; i < g_selectedInstances.size(); i++)
+				{
+					if(g_selectedInstances.at(i) == test)
+					{
+						found = true;
+						//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+						//SetActiveWindow(_propWindow->_hwndProp);
+						//SetForegroundWindow(_propWindow->_hwndProp);
+						break;
+					}
+				}
+				if(!found)
+				{
+					selectedInstance = test;
+					//if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
+						//g_selectedInstances.clear();
+					//if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),test)==g_selectedInstances.end())
+						//g_selectedInstances.push_back(test);
+				}
+				//selectInstance(test, _propWindow);
+				//_message = "Dragging = true.";
+				//_messageTime = System::time();
+				//_dragging = true;*/
+

@@ -9,6 +9,7 @@ class GuiRoot : public Instance
 {
 public:
 	GuiRoot();
+	GuiRoot::~GuiRoot();
 	TextButtonInstance*		makeTextButton();
 	void					drawButtons(RenderDevice* rd);
 	ImageButtonInstance*	makeImageButton(G3D::TextureRef newImage, G3D::TextureRef overImage, G3D::TextureRef downImage, G3D::TextureRef disableImage);

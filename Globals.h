@@ -20,6 +20,7 @@ public:
 	static G3D::TextureRef surface;
 	static int surfaceId;
 	static const std::string g_PlaceholderName;
+	static COLORREF g_acrCustClr[16]; //Will be dynamic later
 };
 
 extern std::vector<Instance*> postRenderStack;
@@ -31,7 +32,8 @@ extern Application* g_usableApp;
 extern GFontRef g_fntdominant;
 extern GFontRef g_fntlighttrek;
 
+extern COLORREF g_acrCustClr[16]; //Will be dynamic later
 extern std::string cameraSound;
 extern std::string clickSound;
 extern std::string dingSound;
-const std::string g_PlaceholderName = "HyperCube";
+const std::string g_PlaceholderName = "Dygysphere";

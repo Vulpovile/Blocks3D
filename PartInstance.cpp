@@ -76,19 +76,20 @@ void PartInstance::postRender(RenderDevice *rd)
 	}
 }
 
-void PartInstance::setParent(Instance* parent)
+void PartInstance::setParent(Instance* prnt)
 {
-	Instance * cparent = this->parent;
+	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
-		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
+			std::cout << "Removed from partarray " << std::endl;
 			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
 			break;
 		}
 		cparent = cparent->getParent();
 	}
-	Instance::setParent(parent);
+	Instance::setParent(prnt);
 	while(parent != NULL)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
@@ -205,8 +206,27 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 // Can probably be deleted
 CoordinateFrame PartInstance::getCFrameRenderBased()
 {
-	return CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
+	return cFrame;//CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
 }
+
+bool PartInstance::collides(PartInstance * part)
+{
+	if(shape == Enum::Shape::Block)
+	{
+		if(part->shape == Enum::Shape::Block)
+			return G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), part->getBox());
+		else
+			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidBox(part->getSphere(), getBox());
+	}
+	else
+	{
+		if(part->shape == Enum::Shape::Block)
+			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidBox(getSphere(), part->getBox());
+		else 
+			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidSphere(getSphere(), part->getSphere());
+	}
+}
+
 #ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
 {	
@@ -214,6 +234,13 @@ Box PartInstance::getBox()
 	CoordinateFrame c = getCFrameRenderBased();
 	itemBox = c.toWorldSpace(box);
 	return itemBox;
+}
+Sphere PartInstance::getSphere()
+{	
+	Sphere sphere = Sphere(Vector3(0,0,0), size.y/2);
+	CoordinateFrame c = getCFrameRenderBased();
+	//itemBox = c.toWorldSpace(Sphere);
+	return sphere;//itemBox;
 }
 #else
 Box PartInstance::getBox()
@@ -966,6 +993,7 @@ static TCHAR* enumStr(int shape)
 		case Enum::Shape::Cylinder:
 			return "Cylinder";
 	}
+	return "Block";
 }
 
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)

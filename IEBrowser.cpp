@@ -4,7 +4,7 @@
 
 
 #include <windows.h>
-
+#include <Commdlg.h>
 #include "IEBrowser.h"
 #include "Globals.h"
 #pragma once
@@ -28,7 +28,9 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 	}
 	else if (funcName==L"ToggleHopperBin")
 	{
-		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+		pVarResult->vt = VT_INT;
+		pVarResult->intVal = 5;
+		//MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
 	}
 	else if (funcName==L"SetController")
 	{
@@ -51,10 +53,41 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 			AudioPlayer::playSound(dingSound);
 		return S_OK;
 	}
-	else
+	else if(funcName==L"SetColor")
 	{
-		return E_NOTIMPL;
+
+		return S_OK;
 	}
+	else if(funcName==L"ChooseColor")
+	{
+		CHOOSECOLOR color;
+
+		DWORD rgbCurrent; //Will be dynamic later
+		ZeroMemory(&color, sizeof(CHOOSECOLOR)); 
+		color.lStructSize = sizeof(color);
+		color.hwndOwner = hwnd;
+		color.lpCustColors = (LPDWORD) g_acrCustClr; 
+		color.rgbResult = rgbCurrent; 
+		color.Flags = CC_FULLOPEN | CC_RGBINIT; 
+		if(ChooseColorA((LPCHOOSECOLOR)&color))
+		{
+			//DWORD dwR = GetRValue(color.rgbResult);
+			//DWORD dwG = GetGValue(color.rgbResult);
+			//DWORD dwB = GetBValue(color.rgbResult);
+			//wchar_t * str = L"Test";
+			//swprintf_s(str, 16, L"#%02X%02X%02X", dwR, dwG, dwB);
+			pVarResult->vt = VT_UI4;
+			pVarResult->ulVal = color.rgbResult;
+		}
+		else
+		{
+			DWORD error = CommDlgExtendedError();
+			std::cout << error;
+			pVarResult->vt = VT_NULL;
+		}
+		return S_OK;
+	}
+	return E_NOTIMPL;
 }
 
 IEBrowser::IEBrowser(HWND attachHWnd) {

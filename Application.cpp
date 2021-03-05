@@ -30,13 +30,11 @@
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-#define LEGACY_LOAD_G3DFUN_LEVEL
-Ray testRay;
-static int cursorid = 0;
-static int cursorOvrid = 0;
-static int currentcursorid = 0;
-static G3D::TextureRef cursor = NULL;
-static G3D::TextureRef cursorOvr = NULL;
+//#define LEGACY_LOAD_G3DFUN_LEVEL
+//Ray testRay;
+//static int cursorid = 0;
+//static int cursorOvrid = 0;
+//static int currentcursorid = 0;
 static bool mouseMovedBeginMotion = false;
 static POINT oldGlobalMouse;
 Vector2 oldMouse = Vector2(0,0);
@@ -163,8 +161,7 @@ void Application::deleteInstance()
 			{
 				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 				Instance* selectedInstance = g_selectedInstances.at(0);
-				if(selectedInstance->getParent() != NULL)
-					selectedInstance->getParent()->removeChild(selectedInstance);
+				selectedInstance->setParent(NULL);
 				delete selectedInstance;
 				selectedInstance = NULL;
 				g_selectedInstances.erase(g_selectedInstances.begin());
@@ -181,7 +178,7 @@ void Application::deleteInstance()
 
 
 void Application::onInit()  {
-	
+	tool = new Tool();
     // Called before Application::run() beings
 	cameraController.setFrame(Vector3(0,2,10));
 	_dataModel = new DataModelInstance();
@@ -417,7 +414,11 @@ bool IsHolding(int button)
 */
 
 void Application::onUserInput(UserInput* ui) {
-	
+	if(mouseMoveState)
+	{
+		mouseMoveState = false;
+		tool->onMouseMoved(mouse);
+	}
 	/*
 	if(GetHoldKeyState(VK_LCONTROL))
 	{
@@ -440,14 +441,14 @@ void Application::onUserInput(UserInput* ui) {
 
 	//_dataModel->mousex = ui->getMouseX();
 	//_dataModel->mousey = ui->getMouseY();
-	_dataModel->mouseButton1Down = (GetKeyState(VK_LBUTTON) & 0x100) != 0;
+	mouse.setMouseDown((GetKeyState(VK_LBUTTON) & 0x100) != 0);
 
 	if (GetHoldKeyState(VK_LBUTTON)) {
-		if (_dragging) {
+	/*	if (_dragging) {
 			PartInstance* part = NULL;
 			if(g_selectedInstances.size() > 0)
 				part = (PartInstance*) g_selectedInstances.at(0);
-		Ray dragRay = cameraController.getCamera()->worldRay(_dataModel->mousex, _dataModel->mousey, renderDevice->getViewport());
+		Ray dragRay = cameraController.getCamera()->worldRay(mouse.x, mouse.y, renderDevice->getViewport());
 		std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
 		for(size_t i = 0; i < instances.size(); i++)
 			{
@@ -468,7 +469,7 @@ void Application::onUserInput(UserInput* ui) {
 				}
 			}
 			Sleep(10);
-		}
+		}*/
 	}
 	// Camera KB Handling {
 		if (GetKPBool(VK_OEM_COMMA)) //Left
@@ -483,6 +484,18 @@ void Application::onUserInput(UserInput* ui) {
 
 	//readMouseGUIInput();
 	// Add other key handling here
+}
+
+void Application::changeTool(Tool * newTool)
+{
+	tool->onDeselect(mouse);
+	delete tool;
+	if(newTool != NULL)
+		tool = newTool;
+	else
+		tool = new Tool(); //Nulltool
+	tool->onSelect(mouse);
+	
 }
 
 void Application::makeFlag(Vector3 &vec, RenderDevice* &rd)
@@ -662,6 +675,11 @@ void Application::onGraphics(RenderDevice* rd) {
 
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor, true, true));
 	renderDevice->setAmbientLightColor(lighting.ambient);
+
+	//renderDevice->setBlendFunc(RenderDevice::BLEND_ONE, RenderDevice::BLEND_ONE);
+
+
+
 	renderDevice->setShininess(70);
 	renderDevice->setSpecularCoefficient(Color3(0.1F, 0.1F, 0.1F));
 	
@@ -674,6 +692,7 @@ void Application::onGraphics(RenderDevice* rd) {
     //glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightSpecular);
 	//glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 70);
 	
+
 	rd->beforePrimitive();
 	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -689,6 +708,10 @@ void Application::onGraphics(RenderDevice* rd) {
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
 
+
+
+	
+	Draw::sphere(G3D::Sphere(mouse.getPosition(), 1), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
@@ -747,7 +770,7 @@ void Application::onGraphics(RenderDevice* rd) {
 				}
 			}
 			*/
-			glBindTexture( GL_TEXTURE_2D, currentcursorid);
+			glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
 
 			
 			glBegin( GL_QUADS );
@@ -779,10 +802,11 @@ void Application::onKeyPressed(int key)
 	{
 			_dataModel->getOpen();
 	}
+	tool->onKeyDown(key);
 }
 void Application::onKeyUp(int key)
 {
-
+	tool->onKeyUp(key);
 }
 
 void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
@@ -791,69 +815,14 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 
 
 	//std::cout << "Click: " << x << "," << y << std::endl;
-
+	
+	
 	bool onGUI = _dataModel->getGuiRoot()->mouseInGUI(renderDevice, x, y);
 	
 	
 	if(!onGUI)
 	{
-		Instance * selectedInstance = NULL;
-		testRay = cameraController.getCamera()->worldRay(_dataModel->mousex, _dataModel->mousey, renderDevice->getViewport());
-		float nearest=std::numeric_limits<float>::infinity();
-		Vector3 camPos = cameraController.getCamera()->getCoordinateFrame().translation;
-		std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
-        bool objFound = false;
-		for(size_t i = 0; i < instances.size(); i++)
-		{
-			if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
-			{
-				float time = testRay.intersectionTime(test->getBox());
-				
-				if (time != inf()) 
-				{
-					objFound = true;
-					if (nearest>time)
-					{
-						nearest=time;
-						//bool found = false;
-						selectedInstance = test;
-						/*for(size_t i = 0; i < g_selectedInstances.size(); i++)
-						{
-							if(g_selectedInstances.at(i) == test)
-							{
-								found = true;
-								//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
-								//SetActiveWindow(_propWindow->_hwndProp);
-								//SetForegroundWindow(_propWindow->_hwndProp);
-								break;
-							}
-						}
-						if(!found)
-						{
-							selectedInstance = test;
-							//if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
-								//g_selectedInstances.clear();
-							//if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),test)==g_selectedInstances.end())
-								//g_selectedInstances.push_back(test);
-						}
-						//selectInstance(test, _propWindow);
-						//_message = "Dragging = true.";
-						//_messageTime = System::time();
-						//_dragging = true;*/
-					}
-				}
-			}		
-		}
-		if(!objFound)
-			selectInstance(_dataModel,_propWindow);
-		else 
-		{
-			while(selectedInstance->getParent() != g_dataModel->getWorkspace())
-			{
-				selectedInstance = selectedInstance->getParent();
-			}
-			selectInstance(selectedInstance, _propWindow);
-		}
+		tool->onButton1MouseDown(mouse);
 	}
 }
 
@@ -880,6 +849,7 @@ void Application::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x, int y)
 	//std::cout << "Release: " << x << "," << y << std::endl;
 	_dataModel->getGuiRoot()->onMouseLeftUp(renderDevice, x, y);
 	_dragging = false;
+	tool->onButton1MouseUp(mouse);
 	//_message = "Dragging = false.";
 	//_messageTime = System::time();
 
@@ -887,15 +857,23 @@ void Application::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x, int y)
 
 void Application::onMouseRightPressed(int x,int y)
 {
+	tool->onButton2MouseDown(mouse);
 }
 void Application::onMouseRightUp(int x,int y)
 {
+	tool->onButton2MouseUp(mouse);
 }
 void Application::onMouseMoved(int x,int y)
 {
-	oldMouse = _dataModel->getMousePos();
-	_dataModel->mousex = x;
-	_dataModel->mousey = y;
+	oldMouse = Vector2(mouse.x, mouse.y);
+	mouse.oldx = mouse.x;
+	mouse.oldy = mouse.y;
+	mouse.x = x;
+	mouse.y = y;
+	//tool->onMouseMoved(mouse);
+	mouseMoveState = true;
+	//_dataModel->mousex = x;
+	//_dataModel->mousey = y;
 
 }
 void Application::onMouseWheel(int x,int y,short delta)
@@ -905,6 +883,7 @@ void Application::onMouseWheel(int x,int y,short delta)
 	{
 		AudioPlayer::playSound(cameraSound);
 	}
+	tool->onMouseScroll(mouse);
 }
 
 void Application::run() {
@@ -928,17 +907,13 @@ void Application::run() {
 	UpdateWindow(_hWndMain);
 
     // Load objects here=
-	cursor = Texture::fromFile(GetFileInPath("/content/images/ArrowCursor.png"));
-	cursorOvr = Texture::fromFile(GetFileInPath("/content/images/DragCursor.png"));
+
 	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
 	Globals::surfaceId = Globals::surface->getOpenGLID();
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
     sky = Sky::create(NULL, ExePath() + "/content/sky/");
-	cursorid = cursor->openGLID();
-	currentcursorid = cursorid;
-	cursorOvrid = cursorOvr->openGLID();
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
 	float		fps=30.0f;
