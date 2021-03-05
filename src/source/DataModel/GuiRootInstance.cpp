@@ -1,11 +1,12 @@
 #include <iomanip>
 #include <sstream>
 #include "G3DAll.h"
-#include "BaseButtonInstance.h"
-#include "TextButtonInstance.h"
-#include "ImageButtonInstance.h"
-#include "ToggleImageButtonInstance.h"
-#include "GuiRootInstance.h"
+#include "DataModel/BaseButtonInstance.h"
+#include "DataModel/TextButtonInstance.h"
+#include "DataModel/ImageButtonInstance.h"
+#include "DataModel/ToggleImageButtonInstance.h"
+#include "DataModel/GuiRootInstance.h"
+#include "DataModel/ImageButtonInstance.h"
 #include "Globals.h"
 #include "StringFunctions.h"
 
@@ -17,7 +18,6 @@
 #include "Listener/DeleteListener.h"
 #include "Listener/ToolbarListener.h"
 
-#include "ImageButtonInstance.h"
 
 ImageButtonInstance* GuiRootInstance::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {

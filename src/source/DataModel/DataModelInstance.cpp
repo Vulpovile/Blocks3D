@@ -1,6 +1,6 @@
 #include <string>
-#include "GuiRootInstance.h"
-#include "DataModelInstance.h"
+#include "DataModel/GuiRootInstance.h"
+#include "DataModel/DataModelInstance.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>

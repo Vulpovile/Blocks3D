@@ -1,4 +1,4 @@
-#include "WorkspaceInstance.h"
+#include "DataModel/WorkspaceInstance.h"
 
 
 WorkspaceInstance::WorkspaceInstance(void)

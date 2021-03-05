@@ -1,6 +1,6 @@
 #define WINVER	0x0400
 #include <G3DAll.h>
-#include "Instance.h"
+#include "DataModel/Instance.h"
 
 
 

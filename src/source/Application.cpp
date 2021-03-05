@@ -1,12 +1,13 @@
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
-#include "Instance.h"
 #include "resource.h"
-#include "PartInstance.h"
-#include "TextButtonInstance.h"
-#include "ImageButtonInstance.h"
-#include "DataModelInstance.h"
+#include "DataModel/Instance.h"
+#include "DataModel/PartInstance.h"
+#include "DataModel/TextButtonInstance.h"
+#include "DataModel/ImageButtonInstance.h"
+#include "DataModel/DataModelInstance.h"
+#include "DataModel/GuiRootInstance.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
@@ -23,7 +24,6 @@
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
-#include "GuiRootInstance.h"
 
 #include "Listener/GUDButtonListener.h"
 #include "Listener/ModeSelectionListener.h"

@@ -1,4 +1,4 @@
-#include "ToggleImageButtonInstance.h"
+#include "DataModel/ToggleImageButtonInstance.h"
 
 ToggleImageButtonInstance::ToggleImageButtonInstance(G3D::TextureRef newImage,
 										 G3D::TextureRef overImage,

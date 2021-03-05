@@ -1,4 +1,4 @@
-#include "ImageButtonInstance.h"
+#include "DataModel/ImageButtonInstance.h"
 
 ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {

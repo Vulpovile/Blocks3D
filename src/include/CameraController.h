@@ -1,7 +1,7 @@
 #pragma once
 
 #include <G3DAll.h>
-#include "Instance.h"
+#include "DataModel/Instance.h"
 #include "Globals.h"
 #include <string>
 

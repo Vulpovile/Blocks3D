@@ -62,7 +62,7 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 	{
 		CHOOSECOLOR color;
 
-		DWORD rgbCurrent; //Will be dynamic later
+		DWORD rgbCurrent = 0xFFFFFFFF; //Will be dynamic later
 		ZeroMemory(&color, sizeof(CHOOSECOLOR)); 
 		color.lStructSize = sizeof(color);
 		color.hwndOwner = hwnd;

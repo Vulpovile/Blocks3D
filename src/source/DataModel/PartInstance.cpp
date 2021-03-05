@@ -1,4 +1,4 @@
-#include "PartInstance.h"
+#include "DataModel/PartInstance.h"
 #include "Globals.h"
 #include <sstream>
 #include <iomanip>
@@ -1005,7 +1005,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	}
 	if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
-		anchored=(bool)item->lpCurValue;
+		anchored= item->lpCurValue == TRUE;
 		changed=true;
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)

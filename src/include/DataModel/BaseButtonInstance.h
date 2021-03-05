@@ -1,5 +1,5 @@
 #pragma once
-#include "instance.h"
+#include "Instance.h"
 #include "Listener/ButtonListener.h"
 
 class ButtonListener;
