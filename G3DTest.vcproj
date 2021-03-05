@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include\DataModel&quot;;&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"

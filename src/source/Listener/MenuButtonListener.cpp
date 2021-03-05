@@ -1,5 +1,5 @@
 #include "Listener/MenuButtonListener.h"
-#include "toggleimagebuttoninstance.h"
+#include "DataModel/ToggleImageButtonInstance.h"
 #include "Globals.h"
 void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {

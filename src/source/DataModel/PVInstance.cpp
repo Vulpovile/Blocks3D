@@ -42,6 +42,7 @@ static TCHAR* enumStr(int controller)
 		case Enum::Controller::Flee:
 			return "Joypad2";
 	}
+	return "None";
 }
 
 static Enum::Controller::Value strEnum(TCHAR * tval)
@@ -93,11 +94,11 @@ void PVInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 {
 	if(strcmp(pItem->lpszPropName, "NameShown") == 0)
 	{
-		nameShown = (bool)pItem->lpCurValue;
+		nameShown = pItem->lpCurValue == TRUE;
 	}
 	if(strcmp(pItem->lpszPropName, "ControllerFlagShown") == 0)
 	{
-		controllerFlagShown = (bool)pItem->lpCurValue;
+		controllerFlagShown = pItem->lpCurValue == TRUE;
 	}
 	if(strcmp(pItem->lpszPropName, "Controller") == 0)
 	{
