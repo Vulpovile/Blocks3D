@@ -189,7 +189,7 @@ int main(int argc, char** argv) {
 			return false;
 
 		HWND hwndMain = CreateWindowEx(
-			WS_EX_ACCEPTFILES,
+			WS_EX_APPWINDOW,
 			"mainHWND",
 			"Main test",
 			WS_OVERLAPPEDWINDOW,
