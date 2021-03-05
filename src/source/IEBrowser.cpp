@@ -65,7 +65,7 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 		DWORD rgbCurrent = 0xFFFFFFFF; //Will be dynamic later
 		ZeroMemory(&color, sizeof(CHOOSECOLOR)); 
 		color.lStructSize = sizeof(color);
-		color.hwndOwner = hwnd;
+		color.hwndOwner = parentHwnd;
 		color.lpCustColors = (LPDWORD) g_acrCustClr; 
 		color.rgbResult = rgbCurrent; 
 		color.Flags = CC_FULLOPEN | CC_RGBINIT; 
@@ -91,19 +91,19 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 }
 
 IEBrowser::IEBrowser(HWND attachHWnd) {
+	webBrowser = 0;
+	parentHwnd = attachHWnd;
 	MSG messages;
 	while (PeekMessage (&messages, NULL, 0, 0,PM_REMOVE))
 	{
-		if (IsDialogMessage(hwnd, &messages) == 0)
+		if (IsDialogMessage(parentHwnd, &messages) == 0)
 		{
 			TranslateMessage(&messages);
 			DispatchMessage(&messages);
 		}
 	}
-	hwnd = attachHWnd;
-	webBrowser = 0;
-	SendMessage(hwnd,AX_INPLACE,1,0);
-	SendMessage(hwnd,AX_QUERYINTERFACE,(WPARAM)&IID_IWebBrowser2,(LPARAM)&webBrowser);
+	SendMessage(parentHwnd,AX_INPLACE,1,0);
+	SendMessage(parentHwnd,AX_QUERYINTERFACE,(WPARAM)&IID_IWebBrowser2,(LPARAM)&webBrowser);
 }
 
 IEBrowser::~IEBrowser(void) {
