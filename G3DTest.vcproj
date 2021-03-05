@@ -144,6 +144,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;C:\Users\Andreja\Documents\C++\G3D-Fun\src\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -235,182 +236,166 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath=".\Application.cpp"
+				RelativePath=".\src\source\Application.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\AudioPlayer.cpp"
+				RelativePath=".\src\source\AudioPlayer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ax.cpp"
+				RelativePath=".\src\source\ax.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\BrowserCallHandler.cpp"
+				RelativePath=".\src\source\BrowserCallHandler.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CameraController.cpp"
+				RelativePath=".\src\source\CameraController.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ErrorFunctions.cpp"
+				RelativePath=".\src\source\ErrorFunctions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Globals.cpp"
+				RelativePath=".\src\source\Globals.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\IEBrowser.cpp"
+				RelativePath=".\src\source\IEBrowser.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\IEDispatcher.cpp"
+				RelativePath=".\src\source\IEDispatcher.cpp"
 				>
 			</File>
 			<File
-				RelativePath="main.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\Mouse.cpp"
+				RelativePath=".\src\source\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\propertyGrid.cpp"
+				RelativePath=".\src\source\Mouse.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PropertyWindow.cpp"
+				RelativePath=".\src\source\propertyGrid.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\StringFunctions.cpp"
+				RelativePath=".\src\source\PropertyWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\TextureHandler.cpp"
+				RelativePath=".\src\source\StringFunctions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\WindowFunctions.cpp"
+				RelativePath=".\src\source\TextureHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\WindowFunctions.cpp"
 				>
 			</File>
 			<Filter
-				Name="Instance"
+				Name="Tool"
 				>
 				<File
-					RelativePath=".\BaseButtonInstance.cpp"
+					RelativePath=".\src\source\Tool\ArrowTool.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DataModelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\GroupInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\GuiRoot.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ImageButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Instance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\LevelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PartInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PVInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TextButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ToggleImageButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\WorkspaceInstance.cpp"
+					RelativePath=".\src\source\Tool\Tool.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Listeners"
+				Name="Listener"
 				>
 				<File
-					RelativePath=".\ButtonListener.cpp"
+					RelativePath=".\src\source\Listener\ButtonListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\CameraButtonListener.cpp"
+					RelativePath=".\src\source\Listener\CameraButtonListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DeleteListener.cpp"
+					RelativePath=".\src\source\Listener\DeleteListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\GUDButtonListener.cpp"
+					RelativePath=".\src\source\Listener\GUDButtonListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\MenuButtonListener.cpp"
+					RelativePath=".\src\source\Listener\MenuButtonListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\ModeSelectionListener.cpp"
+					RelativePath=".\src\source\Listener\ModeSelectionListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\RotateButtonListener.cpp"
+					RelativePath=".\src\source\Listener\RotateButtonListener.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\ToolbarListener.cpp"
+					RelativePath=".\src\source\Listener\ToolbarListener.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Tools"
+				Name="DataModel"
 				>
 				<File
-					RelativePath=".\ArrowTool.cpp"
+					RelativePath=".\src\source\DataModel\BaseButtonInstance.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Tool.cpp"
+					RelativePath=".\src\source\DataModel\DataModelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\GroupInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\GuiRootInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\ImageButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\Instance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\LevelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\PartInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\PVInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\TextButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\ToggleImageButtonInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\WorkspaceInstance.cpp"
 					>
 				</File>
 			</Filter>
@@ -420,198 +405,198 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath=".\Application.h"
+				RelativePath=".\src\include\Application.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AudioPlayer.h"
+				RelativePath=".\src\include\AudioPlayer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ax.h"
+				RelativePath=".\src\include\ax.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BrowserCallHandler.h"
+				RelativePath=".\src\include\BrowserCallHandler.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CameraController.h"
+				RelativePath=".\src\include\CameraController.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Demo.h"
+				RelativePath=".\src\include\Enum.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Enum.h"
+				RelativePath=".\src\include\Enums.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Enums.h"
+				RelativePath=".\src\include\ErrorFunctions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ErrorFunctions.h"
+				RelativePath=".\src\include\Globals.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Globals.h"
+				RelativePath=".\src\include\IEBrowser.h"
 				>
 			</File>
 			<File
-				RelativePath=".\IEBrowser.h"
+				RelativePath=".\src\include\IEDispatcher.h"
 				>
 			</File>
 			<File
-				RelativePath=".\IEDispatcher.h"
+				RelativePath=".\src\include\Mouse.h"
 				>
 			</File>
 			<File
-				RelativePath=".\LevelInstance.h"
+				RelativePath=".\src\include\propertyGrid.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Mouse.h"
+				RelativePath=".\src\include\PropertyWindow.h"
 				>
 			</File>
 			<File
-				RelativePath=".\propertyGrid.h"
+				RelativePath=".\src\include\resource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PropertyWindow.h"
+				RelativePath=".\src\include\StringFunctions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rapidxml\rapidxml.hpp"
+				RelativePath=".\src\include\TextureHandler.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rapidxml\rapidxml_iterators.hpp"
+				RelativePath=".\src\include\win32Defines.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rapidxml\rapidxml_print.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rapidxml\rapidxml_utils.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RotateButtonListener.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StringFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TextureHandler.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ToggleImageButtonInstance.h"
-				>
-			</File>
-			<File
-				RelativePath=".\win32Defines.h"
-				>
-			</File>
-			<File
-				RelativePath=".\WindowFunctions.h"
+				RelativePath=".\src\include\WindowFunctions.h"
 				>
 			</File>
 			<Filter
-				Name="Instance"
+				Name="RapidXML"
 				>
 				<File
-					RelativePath=".\BaseButtonInstance.h"
+					RelativePath=".\src\include\rapidxml\rapidxml.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DataModelInstance.h"
+					RelativePath=".\src\include\rapidxml\rapidxml_iterators.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\GroupInstance.h"
+					RelativePath=".\src\include\rapidxml\rapidxml_print.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\GuiRoot.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ImageButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Instance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PartInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PVInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TextButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\WorkspaceInstance.h"
+					RelativePath=".\src\include\rapidxml\rapidxml_utils.hpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Listeners"
+				Name="Listener"
 				>
 				<File
-					RelativePath=".\ButtonListener.h"
+					RelativePath=".\src\include\Listener\ButtonListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\CameraButtonListener.h"
+					RelativePath=".\src\include\Listener\CameraButtonListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\DeleteListener.h"
+					RelativePath=".\src\include\Listener\DeleteListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GUDButtonListener.h"
+					RelativePath=".\src\include\Listener\GUDButtonListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\MenuButtonListener.h"
+					RelativePath=".\src\include\Listener\MenuButtonListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\ModeSelectionListener.h"
+					RelativePath=".\src\include\Listener\ModeSelectionListener.h"
 					>
 				</File>
 				<File
-					RelativePath=".\ToolbarListener.h"
+					RelativePath=".\src\include\Listener\RotateButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\ToolbarListener.h"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Tools"
+				Name="Tool"
 				>
 				<File
-					RelativePath=".\ArrowTool.h"
+					RelativePath=".\src\include\Tool\ArrowTool.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Tool.h"
+					RelativePath=".\src\include\Tool\Tool.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModel"
+				>
+				<File
+					RelativePath=".\src\include\DataModel\BaseButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\DataModelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\GroupInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\GuiRootInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\ImageButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\Instance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\LevelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\PartInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\PVInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\TextButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\ToggleImageButtonInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\WorkspaceInstance.h"
 					>
 				</File>
 			</Filter>
