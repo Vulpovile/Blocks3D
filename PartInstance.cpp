@@ -505,6 +505,9 @@ bool PartInstance::isUniqueVertex(Vector3 pos)
 //int rings = 15;
 //int sectors = 15;
 void PartInstance::render(RenderDevice* rd) {
+	int sectorCount = 12;
+	int stackCount = 12;
+	float radius = 0.5F;
 	//if(nameShown)
 		//postRenderStack.push_back(this);
  	if (changed)
@@ -520,161 +523,17 @@ void PartInstance::render(RenderDevice* rd) {
 		{
 			case Enum::Shape::Ball:
 				{
-					/*float radius = renderSize.y / 2;
-					float const R = 1./(float)(rings-1);
-					float const S = 1./(float)(sectors-1);
-					int r, s;
-					double M_PI = pi();
-					double M_PI_2 = M_PI/2;
-
-					_vertices.resize(rings * sectors * 3);
-					_normals.resize(rings * sectors * 3);
-					std::vector<GLfloat>::iterator v = _vertices.begin();
-					std::vector<GLfloat>::iterator n = _normals.begin();
-					//std::vector<GLfloat>::iterator t = texcoords.begin();
-					for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
-							float const y = sin( -M_PI_2 + M_PI * r * R );
-							float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
-							float const z = sin(2*M_PI * s * S) * sin( M_PI * r * R );
-
-
-							*v++ = x * radius;
-							*v++ = y * radius;
-							*v++ = z * radius;
-
-							*n++ = x;
-							*n++ = y;
-							*n++ = z;
-					}
-
-					_indices.resize(rings * sectors * 4);
-					std::vector<GLushort>::iterator i = _indices.begin();
-					for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
-							*i++ = r * sectors + s;
-							*i++ = r * sectors + (s+1);
-							*i++ = (r+1) * sectors + (s+1);
-							*i++ = (r+1) * sectors + s;
-					}
-					//*/
-					
-				
-				float sphFace = this->size.y / 3.14159F;
-					// Front
-				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,renderSize.z),
-					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,renderSize.z),
-					Vector3(renderSize.x-sphFace,-renderSize.y+sphFace,renderSize.z)
-					);
-			
-				addSmoothTriangle(Vector3(-renderSize.x+sphFace,renderSize.y-sphFace,renderSize.z),
-					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,renderSize.z),
-					Vector3(renderSize.x-sphFace,renderSize.y-sphFace,renderSize.z)
-					);
-				
-				// Top
-				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y,renderSize.z-sphFace),
-					Vector3(renderSize.x-sphFace,renderSize.y,-renderSize.z+sphFace),
-					Vector3(-renderSize.x+sphFace,renderSize.y,renderSize.z-sphFace)
-					);
-				addSmoothTriangle(Vector3(-renderSize.x+sphFace,renderSize.y,renderSize.z-sphFace),
-					Vector3(renderSize.x-sphFace,renderSize.y,-renderSize.z+sphFace),
-					Vector3(-renderSize.x+sphFace,renderSize.y,-renderSize.z+sphFace)
-					);
-				
-				// Back
-				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,-renderSize.z),
-					Vector3(renderSize.x-sphFace,-renderSize.y+sphFace,-renderSize.z),
-					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,-renderSize.z)
-					);
-				addSmoothTriangle(Vector3(renderSize.x-sphFace,renderSize.y-sphFace,-renderSize.z),
-					Vector3(-renderSize.x+sphFace,-renderSize.y+sphFace,-renderSize.z),
-					Vector3(-renderSize.x+sphFace,renderSize.y-sphFace,-renderSize.z)
-					);
-		 		
-				// Bottom
-				addSmoothTriangle(Vector3(renderSize.x-sphFace,-renderSize.y,-renderSize.z+sphFace),
-					Vector3(renderSize.x-sphFace,-renderSize.y,renderSize.z-sphFace),
-					Vector3(-renderSize.x+sphFace,-renderSize.y,renderSize.z-sphFace)
-					);
-				addSmoothTriangle(Vector3(-renderSize.x+sphFace,-renderSize.y,renderSize.z-sphFace),
-					Vector3(-renderSize.x+sphFace,-renderSize.y,-renderSize.z+sphFace),
-					Vector3(renderSize.x-sphFace,-renderSize.y,-renderSize.z+sphFace)
-					);
- 				// Left
-				addSmoothTriangle(Vector3(-renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
-					Vector3(-renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
-					Vector3(-renderSize.x,renderSize.y-sphFace,renderSize.z-sphFace)
-					);
-				addSmoothTriangle(Vector3(-renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
-					Vector3(-renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
-					Vector3(-renderSize.x,-renderSize.y+sphFace,-renderSize.z+sphFace)
-					);
-				
- 				// Right
-				addSmoothTriangle(Vector3(renderSize.x,renderSize.y-sphFace,renderSize.z-sphFace),
-					Vector3(renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace),
-					Vector3(renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace)
-					);
-				addSmoothTriangle(Vector3(renderSize.x,-renderSize.y+sphFace,-renderSize.z+sphFace),
-					Vector3(renderSize.x,renderSize.y-sphFace,-renderSize.z+sphFace),
-					Vector3(renderSize.x,-renderSize.y+sphFace,renderSize.z-sphFace)
-					);
-						
-
- 				// Bevel Top Front
-				makeSmoothFace(0,36,48);
-				makeSmoothFace(48,18,0);
- 				// Bevel Left Front Corner
-				makeSmoothFace(18,156,162);
-				makeSmoothFace(24,18,162);
- 				// Bevel Left Front Top Corner
-				makeSmoothFace(48,156,18);
- 				// Bevel Left Front Bottom Corner
-				makeSmoothFace(120,6,150);
- 				// Bevel Left Top
-				makeSmoothFace(48,66,156);
-				makeSmoothFace(144,156,66);
- 				// Bevel Bottom
-				makeSmoothFace(6,120,114);
-				makeSmoothFace(114,12,6);
- 				// Left Bottom
-				makeSmoothFace(120,150,174);
-				makeSmoothFace(174,132,120);
- 				// Right Front Top Corner
-				makeSmoothFace(36,0,180);
- 				// Right Front Corner
-				makeSmoothFace(180,0,12);
-				makeSmoothFace(186,180,12);
- 				// Right Front Bottom Corner
-				makeSmoothFace(186,12,114);
- 				// Right Bottom
-				makeSmoothFace(186,114,108);
-				makeSmoothFace(108,198,186);
- 				// Right Top Corner
-				makeSmoothFace(180,192,36);
-				makeSmoothFace(192,42,36);
- 				// Right Back Top Corner
-				makeSmoothFace(72,42,192);
- 				// Right Back Bottom Corner
-				makeSmoothFace(78,198,108);
- 				// Right Back Corner
-				makeSmoothFace(72,192,198);
-				makeSmoothFace(198,78,72);
- 				// Back Bottom Corner
-				makeSmoothFace(78,108,132);
-				makeSmoothFace(132,84,78);
- 				// Back Top
-				makeSmoothFace(42,72,102);
-				makeSmoothFace(102,66,42);
- 				// Back Left Top Corner
-				makeSmoothFace(144,66,102);
- 				// Back Left Corner
-				makeSmoothFace(144,102,84);
-				makeSmoothFace(84,174,144);
- 				// Back Left Bottom Corner
-				makeSmoothFace(174,84,132);
-				for (unsigned short i=0;i<_vertices.size()/6;i++) {
-					_indices.push_back(i);
-				}
+					glNewList(glList, GL_COMPILE);
+					glColor(this->color);
+					glPushMatrix();
+					glScalef(renderSize.x, renderSize.y, renderSize.z);
+					gluSphere(gluNewQuadric(), 1, 20, 20);
+					glPopMatrix();
+					glEndList();
+					rd->setObjectToWorldMatrix(cFrame);
+					glCallList(glList);
+					changed = false;
+					return;
 				}
 				break;
 			case Enum::Shape::Block:
@@ -913,8 +772,7 @@ void PartInstance::render(RenderDevice* rd) {
 				makeFace(84,174,144);
  				// Back Left Bottom Corner
 				makeFace(174,84,132);*/
-
-				float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
+				/*float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
 				Vector2 xy[13];
 				for(int i = 0; i < 13; i++)
 				{	
@@ -944,7 +802,7 @@ void PartInstance::render(RenderDevice* rd) {
 						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
 						Vector3(-renderSize.x, xy[i].x, xy[i].y),
 						Vector3(-renderSize.x, xy[0].x, xy[0].y));
-				}
+				}*/
 				/*float facetRatio = renderSize.x / (pi() * 0.5F);
 				addQuad(
 					Vector3(renderSize.x, renderSize.y, renderSize.z-facetRatio),
@@ -968,7 +826,7 @@ void PartInstance::render(RenderDevice* rd) {
 					Vector3(-renderSize.x, renderSize.y-facetRatio, -renderSize.z),
 					Vector3(renderSize.x, renderSize.y-facetRatio, -renderSize.z));*/
 
-				addPlus(Vector3(-renderSize.x-0.01,0,0));
+				/*addPlus(Vector3(-renderSize.x-0.01,0,0));
 				addPlus2(Vector3(renderSize.x+0.01,0,0));
 
 				for (unsigned short i=0;i<_vertices.size()/6;i++) {
@@ -976,23 +834,49 @@ void PartInstance::render(RenderDevice* rd) {
 				}
 				//std::reverse(_vertices.begin(), _vertices.end());
 				//std::reverse(_normals.begin(), _normals.end());
-				
-				
+				)*/
+					GLUquadric* q = gluNewQuadric();
+					
+					addPlus(Vector3(-renderSize.x-0.01,0,0));
+					addPlus2(Vector3(renderSize.x+0.01,0,0));
+					for (unsigned short i=0;i<_vertices.size()/6;i++) {
+						_indices.push_back(i);
+					}
+					glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
+					glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
+					glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
+					glNewList(glList, GL_COMPILE);
+					glColor(this->color);
+					glPushMatrix();
+					glRotatef(90, 0, 1, 0);
+					glScalef(renderSize.x, renderSize.y, renderSize.z);
+					glTranslatef(0,0,1);
+					gluDisk(q, 0, 1, 12, 12);
+					glTranslatef(0,0,-2);
+					gluCylinder(q, 1, 1, 2, 12, 1);
+					glRotatef(180, 1, 0, 0);
+					gluDisk(q, 0, 1, 12, 12);
+					glPopMatrix();
+					glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
+					glEndList();
+					rd->setObjectToWorldMatrix(cFrame);
+					glCallList(glList);
+					changed = false;
+					return;
 						
 			}
 			break;
 		}
 		
  		changed=false;
-		
-		glNewList(glList, GL_COMPILE);
 		glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
 		glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
 		glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
- 		glPushMatrix();
+		glNewList(glList, GL_COMPILE);
+ 		//glPushMatrix();
 		//glTranslatef(2,7,0);
 		glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
-		glPopMatrix();
+		//glPopMatrix();
 		glEndList();
 	}
 	rd->setObjectToWorldMatrix(cFrame);
