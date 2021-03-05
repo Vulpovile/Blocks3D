@@ -5,11 +5,11 @@ class ImageButtonInstance;
 
 class TextButtonInstance;
 
-class GuiRoot : public Instance
+class GuiRootInstance : public Instance
 {
 public:
-	GuiRoot();
-	GuiRoot::~GuiRoot();
+	GuiRootInstance();
+	GuiRootInstance::~GuiRootInstance();
 	TextButtonInstance*		makeTextButton();
 	void					drawButtons(RenderDevice* rd);
 	ImageButtonInstance*	makeImageButton(G3D::TextureRef newImage, G3D::TextureRef overImage, G3D::TextureRef downImage, G3D::TextureRef disableImage);

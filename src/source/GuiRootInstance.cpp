@@ -5,7 +5,7 @@
 #include "TextButtonInstance.h"
 #include "ImageButtonInstance.h"
 #include "ToggleImageButtonInstance.h"
-#include "GuiRoot.h"
+#include "GuiRootInstance.h"
 #include "Globals.h"
 #include "StringFunctions.h"
 
@@ -19,7 +19,7 @@
 
 #include "ImageButtonInstance.h"
 
-ImageButtonInstance* GuiRoot::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
+ImageButtonInstance* GuiRootInstance::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	ImageButtonInstance* part = new ImageButtonInstance(newImage,overImage, downImage, disableImage);
 //	instances.push_back(part);
@@ -27,13 +27,13 @@ ImageButtonInstance* GuiRoot::makeImageButton(G3D::TextureRef newImage = NULL, G
 	return part;
 }
 
-TextButtonInstance* GuiRoot::makeTextButton()
+TextButtonInstance* GuiRootInstance::makeTextButton()
 {
 	TextButtonInstance* part = new TextButtonInstance();
 	return part;
 }
 ToolbarListener * toolbar;
-GuiRoot::GuiRoot() : _message(""), _messageTime(0)
+GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 {
 	toolbar = new ToolbarListener();
 	toolbar->doDelete = false;
@@ -409,7 +409,7 @@ GuiRoot::GuiRoot() : _message(""), _messageTime(0)
 }
 
 
-void GuiRoot::drawButtons(RenderDevice* rd)
+void GuiRootInstance::drawButtons(RenderDevice* rd)
 {
 	rd->pushState();
 	rd->beforePrimitive();
@@ -418,15 +418,15 @@ void GuiRoot::drawButtons(RenderDevice* rd)
 	rd->popState();
 }
 
-void GuiRoot::setDebugMessage(std::string msg, G3D::RealTime msgTime)
+void GuiRootInstance::setDebugMessage(std::string msg, G3D::RealTime msgTime)
 {
 	_messageTime = msgTime;
 	_message = msg;
 }
 
-//void GuiRoot::render(G3D::RenderDevice* renderDevice) {}
+//void GuiRootInstance::render(G3D::RenderDevice* renderDevice) {}
 
-void GuiRoot::renderGUI(G3D::RenderDevice* rd, double fps)
+void GuiRootInstance::renderGUI(G3D::RenderDevice* rd, double fps)
 {
 	//TODO--Move these to their own instance
 
@@ -463,7 +463,7 @@ void GuiRoot::renderGUI(G3D::RenderDevice* rd, double fps)
 	render(rd);
 }
 
-bool GuiRoot::mouseInGUI(G3D::RenderDevice* renderDevice,int x,int y)
+bool GuiRootInstance::mouseInGUI(G3D::RenderDevice* renderDevice,int x,int y)
 {
 	std::vector<Instance*> instances_2D = g_dataModel->getGuiRoot()->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)
@@ -479,7 +479,7 @@ bool GuiRoot::mouseInGUI(G3D::RenderDevice* renderDevice,int x,int y)
 	return false;
 }
 
-void GuiRoot::update()
+void GuiRootInstance::update()
 {		
 	Instance * obj6 = this->findFirstChild("Delete");
 	Instance * obj = this->findFirstChild("Duplicate");
@@ -515,12 +515,12 @@ void GuiRoot::update()
 	}
 }
 
-GuiRoot::~GuiRoot()
+GuiRootInstance::~GuiRootInstance()
 {
 	delete toolbar;
 }
 
-void GuiRoot::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x,int y)
+void GuiRootInstance::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x,int y)
 {
 	std::vector<Instance*> instances_2D = this->getAllChildren();
 	for(size_t i = 0; i < instances_2D.size(); i++)

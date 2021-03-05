@@ -23,14 +23,14 @@
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
-#include "GuiRoot.h"
+#include "GuiRootInstance.h"
 
 #include "GUDButtonListener.h"
 #include "ModeSelectionListener.h"
 #include "DeleteListener.h"
 #include "CameraButtonListener.h"
 #include "RotateButtonListener.h"
-//#define LEGACY_LOAD_G3DFUN_LEVEL
+#define LEGACY_LOAD_G3DFUN_LEVEL
 //Ray testRay;
 //static int cursorid = 0;
 //static int cursorOvrid = 0;
@@ -709,9 +709,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	rd->afterPrimitive();
 
 
-
-	
-	Draw::sphere(G3D::Sphere(mouse.getPosition(), 1), rd, Color3::cyan(), Color4::clear());
+	Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
