@@ -745,8 +745,7 @@ void PartInstance::render(RenderDevice* rd) {
 				makeFace(84,174,144);
  				// Back Left Bottom Corner
 				makeFace(174,84,132);*/
-
-				float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
+				/*float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
 				Vector2 xy[13];
 				for(int i = 0; i < 13; i++)
 				{	
@@ -776,7 +775,7 @@ void PartInstance::render(RenderDevice* rd) {
 						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
 						Vector3(-renderSize.x, xy[i].x, xy[i].y),
 						Vector3(-renderSize.x, xy[0].x, xy[0].y));
-				}
+				}*/
 				/*float facetRatio = renderSize.x / (pi() * 0.5F);
 				addQuad(
 					Vector3(renderSize.x, renderSize.y, renderSize.z-facetRatio),
@@ -800,7 +799,7 @@ void PartInstance::render(RenderDevice* rd) {
 					Vector3(-renderSize.x, renderSize.y-facetRatio, -renderSize.z),
 					Vector3(renderSize.x, renderSize.y-facetRatio, -renderSize.z));*/
 
-				addPlus(Vector3(-renderSize.x-0.01,0,0));
+				/*addPlus(Vector3(-renderSize.x-0.01,0,0));
 				addPlus2(Vector3(renderSize.x+0.01,0,0));
 
 				for (unsigned short i=0;i<_vertices.size()/6;i++) {
@@ -808,19 +807,45 @@ void PartInstance::render(RenderDevice* rd) {
 				}
 				//std::reverse(_vertices.begin(), _vertices.end());
 				//std::reverse(_normals.begin(), _normals.end());
-				
-				
+				)*/
+					GLUquadric* q = gluNewQuadric();
+					
+					addPlus(Vector3(-renderSize.x-0.01,0,0));
+					addPlus2(Vector3(renderSize.x+0.01,0,0));
+					for (unsigned short i=0;i<_vertices.size()/6;i++) {
+						_indices.push_back(i);
+					}
+					glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
+					glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
+					glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
+					glNewList(glList, GL_COMPILE);
+					glColor(this->color);
+					glPushMatrix();
+					glRotatef(90, 0, 1, 0);
+					glScalef(renderSize.x, renderSize.y, renderSize.z);
+					glTranslatef(0,0,1);
+					gluDisk(q, 0, 1, 12, 12);
+					glTranslatef(0,0,-2);
+					gluCylinder(q, 1, 1, 2, 12, 1);
+					glRotatef(180, 1, 0, 0);
+					gluDisk(q, 0, 1, 12, 12);
+					glPopMatrix();
+					glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
+					glEndList();
+					rd->setObjectToWorldMatrix(cFrame);
+					glCallList(glList);
+					changed = false;
+					return;
 						
 			}
 			break;
 		}
 		
  		changed=false;
-		
-		glNewList(glList, GL_COMPILE);
 		glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
 		glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
 		glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
+		glNewList(glList, GL_COMPILE);
  		//glPushMatrix();
 		//glTranslatef(2,7,0);
 		glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);

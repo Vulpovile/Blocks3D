@@ -955,7 +955,7 @@ void Application::run() {
 	//renderDevice->setViewport(viewportRect);
 	//window()->setInputCaptureCount(1);
 	resizeWithParent(_hWndMain);
-
+	glEnable(GL_CULL_FACE);
 	while (!quit)
 	{
 		
