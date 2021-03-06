@@ -443,7 +443,7 @@ void GuiRootInstance::renderGUI(G3D::RenderDevice* rd, double fps)
 #endif
 	//GUI Boxes	
 	Draw::box(G3D::Box(Vector3(0,25,0),Vector3(80,355,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
-	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 120,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
+	Draw::box(G3D::Box(Vector3(rd->getWidth() - 120,rd->getHeight() - 117,0),Vector3(rd->getWidth(),rd->getHeight(),0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0,0,0,0));
 	
 	//Camera menu title
 	g_fntlighttrek->draw2D(rd, "CameraMenu", Vector2(rd->getWidth()-(g_fntlighttrek->get2DStringBounds("CameraMenu", 14).x+1),rd->getHeight() - 120), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
