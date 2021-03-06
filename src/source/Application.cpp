@@ -134,7 +134,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	webBrowser = new IEBrowser(_hwndToolbox);
 	
-	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
+	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)webBrowser);
 	navigateToolbox("http://androdome.com/res/ClientToolbox.php");
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
