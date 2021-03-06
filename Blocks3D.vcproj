@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="G3DTest"
+	Name="Blocks3D"
 	ProjectGUID="{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
-	RootNamespace="G3DTest"
+	RootNamespace="Blocks3D"
 	>
 	<Platforms>
 		<Platform
@@ -43,7 +43,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/G3DTest.tlb"
+				TypeLibraryName=".\Release/Blocks3D.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -55,7 +55,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/G3DTest.pch"
+				PrecompiledHeaderFile=".\Release/Blocks3D.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -76,10 +76,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib"
-				OutputFile="./G3DTest.exe"
+				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Release/G3DTest.pdb"
+				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -95,7 +95,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/G3DTest.bsc"
+				OutputFile=".\Release/Blocks3D.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -139,7 +139,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/G3DTest.tlb"
+				TypeLibraryName=".\Debug/Blocks3D.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -151,7 +151,7 @@
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="false"
-				PrecompiledHeaderFile=".\Debug/G3DTest.pch"
+				PrecompiledHeaderFile=".\Debug/Blocks3D.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -173,11 +173,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib"
-				OutputFile="./G3DTest-Debug.exe"
+				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/G3DTest.pdb"
+				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -193,7 +193,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/G3DTest.bsc"
+				OutputFile=".\Debug/Blocks3D.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
