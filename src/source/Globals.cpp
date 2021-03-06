@@ -19,6 +19,7 @@ POINT Globals::mousepoint;
 
 GFontRef g_fntdominant = NULL;
 GFontRef g_fntlighttrek = NULL;
+HWND Globals::mainHwnd = NULL;
 
 Globals::Globals(void){}
 

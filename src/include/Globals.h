@@ -21,6 +21,7 @@ public:
 	static int surfaceId;
 	static const std::string g_PlaceholderName;
 	static COLORREF g_acrCustClr[16]; //Will be dynamic later
+	static HWND mainHwnd;
 };
 
 extern std::vector<Instance*> postRenderStack;
@@ -36,4 +37,5 @@ extern COLORREF g_acrCustClr[16]; //Will be dynamic later
 extern std::string cameraSound;
 extern std::string clickSound;
 extern std::string dingSound;
+extern HWND mainHwnd;
 const std::string g_PlaceholderName = "Dygysphere";

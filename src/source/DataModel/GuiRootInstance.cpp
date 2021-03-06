@@ -136,6 +136,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->name = "file";
+	button->setButtonListener(new MenuButtonListener());
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
