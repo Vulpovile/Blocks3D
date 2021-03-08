@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib"
+				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib"
 				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -400,32 +400,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="DataModelV2"
-				>
-				<File
-					RelativePath=".\src\source\DataModelV2\Instance.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -624,14 +598,6 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModel\ToggleImageButtonInstance.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="DataModelV2"
-				>
-				<File
-					RelativePath=".\src\include\DataModelV2\Instance.h"
 					>
 				</File>
 			</Filter>

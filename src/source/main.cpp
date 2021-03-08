@@ -230,7 +230,7 @@ int main(int argc, char** argv) {
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
 		
-		
+		Globals::mainHwnd = hwndMain;
 		Application app = Application(hwndMain);
 		app.run();	
 	}
