@@ -1,8 +1,8 @@
 #pragma once
 #include <G3DAll.h>
 #include "PropertyWindow.h"
-#include "DataModel/TextButtonInstance.h"
-#include "DataModel/ImageButtonInstance.h"
+#include "DataModelV2/TextButtonInstance.h"
+#include "DataModelV2/ImageButtonInstance.h"
 #include "CameraController.h"
 #include "IEBrowser.h"
 #include "Mouse.h"
