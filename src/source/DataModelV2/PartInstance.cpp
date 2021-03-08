@@ -343,14 +343,15 @@ void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
 
 void PartInstance::addPlus(Vector3 v1)
 {
+	Color3 c = Color3(0.5F,0.5F,0.5F);
 	float renderY = max(size.z, max(size.x, size.y))/2 * 0.775;
 	Vector3 vx1 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx3 = v1 + Vector3(0, renderY, 0.1f);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -360,9 +361,9 @@ void PartInstance::addPlus(Vector3 v1)
 	vx2 = v1 + Vector3(0, renderY, -0.1f);
 	vx3 = v1 + Vector3(0, -renderY, -0.1f);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -372,9 +373,9 @@ void PartInstance::addPlus(Vector3 v1)
 	vx2 = v1 + Vector3(0, 0.1f, -renderY);
 	vx1 = v1 + Vector3(0, 0.1f, renderY);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -384,9 +385,9 @@ void PartInstance::addPlus(Vector3 v1)
 	vx2 = v1 + Vector3(0, -0.1f, renderY);
 	vx1 = v1 + Vector3(0, -0.1f, -renderY);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -397,14 +398,15 @@ void PartInstance::addPlus(Vector3 v1)
 
 void PartInstance::addPlus2(Vector3 v1)
 {
+	Color3 c = Color3(0.5F,0.5F,0.5F);
 	float renderY = max(size.z, max(size.x, size.y))/2 * 0.775;
 	Vector3 vx3 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx1 = v1 + Vector3(0, renderY, 0.1f);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -414,9 +416,9 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx2 = v1 + Vector3(0, renderY, -0.1f);
 	vx1 = v1 + Vector3(0, -renderY, -0.1f);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -426,9 +428,9 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx2 = v1 + Vector3(0, 0.1f, -renderY);
 	vx3 = v1 + Vector3(0, 0.1f, renderY);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
@@ -438,9 +440,9 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx2 = v1 + Vector3(0, -0.1f, renderY);
 	vx3 = v1 + Vector3(0, -0.1f, -renderY);
 	
-	addVertex(vx1,Color3::WHITE);
-	addVertex(vx2,Color3::WHITE);
-	addVertex(vx3,Color3::WHITE);
+	addVertex(vx1,c);
+	addVertex(vx2,c);
+	addVertex(vx3,c);
 	//addNormals(cross(v2-v1,v3-v1).direction());
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());

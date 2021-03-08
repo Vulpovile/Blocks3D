@@ -13,7 +13,6 @@ Compression=lzma2
 PrivilegesRequired=lowest
 WizardImageFile=setup.bmp
 
-
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
 
