@@ -36,7 +36,7 @@
 #endif
 
 #ifndef _WIN32_WINNT // Necessary for WM_MOUSEWHEEL support
-#define _WIN32_WINNT 0x0500
+#define _WIN32_WINNT 0x0400
 #endif
 
 // MSVC++ Support
