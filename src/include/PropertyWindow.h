@@ -1,5 +1,5 @@
 #pragma once
-#include "DataModel/Instance.h"
+#include "DataModelV2/Instance.h"
 
 class PropertyWindow {
 public:
