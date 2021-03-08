@@ -134,7 +134,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	webBrowser = new IEBrowser(_hwndToolbox);
 	
-	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA,(LONG)webBrowser);
+	SetProp(_hwndToolbox,"Browser",(HANDLE)webBrowser);
 	navigateToolbox("http://androdome.com/res/ClientToolbox.php");
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
@@ -183,7 +183,7 @@ void Application::onInit()  {
 	cameraController.setFrame(Vector3(0,2,10));
 	_dataModel = new DataModelInstance();
 	_dataModel->setParent(NULL);
-	_dataModel->name = "undefined";
+	_dataModel->setName("undefined");
 	_dataModel->font = g_fntdominant;
 	g_dataModel = _dataModel;
 	

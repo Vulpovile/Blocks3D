@@ -480,7 +480,7 @@ bool GuiRootInstance::mouseInGUI(G3D::RenderDevice* renderDevice,int x,int y)
 	}
 	return false;
 }
-
+//Oh eww...
 void GuiRootInstance::update()
 {		
 	Instance * obj6 = this->findFirstChild("Delete");
