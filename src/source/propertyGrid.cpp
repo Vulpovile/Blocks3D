@@ -959,7 +959,7 @@ static HWND CreateEdit(HINSTANCE hInstance, HWND hwndParent, INT id)
         return NULL;
 
     //DWM 1.4: Added Disable visual styles for this control.
-    SetWindowTheme(hwnd, L" ", L" ");
+   // SetWindowTheme(hwnd, L" ", L" ");
 
     SendMessage(hwnd, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0L);
 
@@ -1268,7 +1268,7 @@ static HWND CreateButton(HINSTANCE hInstance, HWND hwndParent, INT id)
         return NULL;
 
     //DWM 1.4: Added Disable visual styles for this control.
-    SetWindowTheme(hwnd, L" ", L" ");
+    //SetWindowTheme(hwnd, L" ", L" ");
 
     SendMessage(hwnd, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0L);
 
@@ -1505,7 +1505,7 @@ static HWND CreateDatePicker(HINSTANCE hInstance, HWND hwndParent, INT id, BOOL 
         return NULL;
 
     //DWM 1.4: Added Disable visual styles for this control.
-    SetWindowTheme(hwnd, L" ", L" ");
+    //SetWindowTheme(hwnd, L" ", L" ");
 
     SendMessage(hwnd, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0L);
 
@@ -1697,7 +1697,7 @@ static HWND CreateCombo(HINSTANCE hInstance, HWND hwndParent, INT id, BOOL fEdit
 
     //DWM 1.4: Disable visual styles for the time being since the combo looks bad
     // in this grid when drawn using the Vista and later styles.
-    SetWindowTheme(hwnd, L" ", L" ");
+    //SetWindowTheme(hwnd, L" ", L" ");
 
     SendMessage(hwnd, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), 0L);
 
