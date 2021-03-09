@@ -14,7 +14,7 @@ public:
 	virtual void drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown);
 	virtual bool mouseInButton(float, float, RenderDevice* rd);
 	virtual void onMouseClick();
-	void setButtonListener(ButtonListener*);
+	void setButtonListener(ButtonListener&);
 	bool floatBottom;
 	bool floatRight;
 	bool floatCenter;

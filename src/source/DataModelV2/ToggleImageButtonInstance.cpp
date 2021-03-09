@@ -39,7 +39,6 @@ ToggleImageButtonInstance::~ToggleImageButtonInstance(void)
 	image_ovr = NULL;
 	image_ds = NULL;
 	image_dn = NULL;
-	delete listener;
 	listener = NULL;
 	selected = false;
 }

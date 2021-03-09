@@ -146,24 +146,6 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-LRESULT CALLBACK MenuProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    Application *app = (Application *)GetWindowLongPtr(hwnd, GWL_USERDATA);
-	if (app==NULL)
-	{
-		return DefWindowProc(hwnd, msg, wParam, lParam);
-	}
-    switch(msg)
-    {
-        default:
-		{
-            return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
-    }
-
-    return 0;
-}
-
 int main(int argc, char** argv) {
 	try{
 		hresult = OleInitialize(NULL);
@@ -205,8 +187,6 @@ int main(int argc, char** argv) {
 		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
 			return false;
 		if (!createWindowClass("G3DWindow",G3DProc,hThisInstance))
-			return false;
-		if (!createWindowClass("MenuWindow",MenuProc,hThisInstance))
 			return false;
 
 		HWND hwndMain = CreateWindowEx(

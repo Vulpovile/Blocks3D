@@ -28,7 +28,7 @@ BaseButtonInstance::~BaseButtonInstance(void)
 	}
 }
 
-void BaseButtonInstance::setButtonListener(ButtonListener* buttonListener)
+void BaseButtonInstance::setButtonListener(ButtonListener& buttonListener)
 {
 	listener = buttonListener;
 }

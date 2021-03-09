@@ -21,16 +21,11 @@ void BaseButtonInstance::render(RenderDevice* rd)
 
 BaseButtonInstance::~BaseButtonInstance(void)
 {
-	if(listener != NULL && listener->doDelete)
-	{
-		delete listener;
-		listener = NULL;
-	}
 }
 
-void BaseButtonInstance::setButtonListener(ButtonListener* buttonListener)
+void BaseButtonInstance::setButtonListener(ButtonListener& buttonListener)
 {
-	listener = buttonListener;
+	listener = &buttonListener;
 }
 
 void BaseButtonInstance::drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown){}

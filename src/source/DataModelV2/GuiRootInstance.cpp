@@ -18,6 +18,13 @@
 #include "Listener/DeleteListener.h"
 #include "Listener/ToolbarListener.h"
 
+MenuButtonListener menuListener = MenuButtonListener();
+ToolbarListener toolbar = ToolbarListener();
+GUDButtonListener gud = GUDButtonListener();
+ModeSelectionListener msl = ModeSelectionListener();
+RotateButtonListener rbl = RotateButtonListener();
+DeleteListener delet = DeleteListener();
+CameraButtonListener cam = CameraButtonListener();
 
 ImageButtonInstance* GuiRootInstance::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
@@ -32,11 +39,8 @@ TextButtonInstance* GuiRootInstance::makeTextButton()
 	TextButtonInstance* part = new TextButtonInstance();
 	return part;
 }
-ToolbarListener * toolbar;
 GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 {
-	toolbar = new ToolbarListener();
-	toolbar->doDelete = false;
 	g_fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	g_fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
 
@@ -55,7 +59,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 	button->setButtonListener(toolbar);
-	toolbar->addButtonRef(button);
+	toolbar.addButtonRef(button);
 
 	
 	button = makeTextButton();
@@ -72,7 +76,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 	button->setButtonListener(toolbar);
-	toolbar->addButtonRef(button);
+	toolbar.addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -72);
@@ -88,7 +92,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 	button->setButtonListener(toolbar);
-	toolbar->addButtonRef(button);
+	toolbar.addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -96);
@@ -104,7 +108,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 	button->setButtonListener(toolbar);
-	toolbar->addButtonRef(button);
+	toolbar.addButtonRef(button);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0, -120);
@@ -120,7 +124,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxOutlineColorOvr = Color3(0,255,255);
 	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
 	button->setButtonListener(toolbar);
-	toolbar->addButtonRef(button);
+	toolbar.addButtonRef(button);
 
 	//Top bar
 	button = makeTextButton();
@@ -137,7 +141,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->name = "file";
-	button->setButtonListener(new MenuButtonListener());
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(125, 0);
@@ -211,7 +215,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
-	button->setButtonListener(new GUDButtonListener());
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,240);
@@ -227,7 +231,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
-	button->setButtonListener(new GUDButtonListener());
+	button->setButtonListener(gud);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,265);
@@ -243,7 +247,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
 	button->name = "Duplicate";
-	button->setButtonListener(new GUDButtonListener());
+	button->setButtonListener(gud);
 
 	ImageButtonInstance* instance = new ToggleImageButtonInstance(
 		Texture::fromFile(GetFileInPath("/content/images/Run.png")),
@@ -254,7 +258,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 		Texture::fromFile(GetFileInPath("/content/images/Stop_ovr.png")),
 		Texture::fromFile(GetFileInPath("/content/images/Stop_dn.png"))
 		);
-	instance->setButtonListener(new MenuButtonListener());
+	instance->setButtonListener(menuListener);
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
@@ -270,14 +274,14 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(15, 90);
 	instance->setParent(this);
 	instance->name = "Cursor";
-	instance->setButtonListener(new ModeSelectionListener());
+	instance->setButtonListener(msl);
 
 	instance = makeImageButton(Texture::fromFile(GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
 	instance->setParent(this);
 	instance->name = "Resize";
-	instance->setButtonListener(new ModeSelectionListener());
+	instance->setButtonListener(msl);
 	
 
 	instance = makeImageButton(
@@ -289,7 +293,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(40, 140);
 	instance->setParent(this);
 	instance->name = "Arrows";
-	instance->setButtonListener(new ModeSelectionListener());
+	instance->setButtonListener(msl);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionRotate.png")),
@@ -300,7 +304,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(10, 175);
 	instance->setParent(this);
 	instance->name = "Rotate";
-	instance->setButtonListener(new RotateButtonListener());
+	instance->setButtonListener(rbl);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/SelectionTilt.png")),
@@ -311,7 +315,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(40, 175);
 	instance->setParent(this);
 	instance->name = "Tilt";
-	instance->setButtonListener(new RotateButtonListener());
+	instance->setButtonListener(rbl);
 
 
 	instance = makeImageButton(
@@ -323,7 +327,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(20, 284);
 	instance->setParent(this);
 	instance->name = "Delete";
-	instance->setButtonListener(new DeleteListener());
+	instance->setButtonListener(delet);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomIn.png")),
@@ -335,7 +339,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-77, -90);
 	instance->setParent(this);
 	instance->name = "ZoomIn";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraZoomOut.png")),
@@ -347,7 +351,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-77, -31);
 	instance->setParent(this);
 	instance->name = "ZoomOut";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanLeft.png")),
@@ -359,7 +363,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-110, -50);
 	instance->setParent(this);
 	instance->name = "PanLeft";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraPanRight.png")),
@@ -371,7 +375,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-45, -50);
 	instance->setParent(this);
 	instance->name = "PanRight";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraCenter.png")),
@@ -383,7 +387,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-77, -60);
 	instance->setParent(this);
 	instance->name = "CenterCam";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltUp.png")),
@@ -395,7 +399,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-105, -75);
 	instance->setParent(this);
 	instance->name = "TiltUp";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
 		Texture::fromFile(GetFileInPath("/content/images/CameraTiltDown.png")),
@@ -407,7 +411,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->position = Vector2(-40, -75);
 	instance->setParent(this);
 	instance->name = "TiltDown";
-	instance->setButtonListener(new CameraButtonListener());
+	instance->setButtonListener(cam);
 }
 
 
@@ -519,7 +523,6 @@ void GuiRootInstance::update()
 
 GuiRootInstance::~GuiRootInstance()
 {
-	delete toolbar;
 }
 
 void GuiRootInstance::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x,int y)
