@@ -616,6 +616,14 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\source\Properties\Property.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -631,6 +639,10 @@
 			</File>
 			<File
 				RelativePath=".\src\include\ax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Properties\BoolProperty.h"
 				>
 			</File>
 			<File
@@ -818,6 +830,14 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\WorkspaceInstance.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\include\Properties\Property.h"
 					>
 				</File>
 			</Filter>
