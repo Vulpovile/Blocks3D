@@ -70,10 +70,10 @@
 #define _tmemset  wmemset
 #define _stprintf  swprintf
 #else
-#define _tmemcpy  memcpy
+#define _tmemcpy  memcpy_s
 #define _tmemmove  memmove
 #define _tmemset  memset
-#define _stprintf  _snprintf
+#define _stprintf  _snprintf_s
 #endif
 
 #define ToolTip_AddTool(hwnd,lpti)  (BOOL)SNDMSG((hwnd),TTM_ADDTOOL,0,(LPARAM)(LPTOOLINFO)(lpti))

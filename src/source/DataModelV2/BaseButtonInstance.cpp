@@ -37,7 +37,6 @@ void BaseButtonInstance::onMouseClick()
 	if(listener != NULL)
 	{
 		listener->onButton1MouseClick(this);
-		
 	}
 }
 

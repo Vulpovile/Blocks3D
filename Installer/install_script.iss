@@ -12,6 +12,8 @@ OutputBaseFilename=Blocks3D_Setup_{#SetupSetting("AppVersion")}
 Compression=lzma2
 PrivilegesRequired=lowest
 WizardImageFile=setup.bmp
+DefaultGroupName=Blocks3D
+
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
@@ -31,6 +33,17 @@ Filename: "{tmp}\vcredist_x86.exe"; Parameters: "/q"; Tasks: instvc;
 Filename: "{tmp}\vcredist_x64.exe"; Parameters: "/q"; Tasks: instvc; Check: "IsWin64";
 Filename: "iexplore.exe"; Parameters: "http://www.blocks3d.com/FirstInstall"; Description: Start playing Blocks3D; Flags: shellexec postinstall nowait skipifsilent
 
+[Icons]
+Name: "{group}\Play Blocks3D"; Filename: "{%programfiles}\Internet Explorer\iexplore.exe"; Parameters: "http://www.blocks3d.com/Games"; IconFilename: "{app}\Blocks3D.exe"; Tasks: startscut;
+Name: "{group}\Blocks3D Editor"; Filename: "{app}\Blocks3D.exe"; Tasks: startscut;
+
+Name: "{userdesktop}\Play Blocks3D"; Filename: "{%programfiles}\Internet Explorer\iexplore.exe"; Parameters: "http://www.blocks3d.com/Games"; IconFilename: "{app}\Blocks3D.exe"; Tasks: startscut;
+Name: "{userdesktop}\Blocks3D Editor"; Filename: "{app}\Blocks3D.exe"; Tasks: desktopicon
+
+
+
 [Tasks]
 Name: "instvc"; Description: "Install Visual C++ Redistributable 2005 SP1 (Requires elevated permissions)";
+Name: "desktopicon"; Description: "Create Desktop Icons";
+Name: "startscut"; Description: "Create Start Menu Icons";
 
