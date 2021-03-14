@@ -57,9 +57,6 @@ void makeFace(int vertex1,int vertex2, int vertex3)
 
 void renderBlock(const Vector3& renderSize)
 {
-	_vertices.clear();
-	_indices.clear();
-	_normals.clear();
 	addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z),
 					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
 					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,renderSize.z)
@@ -180,6 +177,9 @@ void renderBlock(const Vector3& renderSize)
 		glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
 		glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
 		glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
+		_vertices.clear();
+		_indices.clear();
+		_normals.clear();
 }
 
 void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Color3& ncolor)
