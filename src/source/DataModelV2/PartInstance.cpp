@@ -228,7 +228,6 @@ bool PartInstance::collides(PartInstance * part)
 	}
 }
 
-#ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
 {
 	Box box = Box(Vector3(size.x/2, size.y/2, size.z/2) ,Vector3(-size.x/2,-size.y/2,-size.z/2));
@@ -243,46 +242,11 @@ Sphere PartInstance::getSphere()
 	//itemBox = c.toWorldSpace(Sphere);
 	return sphere;//itemBox;
 }
-#else
-Box PartInstance::getBox()
-{
-	if(changed)
-	{
-		Box box = Box(Vector3(0+size.x/4, 0+size.y/4, 0+size.z/4) ,Vector3(0-size.x/4,0-size.y/4,0-size.z/4));
-		CoordinateFrame c = getCFrameRenderBased();
-		itemBox = c.toWorldSpace(box);
-		Vector3 v0,v1,v2,v3;
-		for (int f = 0; f < 6; f++) {
-			itemBox.getFaceCorners(f, v0,v1,v2,v3);
-			_vertices[f*16] = v0.x;
-			_vertices[(f*16)+1] = v0.y;
-			_vertices[(f*16)+2] = v0.z;
-			_vertices[(f*16)+3] = v1.x;
-			_vertices[(f*16)+4] = v1.y;
-			_vertices[(f*16)+5] = v1.z;
-			_vertices[(f*16)+6] = v2.x;
-			_vertices[(f*16)+7] = v2.y;
-			_vertices[(f*16)+8] = v2.z;
-			_vertices[(f*16)+9] = v3.x;
-			_vertices[(f*16)+10] = v3.y;
-			_vertices[(f*16)+11] = v3.z;
-			_vertices[(f*16)+12] = color.r;
-			_vertices[(f*16)+13] = color.g;
-			_vertices[(f*16)+14] = color.b;
-			_vertices[(f*16)+15] = 1;
-		}
-	}
-	return itemBox;
-}
-#endif
 
 bool PartInstance::collides(Box box)
 {
 	return CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), box);
 }
-#ifdef NEW_BOX_RENDER
-
-
 
 /*void PartInstance::addPlus(Vector3 v1)
 {
@@ -396,16 +360,12 @@ void PartInstance::addPlus2(Vector3 v1)
 //int rings = 15;
 //int sectors = 15;
 void PartInstance::render(RenderDevice* rd) {
-	int sectorCount = 12;
-	int stackCount = 12;
-	float radius = 0.5F;
 	//if(nameShown)
 		//postRenderStack.push_back(this);
  	if (changed)
 	{
 
-		getBox();
-		//std::vector<GLfloat>(_vertices).swap(_vertices); //Clear the memory
+		
 		Vector3 renderSize = size/2;
 		
 		glNewList(glList, GL_COMPILE_AND_EXECUTE);
@@ -424,85 +384,6 @@ void PartInstance::render(RenderDevice* rd) {
 	//rd->setObjectToWorldMatrix(cFrame);
 
 }
-#else
-void PartInstance::render(RenderDevice* rd)
-{
-
-	if(changed)
-	{
-		Box box = getBox();
-	changed = false;
-	glNewList(glList, GL_COMPILE);
-	glColor(color);
-	/*glEnable( GL_TEXTURE_2D );
-	glEnable(GL_BLEND);// you enable blending function
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBindTexture( GL_TEXTURE_2D, Globals::surfaceId);
-	glBegin(GL_QUADS);*/
-    for(int i = 0; i < 96; i+=16)
-	{
-		/*double add = 0.8;
-		Enum::SurfaceType::Value face;
-		if(i == 0)//Back
-			face = back;
-		else if(i == 16)//Right
-			face = right;
-		else if(i == 32)//Front
-			face = front;
-		else if(i == 48)//Top
-			face = top;
-		else if(i == 64)//Left
-			face = left;
-		else if(i == 80)//Bottom
-			face = bottom;
-
-		/*if(face == Snaps)
-			add = 0.0;
-		else if(face == Inlets)
-			add = 0.2;*/
-
-		Vector3 v0 = Vector3(_vertices[i], _vertices[i+1], _vertices[i+2]), v1 = Vector3(_vertices[i+3], _vertices[i+4], _vertices[i+5]), v3 = Vector3(_vertices[i+9], _vertices[i+10], _vertices[i+11]);
-		/*glNormal3fv((v1 - v0).cross(v3 - v0).direction());
-		glTexCoord2f(0.0F,0.0F);
-		glVertex3fv(v0);
-		glTexCoord2f(1.0F,0.0F);
-		glVertex3fv(v1);
-		glTexCoord2f(1.0F,0.25F);
-		glVertex3f(_vertices[i+6], _vertices[i+7], _vertices[i+8]);
-		glTexCoord2f(0.0F,0.25F);
-		glVertex3fv(v3);*/
-
-		glEnable(GL_BLEND);// you enable blending function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBegin( GL_QUADS );
-		glNormal3fv((v1 - v0).cross(v3 - v0).direction());
-		//glTexCoord2d(0.0,0.0+add);
-		glVertex3fv(v0);
-		//glTexCoord2d( 1.0,0.0+add);
-		glVertex3fv(v1);
-		//glTexCoord2d(1.0,0.2+add);
-		glVertex3f(_vertices[i+6], _vertices[i+7], _vertices[i+8]);
-		//glTexCoord2d( 0.0,0.2+add);
-		glVertex3fv(v3);
-		glEnd();
-		//glDisable( GL_TEXTURE_2D );
-	}
-	glEndList();
-	/*glEnd();
-	glDisable(GL_TEXTURE_2D);*/
-	}
-	glCallList(glList);
-	glColor(Color3::white());
-	if(!children.empty())
-	{
-		for(size_t i = 0; i < children.size(); i++)
-		{
-			children.at(i)->render(rd);
-		}
-	}
-
-}
-#endif
 
 PartInstance::~PartInstance(void)
 {
@@ -612,8 +493,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	else PVInstance::PropUpdate(item);
 }
 
-
-
 std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
@@ -633,7 +512,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)anchored,
 		PIT_CHECK
 		));
-	sprintf(pto, "%g, %g, %g", position.x, position.y, position.z);
+	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",
@@ -641,7 +520,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)pto,
 		PIT_EDIT
 		));
-	sprintf(pto2, "%g, %g, %g", size.x, size.y, size.z);
+	sprintf_s(pto2, "%g, %g, %g", size.x, size.y, size.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Size",
