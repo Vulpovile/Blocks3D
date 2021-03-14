@@ -342,7 +342,7 @@ void eject(PartInstance * colliding, PartInstance * collider)
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
 	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
-		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3F);
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->getCFrame().upVector())/1.3F);
 
 }
 
@@ -718,7 +718,7 @@ void Application::onGraphics(RenderDevice* rd) {
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrameRenderBased());
+			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
 			}
 		}
 	}

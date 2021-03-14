@@ -4,18 +4,20 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define NEW_BOX_RENDER
-
 class PartInstance : public PVInstance
 {
 public:
 	
 	PartInstance(void);
 	PartInstance(const PartInstance &oinst);
-	Instance* clone() const { return new PartInstance(*this); }
-	virtual void PartInstance::postRender(RenderDevice* rd);
 	~PartInstance(void);
+	Instance* clone() const { return new PartInstance(*this); }
+	
+	//Rendering
+	virtual void PartInstance::postRender(RenderDevice* rd);
 	virtual void render(RenderDevice*);
+	
+	//Surfaces
 	Enum::SurfaceType::Value top;
 	Enum::SurfaceType::Value front;
 	Enum::SurfaceType::Value right;
@@ -23,42 +25,43 @@ public:
 	Enum::SurfaceType::Value left;
 	Enum::SurfaceType::Value bottom;
 	Enum::Shape::Value shape;
-	CoordinateFrame cFrame;
+
+	//Variables
 	Color3 color;
+	bool canCollide;
+	bool anchored;
+
+	//Getters
 	Vector3 getPosition();
 	Vector3 getVelocity();
 	Vector3 getRotVelocity();
-	void setParent(Instance* parent);
-	void setPosition(Vector3);
-	void setVelocity(Vector3);
-	bool collides(PartInstance * part);
-	void setRotVelocity(Vector3);
-	CoordinateFrame getCFrame();
-	void setCFrame(CoordinateFrame);
+	Vector3 getSize();
 	Box getBox();
 	Sphere getSphere();
 	Box getScaledBox();
-	CoordinateFrame getCFrameRenderBased();
-	Vector3 getSize();
+	CoordinateFrame getCFrame();
+
+	//Setters
+	void setParent(Instance* parent);
+	void setPosition(Vector3);
+	void setVelocity(Vector3);
+	void setRotVelocity(Vector3);
+	void setCFrame(CoordinateFrame);
 	void setSize(Vector3);
 	void setShape(Enum::Shape::Value shape);
-	bool canCollide;
-	bool anchored;
+
+	//Collision
+	bool collides(PartInstance * part);
 	bool collides(Box);
+
+	//Properties
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
-	#ifdef NEW_BOX_RENDER
-	void addPlus(Vector3 v1);
-	void addPlus2(Vector3 v1);
-	#endif
 private:
 	Vector3 position;
 	Vector3 size;
 	Vector3 velocity;
 	Vector3 rotVelocity;
-	float	_bevelSize;
-	int		_parseVert;
-	int		_debugTimer;
 	bool changed;
 	Box itemBox;
 	GLuint glList;

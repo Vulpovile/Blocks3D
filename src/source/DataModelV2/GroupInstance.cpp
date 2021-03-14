@@ -52,7 +52,7 @@ void GroupInstance::render(RenderDevice * rd)
 			Vector3 vec = Vector3(0,0,0);
 			Vector3 up = Vector3(0,8,0);
 			rd->setColor(getControllerColor(controller));
-			rd->setObjectToWorldMatrix(primaryPart->cFrame);
+			rd->setObjectToWorldMatrix(primaryPart->getCFrame());
 			rd->beforePrimitive();
 
 				glBegin(GL_LINES);

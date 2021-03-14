@@ -5,7 +5,7 @@
 #include <iomanip>
 
 
-PartInstance::PartInstance(void) : _bevelSize(0.07f), _parseVert(0), _debugTimer(0)
+PartInstance::PartInstance(void)
 {
 	PVInstance::PVInstance();
     glList = glGenLists(1);
@@ -102,7 +102,7 @@ void PartInstance::setParent(Instance* prnt)
 	}
 }
 
-PartInstance::PartInstance(const PartInstance &oinst)  : _bevelSize(0.07f), _parseVert(0), _debugTimer(0)
+PartInstance::PartInstance(const PartInstance &oinst)
 {
 	PVInstance::PVInstance(oinst);
 	glList = glGenLists(1);
@@ -204,11 +204,6 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 	position = coordinateFrame.translation;
 	changed = true;
 }
-// Can probably be deleted
-CoordinateFrame PartInstance::getCFrameRenderBased()
-{
-	return cFrame;//CoordinateFrame(getCFrame().rotation,Vector3(getCFrame().translation.x, getCFrame().translation.y, getCFrame().translation.z));
-}
 
 bool PartInstance::collides(PartInstance * part)
 {
@@ -231,16 +226,15 @@ bool PartInstance::collides(PartInstance * part)
 Box PartInstance::getBox()
 {
 	Box box = Box(Vector3(size.x/2, size.y/2, size.z/2) ,Vector3(-size.x/2,-size.y/2,-size.z/2));
-	CoordinateFrame c = getCFrameRenderBased();
+	CoordinateFrame c = getCFrame();
 	itemBox = c.toWorldSpace(box);
 	return itemBox;
 }
 Sphere PartInstance::getSphere()
 {
 	Sphere sphere = Sphere(Vector3(0,0,0), size.y/2);
-	CoordinateFrame c = getCFrameRenderBased();
-	//itemBox = c.toWorldSpace(Sphere);
-	return sphere;//itemBox;
+	CoordinateFrame c = getCFrame();
+	return sphere;
 }
 
 bool PartInstance::collides(Box box)
