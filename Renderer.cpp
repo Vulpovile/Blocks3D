@@ -8,6 +8,7 @@ std::vector<GLfloat> _normals;
 std::vector<GLushort> _indices;
 Color3 color;
 
+
 void addVertex(const Vector3& vertexPos,const Color3& color)
 {
 	_vertices.push_back(vertexPos.x);
@@ -17,6 +18,7 @@ void addVertex(const Vector3& vertexPos,const Color3& color)
 	_vertices.push_back(color.g);
 	_vertices.push_back(color.b);
 }
+
  void addNormals(const Vector3& normal)
 {
 	for (unsigned int i=0;i<3;i+=1) {
@@ -182,6 +184,11 @@ void renderBlock(const Vector3& renderSize)
 		_normals.clear();
 }
 
+
+const float square_arr[] = {-0.125F,-0.125F,
+							-0.125F, 0.125F,
+							 0.125F, 0.125F,
+							 0.125F,-0.125F};
 void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Color3& ncolor)
 {
 	color = ncolor;
@@ -197,8 +204,8 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			break;
 		default:
 			glColor(ncolor);
-			glScalef(size.x, size.y, size.z);
 			glPushMatrix();
+			glScalef(size.x, size.y, size.z);
 			glRotatef(90, 0, 1, 0);
 			glTranslatef(0,0,1);
 			gluDisk(gluNewQuadric(), 0, 1, 12, 12);
@@ -207,5 +214,28 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			glRotatef(180, 1, 0, 0);
 			gluDisk(gluNewQuadric(), 0, 1, 12, 12);
 			glPopMatrix();
+			/*Plusses, can possibly integrate into cylinder code later on*/
+			glVertexPointer(2, GL_FLOAT,0, square_arr);
+			glColor(Color3(127,127,127));
+			glPushMatrix();
+			glRotatef(90,0,1,0);
+			glTranslatef(0,0,-(size.z+0.001F));
+			glScalef(0.75,0.75,0.75);
+			glScalef(size.x*8,1,1);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, 4); 
+			glScalef(1/(size.x*8),size.x*8,1);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotatef(-90,0,1,0);
+			glTranslatef(0,0,-(size.z+0.001F));
+			glScalef(0.75,0.75,0.75);
+			glScalef(size.x*8,1,1);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+			glScalef(1/(size.x*8),size.x*8,1);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+			glPopMatrix();
+			
 	}
 }
