@@ -11,7 +11,7 @@ WorkspaceInstance::WorkspaceInstance(void)
 
 void WorkspaceInstance::clearChildren()
 {
-	children.clear();
+	partObjects.clear();
 	Instance::clearChildren();
 }
 
