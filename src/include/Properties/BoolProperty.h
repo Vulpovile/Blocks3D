@@ -1,13 +1,12 @@
 #pragma once
 #include "Property.h"
-#pragma once
 class BoolProperty : public Property<bool>
 {
 public:
-	template <typename T> 
-	BoolProperty(std::string name, bool& value)
+	BoolProperty(std::string name, bool& value, Instance& owner)
 	{
-		Property(name, (T)value);
+		Property<bool>(name, value, owner);
 	}
 	~BoolProperty(void);
+	PROPGRIDITEM getPropGridItem();
 };

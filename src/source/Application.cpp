@@ -68,7 +68,7 @@ void Application::setFocus(bool focus)
 Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(settings,window) {
 	
 
-	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_PlaceholderName;
+	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_appName;
 	CreateDirectory(tempPath.c_str(), NULL);
 	
 	_hWndMain = parentWindow;

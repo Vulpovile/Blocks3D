@@ -289,6 +289,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Renderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\source\StringFunctions.cpp"
 				>
 			</File>
@@ -620,6 +624,10 @@
 				Name="Properties"
 				>
 				<File
+					RelativePath=".\src\source\Properties\BoolProperty.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\Properties\Property.cpp"
 					>
 				</File>
@@ -639,10 +647,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\ax.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\Properties\BoolProperty.h"
 				>
 			</File>
 			<File
@@ -687,6 +691,10 @@
 			</File>
 			<File
 				RelativePath=".\src\include\PropertyWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Renderer.h"
 				>
 			</File>
 			<File
@@ -836,6 +844,10 @@
 			<Filter
 				Name="Properties"
 				>
+				<File
+					RelativePath=".\src\include\Properties\BoolProperty.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\include\Properties\Property.h"
 					>

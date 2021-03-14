@@ -1,5 +1,6 @@
 #include "DataModelV2/PartInstance.h"
 #include "Globals.h"
+#include "../../Renderer.h"
 #include <sstream>
 #include <iomanip>
 
@@ -69,9 +70,9 @@ void PartInstance::postRender(RenderDevice *rd)
 		{
 			if(distance < 0)
 			distance = distance*-1;
-			glDisable(GL_DEPTH_TEST); 
+			glDisable(GL_DEPTH_TEST);
 			fnt->draw3D(rd, name, CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.03*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-			glEnable(GL_DEPTH_TEST); 
+			glEnable(GL_DEPTH_TEST);
 		}
 	}
 }
@@ -222,21 +223,21 @@ bool PartInstance::collides(PartInstance * part)
 	{
 		if(part->shape == Enum::Shape::Block)
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidBox(getSphere(), part->getBox());
-		else 
+		else
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidSphere(getSphere(), part->getSphere());
 	}
 }
 
 #ifdef NEW_BOX_RENDER
 Box PartInstance::getBox()
-{	
+{
 	Box box = Box(Vector3(size.x/2, size.y/2, size.z/2) ,Vector3(-size.x/2,-size.y/2,-size.z/2));
 	CoordinateFrame c = getCFrameRenderBased();
 	itemBox = c.toWorldSpace(box);
 	return itemBox;
 }
 Sphere PartInstance::getSphere()
-{	
+{
 	Sphere sphere = Sphere(Vector3(0,0,0), size.y/2);
 	CoordinateFrame c = getCFrameRenderBased();
 	//itemBox = c.toWorldSpace(Sphere);
@@ -280,74 +281,16 @@ bool PartInstance::collides(Box box)
 	return CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), box);
 }
 #ifdef NEW_BOX_RENDER
-void PartInstance::addVertex(Vector3 vertexPos,Color3 color)
-{
-	_vertices.push_back(vertexPos.x);
-	_vertices.push_back(vertexPos.y);
-	_vertices.push_back(vertexPos.z);
-	_vertices.push_back(color.r);
-	_vertices.push_back(color.g);
-	_vertices.push_back(color.b);
-}
- void PartInstance::addNormals(Vector3 normal)
-{
-	for (unsigned int i=0;i<3;i+=1) {
-		_normals.push_back(normal.x);
-		_normals.push_back(normal.y);
-		_normals.push_back(normal.z);
-	}
-}
- void PartInstance::addSingularNormal(Vector3 normal)
-{
-		_normals.push_back(normal.x);
-		_normals.push_back(normal.y);
-		_normals.push_back(normal.z);
-}
- void PartInstance::addTriangle(Vector3 v1,Vector3 v2,Vector3 v3)
-{
-	addVertex(v1,color);
-	addVertex(v2,color);
-	addVertex(v3,color);
-	//addNormals(cross(v2-v1,v3-v1).direction());
-	addSingularNormal(cross(v2-v1,v3-v1).direction());
-	addSingularNormal(cross(v3-v2,v1-v2).direction());
-	addSingularNormal(cross(v1-v3,v2-v3).direction());
-}
-
-void PartInstance::addQuad(Vector3 v1,Vector3 v2, Vector3 v3, Vector3 v4)
-{
-	addTriangle(v1, v2, v3);
-	addTriangle(v1, v3, v4);
-}
-
-void PartInstance::genSmoothNormals(int count = -1)
-{
-	if(count < 0)
-	{
-		
-	}
-}
-
-void PartInstance::addSmoothTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
-{
-	addVertex(v1,color);
-	addVertex(v2,color);
-	addVertex(v3,color);
-	//addNormals(cross(v2-v1,v3-v1).direction());
-	//addSingularNormal(Vector3(cross(v2-v1,v3-v1) + cross(v3-v2,v1-v2) + cross(v1-v3,v2-v3)).direction());
-	addSingularNormal(v1.direction());
-	addSingularNormal(v2.direction());
-	addSingularNormal(v3.direction());
-}
 
 
-void PartInstance::addPlus(Vector3 v1)
+
+/*void PartInstance::addPlus(Vector3 v1)
 {
 	float renderY = max(size.z, max(size.x, size.y))/2 * 0.775;
 	Vector3 vx1 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx3 = v1 + Vector3(0, renderY, 0.1f);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -359,7 +302,7 @@ void PartInstance::addPlus(Vector3 v1)
 	vx1 = v1 + Vector3(0, renderY, 0.1f);
 	vx2 = v1 + Vector3(0, renderY, -0.1f);
 	vx3 = v1 + Vector3(0, -renderY, -0.1f);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -371,7 +314,7 @@ void PartInstance::addPlus(Vector3 v1)
 	vx3 = v1 + Vector3(0, -0.1f, -renderY);
 	vx2 = v1 + Vector3(0, 0.1f, -renderY);
 	vx1 = v1 + Vector3(0, 0.1f, renderY);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -383,7 +326,7 @@ void PartInstance::addPlus(Vector3 v1)
 	vx3 = v1 + Vector3(0, 0.1f, renderY);
 	vx2 = v1 + Vector3(0, -0.1f, renderY);
 	vx1 = v1 + Vector3(0, -0.1f, -renderY);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -391,7 +334,7 @@ void PartInstance::addPlus(Vector3 v1)
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
 	addSingularNormal(cross(vx1-vx3,vx2-vx3).direction());
-	
+
 }
 
 
@@ -401,7 +344,7 @@ void PartInstance::addPlus2(Vector3 v1)
 	Vector3 vx3 = v1 + Vector3(0, -renderY, -0.1f);
 	Vector3 vx2 = v1 + Vector3(0, -renderY, 0.1f);
 	Vector3 vx1 = v1 + Vector3(0, renderY, 0.1f);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -413,7 +356,7 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx3 = v1 + Vector3(0, renderY, 0.1f);
 	vx2 = v1 + Vector3(0, renderY, -0.1f);
 	vx1 = v1 + Vector3(0, -renderY, -0.1f);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -425,7 +368,7 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx1 = v1 + Vector3(0, -0.1f, -renderY);
 	vx2 = v1 + Vector3(0, 0.1f, -renderY);
 	vx3 = v1 + Vector3(0, 0.1f, renderY);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -437,7 +380,7 @@ void PartInstance::addPlus2(Vector3 v1)
 	vx1 = v1 + Vector3(0, 0.1f, renderY);
 	vx2 = v1 + Vector3(0, -0.1f, renderY);
 	vx3 = v1 + Vector3(0, -0.1f, -renderY);
-	
+
 	addVertex(vx1,Color3::WHITE);
 	addVertex(vx2,Color3::WHITE);
 	addVertex(vx3,Color3::WHITE);
@@ -445,63 +388,11 @@ void PartInstance::addPlus2(Vector3 v1)
 	addSingularNormal(cross(vx2-vx1,vx3-vx1).direction());
 	addSingularNormal(cross(vx3-vx2,vx1-vx2).direction());
 	addSingularNormal(cross(vx1-vx3,vx2-vx3).direction());
-	
-}
- void PartInstance::debugPrintVertexIDs(RenderDevice* rd,GFontRef font,Matrix3 rot)
-{
-	_debugUniqueVertices.clear();
-	glDisable(GL_DEPTH_TEST);
-	
-	for (unsigned int i=0;i<_vertices.size();i+=6)
-	{
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(1) << i;
-		Vector3 testVector = Vector3(_vertices[i],_vertices[i+1],_vertices[i+2]);
-		if (isUniqueVertex(testVector))
-		{
-			
-			font->draw3D(rd, stream.str(), CoordinateFrame(testVector) * -rot, 0.05, Color3::fromARGB(0xFF4F0000), Color4::clear());
-			_debugUniqueVertices.push_back(testVector);
- 		}
-	}
- 	glEnable(GL_DEPTH_TEST);
-}
- void PartInstance::makeFace(int vertex1,int vertex2, int vertex3)
-{
-	addTriangle(Vector3(_vertices[vertex1],_vertices[vertex1+1],_vertices[vertex1+2]),
-		Vector3(_vertices[vertex2],_vertices[vertex2+1],_vertices[vertex2+2]),
-		Vector3(_vertices[vertex3],_vertices[vertex3+1],_vertices[vertex3+2]));
-}
- void PartInstance::fromArrays(float verts[], float norms[], float ind[], unsigned int countVN, unsigned int countInd)
-{
-	for(unsigned int i = 0; i < countVN; i++)
-	{
-		_vertices.push_back(verts[i]);
-		_normals.push_back(norms[i]);
-	}
-	for(unsigned int i = 0; i < countInd; i++)
-	{
-		_indices.push_back(ind[i]);
-	}
 
 }
-void PartInstance::makeSmoothFace(int vertex1,int vertex2, int vertex3)
-{
-	addSmoothTriangle(Vector3(_vertices[vertex1],_vertices[vertex1+1],_vertices[vertex1+2]),
-		Vector3(_vertices[vertex2],_vertices[vertex2+1],_vertices[vertex2+2]),
-		Vector3(_vertices[vertex3],_vertices[vertex3+1],_vertices[vertex3+2]));
-}
-bool PartInstance::isUniqueVertex(Vector3 pos)
-{
-	for (unsigned int i=0;i<_debugUniqueVertices.size();i+=1)
-	{
-		if (pos==_debugUniqueVertices[i])
-		{
-			return false;
-		}
-	}
-	return true;
-}
+*/
+
+
 //int rings = 15;
 //int sectors = 15;
 void PartInstance::render(RenderDevice* rd) {
@@ -512,383 +403,31 @@ void PartInstance::render(RenderDevice* rd) {
 		//postRenderStack.push_back(this);
  	if (changed)
 	{
-		
+
 		getBox();
-		_vertices.clear();
-		_normals.clear();
-		_indices.clear();
 		//std::vector<GLfloat>(_vertices).swap(_vertices); //Clear the memory
 		Vector3 renderSize = size/2;
-		switch(this->shape)
-		{
-			case Enum::Shape::Ball:
-				{
-					glNewList(glList, GL_COMPILE);
-					glColor(this->color);
-					glPushMatrix();
-					glScalef(renderSize.x, renderSize.y, renderSize.z);
-					gluSphere(gluNewQuadric(), 1, 20, 20);
-					glPopMatrix();
-					glEndList();
-					rd->setObjectToWorldMatrix(cFrame);
-					glCallList(glList);
-					changed = false;
-					return;
-				}
-				break;
-			case Enum::Shape::Block:
-				{
- 			// Front
-				addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,renderSize.z)
-					);
-			
-				addTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,renderSize.z),
-					Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,renderSize.z)
-					);
-				
-				// Top
-				addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y,renderSize.z-_bevelSize),
-					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize)
-					);
-				addTriangle(Vector3(-renderSize.x+_bevelSize,renderSize.y,renderSize.z-_bevelSize),
-					Vector3(renderSize.x-_bevelSize,renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y,-renderSize.z+_bevelSize)
-					);
-				
-				// Back
-				addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z)
-					);
-				addTriangle(Vector3(renderSize.x-_bevelSize,renderSize.y-_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y+_bevelSize,-renderSize.z),
-					Vector3(-renderSize.x+_bevelSize,renderSize.y-_bevelSize,-renderSize.z)
-					);
-		 		
-				// Bottom
-				addTriangle(Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize)
-					);
-				addTriangle(Vector3(-renderSize.x+_bevelSize,-renderSize.y,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x+_bevelSize,-renderSize.y,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x-_bevelSize,-renderSize.y,-renderSize.z+_bevelSize)
-					);
- 				// Left
-				addTriangle(Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize)
-					);
-				addTriangle(Vector3(-renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(-renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(-renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize)
-					);
-				
- 				// Right
-				addTriangle(Vector3(renderSize.x,renderSize.y-_bevelSize,renderSize.z-_bevelSize),
-					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize),
-					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize)
-					);
-				addTriangle(Vector3(renderSize.x,-renderSize.y+_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x,renderSize.y-_bevelSize,-renderSize.z+_bevelSize),
-					Vector3(renderSize.x,-renderSize.y+_bevelSize,renderSize.z-_bevelSize)
-					);
-						
-
- 				// Bevel Top Front
-				makeFace(0,36,48);
-				makeFace(48,18,0);
- 				// Bevel Left Front Corner
-				makeFace(18,156,162);
-				makeFace(24,18,162);
- 				// Bevel Left Front Top Corner
-				makeFace(48,156,18);
- 				// Bevel Left Front Bottom Corner
-				makeFace(120,6,150);
- 				// Bevel Left Top
-				makeFace(48,66,156);
-				makeFace(144,156,66);
- 				// Bevel Bottom
-				makeFace(6,120,114);
-				makeFace(114,12,6);
- 				// Left Bottom
-				makeFace(120,150,174);
-				makeFace(174,132,120);
- 				// Right Front Top Corner
-				makeFace(36,0,180);
- 				// Right Front Corner
-				makeFace(180,0,12);
-				makeFace(186,180,12);
- 				// Right Front Bottom Corner
-				makeFace(186,12,114);
- 				// Right Bottom
-				makeFace(186,114,108);
-				makeFace(108,198,186);
- 				// Right Top Corner
-				makeFace(180,192,36);
-				makeFace(192,42,36);
- 				// Right Back Top Corner
-				makeFace(72,42,192);
- 				// Right Back Bottom Corner
-				makeFace(78,198,108);
- 				// Right Back Corner
-				makeFace(72,192,198);
-				makeFace(198,78,72);
- 				// Back Bottom Corner
-				makeFace(78,108,132);
-				makeFace(132,84,78);
- 				// Back Top
-				makeFace(42,72,102);
-				makeFace(102,66,42);
- 				// Back Left Top Corner
-				makeFace(144,66,102);
- 				// Back Left Corner
-				makeFace(144,102,84);
-				makeFace(84,174,144);
- 				// Back Left Bottom Corner
-				makeFace(174,84,132);	
-				for (unsigned short i=0;i<_vertices.size()/6;i++) {
-					_indices.push_back(i);
-				}
-			}
-			break;
-			case Enum::Shape::Cylinder:
-				{
-					/*int fsize = renderSize.y/(pi()/2);
-					//makeFace(0,0,48);
- 			// Front
-				addTriangle(Vector3(renderSize.x,renderSize.y-fsize,renderSize.z),
-					Vector3(-renderSize.x,-renderSize.y+fsize,renderSize.z),
-					Vector3(renderSize.x,-renderSize.y+fsize,renderSize.z)
-					);
-			
-				addTriangle(Vector3(-renderSize.x,renderSize.y-fsize,renderSize.z),
-					Vector3(-renderSize.x,-renderSize.y+fsize,renderSize.z),
-					Vector3(renderSize.x,renderSize.y-fsize,renderSize.z)
-					);
-				
-				// Top
-				addTriangle(Vector3(renderSize.x,renderSize.y,renderSize.z-fsize),
-					Vector3(renderSize.x,renderSize.y,-renderSize.z+fsize),
-					Vector3(-renderSize.x,renderSize.y,renderSize.z-fsize)
-					);
-				addTriangle(Vector3(-renderSize.x,renderSize.y,renderSize.z-fsize),
-					Vector3(renderSize.x,renderSize.y,-renderSize.z+fsize),
-					Vector3(-renderSize.x,renderSize.y,-renderSize.z+fsize)
-					);
-				
-				// Back
-				addTriangle(Vector3(renderSize.x,renderSize.y-fsize,-renderSize.z),
-					Vector3(renderSize.x,-renderSize.y+fsize,-renderSize.z),
-					Vector3(-renderSize.x,-renderSize.y+fsize,-renderSize.z)
-					);
-				addTriangle(Vector3(renderSize.x,renderSize.y-fsize,-renderSize.z),
-					Vector3(-renderSize.x,-renderSize.y+fsize,-renderSize.z),
-					Vector3(-renderSize.x,renderSize.y-fsize,-renderSize.z)
-					);
-		 		
-				// Bottom
-				addTriangle(Vector3(renderSize.x,-renderSize.y,-renderSize.z+fsize),
-					Vector3(renderSize.x,-renderSize.y,renderSize.z-fsize),
-					Vector3(-renderSize.x,-renderSize.y,renderSize.z-fsize)
-					);
-				addTriangle(Vector3(-renderSize.x,-renderSize.y,renderSize.z-fsize),
-					Vector3(-renderSize.x,-renderSize.y,-renderSize.z+fsize),
-					Vector3(renderSize.x,-renderSize.y,-renderSize.z+fsize)
-					);
- 				// Left
-				/*addTriangle(Vector3(-renderSize.x,renderSize.y-fsize,-renderSize.z+fsize),
-					Vector3(-renderSize.x,-renderSize.y+fsize,renderSize.z-fsize),
-					Vector3(-renderSize.x,renderSize.y-fsize,renderSize.z-fsize)
-					);
-				addTriangle(Vector3(-renderSize.x,-renderSize.y+fsize,renderSize.z-fsize),
-					Vector3(-renderSize.x,renderSize.y-fsize,-renderSize.z+fsize),
-					Vector3(-renderSize.x,-renderSize.y+fsize,-renderSize.z+fsize)
-					);
- 				// Right
-				addTriangle(Vector3(renderSize.x,renderSize.y-fsize,renderSize.z-fsize),
-					Vector3(renderSize.x,-renderSize.y+fsize,renderSize.z-fsize),
-					Vector3(renderSize.x,renderSize.y-fsize,-renderSize.z+fsize)
-					);
-				addTriangle(Vector3(renderSize.x,-renderSize.y+fsize,-renderSize.z+fsize),
-					Vector3(renderSize.x,renderSize.y-fsize,-renderSize.z+fsize),
-					Vector3(renderSize.x,-renderSize.y+fsize,renderSize.z-fsize)
-					);//*/
-						
-
- 				/*// Bevel Top Front
-				makeFace(0,36,48);
-				makeFace(48,18,0);
- 				// Bevel Left Front Corner
-				makeFace(18,156,162);
-				makeFace(24,18,162);
- 				// Bevel Left Front Top Corner
-				makeFace(48,156,18);
- 				// Bevel Left Front Bottom Corner
-				makeFace(120,6,150);
- 				// Bevel Left Top
-				makeFace(48,66,156);
-				makeFace(144,156,66);
- 				// Bevel Bottom
-				makeFace(6,120,114);
-				makeFace(114,12,6);
- 				// Left Bottom
-				makeFace(120,150,174);
-				makeFace(174,132,120);
- 				// Right Front Top Corner
-				makeFace(36,0,180);
- 				// Right Front Corner
-				makeFace(180,0,12);
-				makeFace(186,180,12);
- 				// Right Front Bottom Corner
-				makeFace(186,12,114);
- 				// Right Bottom
-				makeFace(186,114,108);
-				makeFace(108,198,186);
- 				// Right Top Corner
-				makeFace(180,192,36);
-				makeFace(192,42,36);
- 				// Right Back Top Corner
-				makeFace(72,42,192);
- 				// Right Back Bottom Corner
-				makeFace(78,198,108);
- 				// Right Back Corner
-				makeFace(72,192,198);
-				makeFace(198,78,72);
- 				// Back Bottom Corner
-				makeFace(78,108,132);
-				makeFace(132,84,78);
- 				// Back Top
-				makeFace(42,72,102);
-				makeFace(102,66,42);
- 				// Back Left Top Corner
-				makeFace(144,66,102);
- 				// Back Left Corner
-				makeFace(144,102,84);
-				makeFace(84,174,144);
- 				// Back Left Bottom Corner
-				makeFace(174,84,132);*/
-				/*float radius = renderSize.y + (renderSize.y * (1 - cos(pi() / 12)));
-				Vector2 xy[13];
-				for(int i = 0; i < 13; i++)
-				{	
-					//Get the next point
-					float y = radius * cos(((double)i-G3D::toRadians(29)) * pi()/6);
-					float z = radius * sin(((double)i-G3D::toRadians(29)) * pi()/6);
-					xy[i] = Vector2(y,z);
-				}
-				for(int i = 0; i < 12; i++)
-				{
-					//Create a Quad for the face (i to i+1)
-					addSmoothTriangle(
-						Vector3(renderSize.x, xy[i].x, xy[i].y),
-						Vector3(-renderSize.x, xy[i].x, xy[i].y),
-						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y));
-					addSmoothTriangle(
-						Vector3(renderSize.x, xy[i].x, xy[i].y),
-						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
-						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
-					//Cap on the right
-					addTriangle(
-						Vector3(renderSize.x, xy[0].x, xy[0].y),
-						Vector3(renderSize.x, xy[i].x, xy[i].y),
-						Vector3(renderSize.x, xy[i+1].x, xy[i+1].y));
-					//Cap on the left
-					addTriangle(
-						Vector3(-renderSize.x, xy[i+1].x, xy[i+1].y),
-						Vector3(-renderSize.x, xy[i].x, xy[i].y),
-						Vector3(-renderSize.x, xy[0].x, xy[0].y));
-				}*/
-				/*float facetRatio = renderSize.x / (pi() * 0.5F);
-				addQuad(
-					Vector3(renderSize.x, renderSize.y, renderSize.z-facetRatio),
-					Vector3(renderSize.x, renderSize.y, -renderSize.z+facetRatio),
-					Vector3(-renderSize.x, renderSize.y, -renderSize.z+facetRatio),
-					Vector3(-renderSize.x, renderSize.y, renderSize.z-facetRatio));
-
-				addQuad(
-					Vector3(renderSize.x, renderSize.y-facetRatio, renderSize.z),
-					Vector3(-renderSize.x, renderSize.y-facetRatio, renderSize.z),
-					Vector3(-renderSize.x, -renderSize.y+facetRatio, renderSize.z),
-					Vector3(renderSize.x, -renderSize.y+facetRatio, renderSize.z));
-				addQuad(
-					Vector3(-renderSize.x, -renderSize.y, renderSize.z-facetRatio),
-					Vector3(-renderSize.x, -renderSize.y, -renderSize.z+facetRatio),
-					Vector3(renderSize.x, -renderSize.y, -renderSize.z+facetRatio),
-					Vector3(renderSize.x, -renderSize.y, renderSize.z-facetRatio));
-				addQuad(
-					Vector3(renderSize.x, -renderSize.y+facetRatio, -renderSize.z),
-					Vector3(-renderSize.x, -renderSize.y+facetRatio, -renderSize.z),
-					Vector3(-renderSize.x, renderSize.y-facetRatio, -renderSize.z),
-					Vector3(renderSize.x, renderSize.y-facetRatio, -renderSize.z));*/
-
-				/*addPlus(Vector3(-renderSize.x-0.01,0,0));
-				addPlus2(Vector3(renderSize.x+0.01,0,0));
-
-				for (unsigned short i=0;i<_vertices.size()/6;i++) {
-					_indices.push_back(i);
-				}
-				//std::reverse(_vertices.begin(), _vertices.end());
-				//std::reverse(_normals.begin(), _normals.end());
-				)*/
-					GLUquadric* q = gluNewQuadric();
-					
-					addPlus(Vector3(-renderSize.x-0.01,0,0));
-					addPlus2(Vector3(renderSize.x+0.01,0,0));
-					for (unsigned short i=0;i<_vertices.size()/6;i++) {
-						_indices.push_back(i);
-					}
-					glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
-					glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
-					glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
-					glNewList(glList, GL_COMPILE);
-					glColor(this->color);
-					glPushMatrix();
-					glRotatef(90, 0, 1, 0);
-					glScalef(renderSize.x, renderSize.y, renderSize.z);
-					glTranslatef(0,0,1);
-					gluDisk(q, 0, 1, 12, 12);
-					glTranslatef(0,0,-2);
-					gluCylinder(q, 1, 1, 2, 12, 1);
-					glRotatef(180, 1, 0, 0);
-					gluDisk(q, 0, 1, 12, 12);
-					glPopMatrix();
-					glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
-					glEndList();
-					rd->setObjectToWorldMatrix(cFrame);
-					glCallList(glList);
-					changed = false;
-					return;
-						
-			}
-			break;
-		}
 		
- 		changed=false;
-		glVertexPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[0]);
-		glColorPointer(3, GL_FLOAT,6 * sizeof(GLfloat), &_vertices[3]);
-		glNormalPointer(GL_FLOAT,3 * sizeof(GLfloat), &_normals[0]);
-		glNewList(glList, GL_COMPILE);
- 		//glPushMatrix();
-		//glTranslatef(2,7,0);
-		glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_SHORT, &_indices[0]);
-		//glPopMatrix();
+		glNewList(glList, GL_COMPILE_AND_EXECUTE);
+		glColor(this->color);
+		renderShape(this->shape, renderSize, color);
 		glEndList();
+		changed = false;
+		return;
+
+ 		changed=false;
+		
 	}
 	rd->setObjectToWorldMatrix(cFrame);
 	glCallList(glList);
 	postRender(rd);
 	//rd->setObjectToWorldMatrix(cFrame);
-	
+
 }
 #else
 void PartInstance::render(RenderDevice* rd)
 {
-	
+
 	if(changed)
 	{
 		Box box = getBox();
@@ -897,7 +436,7 @@ void PartInstance::render(RenderDevice* rd)
 	glColor(color);
 	/*glEnable( GL_TEXTURE_2D );
 	glEnable(GL_BLEND);// you enable blending function
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBindTexture( GL_TEXTURE_2D, Globals::surfaceId);
 	glBegin(GL_QUADS);*/
     for(int i = 0; i < 96; i+=16)
@@ -934,7 +473,7 @@ void PartInstance::render(RenderDevice* rd)
 		glVertex3fv(v3);*/
 
 		glEnable(GL_BLEND);// you enable blending function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBegin( GL_QUADS );
 		glNormal3fv((v1 - v0).cross(v3 - v0).direction());
 		//glTexCoord2d(0.0,0.0+add);
@@ -961,7 +500,7 @@ void PartInstance::render(RenderDevice* rd)
 			children.at(i)->render(rd);
 		}
 	}
-	
+
 }
 #endif
 
@@ -1078,7 +617,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
-	
+
 
 	properties.push_back(createPGI(
 		"Properties",
@@ -1094,7 +633,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)anchored,
 		PIT_CHECK
 		));
-	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
+	sprintf(pto, "%g, %g, %g", position.x, position.y, position.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Offset",
@@ -1102,7 +641,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)pto,
 		PIT_EDIT
 		));
-	sprintf_s(pto2, "%g, %g, %g", size.x, size.y, size.z);
+	sprintf(pto2, "%g, %g, %g", size.x, size.y, size.z);
 	properties.push_back(createPGI(
 		"Item",
 		"Size",

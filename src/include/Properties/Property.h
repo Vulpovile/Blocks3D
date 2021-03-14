@@ -1,19 +1,30 @@
 #pragma once
-#include "propertyGrid.h"
+#include "DataModelV2/Instance.h"
+#include <string>
+class Instance;
+
 template <typename T> 
 class Property
 {
 public:
-	Property(std::string name, T& value)
+	Property(std::string name, T& value, Instance& owner)
 	{
-		value = t;
+		_value = value;
+		_owner = owner;
 	}
 	~Property(void);
-	T getValue();
-	void setValue(T);
-	PROPGRIDITEM getPropGridItem();
+	const T getValue()
+	{
+		return _value;
+	}
+	const void setValue(T val)
+	{
+		_value = val;
+	}
+	virtual PROPGRIDITEM getPropGridItem();
 	void setProperty(LPPROPGRIDITEM item);
 protected:
-	std::string name;
-	T* value;
+	Instance* _owner;
+	std::string _name;
+	T* _value;
 };

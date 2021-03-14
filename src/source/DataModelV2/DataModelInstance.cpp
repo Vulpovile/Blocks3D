@@ -31,7 +31,7 @@ DataModelInstance::DataModelInstance(void)
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
 	running = false;
-	
+
 }
 
 void DataModelInstance::toggleRun()
@@ -255,7 +255,7 @@ Color3 bcToRGB(short bc)
 bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 {
 	xml_node<> * watchFirstNode = scanNode->first_node();
-	
+
 	for (xml_node<> *node = scanNode->first_node();node; node = node->next_sibling())
 	{
 
@@ -278,7 +278,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					{
 						std::string xmlName = attr->name();
 						std::string xmlValue = attr->value();
-						
+
 						if (xmlValue=="CFrame" | xmlValue=="CoordinateFrame")
 						{
 							 cFrameNode = partPropNode;
@@ -322,7 +322,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 									{
 										sizeNode=featureNode;
 										_legacyLoad=true;
-									}									
+									}
 								}
 							}
 						}
@@ -348,11 +348,11 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					G = getFloatValue(colorNode,"G");
 					B = getFloatValue(colorNode,"B");
 				}
-				
+
 				Enum::Shape::Value partshape = Enum::Shape::Block;
 				std::string pshape = shapeNode->value();
 				if (shapeNode)
-				{					
+				{
 					if(pshape == "0" || pshape == "Ball"){
 						partshape = Enum::Shape::Ball;
 					}
@@ -363,7 +363,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						partshape = Enum::Shape::Cylinder;
 					}
 				}
-				
+
 				std::string newName = nameNode->value();
 				float X = getFloatValue(cFrameNode,"X");
 				float Y = getFloatValue(cFrameNode,"Y");
@@ -396,10 +396,10 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					test->setSize(Vector3(sizeX,sizeY+_modY,sizeZ));
 					test->setName(newName);
 					CoordinateFrame cf;
-					
+
 					if (_legacyLoad)
 					{
-						
+
 						cf = CoordinateFrame(Vector3(-X,Y,Z))*CoordinateFrame(Vector3(-sizeX/2,(sizeY+_modY)/2,sizeZ/2)*Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22));
 						cf.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
 					}
@@ -408,7 +408,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						cf.translation = Vector3(X,Y,Z);
 						cf.rotation = Matrix3(R00,R01,R02,R10,R11,R12,R20,R21,R22);
 					}
-					
+
 					test->setCFrame(cf);
 				}
 				else
@@ -564,9 +564,9 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 			}
 		}
 		char brkc[12];
-		sprintf_s(brkc, "%d", brickCount);
+		sprintf(brkc, "%d", brickCount);
 		char instc[12];
-		sprintf_s(instc, "%d", instCount);
+		sprintf(instc, "%d", instCount);
 		message = "Bricks: ";
 		message += brkc;
 		message += "	Snaps: ";

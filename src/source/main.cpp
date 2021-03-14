@@ -2,6 +2,7 @@
 #define _WIN32_WINNT 0x0400
 #define _WIN32_WINDOWS 0x0400
 #define WINVER 0x0400
+#define _CRTBLD
 
 #include "resource.h"
 #include "Application.h"
@@ -205,7 +206,7 @@ int main(int argc, char** argv) {
 		);
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_PlaceholderName + " Crash").c_str() , MB_OK);
+			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_appName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));

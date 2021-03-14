@@ -36,8 +36,8 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 		PIT_EDIT));
 
 
-	sprintf_s(timerTxt, "%g", timer);
-	sprintf_s(scoreTxt, "%d", score);
+	sprintf(timerTxt, "%g", timer);
+	sprintf(scoreTxt, "%d", score);
 	properties.push_back(createPGI("Gameplay",
 		"InitialTimerValue",
 		"The ammount of time in seconds the player has to complete this level.\r\n\r\nPut 0 if time is limitless.",
