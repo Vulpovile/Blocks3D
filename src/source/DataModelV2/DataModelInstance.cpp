@@ -6,6 +6,8 @@
 #include <sstream>
 #include <commdlg.h>
 #include "ErrorFunctions.h"
+#include "Globals.h"
+#include "Application.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -60,6 +62,7 @@ void DataModelInstance::modXMLLevel(float modY)
 void DataModelInstance::clearLevel()
 {
 	workspace->clearChildren();
+	g_usableApp->_propWindow->UpdateSelected(this);
 }
 PartInstance* DataModelInstance::makePart()
 {

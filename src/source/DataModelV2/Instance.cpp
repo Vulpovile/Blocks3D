@@ -140,6 +140,10 @@ void Instance::addChild(Instance* newChild)
 
 void Instance::clearChildren()
 {
+	for (size_t i = 0; i < children.size(); i++)
+	{
+		delete children.at(i);
+	} 
 	children.clear();
 }
 void Instance::removeChild(Instance* oldChild)

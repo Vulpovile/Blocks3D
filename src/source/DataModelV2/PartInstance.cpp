@@ -245,19 +245,11 @@ bool PartInstance::collides(Box box)
 void PartInstance::render(RenderDevice* rd) {
  	if (changed)
 	{
-
-		
+		changed=false;
 		Vector3 renderSize = size/2;
-		
-		glNewList(glList, GL_COMPILE_AND_EXECUTE);
-		glColor(this->color);
+		glNewList(glList, GL_COMPILE);
 		renderShape(this->shape, renderSize, color);
 		glEndList();
-		changed = false;
-		return;
-
- 		changed=false;
-		
 	}
 	rd->setObjectToWorldMatrix(cFrame);
 	glCallList(glList);

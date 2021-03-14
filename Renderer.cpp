@@ -216,7 +216,7 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			glPopMatrix();
 			/*Plusses, can possibly integrate into cylinder code later on*/
 			glVertexPointer(2, GL_FLOAT,0, square_arr);
-			glColor(Color3(127,127,127));
+			glColor3f(127,127,127);
 			glPushMatrix();
 			glRotatef(90,0,1,0);
 			glTranslatef(0,0,-(size.z+0.001F));

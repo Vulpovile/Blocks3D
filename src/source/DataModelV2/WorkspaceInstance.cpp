@@ -9,6 +9,12 @@ WorkspaceInstance::WorkspaceInstance(void)
 	canDelete = false;
 }
 
+void WorkspaceInstance::clearChildren()
+{
+	children.clear();
+	Instance::clearChildren();
+}
+
 WorkspaceInstance::~WorkspaceInstance(void)
 {
 }
