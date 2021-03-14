@@ -239,3 +239,22 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			
 	}
 }
+
+void renderSurface(const char face, const Vector3& size, const Enum::SurfaceType::Value& surface, const Enum::Controller::Value& controller)
+{
+	switch(surface)
+	{
+	case Enum::SurfaceType::Hinge:
+		{
+			
+		}
+	break;
+	case Enum::SurfaceType::Bumps:
+		{
+
+		}
+		break;
+	default:
+		break;
+	}
+}

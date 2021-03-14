@@ -289,7 +289,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Renderer.cpp"
+				RelativePath=".\src\source\Renderer.cpp"
 				>
 			</File>
 			<File
@@ -694,7 +694,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Renderer.h"
+				RelativePath=".\src\include\Renderer.h"
 				>
 			</File>
 			<File
