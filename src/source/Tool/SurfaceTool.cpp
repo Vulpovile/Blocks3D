@@ -37,26 +37,30 @@ void SurfaceTool::onButton1MouseDown(Mouse mouse)
 {
 	AudioPlayer::playSound(dingSound);
 	PartInstance * target = mouse.getTarget();
-	G3D::Ray ray = mouse.getLastRay();
-	std::vector<G3D::Box> surfacesHit = getSurfaces(target);
-	int closest;
-	float nearValue = G3D::inf();
-	for(size_t i = 0; i < surfacesHit.size(); i++)
+	if(target != NULL)
 	{
-		float newTime = ray.intersectionTime(surfacesHit[i]);
-		if(nearValue > newTime)
+		G3D::Ray ray = mouse.getLastRay();
+		std::vector<G3D::Box> surfacesHit = getSurfaces(target);
+		int closest;
+		float nearValue = G3D::inf();
+		for(size_t i = 0; i < surfacesHit.size(); i++)
 		{
-			nearValue = newTime;
-			closest = (int)i;
+			float newTime = ray.intersectionTime(surfacesHit[i]);
+			if(nearValue > newTime)
+			{
+				nearValue = newTime;
+				closest = (int)i;
+			}
+		}
+		if(G3D::isFinite(nearValue))
+		{
+			target->setSurface(closest, Enum::SurfaceType::Value(surface));
 		}
 	}
-	if(G3D::isFinite(nearValue))
+	if(surface == Enum::SurfaceType::Motor)
 	{
-		
-		printf("\n%d\n", closest);
-		target->setSurface(closest, Enum::SurfaceType::Value(surface));
+		g_usableApp->changeTool(NULL);
 	}
-	g_usableApp->changeTool(NULL);
 }
 void SurfaceTool::onButton1MouseUp(Mouse mouse)
 {
