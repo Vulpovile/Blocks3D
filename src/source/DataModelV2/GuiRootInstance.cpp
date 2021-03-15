@@ -215,7 +215,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
-	button->setButtonListener(menuListener);
+	button->setButtonListener(gud);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(0,240);
