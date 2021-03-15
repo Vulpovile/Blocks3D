@@ -618,6 +618,8 @@ void Application::exitApplication()
 }
 
 
+
+
 void Application::onGraphics(RenderDevice* rd) {
 	
 	G3D::uint8 num = 0;

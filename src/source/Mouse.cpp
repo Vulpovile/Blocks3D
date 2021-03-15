@@ -34,6 +34,16 @@ PartInstance * Mouse::getTarget()
 	return selectedInstance;
 }
 
+G3D::Ray * Mouse::getRay()
+{
+	return &g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+}
+
+G3D::Ray Mouse::getLastRay()
+{
+	return testRay;
+}
+
 
 double getVectorDistance(Vector3 vector1, Vector3 vector2)
 {

@@ -414,7 +414,6 @@ void renderSurface(const char face, const Enum::SurfaceType::Value& surface, con
 	{
 	case Enum::SurfaceType::Motor:
 		{
-			printf("MOTOR\n");
 			glDisable(GL_LIGHTING);
 			glColor(getControllerColor(controller));
 			GLUquadric * q = gluNewQuadric();

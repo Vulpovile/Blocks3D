@@ -18,12 +18,12 @@ PartInstance::PartInstance(void)
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
-	top = Enum::SurfaceType::Bumps;
+	top = Enum::SurfaceType::Smooth;
     front = Enum::SurfaceType::Bumps;
-    right = Enum::SurfaceType::Bumps;
-	back = Enum::SurfaceType::Bumps;
-	left = Enum::SurfaceType::Bumps;
-	bottom = Enum::SurfaceType::Bumps;
+    right = Enum::SurfaceType::Smooth;
+	back = Enum::SurfaceType::Smooth;
+	left = Enum::SurfaceType::Smooth;
+	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
 }
 
@@ -79,6 +79,31 @@ void PartInstance::postRender(RenderDevice *rd)
 
 void PartInstance::setChanged()
 {
+	changed = true;
+}
+
+void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
+{
+	switch(face)
+	{
+	case TOP:
+		top = surface;
+		break;
+	case BOTTOM:
+		bottom = surface;
+		break;
+	case LEFT:
+		left = surface;
+		break;
+	case RIGHT:
+		right = surface;
+		break;
+	case FRONT:
+		front = surface;
+		break;
+	default:
+		back = surface;
+	}
 	changed = true;
 }
 

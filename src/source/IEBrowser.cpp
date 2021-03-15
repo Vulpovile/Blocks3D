@@ -61,10 +61,10 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 			return E_NOTIMPL;
 		int j = pDispParams->rgvarg->intVal;
 		int i = (pDispParams->rgvarg+1)->intVal;
-		printf("Got values %d and %d", i, j);
+		//printf("Got values %d and %d", i, j);
 		if(i > 5 || i < 0)
 			return E_NOTIMPL;
-		g_usableApp->changeTool(new SurfaceTool((Enum::SurfaceType::Value)i, j));
+		g_usableApp->changeTool(new SurfaceTool(i, j));
 		/*VARIANT val1;
 		VARIANT val2;
 		unsigned int puArgErr;
