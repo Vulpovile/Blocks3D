@@ -1,9 +1,9 @@
 #include "DataModelV2/PartInstance.h"
 #include "Globals.h"
-#include "../../Renderer.h"
+#include "Renderer.h"
 #include <sstream>
 #include <iomanip>
-
+#include "Faces.h"
 
 PartInstance::PartInstance(void)
 {
@@ -18,12 +18,12 @@ PartInstance::PartInstance(void)
 	color = Color3::gray();
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
-	top = Enum::SurfaceType::Smooth;
-    front = Enum::SurfaceType::Smooth;
-    right = Enum::SurfaceType::Smooth;
-	back = Enum::SurfaceType::Smooth;
-	left = Enum::SurfaceType::Smooth;
-	bottom = Enum::SurfaceType::Smooth;
+	top = Enum::SurfaceType::Bumps;
+    front = Enum::SurfaceType::Bumps;
+    right = Enum::SurfaceType::Bumps;
+	back = Enum::SurfaceType::Bumps;
+	left = Enum::SurfaceType::Bumps;
+	bottom = Enum::SurfaceType::Bumps;
 	shape = Enum::Shape::Block;
 }
 
@@ -75,6 +75,11 @@ void PartInstance::postRender(RenderDevice *rd)
 			glEnable(GL_DEPTH_TEST);
 		}
 	}
+}
+
+void PartInstance::setChanged()
+{
+	changed = true;
 }
 
 void PartInstance::setParent(Instance* prnt)
@@ -249,6 +254,12 @@ void PartInstance::render(RenderDevice* rd) {
 		Vector3 renderSize = size/2;
 		glNewList(glList, GL_COMPILE);
 		renderShape(this->shape, renderSize, color);
+		renderSurface(TOP, this->top, renderSize, this->controller, color);
+		renderSurface(FRONT, this->front, renderSize, this->controller, color);
+		renderSurface(RIGHT, this->right, renderSize, this->controller, color);
+		renderSurface(BACK, this->back, renderSize, this->controller, color);
+		renderSurface(LEFT, this->left, renderSize, this->controller, color);
+		renderSurface(BOTTOM, this->bottom, renderSize, this->controller, color);
 		glEndList();
 	}
 	rd->setObjectToWorldMatrix(cFrame);
@@ -289,15 +300,14 @@ static TCHAR* enumStr(int shape)
 
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
+	setChanged();
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
 		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
-		changed=true;
 	}
-	if(strcmp(item->lpszPropName, "Anchored") == 0)
+	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
 		anchored= item->lpCurValue == TRUE;
-		changed=true;
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{
@@ -356,7 +366,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 			setSize(size);
 		}
 	}
-	if(strcmp(item->lpszPropName, "Shape") == 0)
+	else if(strcmp(item->lpszPropName, "Shape") == 0)
 	{
 		printf("%s", enumStr(strEnum((TCHAR*)item->lpCurValue)));
 		setShape(strEnum((TCHAR*)item->lpCurValue));

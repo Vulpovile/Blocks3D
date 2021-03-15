@@ -670,6 +670,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\Faces.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\Globals.h"
 				>
 			</File>

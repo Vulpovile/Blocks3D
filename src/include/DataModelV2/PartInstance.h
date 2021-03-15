@@ -49,6 +49,7 @@ public:
 	void setCFrame(CoordinateFrame);
 	void setSize(Vector3);
 	void setShape(Enum::Shape::Value shape);
+	void setChanged();
 
 	//Collision
 	bool collides(PartInstance * part);

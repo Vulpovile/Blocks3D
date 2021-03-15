@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include <G3DAll.h>
+#include "Faces.h"
 
 float _bevelSize = 0.07F;
 std::vector<Vector3> _debugUniqueVertices;
@@ -199,20 +200,23 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			break;
 		case Enum::Shape::Ball:
 			glColor(ncolor);
+			glPushMatrix();
 			glScalef(size.x, size.y, size.z);
 			gluSphere(gluNewQuadric(), 1, 20, 20);
+			glPopMatrix();
 			break;
 		default:
+			GLUquadric * q = gluNewQuadric();
 			glColor(ncolor);
 			glPushMatrix();
 			glScalef(size.x, size.y, size.z);
 			glRotatef(90, 0, 1, 0);
 			glTranslatef(0,0,1);
-			gluDisk(gluNewQuadric(), 0, 1, 12, 12);
+			gluDisk(q, 0, 1, 12, 12);
 			glTranslatef(0,0,-2);
-			gluCylinder(gluNewQuadric(), 1, 1, 2, 12, 1);
+			gluCylinder(q, 1, 1, 2, 12, 1);
 			glRotatef(180, 1, 0, 0);
-			gluDisk(gluNewQuadric(), 0, 1, 12, 12);
+			gluDisk(q, 0, 1, 12, 12);
 			glPopMatrix();
 			/*Plusses, can possibly integrate into cylinder code later on*/
 			glVertexPointer(2, GL_FLOAT,0, square_arr);
@@ -240,21 +244,253 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 	}
 }
 
-void renderSurface(const char face, const Vector3& size, const Enum::SurfaceType::Value& surface, const Enum::Controller::Value& controller)
+static G3D::Color3 getControllerColor(int controller)
+	{
+		switch(controller)
+		{
+			case Enum::Controller::KeyboardLeft:
+				return Color3::red();
+			case Enum::Controller::KeyboardRight:
+				return Color3::blue();
+			case Enum::Controller::Chase:
+				return Color3::black();
+			case Enum::Controller::Flee:
+				return Color3::yellow();
+		}
+		return Color3::gray();
+	}
+
+void translateFace(const char face, const Vector3& size)
 {
+	//glTranslatef(0,0,size.z);
+	switch(face)
+	{
+	case TOP:
+		{
+			glTranslatef(0,size.y,0);
+			glRotatef(90,1,0,0);
+		}
+		break;
+	case BOTTOM:
+		{
+			glTranslatef(0,-size.y,0);
+			glRotatef(-90,1,0,0);
+		}
+		break;
+	case LEFT:
+		{
+			glTranslatef(size.x,0,0);
+			glRotatef(-90,0,1,0);
+		}
+		break;
+	case RIGHT:
+		{
+			glTranslatef(-size.x,0,0);
+			glRotatef(90,0,1,0);
+		}
+		break;
+	case FRONT:
+		{
+			glTranslatef(0,0,size.z);
+			glRotatef(-180,0,1,0);
+		}
+		break;
+	default:
+		{
+			glTranslatef(0,0,-size.z);
+		}
+		break;
+	}
+}
+
+/*static const GLfloat bump[] = {
+    0.5f, 0.25F, 0.5f,     // Front-top-left
+    -0.5f, 0.25F, 0.5f,      // Front-top-right
+    0.5f, -0.25F, 0.5f,    // Front-bottom-left
+    -0.5f, -0.25F, 0.5f,     // Front-bottom-right
+    -0.5f, -0.25F, -0.5f,    // Back-bottom-right
+    -0.5f, 0.25F, 0.5f,      // Front-top-right
+    -0.5f, 0.25F, -0.5f,     // Back-top-right
+    0.5f, 0.25F, 0.5f,     // Front-top-left
+    0.5f, 0.25F, -0.5f,    // Back-top-left
+    0.5f, -0.25F, 0.5f,    // Front-bottom-left
+    0.5f, -0.25F, -0.5f,   // Back-bottom-left
+    -0.5f, -0.25F, -0.5f,    // Back-bottom-right
+    0.5f, 0.25F, -0.5f,    // Back-top-left
+    -0.5f, 0.25F, -0.5f      // Back-top-right
+};*/
+
+static const int BMP_FACES = 5*2;
+static const GLfloat bumpTriangles[] = {
+	//Top
+    -0.3F, 0.1F, -0.3F,
+	-0.3F, 0.1F, 0.3F,
+	0.3F, 0.1F, -0.3F,
+
+	0.3F, 0.1F, -0.3F,
+	-0.3F, 0.1F, 0.3F,
+	0.3F, 0.1F, 0.3F,
+
+
+	//Front
+	-0.3F, 0.1F, 0.3F,
+	-0.3F, -0.1F, 0.3F,
+	0.3F, 0.1F, 0.3F,
+	
+	0.3F, 0.1F, 0.3F,
+	-0.3F, -0.1F, 0.3F,
+	0.3F, -0.1F, 0.3F,
+
+
+	//Back
+	-0.3F, -0.1F, -0.3F,
+	-0.3F, 0.1F, -0.3F,
+	0.3F, -0.1F, -0.3F,
+	
+	0.3F, -0.1F, -0.3F,
+	-0.3F, 0.1F, -0.3F,
+	0.3F, 0.1F, -0.3F,
+
+
+	//Right
+	0.3F, -0.1F, -0.3F,
+	0.3F, 0.1F, -0.3F,
+	0.3F, -0.1F, 0.3F,
+	
+	0.3F, -0.1F, 0.3F,
+	0.3F, 0.1F, -0.3F,
+	0.3F, 0.1F, 0.3F,
+
+
+	//Left
+	-0.3F, 0.1F, -0.3F,
+	-0.3F, -0.1F, -0.3F,
+	-0.3F, 0.1F, 0.3F,
+	
+	-0.3F, 0.1F, 0.3F,
+	-0.3F, -0.1F, -0.3F,
+	-0.3F, -0.1F, 0.3F,
+};
+
+static const GLfloat bumpTriangleNormals[] = {
+	0.000000F, 1.000000F, 0.000000F,
+	0.000000F, 1.000000F, 0.000000F,
+	0.000000F, 1.000000F, 0.000000F,
+	0.000000F, 1.000000F, -0.000000F,
+	-0.000000F, 1.000000F, 0.000000F,
+	0.000000F, 1.000000F, 0.000000F,
+	-0.000000F, 0.000000F, 1.000000F,
+	0.000000F, 0.000000F, 1.000000F,
+	0.000000F, 0.000000F, 1.000000F,
+	0.000000F, 0.000000F, 1.000000F,
+	0.000000F, 0.000000F, 1.000000F,
+	0.000000F, -0.000000F, 1.000000F,
+	0.000000F, 0.000000F, -1.000000F,
+	0.000000F, 0.000000F, -1.000000F,
+	0.000000F, 0.000000F, -1.000000F,
+	0.000000F, 0.000000F, -1.000000F,
+	0.000000F, 0.000000F, -1.000000F,
+	-0.000000F, -0.000000F, -1.000000F,
+	1.000000F, 0.000000F, 0.000000F,
+	1.000000F, 0.000000F, 0.000000F,
+	1.000000F, 0.000000F, 0.000000F,
+	1.000000F, -0.000000F, 0.000000F,
+	1.000000F, 0.000000F, -0.000000F,
+	1.000000F, 0.000000F, 0.000000F,
+	-1.000000F, 0.000000F, 0.000000F,
+	-1.000000F, 0.000000F, 0.000000F,
+	-1.000000F, 0.000000F, -0.000000F,
+	-1.000000F, -0.000000F, 0.000000F,
+	-1.000000F, 0.000000F, 0.000000F,
+	-1.000000F, 0.000000F, 0.000000F,
+};
+
+
+void renderSurface(const char face, const Enum::SurfaceType::Value& surface, const Vector3& size, const Enum::Controller::Value& controller, const Color3& nColor)
+{
+	glPushMatrix();
+	translateFace(face, size);
 	switch(surface)
 	{
+	case Enum::SurfaceType::Motor:
+		{
+			printf("MOTOR\n");
+			glDisable(GL_LIGHTING);
+			glColor(getControllerColor(controller));
+			GLUquadric * q = gluNewQuadric();
+			gluQuadricNormals(q, GLU_NONE);
+			glPushMatrix();
+			glTranslatef(0,0,-0.2F);
+			gluCylinder(q, 0.4F, 0.4F, 0.4F, 6, 1);
+			glTranslatef(0,0,0.4F);
+			gluDisk(q, 0, 0.4F, 6, 1);
+			glTranslatef(0,0,-0.4F);
+			glRotatef(180, 1, 0, 0);
+			gluDisk(q, 0, 0.4F, 6, 1);
+			glPopMatrix();
+		}
 	case Enum::SurfaceType::Hinge:
 		{
-			
+			glDisable(GL_LIGHTING);
+			glColor3f(1,1,0);
+			GLUquadric * q = gluNewQuadric();
+			gluQuadricNormals(q, GLU_NONE);
+			glPushMatrix();	
+			glTranslatef(0,0,-0.5F);
+			gluCylinder(q, 0.2F, 0.2F, 1, 6, 1);
+			glTranslatef(0,0,1);
+			gluDisk(q, 0, 0.2F, 6, 1);
+			glTranslatef(0,0,-1);
+			glRotatef(180, 1, 0, 0);
+			gluDisk(q, 0, 0.2F, 6, 1);
+			glPopMatrix();
+			glEnable(GL_LIGHTING);
 		}
 	break;
 	case Enum::SurfaceType::Bumps:
 		{
-
+			glRotatef(-90,1,0,0);
+			float x;
+			float y;
+			switch(face)
+			{
+				case TOP:
+				case BOTTOM:
+					x = size.x * 2;
+					y = size.z * 2;
+					break;
+				case LEFT:
+				case RIGHT:
+					y = size.y * 2;
+					x = size.z * 2;
+					break;
+				case FRONT:
+				case BACK:
+					x = size.x * 2;
+					y = size.y * 2;
+					break;
+			}
+			glTranslatef(-x/2+0.5F,0,-y/2+0.5F);
+			glColor(color);
+			glDisableClientState(GL_COLOR_ARRAY);
+			glVertexPointer(3, GL_FLOAT, 0, bumpTriangles);
+			glNormalPointer(GL_FLOAT, 0, bumpTriangleNormals);
+			for(float i = 0; i < y; i++)
+			{
+				glPushMatrix();
+				for(float j = 0; j < x; j++)
+				{
+					glDrawArrays(GL_TRIANGLES, 0, 30);
+					glTranslatef(1,0,0);
+				}
+				glPopMatrix();
+				glTranslatef(0,0,1);
+			}
+			glEnableClientState(GL_COLOR_ARRAY);
 		}
-		break;
+	break;
 	default:
 		break;
 	}
+	glPopMatrix();
 }
