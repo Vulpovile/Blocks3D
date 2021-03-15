@@ -1,12 +1,13 @@
 #pragma once
 #include "tool.h"
+#include "Enum.h"
 
-class ArrowTool :
+class SurfaceTool :
 	public Tool
 {
 public:
-	ArrowTool(void); //OnSelect?
-	~ArrowTool(void); //OnDeselect?
+	SurfaceTool(Enum::SurfaceType::Value surface, int extraParam); //OnSelect?
+	~SurfaceTool(void); //OnDeselect?
 	void onButton1MouseDown(Mouse);
 	void onButton1MouseUp(Mouse);
 	void onMouseMoved(Mouse mouse);
@@ -14,10 +15,6 @@ public:
 	void onKeyDown(int key);
 	void onKeyUp(int key);
 private:
-	bool lctrlDown;
-	bool rctrlDown;
-	int mouseDownStartx;
-	int mouseDownStarty;
-	bool dragging;
-	bool mouseDown;
+	Enum::SurfaceType::Value surface;
+	int param;
 };

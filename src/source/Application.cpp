@@ -135,8 +135,8 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	webBrowser = new IEBrowser(_hwndToolbox);
 	
 	SetProp(_hwndToolbox,"Browser",(HANDLE)webBrowser);
-	navigateToolbox("http://androdome.com/res/ClientToolbox.php");
-	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
+	//navigateToolbox("http://androdome.com/res/ClientToolbox.php");
+	navigateToolbox(GetFileInPath("/content/page/surface.html"));
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
 
 }

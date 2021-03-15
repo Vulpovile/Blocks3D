@@ -312,6 +312,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\source\Tool\SurfaceTool.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\Tool\Tool.cpp"
 					>
 				</File>
@@ -662,10 +666,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\Enums.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\ErrorFunctions.h"
 				>
 			</File>
@@ -786,6 +786,10 @@
 				>
 				<File
 					RelativePath=".\src\include\Tool\ArrowTool.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Tool\SurfaceTool.h"
 					>
 				</File>
 				<File
