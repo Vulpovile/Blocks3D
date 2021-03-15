@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <richedit.h>
-#include "src/include/resource.h" //Should not have to do this...
+#include "src/include/resource.h"
 
 
 
@@ -39,5 +39,5 @@ FONT 8, "Ms Shell Dlg"
 //
 // Icon resources
 //
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
-IDI_ICON1          ICON           "icon1.ico"
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDI_ICON1          ICON           "roblox_RN1_icon.ico"

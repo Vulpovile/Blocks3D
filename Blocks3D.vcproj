@@ -878,6 +878,10 @@
 				RelativePath=".\Parts.bmp"
 				>
 			</File>
+			<File
+				RelativePath=".\roblox_RN1_icon.ico"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -19,7 +19,7 @@ PartInstance::PartInstance(void)
 	velocity = Vector3(0,0,0);
 	rotVelocity = Vector3(0,0,0);
 	top = Enum::SurfaceType::Smooth;
-    front = Enum::SurfaceType::Bumps;
+    front = Enum::SurfaceType::Smooth;
     right = Enum::SurfaceType::Smooth;
 	back = Enum::SurfaceType::Smooth;
 	left = Enum::SurfaceType::Smooth;

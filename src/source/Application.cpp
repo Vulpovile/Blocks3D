@@ -30,6 +30,7 @@
 #include "Listener/DeleteListener.h"
 #include "Listener/CameraButtonListener.h"
 #include "Listener/RotateButtonListener.h"
+#include "Faces.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
 //Ray testRay;
 //static int cursorid = 0;
@@ -196,61 +197,70 @@ void Application::onInit()  {
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
-	
-
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-10,1,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(10,1,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(7,2,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-7,2,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(4,3,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-5,3,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-3,4,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	
 
 	
@@ -260,12 +270,14 @@ void Application::onInit()  {
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(0,6,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 #else
 	_dataModel->debugGetOpen();
 #endif
