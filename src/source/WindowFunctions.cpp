@@ -23,7 +23,7 @@ bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
 	{
 		stringstream errMsg;
 		errMsg<<"Failed to register " << name;
-		MessageBox(NULL, errMsg.str().c_str(),"Dynamica Crash", MB_OK);
+		MessageBox(NULL, errMsg.str().c_str(),"Blocks3D Crash", MB_OK);
 		return false;
 	}
 	return true;

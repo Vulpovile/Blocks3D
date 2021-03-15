@@ -10,7 +10,7 @@ public:
     Globals(void);
     ~Globals(void);
     static DataModelInstance* dataModel;
-	static bool showMouse;
+	//static bool showMouse;
 	static POINT mousepoint;
 	static bool useMousePoint;
 	static const int gen;

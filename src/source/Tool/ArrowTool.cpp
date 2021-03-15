@@ -29,8 +29,6 @@ void ArrowTool::onButton1MouseDown(Mouse mouse)
 }
 void ArrowTool::onButton1MouseUp(Mouse mouse)
 {
-	if(dragging)
-		this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
 	mouseDown = false;
 	dragging = false;
 }
@@ -43,7 +41,6 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		{
 			if(abs(mouse.x-mouseDownStartx) > 5 || abs(mouse.y-mouseDownStarty) > 5)
 			{
-				this->setCursor(GetFileInPath("/content/images/GrabRotateCursor.png"));
 				dragging = true;
 			}
 			else return;
@@ -58,13 +55,10 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		return;
 	}
 	PartInstance * target = mouse.getTarget();
-	if(target == NULL)
-		this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
-	else this->setCursor(GetFileInPath("/content/images/DragCursor.png"));
+	//if(target == NULL)
 }
 void ArrowTool::onSelect(Mouse mouse)
 {
-	this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
 }
 
 void ArrowTool::onKeyDown(int key)

@@ -26,9 +26,9 @@ public:
 	virtual void onMouseScroll(Mouse);//Kinda
 	virtual void onKeyDown(int);//yes
 	virtual void onKeyUp(int);//yes
-	virtual int getCursorId();//yes
+	//virtual int getCursorId();//yes
 protected:
-	virtual void setCursor(std::string);
+	//virtual void setCursor(std::string);
 private:
-	std::string cursorString;
+	//std::string cursorString;
 };

@@ -635,14 +635,14 @@ void Application::onGraphics(RenderDevice* rd) {
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
-			_window->setMouseVisible(true);
+			//_window->setMouseVisible(true);
 			//rd->window()->setInputCaptureCount(0);
 		}
 		else
 		{
 			mouseOnScreen = true;
 			//SetCursor(NULL);
-			_window->setMouseVisible(false);
+			//_window->setMouseVisible(false);
 			//rd->window()->setInputCaptureCount(1);
 		}
 		
@@ -709,7 +709,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	rd->afterPrimitive();
 
 
-	Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
+	//Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
@@ -742,7 +742,7 @@ void Application::onGraphics(RenderDevice* rd) {
     }
 	renderDevice->push2D();
 		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
-		rd->pushState();
+		/*rd->pushState();
 			rd->beforePrimitive();
 
 			if(Globals::showMouse && mouseOnScreen)
@@ -768,7 +768,7 @@ void Application::onGraphics(RenderDevice* rd) {
 				}
 			}
 			*/
-			glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
+			/*glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
 
 			
 			glBegin( GL_QUADS );
@@ -782,11 +782,11 @@ void Application::onGraphics(RenderDevice* rd) {
 			glVertex2f( mousepos.x-64, mousepos.y+64 );
 			glEnd();
 
-			glDisable( GL_TEXTURE_2D );
-			}
+			glDisable( GL_TEXTURE_2D );*/
+			//}
 
-			rd->afterPrimitive();
-		rd->popState();
+			/*rd->afterPrimitive();
+		rd->popState();*/
 	renderDevice->pop2D();
 }
 
