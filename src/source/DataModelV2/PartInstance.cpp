@@ -221,6 +221,7 @@ void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	cFrame = CoordinateFrame(cFrame.rotation, pos);
+	changed = true;
 }
 
 CoordinateFrame PartInstance::getCFrame()
@@ -231,7 +232,7 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;
-	//changed = true;
+	changed = true;
 }
 
 bool PartInstance::collides(PartInstance * part)
@@ -259,6 +260,7 @@ Box PartInstance::getBox()
 	itemBox = c.toWorldSpace(box);
 	return itemBox;
 }
+
 Sphere PartInstance::getSphere()
 {
 	Sphere sphere = Sphere(Vector3(0,0,0), size.y/2);
@@ -295,6 +297,7 @@ PartInstance::~PartInstance(void)
 {
 	glDeleteLists(glList, 1);
 }
+
 char pto[512];
 char pto2[512];
 #include <sstream>
@@ -324,10 +327,10 @@ static TCHAR* enumStr(int shape)
 
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
+	setChanged();
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
 		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
-		setChanged();
 	}
 	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
@@ -394,11 +397,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	{
 		printf("%s", enumStr(strEnum((TCHAR*)item->lpCurValue)));
 		setShape(strEnum((TCHAR*)item->lpCurValue));
-	}
-	else if(strcmp(item->lpszPropName, "Controller") == 0)
-	{
-		setChanged();
-		PVInstance::PropUpdate(item);
 	}
 	else PVInstance::PropUpdate(item);
 }

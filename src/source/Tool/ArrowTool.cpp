@@ -3,6 +3,8 @@
 
 ArrowTool::ArrowTool(void)
 {
+	// Should solve issue of resize and move handles being drawn when they don't need to be
+	g_usableApp->unSetMode();
 	lctrlDown = false;
 	rctrlDown = false;
 	dragging = false;

@@ -1,6 +1,7 @@
 #include "Mouse.h"
 #include "Application.h"
 #include "Globals.h"
+#include <math.h>
 
 Mouse::Mouse(){
 	x = y = 0;
@@ -72,6 +73,22 @@ MousePoint Mouse::getPositionAndPart(std::vector<Instance *> ignore)
             }
         }
 	}
+
+	// A scuffed fix for moving
+	if(currPart == NULL) {
+		if(PartInstance * part = dynamic_cast<PartInstance *>(ignore[0]))
+		{
+			return MousePoint(part->getPosition(), part);
+		}
+		return MousePoint(pos, currPart);
+	}
+		
+	// A crude implementation of stud snapping
+	Vector3 pSz = currPart->getSize();
+	pos.x = (ceil(pos.x / 1) * 1);
+	pos.y = (ceil(pos.y / 1) * 1);
+	pos.z = (ceil(pos.z / 1) * 1);
+
 	return MousePoint(pos, currPart);
 }
 
