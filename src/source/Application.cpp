@@ -153,6 +153,7 @@ void Application::navigateToolbox(std::string path)
 
 void Application::deleteInstance()
 {
+	int deletedInstances = 0;
 	if(g_selectedInstances.size() > 0)
 	{
 		size_t undeletable = 0;
@@ -160,7 +161,7 @@ void Application::deleteInstance()
 		{
 			if(g_selectedInstances.at(0)->canDelete)
 			{
-				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+				deletedInstances++;
 				Instance* selectedInstance = g_selectedInstances.at(0);
 				selectedInstance->setParent(NULL);
 				delete selectedInstance;
@@ -173,6 +174,8 @@ void Application::deleteInstance()
 			}
 		}
 	}
+	if(deletedInstances > 0)
+		AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
 	if(g_selectedInstances.size() == 0)
 		g_usableApp->_propWindow->ClearProperties();
 }
