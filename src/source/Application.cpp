@@ -510,33 +510,6 @@ void Application::changeTool(Tool * newTool)
 	
 }
 
-void Application::makeFlag(Vector3 &vec, RenderDevice* &rd)
-{
-
-	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
-	rd->setColor(Color3::blue());
-	rd->beforePrimitive();
-
-		glBegin(GL_LINES);
-		glVertex3f(vec.x, vec.y, vec.z);
-		glVertex3f(up.x, up.y, up.z);
-		glEnd();
-
-		glBegin( GL_TRIANGLES );
-		glVertex3f(up.x, up.y-1, up.z);
-		glVertex3f(up.x, up.y-0.5, up.z-1);
-		glVertex3f(up.x, up.y, up.z);
-		
-		glVertex3f(up.x, up.y, up.z);
-		glVertex3f(up.x, up.y-0.5, up.z-1);
-		glVertex3f(up.x, up.y-1, up.z);
-
-		glEnd();
-	rd->afterPrimitive();
-	rd->setColor(Color3::white());
-	//I know how i will approach this now
-}
-
 void Application::setMode(int mode)
 {
 	_mode = mode;
