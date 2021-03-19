@@ -729,6 +729,10 @@
 				RelativePath=".\src\include\WindowFunctions.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\include\winver.h"
+				>
+			</File>
 			<Filter
 				Name="RapidXML"
 				>

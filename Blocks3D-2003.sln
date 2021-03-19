@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blocks3D", "Blocks3D-2003.vcproj", "{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Debug.ActiveCfg = Debug|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Debug.Build.0 = Debug|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Release.ActiveCfg = Release|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Debug|Win32.Build.0 = Debug|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Release|Win32.ActiveCfg = Release|Win32
+		{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

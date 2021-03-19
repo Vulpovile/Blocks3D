@@ -1,9 +1,9 @@
-;InnoSetupVersion=5.5.7
+;InnoSetupVersion=5.4.3
 
 [Setup]
 AppName=Blocks3D
 AppId={{4C5DF268-0208-4CDE-A7F0-65F7E2CB5067}
-AppVersion=v0_0_104_4
+AppVersion=v0_0_104_5
 AppPublisherURL=http://blocks3d.com/
 AppSupportURL=http://blocks3d.com/
 AppUpdatesURL=http://blocks3d.com/
@@ -39,8 +39,6 @@ Name: "{group}\Blocks3D Editor"; Filename: "{app}\Blocks3D.exe"; Tasks: startscu
 
 Name: "{userdesktop}\Play Blocks3D"; Filename: "{%programfiles}\Internet Explorer\iexplore.exe"; Parameters: "http://www.blocks3d.com/Games"; IconFilename: "{app}\Blocks3D.exe"; Tasks: startscut;
 Name: "{userdesktop}\Blocks3D Editor"; Filename: "{app}\Blocks3D.exe"; Tasks: desktopicon
-
-
 
 [Tasks]
 Name: "instvc"; Description: "Install Visual C++ Redistributable 2005 SP1 (Requires elevated permissions)";

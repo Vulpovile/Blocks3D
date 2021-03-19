@@ -1,9 +1,5 @@
 // TODO: Move toolbar buttons with resized window.
-#define _WIN32_WINNT 0x0400
-#define _WIN32_WINDOWS 0x0400
-#define WINVER 0x0400
-#define _CRTBLD
-
+#include "winver.h"
 #include "resource.h"
 #include "Application.h"
 #include "WindowFunctions.h"
@@ -148,7 +144,9 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 int main(int argc, char** argv) {
+#ifndef IGNORE_CATCH
 	try{
+#endif
 		hresult = OleInitialize(NULL);
 
 /*		IInternetSecurityManager *pSecurityMgr;
@@ -173,7 +171,7 @@ int main(int argc, char** argv) {
 
 		icc.dwSize = sizeof(icc);
 		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
-					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
+		//			   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
 		InitCommonControlsEx(&icc);
 
 		AudioPlayer::init();
@@ -214,10 +212,12 @@ int main(int argc, char** argv) {
 		Globals::mainHwnd = hwndMain;
 		Application app = Application(hwndMain);
 		app.run();	
+	#ifndef IGNORE_CATCH
 	}
 	catch(...)
 	{
 		OnError(-1);
 	}
+	#endif
     return 0;
 }

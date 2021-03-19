@@ -279,6 +279,7 @@ void PartInstance::render(RenderDevice* rd) {
 		changed=false;
 		Vector3 renderSize = size/2;
 		glNewList(glList, GL_COMPILE);
+		//glScalef(0.5f,0.5f,0.5f);
 		renderShape(this->shape, renderSize, color);
 		renderSurface(TOP, this->top, renderSize, this->controller, color);
 		renderSurface(FRONT, this->front, renderSize, this->controller, color);

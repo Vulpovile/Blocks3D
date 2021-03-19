@@ -2,6 +2,10 @@
 #include <G3DAll.h>
 #include "propertyGrid.h"
 #include "map"
+
+#ifdef NO_SPRINTF
+#define sprintf_s sprintf
+#endif
 //#include "Properties/BoolProperty.h"
 
 class Instance
