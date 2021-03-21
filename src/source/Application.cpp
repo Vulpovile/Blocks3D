@@ -1,7 +1,7 @@
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
-#include "resource.h"
+#include "../../resource.h"
 #include "DataModelV2/Instance.h"
 #include "DataModelV2/PartInstance.h"
 #include "DataModelV2/TextButtonInstance.h"

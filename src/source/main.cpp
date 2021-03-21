@@ -1,6 +1,6 @@
 // TODO: Move toolbar buttons with resized window.
 #include "winver.h"
-#include "resource.h"
+#include "../../resource.h"
 #include "Application.h"
 #include "WindowFunctions.h"
 #include "ax.h"

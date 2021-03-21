@@ -1,7 +1,7 @@
 #define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
-#include "resource.h"
+#include "../../resource.h"
 #include "PropertyWindow.h"
 #include "Globals.h"
 #include "strsafe.h"
