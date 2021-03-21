@@ -793,6 +793,11 @@ void Application::onKeyPressed(int key)
 	{
 			_dataModel->getOpen();
 	}
+	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='A')
+	{
+		std::vector<Instance *> vec = _dataModel->getWorkspace()->getAllChildren();
+		g_selectedInstances.insert(g_selectedInstances.end(), vec.begin(), vec.end());
+	}
 	tool->onKeyDown(key);
 }
 void Application::onKeyUp(int key)
