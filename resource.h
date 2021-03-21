@@ -2039,11 +2039,11 @@
 #define SC_MONITORPOWER                 0xF170
 #define SC_CONTEXTHELP                  0xF180
 #define LVS_TYPESTYLEMASK               0xfc00
-#define HTERROR                         -2
+//#define HTERROR                         -2
 #define I_IMAGENONE                     -2
 #define LVSCW_AUTOSIZE_USEHEADER        -2
-#define PWR_FAIL                        -1
-#define HTTRANSPARENT                   -1
+//#define PWR_FAIL                        -1
+//#define HTTRANSPARENT                   -1
 #define I_INDENTCALLBACK                -1
 #define I_IMAGECALLBACK                 -1
 #define LVSCW_AUTOSIZE                  -1
@@ -2062,3 +2062,6 @@
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
+
+
+//Does this need to be 2000 lines????

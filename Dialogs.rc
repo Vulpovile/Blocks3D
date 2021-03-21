@@ -32,7 +32,6 @@ IDI_ICON1               ICON                    "roblox_RN1_icon.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
-
 /////////////////////////////////////////////////////////////////////////////
 // English (Canada) resources
 
@@ -61,7 +60,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,247,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,247,24,50,14
-    EDITTEXT        IDC_EDIT1,68,7,162,14,ES_AUTOHSCROLL
+	EDITTEXT        IDC_EDIT1,68,7,162,14,ES_AUTOHSCROLL
     LTEXT           "Class:",-1,43,7,20,8
 END
 
@@ -77,10 +76,14 @@ BEGIN
     "resource.h\0"
 END
 
-
 3 TEXTINCLUDE 
 BEGIN
-    "\r\n"
+    "\r\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\0"
 END
 
 #endif    // APSTUDIO_INVOKED
