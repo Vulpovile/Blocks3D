@@ -62,6 +62,42 @@ IDI_ICON1               ICON                    "roblox_RN1_icon.ico"
 //
 
 IDB_BITMAP1             BITMAP                  "Parts.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 306, 49
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,249,7,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,249,26,50,16
+    RTEXT           "Class:",IDC_STATIC,7,7,40,14,0,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT1,53,7,175,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 39
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 
