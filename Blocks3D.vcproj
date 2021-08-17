@@ -888,7 +888,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\B3dIcon.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\FatB3dIcon.ico"
 				>
 			</File>
 			<File

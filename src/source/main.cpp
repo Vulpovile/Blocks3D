@@ -144,6 +144,9 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 int main(int argc, char** argv) {
+
+	long double a = 1;
+
 #ifndef IGNORE_CATCH
 	try{
 #endif
