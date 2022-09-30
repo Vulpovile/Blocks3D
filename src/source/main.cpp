@@ -1,9 +1,6 @@
 // TODO: Move toolbar buttons with resized window.
-#define _WIN32_WINNT 0x0400
-#define _WIN32_WINDOWS 0x0400
-#define WINVER 0x0400
-
-#include "resource.h"
+#include "winver.h"
+#include "../../resource.h"
 #include "Application.h"
 #include "WindowFunctions.h"
 #include "ax.h"
@@ -145,8 +142,14 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+
 int main(int argc, char** argv) {
+
+	long double a = 1;
+
+#ifndef IGNORE_CATCH
 	try{
+#endif
 		hresult = OleInitialize(NULL);
 
 /*		IInternetSecurityManager *pSecurityMgr;
@@ -171,7 +174,7 @@ int main(int argc, char** argv) {
 
 		icc.dwSize = sizeof(icc);
 		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
-					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
+		//			   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
 		InitCommonControlsEx(&icc);
 
 		AudioPlayer::init();
@@ -204,7 +207,7 @@ int main(int argc, char** argv) {
 		);
 		if(hwndMain == NULL)
 		{
-			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_PlaceholderName + " Crash").c_str() , MB_OK);
+			MessageBox(NULL, "Critical error loading: Failed to create HWND, must exit", (g_appName + " Crash").c_str() , MB_OK);
 			return 0;
 		}
 		SendMessage(hwndMain, WM_SETICON, ICON_BIG,(LPARAM)LoadImage(GetModuleHandle(NULL), (LPCSTR)MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR | LR_DEFAULTSIZE));
@@ -212,10 +215,12 @@ int main(int argc, char** argv) {
 		Globals::mainHwnd = hwndMain;
 		Application app = Application(hwndMain);
 		app.run();	
+	#ifndef IGNORE_CATCH
 	}
 	catch(...)
 	{
 		OnError(-1);
 	}
+	#endif
     return 0;
 }

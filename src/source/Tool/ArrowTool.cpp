@@ -3,6 +3,8 @@
 
 ArrowTool::ArrowTool(void)
 {
+	// Should solve issue of resize and move handles being drawn when they don't need to be
+	g_usableApp->unSetMode();
 	lctrlDown = false;
 	rctrlDown = false;
 	dragging = false;
@@ -29,8 +31,6 @@ void ArrowTool::onButton1MouseDown(Mouse mouse)
 }
 void ArrowTool::onButton1MouseUp(Mouse mouse)
 {
-	if(dragging)
-		this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
 	mouseDown = false;
 	dragging = false;
 }
@@ -43,7 +43,6 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		{
 			if(abs(mouse.x-mouseDownStartx) > 5 || abs(mouse.y-mouseDownStarty) > 5)
 			{
-				this->setCursor(GetFileInPath("/content/images/GrabRotateCursor.png"));
 				dragging = true;
 			}
 			else return;
@@ -58,13 +57,10 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		return;
 	}
 	PartInstance * target = mouse.getTarget();
-	if(target == NULL)
-		this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
-	else this->setCursor(GetFileInPath("/content/images/DragCursor.png"));
+	//if(target == NULL)
 }
 void ArrowTool::onSelect(Mouse mouse)
 {
-	this->setCursor(GetFileInPath("/content/images/ArrowCursor.png"));
 }
 
 void ArrowTool::onKeyDown(int key)
@@ -72,6 +68,30 @@ void ArrowTool::onKeyDown(int key)
 	if(key == VK_CONTROL)
 	{
 		lctrlDown = true;
+	}
+	else if(key == 'R')
+	{
+		if(g_selectedInstances.size() > 0)
+		{
+			Instance* selectedInstance = g_selectedInstances.at(0);
+			AudioPlayer::playSound(clickSound);
+			if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
+			{
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
+			}
+		}
+	}
+	else if(key == 'T')
+	{
+		if(g_selectedInstances.size() > 0)
+		{
+			Instance* selectedInstance = g_selectedInstances.at(0);
+			AudioPlayer::playSound(clickSound);
+			if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
+			{
+				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
+			}
+		}
 	}
 }
 

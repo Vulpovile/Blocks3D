@@ -9,6 +9,8 @@
 #include "Globals.h"
 #pragma once
 #include "ax.h"
+#include "Tool/SurfaceTool.h"
+#include "Application.h"
 
 HRESULT IEBrowser::doExternal(std::wstring funcName,
   DISPID dispIdMember,
@@ -51,6 +53,28 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 		}
 		if(ding)
 			AudioPlayer::playSound(dingSound);
+		return S_OK;
+	}
+	else if(funcName==L"SetSurface")
+	{
+		if(pDispParams->cArgs < 2)
+			return E_NOTIMPL;
+		int j = pDispParams->rgvarg->intVal;
+		int i = (pDispParams->rgvarg+1)->intVal;
+		//printf("Got values %d and %d", i, j);
+		if(i > 5 || i < 0)
+			return E_NOTIMPL;
+		g_usableApp->changeTool(new SurfaceTool(i, j));
+		/*VARIANT val1;
+		VARIANT val2;
+		unsigned int puArgErr;
+		HRESULT res = DispGetParam(pDispParams,1,VT_VARIANT,&val1, &puArgErr);
+		if(res != S_OK)
+			return res;
+		//res = DispGetParam(pDispParams,1,VT_UI4,&val2, &puArgErr);
+		//if(res != S_OK)
+			//return res;
+		*/
 		return S_OK;
 	}
 	else if(funcName==L"SetColor")
@@ -123,7 +147,7 @@ bool IEBrowser::navigateSyncURL(wchar_t* url)
 	}
 	else
 	{
-		MessageBox(NULL,"Cannot read IWebBrowser2...",(g_PlaceholderName+" Crash").c_str(),MB_OK);
+		MessageBox(NULL,"Cannot read IWebBrowser2...",(g_appName+" Crash").c_str(),MB_OK);
 	}
 
 	return false;

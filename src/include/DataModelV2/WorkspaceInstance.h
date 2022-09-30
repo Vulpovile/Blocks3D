@@ -8,5 +8,6 @@ class WorkspaceInstance :
 public:
 	WorkspaceInstance(void);
 	~WorkspaceInstance(void);
+	void clearChildren();
 	std::vector<PartInstance *> partObjects;
 };

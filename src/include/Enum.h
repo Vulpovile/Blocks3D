@@ -5,7 +5,7 @@ namespace Enum
 	namespace SurfaceType
 	{
 		enum Value {
-			Smooth, Snaps, Inlets, Glue, Weld, Spawn, Hinge, Motor, Bumps
+			Smooth = 0, Bumps = 1, Hinge = 2, Motor = 3, StepperMotor = 4, Spawn = 5
 		};
 	}
 	namespace Shape

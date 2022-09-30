@@ -79,6 +79,7 @@
 				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalManifestDependencies=""
 				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -289,6 +290,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\source\Renderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\source\StringFunctions.cpp"
 				>
 			</File>
@@ -305,6 +310,10 @@
 				>
 				<File
 					RelativePath=".\src\source\Tool\ArrowTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Tool\SurfaceTool.cpp"
 					>
 				</File>
 				<File
@@ -349,54 +358,290 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="DataModel"
+				Name="DataModelV2"
 				>
 				<File
-					RelativePath=".\src\source\DataModel\BaseButtonInstance.cpp"
+					RelativePath=".\src\source\DataModelV2\DataModelInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\GroupInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\Instance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\LevelInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\PartInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\PVInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\WorkspaceInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\source\DataModelV2\BaseButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\BaseGuiInstance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\GuiRootInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\ImageButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\TextButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\ToggleImageButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\source\Properties\BoolProperty.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\source\DataModel\DataModelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\GroupInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\GuiRootInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\ImageButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\Instance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\LevelInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\PartInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\PVInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\TextButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\ToggleImageButtonInstance.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModel\WorkspaceInstance.cpp"
+					RelativePath=".\src\source\Properties\Property.cpp"
 					>
 				</File>
 			</Filter>
@@ -430,11 +675,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\Enums.h"
+				RelativePath=".\src\include\ErrorFunctions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\ErrorFunctions.h"
+				RelativePath=".\src\include\Faces.h"
 				>
 			</File>
 			<File
@@ -462,7 +707,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\resource.h"
+				RelativePath=".\src\include\Renderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
@@ -479,6 +728,10 @@
 			</File>
 			<File
 				RelativePath=".\src\include\WindowFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\winver.h"
 				>
 			</File>
 			<Filter
@@ -549,55 +802,83 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\include\Tool\SurfaceTool.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\Tool\Tool.h"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="DataModel"
+				Name="DataModelV2"
 				>
 				<File
-					RelativePath=".\src\include\DataModel\BaseButtonInstance.h"
+					RelativePath=".\src\include\DataModelV2\DataModelInstance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\DataModelInstance.h"
+					RelativePath=".\src\include\DataModelV2\GroupInstance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\GroupInstance.h"
+					RelativePath=".\src\include\DataModelV2\Instance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\GuiRootInstance.h"
+					RelativePath=".\src\include\DataModelV2\LevelInstance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\ImageButtonInstance.h"
+					RelativePath=".\src\include\DataModelV2\PartInstance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\Instance.h"
+					RelativePath=".\src\include\DataModelV2\PVInstance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\LevelInstance.h"
+					RelativePath=".\src\include\DataModelV2\WorkspaceInstance.h"
+					>
+				</File>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseGuiInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\GuiRootInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ImageButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\TextButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ToggleImageButtonInstance.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\include\Properties\BoolProperty.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\DataModel\PartInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\include\DataModel\PVInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\include\DataModel\TextButtonInstance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\include\DataModel\ToggleImageButtonInstance.h"
+					RelativePath=".\src\include\Properties\Property.h"
 					>
 				</File>
 			</Filter>
@@ -607,15 +888,23 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\B3dIcon.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\icon1.ico"
+				RelativePath=".\FatB3dIcon.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\Parts.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\roblox_RN1_icon.ico"
 				>
 			</File>
 		</Filter>

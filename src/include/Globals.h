@@ -1,5 +1,5 @@
 #pragma once
-#include "DataModel/DataModelInstance.h"
+#include "DataModelV2/DataModelInstance.h"
 
 
 class Application;
@@ -10,7 +10,7 @@ public:
     Globals(void);
     ~Globals(void);
     static DataModelInstance* dataModel;
-	static bool showMouse;
+	//static bool showMouse;
 	static POINT mousepoint;
 	static bool useMousePoint;
 	static const int gen;
@@ -19,7 +19,7 @@ public:
 	static const int patch;
 	static G3D::TextureRef surface;
 	static int surfaceId;
-	static const std::string g_PlaceholderName;
+	static const std::string g_appName;
 	static COLORREF g_acrCustClr[16]; //Will be dynamic later
 	static HWND mainHwnd;
 };
@@ -38,4 +38,4 @@ extern std::string cameraSound;
 extern std::string clickSound;
 extern std::string dingSound;
 extern HWND mainHwnd;
-const std::string g_PlaceholderName = "Dygysphere";
+const std::string g_appName = "Blocks3D";

@@ -1,13 +1,13 @@
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
-#include "resource.h"
-#include "DataModel/Instance.h"
-#include "DataModel/PartInstance.h"
-#include "DataModel/TextButtonInstance.h"
-#include "DataModel/ImageButtonInstance.h"
-#include "DataModel/DataModelInstance.h"
-#include "DataModel/GuiRootInstance.h"
+#include "../../resource.h"
+#include "DataModelV2/Instance.h"
+#include "DataModelV2/PartInstance.h"
+#include "DataModelV2/TextButtonInstance.h"
+#include "DataModelV2/ImageButtonInstance.h"
+#include "DataModelV2/DataModelInstance.h"
+#include "DataModelV2/GuiRootInstance.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
@@ -30,6 +30,7 @@
 #include "Listener/DeleteListener.h"
 #include "Listener/CameraButtonListener.h"
 #include "Listener/RotateButtonListener.h"
+#include "Faces.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
 //Ray testRay;
 //static int cursorid = 0;
@@ -68,7 +69,7 @@ void Application::setFocus(bool focus)
 Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(settings,window) {
 	
 
-	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_PlaceholderName;
+	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_appName;
 	CreateDirectory(tempPath.c_str(), NULL);
 	
 	_hWndMain = parentWindow;
@@ -134,9 +135,9 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	_propWindow = new PropertyWindow(0, 0, 200, 640, hThisInstance);
 	webBrowser = new IEBrowser(_hwndToolbox);
 	
-	SetWindowLongPtr(_hwndToolbox,GWL_USERDATA+1,(LONG)webBrowser);
-	navigateToolbox("http://androdome.com/res/ClientToolbox.php");
-	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
+	SetProp(_hwndToolbox,"Browser",(HANDLE)webBrowser);
+	//navigateToolbox("http://androdome.com/res/ClientToolbox.php");
+	navigateToolbox(GetFileInPath("/content/page/surface.html"));
 	//navigateToolbox(GetFileInPath("/content/page/controller.html"));
 
 }
@@ -183,7 +184,7 @@ void Application::onInit()  {
 	cameraController.setFrame(Vector3(0,2,10));
 	_dataModel = new DataModelInstance();
 	_dataModel->setParent(NULL);
-	_dataModel->name = "undefined";
+	_dataModel->setName("undefined");
 	_dataModel->font = g_fntdominant;
 	g_dataModel = _dataModel;
 	
@@ -196,61 +197,70 @@ void Application::onInit()  {
 	test->setSize(Vector3(24,1,24));
 	test->setPosition(Vector3(0,0,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
-	
-
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-10,1,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(10,1,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(7,2,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-7,2,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(4,3,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-5,3,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-3,4,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(-2,5,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	
 
 	
@@ -260,12 +270,14 @@ void Application::onInit()  {
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(0,6,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
+	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 #else
 	_dataModel->debugGetOpen();
 #endif
@@ -342,7 +354,7 @@ void eject(PartInstance * colliding, PartInstance * collider)
 	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
 		return;
 	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
-		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->cFrame.upVector())/1.3F);
+		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->getCFrame().upVector())/1.3F);
 
 }
 
@@ -498,37 +510,16 @@ void Application::changeTool(Tool * newTool)
 	
 }
 
-void Application::makeFlag(Vector3 &vec, RenderDevice* &rd)
-{
-
-	Vector3 up = Vector3(vec.x, vec.y+3, vec.z);
-	rd->setColor(Color3::blue());
-	rd->beforePrimitive();
-
-		glBegin(GL_LINES);
-		glVertex3f(vec.x, vec.y, vec.z);
-		glVertex3f(up.x, up.y, up.z);
-		glEnd();
-
-		glBegin( GL_TRIANGLES );
-		glVertex3f(up.x, up.y-1, up.z);
-		glVertex3f(up.x, up.y-0.5, up.z-1);
-		glVertex3f(up.x, up.y, up.z);
-		
-		glVertex3f(up.x, up.y, up.z);
-		glVertex3f(up.x, up.y-0.5, up.z-1);
-		glVertex3f(up.x, up.y-1, up.z);
-
-		glEnd();
-	rd->afterPrimitive();
-	rd->setColor(Color3::white());
-	//I know how i will approach this now
-}
-
 void Application::setMode(int mode)
 {
 	_mode = mode;
 }
+
+void Application::unSetMode()
+{
+	_mode = NULL;
+}
+
 int Application::getMode()
 {
 	return _mode;
@@ -618,6 +609,8 @@ void Application::exitApplication()
 }
 
 
+
+
 void Application::onGraphics(RenderDevice* rd) {
 	
 	G3D::uint8 num = 0;
@@ -635,14 +628,14 @@ void Application::onGraphics(RenderDevice* rd) {
 		{
 			mouseOnScreen = false;
 			//ShowCursor(true);
-			_window->setMouseVisible(true);
+			//_window->setMouseVisible(true);
 			//rd->window()->setInputCaptureCount(0);
 		}
 		else
 		{
 			mouseOnScreen = true;
 			//SetCursor(NULL);
-			_window->setMouseVisible(false);
+			//_window->setMouseVisible(false);
 			//rd->window()->setInputCaptureCount(1);
 		}
 		
@@ -709,7 +702,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	rd->afterPrimitive();
 
 
-	Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
+	//Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
 	if(g_selectedInstances.size() > 0)
 	{
 		for(size_t i = 0; i < g_selectedInstances.size(); i++)
@@ -718,7 +711,7 @@ void Application::onGraphics(RenderDevice* rd) {
 			{
 			Vector3 size = part->getSize();
 			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrameRenderBased());
+			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
 			}
 		}
 	}
@@ -742,7 +735,7 @@ void Application::onGraphics(RenderDevice* rd) {
     }
 	renderDevice->push2D();
 		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
-		rd->pushState();
+		/*rd->pushState();
 			rd->beforePrimitive();
 
 			if(Globals::showMouse && mouseOnScreen)
@@ -768,7 +761,7 @@ void Application::onGraphics(RenderDevice* rd) {
 				}
 			}
 			*/
-			glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
+			/*glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
 
 			
 			glBegin( GL_QUADS );
@@ -782,11 +775,11 @@ void Application::onGraphics(RenderDevice* rd) {
 			glVertex2f( mousepos.x-64, mousepos.y+64 );
 			glEnd();
 
-			glDisable( GL_TEXTURE_2D );
-			}
+			glDisable( GL_TEXTURE_2D );*/
+			//}
 
-			rd->afterPrimitive();
-		rd->popState();
+			/*rd->afterPrimitive();
+		rd->popState();*/
 	renderDevice->pop2D();
 }
 
@@ -799,6 +792,11 @@ void Application::onKeyPressed(int key)
 	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='O')
 	{
 			_dataModel->getOpen();
+	}
+	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='A')
+	{
+		std::vector<Instance *> vec = _dataModel->getWorkspace()->getAllChildren();
+		g_selectedInstances.insert(g_selectedInstances.end(), vec.begin(), vec.end());
 	}
 	tool->onKeyDown(key);
 }

@@ -6,7 +6,7 @@ int const Globals::major = 100;
 int const Globals::minor = 4;
 int const Globals::patch = 3;
 int Globals::surfaceId = 2;
-bool Globals::showMouse = true;
+//bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;
 std::vector<Instance*> postRenderStack = std::vector<Instance*>();
 

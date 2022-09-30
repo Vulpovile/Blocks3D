@@ -10,12 +10,12 @@
 ///         This source is distributed in the hope that it will be useful,
 ///         but WITHOUT ANY WARRANTY; without even the implied warranty of
 ///         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// 
-/// @date 2-27-16
-/// 
-/// @todo 
 ///
-/// @bug 
+/// @date 2-27-16
+///
+/// @todo
+///
+/// @bug
 ///
 //////////////////////////////////////////////////////////////////////////////
 
@@ -29,15 +29,14 @@
 //DWM 1.8: Version 1.8 changes labelled thus.
 //DWM 1.9: Version 1.9 changes labelled thus.
 
-//DWM 1.9: Suppress POCC Warning "Argument x to 'sscanf' does not match the format string; 
+//DWM 1.9: Suppress POCC Warning "Argument x to 'sscanf' does not match the format string;
 //          expected 'unsigned char *' but found 'unsigned long'"
+#include "winver.h"
+
 #ifdef __POCC__
 #pragma warn(disable:2234)
 #endif
 
-#ifndef _WIN32_WINNT // Necessary for WM_MOUSEWHEEL support
-#define _WIN32_WINNT 0x0400
-#endif
 
 // MSVC++ Support
 #ifndef _CRT_SECURE_NO_WARNINGS
@@ -70,7 +69,7 @@
 #define _tmemset  wmemset
 #define _stprintf  swprintf
 #else
-#define _tmemcpy  memcpy
+#define _tmemcpy  memcpy_s
 #define _tmemmove  memmove
 #define _tmemset  memset
 #define _stprintf  _snprintf
@@ -103,7 +102,7 @@
 //DWM 1.2: Converted the following 4 items to constants
 #define SELECT _T("T")         ///< PIT_CHECK select
 #define UNSELECT _T("F")       ///< PIT_CHECK unselect
-#define CHECKED SELECT         ///< PIT_CHECK checked 
+#define CHECKED SELECT         ///< PIT_CHECK checked
 #define UNCHECKED UNSELECT     ///< PIT_CHECK unchecked
 
 //DWM 1.3: Added
@@ -142,7 +141,7 @@
 ///         in a list box.
 ///
 /// @param hwndCtl The handle of a listbox.
-/// @param xPos The x coordinate of a point. 
+/// @param xPos The x coordinate of a point.
 /// @param yPos The y coordinate of a point.
 ///
 /// @returns The return value contains the index of the nearest item
@@ -290,7 +289,7 @@ static LPINSTANCEDATA g_lpInst; ///< instance data (this) pointer
 /// @brief Get the Instance data associated with this instance.
 ///
 /// @param hControl Handle to Current instance.
-/// @param ppInstanceData - Pointer to the address of an INSTANCEDATA struct. 
+/// @param ppInstanceData - Pointer to the address of an INSTANCEDATA struct.
 ///
 /// @returns TRUE if successful
 static BOOL Control_GetInstanceData(HWND hControl, LPINSTANCEDATA * ppInstanceData)
@@ -362,7 +361,7 @@ static LPTSTR NewString(LPTSTR str)
 
     if(NULL == tmp)
     {
-        return (LPTSTR)calloc(1, sizeof(TCHAR)); 
+        return (LPTSTR)calloc(1, sizeof(TCHAR));
     }
     return (LPTSTR)_tmemmove(tmp, str, _tcslen(str));
 }
@@ -386,7 +385,7 @@ static LPTSTR NewStringArray(LPTSTR szzStr)
 
     if(NULL == tmp)
     {
-        return (LPTSTR)calloc(1, sizeof(TCHAR)); 
+        return (LPTSTR)calloc(1, sizeof(TCHAR));
     }
     return (LPTSTR)_tmemmove(tmp, szzStr, iLen);
 }
@@ -482,7 +481,7 @@ static VOID Editor_OnKillFocus(HWND hwnd, HWND hwndNewFocus)
     g_lpInst->fGotFocus =
         (NULL != hwndNewFocus &&
         (g_lpInst->hwndListBox  == hwndNewFocus ||
-         g_lpInst->hwndCtl1     == hwndNewFocus || 
+         g_lpInst->hwndCtl1     == hwndNewFocus ||
          g_lpInst->hwndCtl2     == hwndNewFocus ||
          g_lpInst->hwndPropDesc == hwndNewFocus ||
          g_lpInst->hwndToolTip  == hwndNewFocus));
@@ -653,7 +652,7 @@ static BOOL Editor_OnPaint(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     rect.left += 1;
     rect.bottom += 1;
     rect.right += 1;
-    
+
     DrawBorder(hdc, &rect, BF_RECT, GetSysColor(COLOR_WINDOW));
 
     ReleaseDC(hwnd, hdc);
@@ -1149,7 +1148,7 @@ static HWND CreateIpEdit(HINSTANCE hInstance, HWND hwndParent, INT id, LPRECT lp
         NULL,
         dwStyle,
         CW_USEDEFAULT, // x position can be changed after creation
-        CW_USEDEFAULT, // y position can be changed after creation 
+        CW_USEDEFAULT, // y position can be changed after creation
         lprc->right - lprc->left, // width can only be set here
         lprc->bottom - lprc->top, // height can only be set here
         hwndParent, (HMENU)id, hInstance, NULL);
@@ -3272,7 +3271,7 @@ static HBRUSH Grid_OnCtlColorStatic(HWND hwnd, HDC hdc, HWND hwndChild, INT type
         FillSolidRect(hdc,MAKE_PRECT(0, g_lpInst->iVDivider - 2,
             WIDTH(rc), g_lpInst->iVDivider),GetSysColor(COLOR_BTNFACE));
         ReleaseDC(hwnd,hdc);
-    } 
+    }
     return FORWARD_WM_CTLCOLORSTATIC(hwnd, hdc, hwndChild, DefWindowProc);
 }
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <G3DAll.h>
 #include "PropertyWindow.h"
-#include "DataModel/TextButtonInstance.h"
-#include "DataModel/ImageButtonInstance.h"
+#include "DataModelV2/TextButtonInstance.h"
+#include "DataModelV2/ImageButtonInstance.h"
 #include "CameraController.h"
 #include "IEBrowser.h"
 #include "Mouse.h"
@@ -32,7 +32,6 @@ class Application { // : public GApp {
 		PartInstance*	makePart();
 		void			drawButtons(RenderDevice* rd);
 		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
-		void			makeFlag(Vector3 &vec, RenderDevice* &rd);
 		std::vector<Instance*>	getSelection();
 		void		deleteInstance();
 		void		run();
@@ -49,6 +48,7 @@ class Application { // : public GApp {
 		void		onMouseWheel(int x, int y, short delta);
 		void		setFocus(bool isFocused);
 		int			getMode();
+		void		unSetMode();
 		CameraController	cameraController;
 		UserInput*			userInput;
 		PropertyWindow*		_propWindow;

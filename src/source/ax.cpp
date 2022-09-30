@@ -505,7 +505,7 @@ HRESULT _stdcall AXClientSite :: Invoke(
   EXCEPINFO FAR* pExcepInfo,
   unsigned int FAR* puArgErr)
 {
-	IEBrowser * browser = (IEBrowser *)GetWindowLongPtr(Window,GWL_USERDATA+1);
+	IEBrowser * browser = (IEBrowser *)GetProp(Window,"Browser");
 	return browser->doExternal(m_lastExternalName,dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
 	
 	//return S_OK;

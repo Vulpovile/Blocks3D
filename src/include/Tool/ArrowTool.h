@@ -7,12 +7,12 @@ class ArrowTool :
 public:
 	ArrowTool(void); //OnSelect?
 	~ArrowTool(void); //OnDeselect?
-	virtual void onButton1MouseDown(Mouse);
-	virtual void onButton1MouseUp(Mouse);
-	virtual void onMouseMoved(Mouse mouse);
-	virtual void onSelect(Mouse mouse); 
-	virtual void onKeyDown(int key);
-	virtual void onKeyUp(int key);
+	void onButton1MouseDown(Mouse);
+	void onButton1MouseUp(Mouse);
+	void onMouseMoved(Mouse mouse);
+	void onSelect(Mouse mouse); 
+	void onKeyDown(int key);
+	void onKeyUp(int key);
 private:
 	bool lctrlDown;
 	bool rctrlDown;

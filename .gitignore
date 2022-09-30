@@ -53,3 +53,6 @@ G3DTest.suo
 stderr.txt
 desktop.ini
 *.db
+
+#Redist
+!Installer/Redist/*

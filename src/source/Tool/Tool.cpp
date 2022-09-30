@@ -2,7 +2,7 @@
 
 Tool::Tool(void)
 {
-	cursorString = GetFileInPath("/content/images/ArrowFarCursor.png");
+	//cursorString = GetFileInPath("/content/images/ArrowFarCursor.png");
 	//cursorId = cursorRef->openGLID();
 }
 
@@ -22,11 +22,11 @@ void Tool::onDeselect(Mouse mouse){}
 void Tool::onMouseScroll(Mouse mouse){}
 void Tool::onKeyDown(int key){}
 void Tool::onKeyUp(int key){}
-void Tool::setCursor(std::string str)
+/*void Tool::setCursor(std::string str)
 {
-	cursorString = str;
-}
-int Tool::getCursorId()
+	//cursorString = str;
+}*/
+/*int Tool::getCursorId()
 {
 	return TextureHandler::getTexturePermanent(cursorString);
-}
+}*/

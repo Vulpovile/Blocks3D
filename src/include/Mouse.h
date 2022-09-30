@@ -1,7 +1,7 @@
 #pragma once
-#include "DataModel/PartInstance.h"
+#include "DataModelV2/PartInstance.h"
 #pragma once
-#include "DataModel/WorkspaceInstance.h"
+#include "DataModelV2/WorkspaceInstance.h"
 
 struct MousePoint{
 	Vector3 position;
@@ -27,6 +27,8 @@ public:
 	bool isMouseOnScreen();
 	bool isMouseDown();
 	void setMouseDown(bool mouseDown);
+	G3D::Ray * getRay();
+	G3D::Ray getLastRay();
 private:
 	bool mouseDown;
 };
