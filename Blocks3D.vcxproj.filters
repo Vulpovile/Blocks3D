@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9571c986-a719-4aa9-8f06-edd22511bbbf}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Tool">
+      <UniqueIdentifier>{10225c23-5e14-45ed-aa65-5e2952d83749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Listener">
+      <UniqueIdentifier>{9a362f2a-3ea4-4130-80e1-c7dae14a8862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataModelV2">
+      <UniqueIdentifier>{018ed0d2-9b98-424f-9af8-172600aa12e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataModelV2\Gui">
+      <UniqueIdentifier>{870b4a49-cf43-4f47-8321-f48d7b01816b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Properties">
+      <UniqueIdentifier>{7d5f8016-5447-4c00-b9cd-d2c5bb2e59b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{f959d8b8-bb6a-4c70-ad2c-f1c66758c461}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\RapidXML">
+      <UniqueIdentifier>{6db93330-5b80-4675-8d44-4db372d9d5b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Listener">
+      <UniqueIdentifier>{8bb34ca3-25fe-465c-a77e-8057005450b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tool">
+      <UniqueIdentifier>{b00aefef-dafe-4dc3-8aec-d5a4d56dd2e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataModelV2">
+      <UniqueIdentifier>{c13ee511-5b6b-4b79-8402-31323e149b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataModelV2\Gui">
+      <UniqueIdentifier>{2414eb84-1360-4601-af93-51eb6639ba14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Properties">
+      <UniqueIdentifier>{1ff12666-0b54-4e78-8a68-43853c4f7f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f27a93e2-d403-4b4e-ac57-4081d78febbc}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\source\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\AudioPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\ax.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\BrowserCallHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CameraController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\ErrorFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\IEBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\IEDispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\propertyGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\PropertyWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\StringFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\TextureHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\WindowFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Tool\ArrowTool.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Tool\SurfaceTool.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Tool\Tool.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\ButtonListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\CameraButtonListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\DeleteListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\GUDButtonListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\MenuButtonListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\ModeSelectionListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\RotateButtonListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Listener\ToolbarListener.cpp">
+      <Filter>Source Files\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\DataModelInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\GroupInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\Instance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\LevelInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\PartInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\PVInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\WorkspaceInstance.cpp">
+      <Filter>Source Files\DataModelV2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\BaseButtonInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\BaseGuiInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\GuiRootInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\ImageButtonInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\TextButtonInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\DataModelV2\ToggleImageButtonInstance.cpp">
+      <Filter>Source Files\DataModelV2\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Properties\BoolProperty.cpp">
+      <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Properties\Property.cpp">
+      <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\include\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\AudioPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\ax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\BrowserCallHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\CameraController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\ErrorFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Faces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IEBrowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\IEDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\propertyGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\PropertyWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\StringFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\TextureHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\win32Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\WindowFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\winver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\rapidxml\rapidxml.hpp">
+      <Filter>Header Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\rapidxml\rapidxml_iterators.hpp">
+      <Filter>Header Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\rapidxml\rapidxml_print.hpp">
+      <Filter>Header Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\rapidxml\rapidxml_utils.hpp">
+      <Filter>Header Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\ButtonListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\CameraButtonListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\DeleteListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\GUDButtonListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\MenuButtonListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\ModeSelectionListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\RotateButtonListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Listener\ToolbarListener.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModel\WorkspaceInstance.h">
+      <Filter>Header Files\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Tool\ArrowTool.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Tool\SurfaceTool.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Tool\Tool.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\DataModelInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\GroupInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\Instance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\LevelInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\PartInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\PVInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\WorkspaceInstance.h">
+      <Filter>Header Files\DataModelV2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\BaseButtonInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\BaseGuiInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\GuiRootInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\ImageButtonInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\TextButtonInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\DataModelV2\ToggleImageButtonInstance.h">
+      <Filter>Header Files\DataModelV2\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Properties\BoolProperty.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\Properties\Property.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="B3dIcon.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="FatB3dIcon.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Parts.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="roblox_RN1_icon.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Dialogs.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

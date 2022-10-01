@@ -5,6 +5,7 @@ class LevelInstance :
 	public Instance
 {
 public:
+	std::string SplashHTML;
 	LevelInstance(void);
 	~LevelInstance(void);
 	float timer;

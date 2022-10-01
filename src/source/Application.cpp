@@ -24,6 +24,7 @@
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
+#include "../../SplashHTML.h"
 
 #include "Listener/GUDButtonListener.h"
 #include "Listener/ModeSelectionListener.h"
@@ -281,7 +282,9 @@ void Application::onInit()  {
 #else
 	_dataModel->debugGetOpen();
 #endif
-	
+	LevelInstance * level = g_dataModel->getLevel();
+	std::string GetCurrentSplash = level->SplashHTML;
+	SplashHTMLLoad(GetCurrentSplash);
 
 
 
