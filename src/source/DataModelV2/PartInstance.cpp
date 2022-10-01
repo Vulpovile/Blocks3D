@@ -25,6 +25,7 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+	physBody = NULL;
 }
 
 
@@ -279,7 +280,6 @@ void PartInstance::render(RenderDevice* rd) {
 		changed=false;
 		Vector3 renderSize = size/2;
 		glNewList(glList, GL_COMPILE);
-		//glScalef(0.5f,0.5f,0.5f);
 		renderShape(this->shape, renderSize, color);
 		renderSurface(TOP, this->top, renderSize, this->controller, color);
 		renderSurface(FRONT, this->front, renderSize, this->controller, color);
@@ -297,6 +297,16 @@ void PartInstance::render(RenderDevice* rd) {
 PartInstance::~PartInstance(void)
 {
 	glDeleteLists(glList, 1);
+	/*
+	// Causes some weird ODE error
+	// Someone, please look into this
+
+	dBodyDestroy(physBody);
+	for (int i = 0; i < 3; i++) {
+		if (physGeom[i] != NULL) 
+			dGeomDestroy(physGeom[i]);
+	}
+	*/
 }
 
 char pto[512];

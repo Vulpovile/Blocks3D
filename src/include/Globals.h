@@ -1,6 +1,6 @@
 #pragma once
 #include "DataModelV2/DataModelInstance.h"
-
+#include "XplicitNgine/XplicitNgine.h"
 
 class Application;
 
@@ -28,6 +28,7 @@ extern std::vector<Instance*> postRenderStack;
 extern std::vector<Instance*> g_selectedInstances;
 extern bool running;
 extern DataModelInstance* g_dataModel;
+extern XplicitNgine* g_xplicitNgine;
 extern Application* g_usableApp;
 
 extern GFontRef g_fntdominant;

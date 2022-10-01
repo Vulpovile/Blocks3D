@@ -30,6 +30,8 @@ public:
 	Color3 color;
 	bool canCollide;
 	bool anchored;
+	dBodyID physBody;
+	dGeomID physGeom[3];
 
 	//Getters
 	Vector3 getPosition();

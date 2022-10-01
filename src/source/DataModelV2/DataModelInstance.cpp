@@ -13,7 +13,6 @@ using namespace std;
 using namespace rapidxml;
 
 
-
 DataModelInstance::DataModelInstance(void)
 {
 	Instance::Instance();
@@ -519,6 +518,7 @@ bool DataModelInstance::getOpen()
 	of.lpstrFile[0]='\0';
 	of.nMaxFile=500;
 	of.lpstrTitle="Hello";
+	of.Flags = OFN_FILEMUSTEXIST;
 	ShowCursor(TRUE);
 	BOOL file = GetOpenFileName(&of);
 	if (file)
@@ -526,7 +526,6 @@ bool DataModelInstance::getOpen()
 		_loadedFileName = of.lpstrFile;
 		load(of.lpstrFile,true);
 	}
-	//else MessageBox(NULL, "Failed to open dialog", "Failure", MB_ICONHAND | MB_OK);
 	return true;
 }
 void DataModelInstance::setMessage(std::string msg)

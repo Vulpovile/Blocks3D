@@ -69,30 +69,6 @@ void ArrowTool::onKeyDown(int key)
 	{
 		lctrlDown = true;
 	}
-	else if(key == 'R')
-	{
-		if(g_selectedInstances.size() > 0)
-		{
-			Instance* selectedInstance = g_selectedInstances.at(0);
-			AudioPlayer::playSound(clickSound);
-			if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
-			{
-				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,toRadians(90),0));
-			}
-		}
-	}
-	else if(key == 'T')
-	{
-		if(g_selectedInstances.size() > 0)
-		{
-			Instance* selectedInstance = g_selectedInstances.at(0);
-			AudioPlayer::playSound(clickSound);
-			if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
-			{
-				part->setCFrame(part->getCFrame()*Matrix3::fromEulerAnglesXYZ(0,0,toRadians(90)));
-			}
-		}
-	}
 }
 
 void ArrowTool::onKeyUp(int key)
