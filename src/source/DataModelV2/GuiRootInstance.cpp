@@ -184,6 +184,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->setName("insert");
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
