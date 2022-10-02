@@ -8,7 +8,28 @@
 #include <shlwapi.h>
 
 int SplashHTMLLoad(std::string strHTML)
+//void CreateHTMLContainer()
 {
+	HWND NewWindow = CreateWindowEx(
+		WS_EX_TOOLWINDOW,
+		"", 
+		"", 
+		WS_OVERLAPPEDWINDOW|WS_VISIBLE, 
+		0, 
+		0, 
+		500, 
+		300, 
+		0, 
+		0, 
+		HINSTANCE(NULL), 
+		NULL); 
+	ShowWindow(NewWindow, 1);
+    UpdateWindow(NewWindow); 
+	return 0;
+}
+int SplashHTMLLoadz(std::string strHTML)
+{
+	//CreateHTMLContainer();
 	printf("%s \n", strHTML.c_str());
     CoInitialize(NULL);
 
@@ -31,6 +52,9 @@ int SplashHTMLLoad(std::string strHTML)
 		BSTR URL = SysAllocString(L"about:blank");
 		browser->put_AddressBar(false);
 		browser->put_ToolBar(false);
+		browser->put_TheaterMode(false);
+		browser->put_Width(500);
+		browser->put_Height(300);
 		browser->Navigate(URL, &empty, &empty, &empty, &empty);
         SysFreeString(URL);
 
