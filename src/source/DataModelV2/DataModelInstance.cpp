@@ -33,7 +33,21 @@ DataModelInstance::DataModelInstance(void)
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
 	running = false;
+	xplicitNgine = NULL;
+	resetEngine();
+}
 
+void DataModelInstance::resetEngine()
+{
+	if(xplicitNgine != NULL)
+		delete xplicitNgine;
+	xplicitNgine = new XplicitNgine();
+	g_xplicitNgine = xplicitNgine;
+}
+
+XplicitNgine * DataModelInstance::getEngine()
+{
+	return xplicitNgine;
 }
 
 void DataModelInstance::toggleRun()
@@ -47,6 +61,7 @@ bool DataModelInstance::isRunning()
 
 DataModelInstance::~DataModelInstance(void)
 {
+	delete xplicitNgine;
 }
 
 #ifdef _DEBUG
@@ -448,6 +463,7 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		std::string hname = sfilename.substr(begin);
 		std::string tname = hname.substr(0, hname.length() - 5);
 		name = tname;
+		resetEngine();
 		return true;
 	}
 	else

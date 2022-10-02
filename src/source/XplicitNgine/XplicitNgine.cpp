@@ -16,6 +16,8 @@ XplicitNgine::XplicitNgine()
 	contactgroup = dJointGroupCreate(0);
 
 	dWorldSetGravity(physWorld, 0, -0.5, 0);
+
+	this->name = "PhysicsService";
 	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
 }
 
@@ -41,14 +43,16 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 	n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
 	if (n > 0) {
 		for (i=0; i<n; i++) {
-			contact[i].surface.mode = dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
+			contact[i].surface.mode = dContactBounce | dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
 
 			// Define contact surface properties
-			contact[i].surface.mu = 0.5;
+
+			contact[i].surface.bounce = 0.5; //Elasticity
+			contact[i].surface.mu = 0.3F; //Friction
 			contact[i].surface.slip1 = 0.0;
 			contact[i].surface.slip2 = 0.0;
-			contact[i].surface.soft_erp = 0.8;
-			contact[i].surface.soft_cfm = 0.01;
+			contact[i].surface.soft_erp = 0.8F;
+			contact[i].surface.soft_cfm = 0.01F;
 			
 			// Create joints
 			dJointID c = dJointCreateContact(
@@ -119,22 +123,22 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 
 	} else {
-		if(partInstance->anchored)
-			return;
-
-		const dReal* physPosition = dBodyGetPosition(partInstance->physBody);
-		
-		// TODO: Rotation code
-		// Probably should be done AFTER we get physics KINDA working!!!
-		const dReal* physRotation = dGeomGetRotation(partInstance->physGeom[0]);
-		//partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
-		partInstance->setCFrame(CoordinateFrame(
-			Matrix3(physRotation[0],physRotation[1],physRotation[2],
-					physRotation[4],physRotation[5],physRotation[6],
-					physRotation[8],physRotation[9],physRotation[10]),
-			Vector3(physPosition[0], physPosition[1], physPosition[2])));
+		if(!partInstance->anchored)
+		{
+			const dReal* physPosition = dBodyGetPosition(partInstance->physBody);
+			
+			// TODO: Rotation code
+			// Probably should be done AFTER we get physics KINDA working!!!
+			const dReal* physRotation = dGeomGetRotation(partInstance->physGeom[0]);
+			//partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
+			partInstance->setCFrame(CoordinateFrame(
+				Matrix3(physRotation[0],physRotation[1],physRotation[2],
+						physRotation[4],physRotation[5],physRotation[6],
+						physRotation[8],physRotation[9],physRotation[10]),
+				Vector3(physPosition[0], physPosition[1], physPosition[2])));
+		}
 	}
 
-	dWorldQuickStep(physWorld,0.05);
+	dWorldQuickStep(physWorld,0.05F);
 	dJointGroupEmpty(contactgroup);
 }

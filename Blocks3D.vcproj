@@ -631,6 +631,14 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\source\XplicitNgine\XplicitNgine.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Properties"
@@ -641,14 +649,6 @@
 				</File>
 				<File
 					RelativePath=".\src\source\Properties\Property.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="XplicitNgine"
-				>
-				<File
-					RelativePath=".\src\source\XplicitNgine\XplicitNgine.cpp"
 					>
 				</File>
 			</Filter>
@@ -872,6 +872,14 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\include\XplicitNgine\XplicitNgine.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Properties"
@@ -882,14 +890,6 @@
 				</File>
 				<File
 					RelativePath=".\src\include\Properties\Property.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="XplicitNgine"
-				>
-				<File
-					RelativePath=".\src\include\XplicitNgine\XplicitNgine.h"
 					>
 				</File>
 			</Filter>

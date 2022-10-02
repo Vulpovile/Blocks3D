@@ -4,6 +4,7 @@
 #include "PartInstance.h"
 #include "rapidxml/rapidxml.hpp"
 #include "GuiRootInstance.h"
+#include "XplicitNgine/XplicitNgine.h"
 
 class GuiRootInstance;
 
@@ -23,6 +24,7 @@ public:
 	void					drawMessage(RenderDevice*);
 	WorkspaceInstance*		getWorkspace();
 	LevelInstance *			getLevel();
+	XplicitNgine *			getEngine();
 	std::string				message;
 	std::string				_loadedFileName;
 	bool					showMessage;
@@ -38,6 +40,7 @@ public:
 	void					clearLevel();
 	void					toggleRun();
 	bool					isRunning();
+	void					resetEngine();
 #if _DEBUG
 	void					modXMLLevel(float modY);
 #endif
@@ -54,4 +57,5 @@ private:
 	LevelInstance *			level;
 	GuiRootInstance*		guiRoot;
 	bool					running;
+	XplicitNgine *			xplicitNgine;
 };

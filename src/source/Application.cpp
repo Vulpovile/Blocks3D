@@ -188,9 +188,6 @@ void Application::onInit()  {
 	_dataModel->setName("undefined");
 	_dataModel->font = g_fntdominant;
 	g_dataModel = _dataModel;
-	
-	_xplicitNgine = new XplicitNgine();
-	g_xplicitNgine = _xplicitNgine;
 
 #ifdef LEGACY_LOAD_G3DFUN_LEVEL
 	// Anchored this baseplate for XplicitNgine tests
@@ -305,7 +302,7 @@ void Application::onLogic() {
 	for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
 	{
 		PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
-		_xplicitNgine->createBody(partInstance);
+		_dataModel->getEngine()->createBody(partInstance);
 	}
 }
 

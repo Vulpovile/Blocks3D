@@ -7,7 +7,6 @@
 #include "IEBrowser.h"
 #include "Mouse.h"
 #include "Tool/Tool.h"
-#include "XplicitNgine/XplicitNgine.h"
 //#include "GuiRoot.h"
 
 class TextButtonInstance;
@@ -76,7 +75,6 @@ class Application { // : public GApp {
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
 		DataModelInstance*	_dataModel;
-		XplicitNgine* _xplicitNgine;
 		G3D::TextureRef		shadowMap;
 		std::string			_title;
 		bool				_dragging;
