@@ -156,6 +156,7 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	bottom = oinst.bottom;
 	shape = oinst.shape;
 	changed = true;
+	physBody = NULL;
 }
 
 void PartInstance::setSize(Vector3 newSize)
