@@ -54,6 +54,7 @@ public:
 	void setShape(Enum::Shape::Value shape);
 	void setChanged();
 	void setSurface(int face, Enum::SurfaceType::Value surface);
+	float getMass();
 
 	//Collision
 	bool collides(PartInstance * part);

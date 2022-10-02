@@ -75,12 +75,11 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 		}
 		dBodyDestroy(partInstance->physBody);
 		dGeomDestroy(partInstance->physGeom[0]);
-		printf("Body should be destroyed");
 		partInstance->physBody = NULL;
 	}
 }
 
-void XplicitNgine::createBody(PartInstance* partInstance)
+void XplicitNgine::createBody(PartInstance* partInstance, float stepSize)
 {
 	// calculate collisions
 	dSpaceCollide (physSpace,0,&collisionCallback);
@@ -101,37 +100,46 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 			dVector3 result;
 			dGeomBoxGetLengths(partInstance->physGeom[0], result);
-			printf("[XplicitNgine] Part Geom Size: %.1f, %.1f, %.1f\n", 
-				result[0], 
-				result[1], 
-				result[2]
-			);
+			//printf("[XplicitNgine] Part Geom Size: %.1f, %.1f, %.1f\n", 
+			//	result[0], 
+			//	result[1], 
+			//	result[2]
+			//);
 		}
 		else
 		{
 			partInstance->physGeom[0] = dCreateSphere(physSpace, partInstance->getSize()[0]/2);
 		}
 		
+		dMass mass;
+		mass.setBox(partInstance->getSize().x, partInstance->getSize().y, partInstance->getSize().z, 0.7F);
+		dBodySetMass(partInstance->physBody, &mass);
 
 		// Debug output
 		
 
 		// Create rigid body
-		printf("[XplicitNgine] Created Geom for PartInstance\n");
+		//printf("[XplicitNgine] Created Geom for PartInstance\n");
 		dBodySetPosition(partInstance->physBody, 
 			partInstance->getPosition()[0],
 			partInstance->getPosition()[1],
 			partInstance->getPosition()[2]
 		);
 
+		dGeomSetPosition(partInstance->physGeom[0], 
+			partInstance->getPosition()[0],
+			partInstance->getPosition()[1],
+			partInstance->getPosition()[2]);
+
 		Matrix3 g3dRot = partInstance->getCFrame().rotation;
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
 								g3dRot[1][0], g3dRot[1][1], g3dRot[1][2], 0,
 								g3dRot[2][0], g3dRot[2][1], g3dRot[2][2], 0};
 
+		dGeomSetRotation(partInstance->physGeom[0], rotation);
 		dBodySetRotation(partInstance->physBody, rotation);
 
-		printf("[XplicitNgine] Created Body for PartInstance\n");
+		//printf("[XplicitNgine] Created Body for PartInstance\n");
 		
 		if(!partInstance->anchored)
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
@@ -152,8 +160,8 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 				Vector3(physPosition[0], physPosition[1], physPosition[2])));
 		}
 	}
-
-	dWorldQuickStep(physWorld,0.05F);
+//STEP SHOULD NOT BE HERE!
+	dWorldQuickStep(physWorld, stepSize);
 	dJointGroupEmpty(contactgroup);
 }
 
@@ -161,8 +169,6 @@ void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFra
 {
 	if(partInstance->physBody != NULL)
 	{
-		
-		printf("Position is supposed to be set\n");
 		Vector3 position = cFrame->translation;
 
 		dBodySetPosition(partInstance->physBody, 
@@ -177,9 +183,5 @@ void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFra
 								g3dRot[2][0], g3dRot[2][1], g3dRot[2][2], 0};
 
 		dBodySetRotation(partInstance->physBody, rotation);
-	}
-	else
-	{
-		printf("Null???\n");
 	}
 }

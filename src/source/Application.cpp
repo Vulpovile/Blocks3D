@@ -298,12 +298,7 @@ void Application::onCleanup() {
 }
 
 void Application::onLogic() {
-	// XplicitNgine Start
-	for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
-	{
-		PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
-		_dataModel->getEngine()->createBody(partInstance);
-	}
+	
 }
 
 void Application::onNetwork() {
@@ -323,8 +318,18 @@ std::vector<Instance*> Application::getSelection()
 void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 	if(_dataModel->isRunning())
+	{
+		// XplicitNgine Start
+		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
+		{
+			PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
+			_dataModel->getEngine()->createBody(partInstance, sdt*15/_dataModel->getWorkspace()->partObjects.size());
+		}
+
 		onLogic();
 		
+	}
+
 	_dataModel->getGuiRoot()->update();
 
 	if(_dataModel->name != _title)

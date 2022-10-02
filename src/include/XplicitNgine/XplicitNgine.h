@@ -12,7 +12,7 @@ public:
 	dSpaceID physSpace;
 	dJointGroupID contactgroup;
 
-	void createBody(PartInstance* partInstance);
+	void createBody(PartInstance* partInstance, float stepSize);
 	void deleteBody(PartInstance* partInstance);
 	void updateBody(PartInstance* partInstance, CoordinateFrame * cFrame);
 };

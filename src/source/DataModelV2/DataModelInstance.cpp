@@ -292,6 +292,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				xml_node<> *propNode = node->first_node();
 				xml_node<> *cFrameNode=0;
 				xml_node<> *sizeNode=0;
+				xml_node<> *anchoredNode=0;
 				xml_node<> *shapeNode=0;
 				xml_node<> *colorNode=0;
 				xml_node<> *brickColorNode=0;
@@ -307,6 +308,10 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						if (xmlValue=="CFrame" | xmlValue=="CoordinateFrame")
 						{
 							 cFrameNode = partPropNode;
+						}	
+						if (xmlValue=="Anchored")
+						{
+							 anchoredNode = partPropNode;
 						}
 						if (xmlValue=="Name")
 						{
@@ -417,6 +422,11 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					if(brickColorNode)
 					{
 						test->color = bcToRGB(atoi(brickColorNode->value()));
+					}
+					if(anchoredNode)
+					{
+						printf("AAAAAAAAAAAAAAAAAAAA %s\n", anchoredNode->value());
+						test->anchored = stricmp(anchoredNode->value(), "true") == 0;
 					}
 					test->setSize(Vector3(sizeX,sizeY+_modY,sizeZ));
 					test->setName(newName);

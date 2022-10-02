@@ -28,6 +28,13 @@ PartInstance::PartInstance(void)
 	shape = Enum::Shape::Block;
 }
 
+float PartInstance::getMass()
+{
+	if(shape == Enum::Shape::Block)
+		return size.x*size.y*size.z*0.7F;
+	else 
+		return 1.3333333333333333333333333333333F*(size.x/2)*(size.y/2)*(size.z/2)*0.7F;
+}
 
 Vector3 PartInstance::getVelocity()
 {
