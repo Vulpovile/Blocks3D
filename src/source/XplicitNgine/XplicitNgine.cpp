@@ -141,11 +141,11 @@ void XplicitNgine::createBody(PartInstance* partInstance, float stepSize)
 
 		//printf("[XplicitNgine] Created Body for PartInstance\n");
 		
-		if(!partInstance->anchored)
+		if(!partInstance->isAnchored())
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 
 	} else {
-		if(!partInstance->anchored)
+		if(!partInstance->isAnchored())
 		{
 			const dReal* physPosition = dBodyGetPosition(partInstance->physBody);
 			

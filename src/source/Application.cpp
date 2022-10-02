@@ -198,7 +198,7 @@ void Application::onInit()  {
 	test->setPosition(Vector3(0,0,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
-	test->anchored = true;
+	test->setAnchored(true);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());

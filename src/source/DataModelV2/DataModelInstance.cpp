@@ -425,8 +425,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					}
 					if(anchoredNode)
 					{
-						printf("AAAAAAAAAAAAAAAAAAAA %s\n", anchoredNode->value());
-						test->anchored = stricmp(anchoredNode->value(), "true") == 0;
+						test->setAnchored(stricmp(anchoredNode->value(), "true") == 0);
 					}
 					test->setSize(Vector3(sizeX,sizeY+_modY,sizeZ));
 					test->setName(newName);

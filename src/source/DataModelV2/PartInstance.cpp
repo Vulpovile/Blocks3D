@@ -230,8 +230,19 @@ void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
-	changed = true;
 }
+
+void PartInstance::setAnchored(bool anchored)
+{
+	this->anchored = anchored;
+	g_dataModel->getEngine()->deleteBody(this);
+}
+
+bool PartInstance::isAnchored()
+{
+	return this->anchored;
+}
+
 
 CoordinateFrame PartInstance::getCFrame()
 {
@@ -359,7 +370,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	}
 	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
-		anchored= item->lpCurValue == TRUE;
+		setAnchored(item->lpCurValue == TRUE);
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{
