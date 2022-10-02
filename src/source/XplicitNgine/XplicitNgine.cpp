@@ -73,20 +73,30 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		partInstance->physBody = dBodyCreate(physWorld);
 		
 		// Create geom
-		partInstance->physGeom[0] = dCreateBox(physSpace,
-			partInstance->getSize()[0],
-			partInstance->getSize()[1],
-			partInstance->getSize()[2]
-		);
+		if(partInstance->shape == Enum::Shape::Block)
+		{
+			partInstance->physGeom[0] = dCreateBox(physSpace,
+					partInstance->getSize()[0],
+					partInstance->getSize()[1],
+					partInstance->getSize()[2]
+				);
+
+			dVector3 result;
+			dGeomBoxGetLengths(partInstance->physGeom[0], result);
+			printf("[XplicitNgine] Part Geom Size: %.1f, %.1f, %.1f\n", 
+				result[0], 
+				result[1], 
+				result[2]
+			);
+		}
+		else
+		{
+			partInstance->physGeom[0] = dCreateSphere(physSpace, partInstance->getSize()[0]/2);
+		}
+		
 
 		// Debug output
-		dVector3 result;
-		dGeomBoxGetLengths(partInstance->physGeom[0], result);
-		printf("[XplicitNgine] Part Geom Size: %.1f, %.1f, %.1f\n", 
-			result[0], 
-			result[1], 
-			result[2]
-		);
+		
 
 		// Create rigid body
 		printf("[XplicitNgine] Created Geom for PartInstance\n");

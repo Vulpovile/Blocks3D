@@ -7,11 +7,6 @@
 #include "strsafe.h"
 #include "Application.h"
 
-/*typedef struct typPRGP {
-    Instance* instance;   // Declare member types
-    Property &prop;
-} PRGP;*/
-
 std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
 Instance * selectedInstance;
