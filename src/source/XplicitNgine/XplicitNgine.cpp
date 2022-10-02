@@ -96,6 +96,13 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			partInstance->getPosition()[2]
 		);
 
+		Matrix3 g3dRot = partInstance->getCFrame().rotation;
+		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
+								g3dRot[1][0], g3dRot[1][1], g3dRot[1][2], 0,
+								g3dRot[2][0], g3dRot[2][1], g3dRot[2][2], 0};
+
+		dBodySetRotation(partInstance->physBody, rotation);
+
 		printf("[XplicitNgine] Created Body for PartInstance\n");
 		
 		if(!partInstance->anchored)
@@ -110,8 +117,12 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		// TODO: Rotation code
 		// Probably should be done AFTER we get physics KINDA working!!!
 		const dReal* physRotation = dGeomGetRotation(partInstance->physGeom[0]);
-		partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
-		
+		//partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
+		partInstance->setCFrame(CoordinateFrame(
+			Matrix3(physRotation[0],physRotation[1],physRotation[2],
+					physRotation[4],physRotation[5],physRotation[6],
+					physRotation[8],physRotation[9],physRotation[10]),
+			Vector3(physPosition[0], physPosition[1], physPosition[2])));
 	}
 
 	dWorldQuickStep(physWorld,0.05);
