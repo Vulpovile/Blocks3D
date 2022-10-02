@@ -49,6 +49,7 @@ public:
 	void setVelocity(Vector3);
 	void setRotVelocity(Vector3);
 	void setCFrame(CoordinateFrame);
+	void setCFrameNoSync(CoordinateFrame);
 	void setSize(Vector3);
 	void setShape(Enum::Shape::Value shape);
 	void setChanged();

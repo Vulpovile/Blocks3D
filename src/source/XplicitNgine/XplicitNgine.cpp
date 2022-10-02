@@ -66,6 +66,20 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 	}
 }
 
+void XplicitNgine::deleteBody(PartInstance* partInstance)
+{
+	if(partInstance->physBody != NULL)
+	{
+		while(dBodyGetNumJoints(partInstance->physBody) > 0) {
+			dJointDestroy(dBodyGetJoint(partInstance->physBody, 0));
+		}
+		dBodyDestroy(partInstance->physBody);
+		dGeomDestroy(partInstance->physGeom[0]);
+		printf("Body should be destroyed");
+		partInstance->physBody = NULL;
+	}
+}
+
 void XplicitNgine::createBody(PartInstance* partInstance)
 {
 	// calculate collisions
@@ -131,7 +145,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			// Probably should be done AFTER we get physics KINDA working!!!
 			const dReal* physRotation = dGeomGetRotation(partInstance->physGeom[0]);
 			//partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
-			partInstance->setCFrame(CoordinateFrame(
+			partInstance->setCFrameNoSync(CoordinateFrame(
 				Matrix3(physRotation[0],physRotation[1],physRotation[2],
 						physRotation[4],physRotation[5],physRotation[6],
 						physRotation[8],physRotation[9],physRotation[10]),
@@ -141,4 +155,31 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 	dWorldQuickStep(physWorld,0.05F);
 	dJointGroupEmpty(contactgroup);
+}
+
+void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFrame)
+{
+	if(partInstance->physBody != NULL)
+	{
+		
+		printf("Position is supposed to be set\n");
+		Vector3 position = cFrame->translation;
+
+		dBodySetPosition(partInstance->physBody, 
+			position[0],
+			position[1],
+			position[2]
+		);
+
+		Matrix3 g3dRot = cFrame->rotation;
+		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
+								g3dRot[1][0], g3dRot[1][1], g3dRot[1][2], 0,
+								g3dRot[2][0], g3dRot[2][1], g3dRot[2][2], 0};
+
+		dBodySetRotation(partInstance->physBody, rotation);
+	}
+	else
+	{
+		printf("Null???\n");
+	}
 }

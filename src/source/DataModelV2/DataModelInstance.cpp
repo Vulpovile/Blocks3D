@@ -43,6 +43,11 @@ void DataModelInstance::resetEngine()
 		delete xplicitNgine;
 	xplicitNgine = new XplicitNgine();
 	g_xplicitNgine = xplicitNgine;
+	for(size_t i = 0; i < getWorkspace()->partObjects.size(); i++)
+	{
+		PartInstance* partInstance = getWorkspace()->partObjects[i];
+		partInstance->physBody = NULL;
+	}
 }
 
 XplicitNgine * DataModelInstance::getEngine()
@@ -53,6 +58,8 @@ XplicitNgine * DataModelInstance::getEngine()
 void DataModelInstance::toggleRun()
 {
 	running = !running;
+	//if(!running)
+		//resetEngine();
 }
 bool DataModelInstance::isRunning()
 {

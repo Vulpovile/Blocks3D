@@ -8,6 +8,7 @@
 PartInstance::PartInstance(void)
 {
 	PVInstance::PVInstance();
+	physBody = NULL;
     glList = glGenLists(1);
 	name = "Unnamed PVItem";
 	className = "Part";
@@ -25,7 +26,6 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
-	physBody = NULL;
 }
 
 
@@ -110,6 +110,7 @@ void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
 
 void PartInstance::setParent(Instance* prnt)
 {
+	g_dataModel->getEngine()->deleteBody(this);
 	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
@@ -144,7 +145,7 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	setParent(oinst.parent);
 	anchored = oinst.anchored;
 	size = oinst.size;
-	setCFrame(oinst.cFrame);
+	setCFrameNoSync(oinst.cFrame);
 	color = oinst.color;
 	velocity = oinst.velocity;
 	rotVelocity = oinst.rotVelocity;
@@ -156,7 +157,6 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	bottom = oinst.bottom;
 	shape = oinst.shape;
 	changed = true;
-	physBody = NULL;
 }
 
 void PartInstance::setSize(Vector3 newSize)
@@ -222,7 +222,7 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(cFrame.rotation, pos);
+	setCFrame(CoordinateFrame(cFrame.rotation, pos));
 	changed = true;
 }
 
@@ -231,6 +231,12 @@ CoordinateFrame PartInstance::getCFrame()
 	return cFrame;
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
+{
+	g_dataModel->getEngine()->updateBody(this, &coordinateFrame);
+	setCFrameNoSync(coordinateFrame);
+}
+
+void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;

@@ -3,7 +3,7 @@
 #include "DatamodelV2/Instance.h"
 #include "DatamodelV2/PartInstance.h"
 
-class XplicitNgine : Instance
+class XplicitNgine : public Instance
 {
 public:
 	XplicitNgine();
@@ -13,4 +13,6 @@ public:
 	dJointGroupID contactgroup;
 
 	void createBody(PartInstance* partInstance);
+	void deleteBody(PartInstance* partInstance);
+	void updateBody(PartInstance* partInstance, CoordinateFrame * cFrame);
 };
