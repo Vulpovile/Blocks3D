@@ -7,27 +7,47 @@
 #include <ExDispid.h>
 #include <shlwapi.h>
 
-int SplashHTMLLoad(std::string strHTML)
-//void CreateHTMLContainer()
+void SplashHTMLContainer()
 {
-	HWND NewWindow = CreateWindowEx(
-		WS_EX_TOOLWINDOW,
-		"", 
-		"", 
-		WS_OVERLAPPEDWINDOW|WS_VISIBLE, 
-		0, 
-		0, 
-		500, 
-		300, 
-		0, 
-		0, 
-		HINSTANCE(NULL), 
-		NULL); 
-	ShowWindow(NewWindow, 1);
-    UpdateWindow(NewWindow); 
+	HWND invisWindowHandle = CreateWindowEx(WS_EX_TOOLWINDOW,
+	      "htmlWindow",
+	      "Splash",
+	      WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
+	      200,
+	      200,
+	      500,
+	      300,
+	      NULL,
+	      NULL,
+	      NULL,
+	      NULL);
+	printf("Creating Window HWND: %u\n", invisWindowHandle);
+	ShowWindow(invisWindowHandle, 1);
+	UpdateWindow(invisWindowHandle);
+}
+int SplashHTMLLoad(std::string strHTML)
+{
+	IHTMLDocument2 *document = new IHTMLDocument2{}; // Declared earlier in the code
+    BSTR bstr = SysAllocString(OLESTR("Written by IHTMLDocument2::write()."));
+    // Creates a new one-dimensional array
+    SAFEARRAY *psaStrings = SafeArrayCreateVector(VT_VARIANT, 0, 1);
+    if (psaStrings == NULL) {
+        goto cleanup;
+    }
+    VARIANT *param;
+    HRESULT hr = SafeArrayAccessData(psaStrings, (LPVOID*)&param);
+    param->vt = VT_BSTR;
+    param->bstrVal = bstr;
+    hr = SafeArrayUnaccessData(psaStrings);
+    hr = document->write(psaStrings);
+cleanup:
+    // SafeArrayDestroy calls SysFreeString for each BSTR
+    if (psaStrings != NULL) {
+        SafeArrayDestroy(psaStrings);
+    }
 	return 0;
 }
-int SplashHTMLLoadz(std::string strHTML)
+int PLACEHOLDER(std::wstring strHTML)
 {
 	//CreateHTMLContainer();
 	printf("%s \n", strHTML.c_str());

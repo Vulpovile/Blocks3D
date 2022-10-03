@@ -20,6 +20,11 @@ DISPPARAMS dispparamsNoArgs = {NULL, NULL, 0, 0};
 EXCEPINFO excepinfo;
 UINT nArgErr;
 
+LRESULT CALLBACK HtmlProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Application *app = (Application *)GetWindowLongPtr(hwnd, GWL_USERDATA);
@@ -184,6 +189,8 @@ int main(int argc, char** argv) {
 		settings.window.center = true; */
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
+		if (!createWindowClass("htmlWindow",HtmlProc,NULL))
+			return false;
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
 			return false;
 		if (!createWindowClass("toolboxHWND",ToolboxProc,hThisInstance))
