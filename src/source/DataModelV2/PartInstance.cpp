@@ -144,6 +144,7 @@ void PartInstance::setParent(Instance* prnt)
 PartInstance::PartInstance(const PartInstance &oinst)
 {
 	PVInstance::PVInstance(oinst);
+	physBody = NULL;
 	glList = glGenLists(1);
 	//name = oinst.name;
 	//className = "Part";
