@@ -48,4 +48,4 @@ IDI_ICON1          ICON           "FatB3dIcon.ico"
 // Manifest resources
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-2                  RT_MANIFEST    ".\\manifest.xml"
+1				RT_MANIFEST    ".\\Blocks3D.exe.manifest"

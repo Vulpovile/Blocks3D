@@ -718,7 +718,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
+				RelativePath=".\src\include\resource.h"
 				>
 			</File>
 			<File
@@ -899,15 +899,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\Blocks3D.exe.manifest"
+				>
+			</File>
+			<File
 				RelativePath=".\Dialogs.rc"
 				>
 			</File>
 			<File
 				RelativePath=".\icon1.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\manifest.xml"
 				>
 			</File>
 			<File
