@@ -3,7 +3,7 @@
 [Setup]
 AppName=Blocks3D
 AppId={{4C5DF268-0208-4CDE-A7F0-65F7E2CB5067}
-AppVersion=v0_0_105_0
+AppVersion=v0.0.105.0
 AppPublisherURL=http://blocks3d.com/
 AppSupportURL=http://blocks3d.com/
 AppUpdatesURL=http://blocks3d.com/
