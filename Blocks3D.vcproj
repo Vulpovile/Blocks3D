@@ -907,6 +907,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\manifest.xml"
+				>
+			</File>
+			<File
 				RelativePath=".\Parts.bmp"
 				>
 			</File>
