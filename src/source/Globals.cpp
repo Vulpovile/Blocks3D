@@ -1,10 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 
-int const Globals::gen = 0;
-int const Globals::major = 0;
-int const Globals::minor = 105;
-int const Globals::patch = 0;
 int Globals::surfaceId = 2;
 //bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;

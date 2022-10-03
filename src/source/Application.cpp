@@ -175,7 +175,7 @@ void Application::deleteInstance()
 		}
 	}
 	if(g_selectedInstances.size() == 0)
-		g_usableApp->_propWindow->ClearProperties();
+		g_usableApp->_propWindow->UpdateSelected(g_dataModel);
 }
 
 
@@ -331,12 +331,25 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			else 
 				_dataModel->getEngine()->createBody(partInstance);
 		}
+		bool a = false;
 		while(toDelete.size() > 0)
 		{
 			PartInstance * p = toDelete.back();
 			toDelete.pop_back();
+			if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(), p) != g_selectedInstances.end())
+			{
+				g_selectedInstances.erase(std::remove(g_selectedInstances.begin(), g_selectedInstances.end(), p), g_selectedInstances.end());
+				a = true;
+			}
 			p->setParent(NULL);
 			delete p;
+		}	
+		if(a)
+		{
+			if(g_selectedInstances.size() == 0)
+				g_usableApp->_propWindow->UpdateSelected(g_dataModel);
+			else if(g_selectedInstances.size() == 1)
+				g_usableApp->_propWindow->UpdateSelected(g_selectedInstances[0]);
 		}
 		for(int i = 0; i < 6; i++)
 		{

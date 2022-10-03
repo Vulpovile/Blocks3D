@@ -41,3 +41,11 @@ FONT 8, "Ms Shell Dlg"
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 IDI_ICON1          ICON           "FatB3dIcon.ico"
+
+
+
+//
+// Manifest resources
+//
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+2                  RT_MANIFEST    ".\\manifest.xml"

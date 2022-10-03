@@ -342,7 +342,7 @@ void PropertyWindow::UpdateSelected(Instance * instance)
 {
 	PropGrid_ResetContent(_propGrid);
 	prop = instance->getProperties();
-	if (selectedInstance != instance)
+	//if (selectedInstance != instance)
 	{
 		selectedInstance = instance;
 		for(size_t i = 0; i < prop.size(); i++)
