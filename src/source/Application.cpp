@@ -324,7 +324,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
 		{
 			PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
-			if(partInstance->getPosition().y < -20)
+			if(partInstance->getPosition().y < -255)
 			{
 				toDelete.push_back(partInstance);
 			}
@@ -338,7 +338,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			p->setParent(NULL);
 			delete p;
 		}
-		for(int i = 0; i < 8; i++)
+		for(int i = 0; i < 6; i++)
 		{
 			_dataModel->getEngine()->step(sdt*2);
 		}
