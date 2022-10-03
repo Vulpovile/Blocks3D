@@ -75,11 +75,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib"
+				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib ode.lib OPCODE.lib Ole32.lib"
 				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalManifestDependencies=""
 				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -146,7 +145,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;.\src\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\libraries\ode-0.5\include\drawstuff&quot;;.\src\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -173,7 +172,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib ode.lib OPCODE.lib"
 				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -632,6 +631,14 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\source\XplicitNgine\XplicitNgine.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Properties"
@@ -728,10 +735,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\WindowFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\winver.h"
 				>
 			</File>
 			<Filter
@@ -869,6 +872,14 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\include\XplicitNgine\XplicitNgine.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Properties"
@@ -888,15 +899,11 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath=".\B3dIcon.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\Dialogs.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\FatB3dIcon.ico"
+				RelativePath=".\icon1.ico"
 				>
 			</File>
 			<File

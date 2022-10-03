@@ -34,13 +34,11 @@ void GroupInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 
 std::vector<Instance *> GroupInstance::unGroup()
 {
-	std::vector<Instance *> child;
 	while(children.size() > 0)
 	{
-		child.push_back(children[0]);
 		children[0]->setParent(parent);
 	}
-	return child;
+	return std::vector<Instance *>();
 }
 
 void GroupInstance::render(RenderDevice * rd)

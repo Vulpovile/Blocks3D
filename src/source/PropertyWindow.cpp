@@ -1,16 +1,11 @@
 #define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
-#include "../../resource.h"
+#include "resource.h"
 #include "PropertyWindow.h"
 #include "Globals.h"
 #include "strsafe.h"
 #include "Application.h"
-
-/*typedef struct typPRGP {
-    Instance* instance;   // Declare member types
-    Property &prop;
-} PRGP;*/
 
 std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;

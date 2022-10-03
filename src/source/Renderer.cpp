@@ -224,8 +224,9 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			glPopMatrix();
 			/*Plusses, can possibly integrate into cylinder code later on*/
 			glVertexPointer(2, GL_FLOAT,0, square_arr);
-			glColor3f(127,127,127);
 			glPushMatrix();
+			glDisable(GL_COLOR_ARRAY);
+			glColor3f(127,127,127);
 			glRotatef(90,0,1,0);
 			glTranslatef(0,0,-(size.z+0.001F));
 			glScalef(0.75,0.75,0.75);
@@ -233,9 +234,11 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			glDrawArrays(GL_TRIANGLE_FAN, 0, 4); 
 			glScalef(1/(size.x*8),size.x*8,1);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+			glEnable(GL_COLOR_ARRAY);
 			glPopMatrix();
 
 			glPushMatrix();
+			glDisable(GL_COLOR_ARRAY);
 			glRotatef(-90,0,1,0);
 			glTranslatef(0,0,-(size.z+0.001F));
 			glScalef(0.75,0.75,0.75);
@@ -243,6 +246,7 @@ void renderShape(const Enum::Shape::Value& shape, const Vector3& size, const Col
 			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 			glScalef(1/(size.x*8),size.x*8,1);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+			glEnable(GL_COLOR_ARRAY);
 			glPopMatrix();
 			
 	}

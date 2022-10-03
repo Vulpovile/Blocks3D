@@ -159,6 +159,11 @@ void CameraController::tiltDown()
 	setFrame(frame);
 }
 
+void CameraController::zoomExtents() 
+{
+	// do some weird jank math
+}
+
 void CameraController::centerCamera(Instance* selection)
 {
 	CoordinateFrame frame = CoordinateFrame(g3dCamera.getCoordinateFrame().translation);

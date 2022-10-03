@@ -31,12 +31,13 @@
 
 //DWM 1.9: Suppress POCC Warning "Argument x to 'sscanf' does not match the format string;
 //          expected 'unsigned char *' but found 'unsigned long'"
-#include "winver.h"
-
 #ifdef __POCC__
 #pragma warn(disable:2234)
 #endif
 
+#ifndef _WIN32_WINNT // Necessary for WM_MOUSEWHEEL support
+#define _WIN32_WINNT 0x0400
+#endif
 
 // MSVC++ Support
 #ifndef _CRT_SECURE_NO_WARNINGS

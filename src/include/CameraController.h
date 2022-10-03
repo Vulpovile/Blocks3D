@@ -26,6 +26,7 @@ class CameraController {
 		void panRight();
 		void tiltUp();
 		void tiltDown();
+		void zoomExtents();
 		void Zoom(short delta);
 		bool onMouseWheel(int x, int y, short delta);
 		GCamera* getCamera();

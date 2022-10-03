@@ -12,6 +12,7 @@ std::vector<Instance*> postRenderStack = std::vector<Instance*>();
 
 std::vector<Instance*> g_selectedInstances = std::vector<Instance*>();
 DataModelInstance* g_dataModel = NULL;
+XplicitNgine* g_xplicitNgine = NULL;
 
 bool running = false;
 G3D::TextureRef Globals::surface;

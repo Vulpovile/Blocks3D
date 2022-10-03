@@ -13,7 +13,6 @@ using namespace std;
 using namespace rapidxml;
 
 
-
 DataModelInstance::DataModelInstance(void)
 {
 	Instance::Instance();
@@ -34,12 +33,33 @@ DataModelInstance::DataModelInstance(void)
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
 	running = false;
+	xplicitNgine = NULL;
+	resetEngine();
+}
 
+void DataModelInstance::resetEngine()
+{
+	if(xplicitNgine != NULL)
+		delete xplicitNgine;
+	xplicitNgine = new XplicitNgine();
+	g_xplicitNgine = xplicitNgine;
+	for(size_t i = 0; i < getWorkspace()->partObjects.size(); i++)
+	{
+		PartInstance* partInstance = getWorkspace()->partObjects[i];
+		partInstance->physBody = NULL;
+	}
+}
+
+XplicitNgine * DataModelInstance::getEngine()
+{
+	return xplicitNgine;
 }
 
 void DataModelInstance::toggleRun()
 {
 	running = !running;
+	//if(!running)
+		//resetEngine();
 }
 bool DataModelInstance::isRunning()
 {
@@ -48,6 +68,7 @@ bool DataModelInstance::isRunning()
 
 DataModelInstance::~DataModelInstance(void)
 {
+	delete xplicitNgine;
 }
 
 #ifdef _DEBUG
@@ -271,6 +292,7 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				xml_node<> *propNode = node->first_node();
 				xml_node<> *cFrameNode=0;
 				xml_node<> *sizeNode=0;
+				xml_node<> *anchoredNode=0;
 				xml_node<> *shapeNode=0;
 				xml_node<> *colorNode=0;
 				xml_node<> *brickColorNode=0;
@@ -286,6 +308,10 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 						if (xmlValue=="CFrame" | xmlValue=="CoordinateFrame")
 						{
 							 cFrameNode = partPropNode;
+						}	
+						if (xmlValue=="Anchored")
+						{
+							 anchoredNode = partPropNode;
 						}
 						if (xmlValue=="Name")
 						{
@@ -397,6 +423,10 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 					{
 						test->color = bcToRGB(atoi(brickColorNode->value()));
 					}
+					if(anchoredNode)
+					{
+						test->setAnchored(stricmp(anchoredNode->value(), "true") == 0);
+					}
 					test->setSize(Vector3(sizeX,sizeY+_modY,sizeZ));
 					test->setName(newName);
 					CoordinateFrame cf;
@@ -449,6 +479,7 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		std::string hname = sfilename.substr(begin);
 		std::string tname = hname.substr(0, hname.length() - 5);
 		name = tname;
+		resetEngine();
 		return true;
 	}
 	else
@@ -519,6 +550,7 @@ bool DataModelInstance::getOpen()
 	of.lpstrFile[0]='\0';
 	of.nMaxFile=500;
 	of.lpstrTitle="Hello";
+	of.Flags = OFN_FILEMUSTEXIST;
 	ShowCursor(TRUE);
 	BOOL file = GetOpenFileName(&of);
 	if (file)
@@ -526,7 +558,6 @@ bool DataModelInstance::getOpen()
 		_loadedFileName = of.lpstrFile;
 		load(of.lpstrFile,true);
 	}
-	//else MessageBox(NULL, "Failed to open dialog", "Failure", MB_ICONHAND | MB_OK);
 	return true;
 }
 void DataModelInstance::setMessage(std::string msg)
