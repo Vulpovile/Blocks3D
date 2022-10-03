@@ -12,7 +12,8 @@ public:
 	dSpaceID physSpace;
 	dJointGroupID contactgroup;
 
-	void createBody(PartInstance* partInstance, float stepSize);
+	void step(float stepSize);
+	void createBody(PartInstance* partInstance);
 	void deleteBody(PartInstance* partInstance);
 	void updateBody(PartInstance* partInstance, CoordinateFrame * cFrame);
 };

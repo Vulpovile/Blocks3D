@@ -79,10 +79,10 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 	}
 }
 
-void XplicitNgine::createBody(PartInstance* partInstance, float stepSize)
+void XplicitNgine::createBody(PartInstance* partInstance)
 {
 	// calculate collisions
-	dSpaceCollide (physSpace,0,&collisionCallback);
+	//dSpaceCollide (physSpace,0,&collisionCallback);
     
 	if(partInstance->physBody == NULL) 
 	{
@@ -161,6 +161,13 @@ void XplicitNgine::createBody(PartInstance* partInstance, float stepSize)
 		}
 	}
 //STEP SHOULD NOT BE HERE!
+	//dWorldQuickStep(physWorld, stepSize);
+	//dJointGroupEmpty(contactgroup);
+}
+
+void XplicitNgine::step(float stepSize)
+{	
+	dSpaceCollide (physSpace,0,&collisionCallback);
 	dWorldQuickStep(physWorld, stepSize);
 	dJointGroupEmpty(contactgroup);
 }

@@ -329,7 +329,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 				toDelete.push_back(partInstance);
 			}
 			else 
-				_dataModel->getEngine()->createBody(partInstance, sdt*15/_dataModel->getWorkspace()->partObjects.size());
+				_dataModel->getEngine()->createBody(partInstance);
 		}
 		while(toDelete.size() > 0)
 		{
@@ -337,6 +337,10 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			toDelete.pop_back();
 			p->setParent(NULL);
 			delete p;
+		}
+		for(int i = 0; i < 8; i++)
+		{
+			_dataModel->getEngine()->step(sdt*2);
 		}
 		onLogic();
 		
