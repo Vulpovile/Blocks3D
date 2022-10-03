@@ -123,22 +123,22 @@ void PartInstance::setParent(Instance* prnt)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
-			std::cout << "Removed from partarray " << std::endl;
 			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
-			break;
 		}
 		cparent = cparent->getParent();
 	}
 	Instance::setParent(prnt);
-	while(parent != NULL)
+	cparent = getParent();
+	while(cparent != NULL)
 	{
-		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
 			workspace->partObjects.push_back(this);
 			break;
 		}
-		parent = parent->getParent();
+		cparent = cparent->getParent();
 	}
+		
 }
 
 PartInstance::PartInstance(const PartInstance &oinst)

@@ -39,6 +39,7 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		else if(button->name == "Group")
 		{
 			GroupInstance * inst = new GroupInstance();
+			inst->setParent(g_dataModel->getWorkspace());
 			for(size_t i = 0; i < g_selectedInstances.size(); i++)
 			{
 				if(g_selectedInstances.at(i)->canDelete)
@@ -52,7 +53,6 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
 				g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
-			inst->setParent(g_dataModel->getWorkspace());
 			g_selectedInstances.clear();
 			g_selectedInstances.push_back(inst);
 			if(g_selectedInstances.size() > 0)

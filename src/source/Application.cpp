@@ -320,12 +320,24 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 	if(_dataModel->isRunning())
 	{
 		// XplicitNgine Start
+		std::vector<PartInstance *> toDelete;
 		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
 		{
 			PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
-			_dataModel->getEngine()->createBody(partInstance, sdt*15/_dataModel->getWorkspace()->partObjects.size());
+			if(partInstance->getPosition().y < -20)
+			{
+				toDelete.push_back(partInstance);
+			}
+			else 
+				_dataModel->getEngine()->createBody(partInstance, sdt*15/_dataModel->getWorkspace()->partObjects.size());
 		}
-
+		while(toDelete.size() > 0)
+		{
+			PartInstance * p = toDelete.back();
+			toDelete.pop_back();
+			p->setParent(NULL);
+			delete p;
+		}
 		onLogic();
 		
 	}
