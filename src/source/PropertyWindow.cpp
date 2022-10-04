@@ -369,9 +369,7 @@ void PropertyWindow::ClearProperties()
 {
 	if(g_dataModel != NULL)
 	{
-		std::vector<Instance *> dm;
-		dm.push_back(g_dataModel);
-		UpdateSelected(dm);
+		g_dataModel->getSelectionService()->addSelected(g_dataModel);
 	}
 	else
 	{
