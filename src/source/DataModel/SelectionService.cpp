@@ -21,6 +21,7 @@ void SelectionService::clearSelection(){
 	this->selection.clear();
 	if(propertyWindow != NULL)
 		propertyWindow->ClearProperties();
+	printf("selectionSize: %d\n", selection.size());
 }
 bool SelectionService::isSelected(Instance * instance){
 	return std::find(selection.begin(), selection.end(), instance) != selection.end();
@@ -30,11 +31,13 @@ void SelectionService::addSelected(Instance * instance){
 		this->selection.push_back(instance);
 	if(propertyWindow != NULL)
 		propertyWindow->UpdateSelected(selection);
+	printf("selectionSize: %d\n", selection.size());
 }
 void SelectionService::removeSelected(Instance * instance){
 	selection.erase(std::remove(selection.begin(), selection.end(), instance), selection.end());
 	if(propertyWindow != NULL)
 		propertyWindow->UpdateSelected(selection);
+	printf("selectionSize: %d\n", selection.size());
 }
 void SelectionService::addSelected(const std::vector<Instance *> &instances){
 	for(size_t i = 0; i < instances.size(); i++)
@@ -44,10 +47,12 @@ void SelectionService::addSelected(const std::vector<Instance *> &instances){
 	}
 	if(propertyWindow != NULL)
 		propertyWindow->UpdateSelected(selection);
+	printf("selectionSize: %d\n", selection.size());
 }
 void SelectionService::setPropertyWindow(PropertyWindow * propertyWindow)
 {
 	this->propertyWindow = propertyWindow;
 	if(propertyWindow != NULL)
 		propertyWindow->ClearProperties();
+	printf("selectionSize: %d\n", selection.size());
 }

@@ -3,7 +3,6 @@
 #include "WindowFunctions.h"
 #include "resource.h"
 #include "PropertyWindow.h"
-#include "Globals.h"
 #include "strsafe.h"
 #include "Application.h"
 
@@ -203,6 +202,12 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0; 
 }
 
+void PropertyWindow::clearExplorer()
+{
+	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
+	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+}
+
 void PropertyWindow::refreshExplorer(std::vector<Instance*> selectedInstances)
 {
 	Instance * instance = selectedInstances[0];
@@ -367,12 +372,6 @@ void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 
 void PropertyWindow::ClearProperties()
 {
-	if(g_dataModel != NULL)
-	{
-		g_dataModel->getSelectionService()->addSelected(g_dataModel);
-	}
-	else
-	{
-		PropGrid_ResetContent(_propGrid);
-	}
+	clearExplorer();
+	PropGrid_ResetContent(_propGrid);
 }
