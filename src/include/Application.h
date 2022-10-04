@@ -59,6 +59,7 @@ class Application { // : public GApp {
 		Tool * tool;
 		void changeTool(Tool *);
 		Mouse mouse;
+		bool		viewportHasFocus();
 	private:
 		bool				mouseMoveState;
 		RenderDevice*		renderDevice;

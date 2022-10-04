@@ -143,6 +143,11 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 
 }
 
+bool Application::viewportHasFocus()
+{
+	return GetActiveWindow() == this->_hWndMain;
+}
+
 void Application::navigateToolbox(std::string path)
 {
 	int len = path.size() + 1;
