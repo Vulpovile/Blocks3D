@@ -338,7 +338,7 @@ void PropertyWindow::_resize()
 
 void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 {
-	if(instances.size() < 0)
+	if(instances.size() <= 0)
 	{
 		ClearProperties();
 		return;
@@ -367,5 +367,14 @@ void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 
 void PropertyWindow::ClearProperties()
 {
-	PropGrid_ResetContent(_propGrid);
+	if(g_dataModel != NULL)
+	{
+		std::vector<Instance *> dm;
+		dm.push_back(g_dataModel);
+		UpdateSelected(dm);
+	}
+	else
+	{
+		PropGrid_ResetContent(_propGrid);
+	}
 }
