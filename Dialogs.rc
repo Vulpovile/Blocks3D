@@ -18,8 +18,8 @@ IDB_BITMAP1        BITMAP         "Parts.bmp"
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 1 VERSIONINFO
-    FILEVERSION     0,0,106,0
-    PRODUCTVERSION  0,0,106,0
+    FILEVERSION     0,0,106,1
+    PRODUCTVERSION  0,0,106,1
     FILEOS          VOS__WINDOWS32
     FILETYPE        VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -33,14 +33,14 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "Comments", ""
             VALUE "CompanyName", "Blocks3D Team"
             VALUE "FileDescription", "Blocks 3D"
-            VALUE "FileVersion", "v0.0.106.0"
+            VALUE "FileVersion", "v0.0.106.1"
             VALUE "InternalName", "Blocks3D"
             VALUE "LegalCopyright", "Blocks3D Team - 2022"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "Blocks3D.exe"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", "Blocks3D"
-            VALUE "ProductVersion", "v0.0.106.0"
+            VALUE "ProductVersion", "v0.0.106.1"
             VALUE "SpecialBuild", ""
         }
     }
