@@ -1,5 +1,6 @@
 #include "Tool/ArrowTool.h"
 #include "Application.h"
+#include "DataModelV2/SelectionService.h"
 
 ArrowTool::ArrowTool(void)
 {
@@ -21,13 +22,12 @@ void ArrowTool::onButton1MouseDown(Mouse mouse)
 	mouseDownStarty = mouse.y;
 	mouseDown = true;
 	if(!lctrlDown && !rctrlDown)
-		g_selectedInstances.clear();
+		g_dataModel->getSelectionService()->clearSelection();
 	PartInstance * target = mouse.getTarget();
-	if(target != NULL && std::find(g_selectedInstances.begin(), g_selectedInstances.end(), target) == g_selectedInstances.end())
-		g_selectedInstances.push_back(target);
-	if(g_selectedInstances.size() == 0)
-		g_selectedInstances.push_back(g_dataModel);
-	g_usableApp->_propWindow->UpdateSelected(g_selectedInstances[0]);
+	if(target != NULL)
+		g_dataModel->getSelectionService()->addSelected(target);
+	if(g_dataModel->getSelectionService()->getSelection().size() == 0)
+		g_dataModel->getSelectionService()->addSelected(g_dataModel);
 }
 void ArrowTool::onButton1MouseUp(Mouse mouse)
 {
@@ -47,11 +47,11 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 			}
 			else return;
 		}
-		for(size_t i = 0; i < g_selectedInstances.size(); i++) //This will later decide primary and move all parts according to primary
+		for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++) //This will later decide primary and move all parts according to primary
 		{
-			if(PartInstance * part = dynamic_cast<PartInstance *>(g_selectedInstances[i]))
+			if(PartInstance * part = dynamic_cast<PartInstance *>(g_dataModel->getSelectionService()->getSelection()[i]))
 			{
-				part->setPosition(mouse.getPosition(g_selectedInstances));
+				part->setPosition(mouse.getPosition(g_dataModel->getSelectionService()->getSelection()));
 			}
 		}
 		return;

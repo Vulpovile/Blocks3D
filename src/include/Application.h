@@ -32,7 +32,6 @@ class Application { // : public GApp {
 		PartInstance*	makePart();
 		void			drawButtons(RenderDevice* rd);
 		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
-		std::vector<Instance*>	getSelection();
 		void		deleteInstance();
 		void		run();
 		void		QuitApp();

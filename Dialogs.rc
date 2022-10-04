@@ -49,5 +49,5 @@ IDI_ICON1          ICON           "FatB3dIcon.ico"
 //
 #ifndef _DEBUG
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-1				RT_MANIFEST    ".\\Blocks3D.exe.manifest"
+1				MANIFEST    ".\\Blocks3D.exe.manifest"
 #endif
