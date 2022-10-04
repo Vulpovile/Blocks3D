@@ -193,6 +193,8 @@ void CameraController::update(Application* app)
 	Vector3 cameraPos = g3dCamera.getCoordinateFrame().translation;
 	CoordinateFrame frame = g3dCamera.getCoordinateFrame();
 	bool moving=false;
+	if(!app->viewportHasFocus())
+		return;
 	if(GetHoldKeyState('U')) {
 		forwards = true;
 		moving=true;

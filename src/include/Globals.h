@@ -25,7 +25,6 @@ public:
 };
 
 extern std::vector<Instance*> postRenderStack;
-extern std::vector<Instance*> g_selectedInstances;
 extern bool running;
 extern DataModelInstance* g_dataModel;
 extern XplicitNgine* g_xplicitNgine;

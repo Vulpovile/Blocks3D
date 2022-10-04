@@ -2,13 +2,14 @@
 #include "Application.h"
 #include "Globals.h"
 #include "AudioPlayer.h"
+#include "DataModelV2/SelectionService.h"
 #include "Listener/GUDButtonListener.h"
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	bool cont = false;
-	for(size_t i = 0; i < g_selectedInstances.size(); i++)
-		if(g_selectedInstances.at(i)->canDelete)
+	for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
+		if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 		{
 			cont = true;	
 			break;
@@ -19,53 +20,46 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		if(button->name == "Duplicate")
 		{
 			std::vector<Instance*> newinst;
-			for(size_t i = 0; i < g_selectedInstances.size(); i++)
+			for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 			{
-				if(g_selectedInstances.at(i)->canDelete)
+				if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 				{
-				Instance* tempinst = g_selectedInstances.at(i);
+				Instance* tempinst = g_dataModel->getSelectionService()->getSelection()[i];
 				
-				Instance* clonedInstance = g_selectedInstances.at(i)->clone();
+				Instance* clonedInstance = g_dataModel->getSelectionService()->getSelection()[i]->clone();
 
 				newinst.push_back(tempinst);
 				}
-				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-				g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
-			g_selectedInstances = newinst;
-			if(g_selectedInstances.size() > 0)
-				g_usableApp->_propWindow->UpdateSelected(newinst.at(0));
+			g_dataModel->getSelectionService()->clearSelection();
+			g_dataModel->getSelectionService()->addSelected(newinst);
 		}
 		else if(button->name == "Group")
 		{
 			GroupInstance * inst = new GroupInstance();
 			inst->setParent(g_dataModel->getWorkspace());
-			for(size_t i = 0; i < g_selectedInstances.size(); i++)
+			for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 			{
-				if(g_selectedInstances.at(i)->canDelete)
+				if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 				{
-					g_selectedInstances.at(i)->setParent(inst);
-					if(PartInstance* part = dynamic_cast<PartInstance*>(g_selectedInstances.at(i)))
+					g_dataModel->getSelectionService()->getSelection()[i]->setParent(inst);
+					if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 					{
 						inst->primaryPart = part;
 					}
 				}
-				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-				g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
-			g_selectedInstances.clear();
-			g_selectedInstances.push_back(inst);
-			if(g_selectedInstances.size() > 0)
-				g_usableApp->_propWindow->UpdateSelected(g_selectedInstances.at(0));
+			g_dataModel->getSelectionService()->clearSelection();
+			g_dataModel->getSelectionService()->addSelected(inst);
 		}
 		else if(button->name == "UnGroup")
 		{
 			std::vector<Instance*> newinst;
-			for(size_t i = 0; i < g_selectedInstances.size(); i++)
+			for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 			{
-				if(g_selectedInstances.at(i)->canDelete)
+				if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 				{
-					if(GroupInstance* model = dynamic_cast<GroupInstance*>(g_selectedInstances.at(i)))
+					if(GroupInstance* model = dynamic_cast<GroupInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 					{
 						newinst = model->unGroup();
 						model->setParent(NULL);
@@ -73,13 +67,9 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 						model = NULL;
 					}
 				}
-				/*tempinst->setPosition(Vector3(tempPos.x, tempPos.y + tempSize.y, tempPos.z));
-				g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));*/
 			}
-			g_selectedInstances.clear();
-			g_selectedInstances = newinst;
-			if(g_selectedInstances.size() > 0)
-				g_usableApp->_propWindow->UpdateSelected(newinst.at(0));
+			g_dataModel->getSelectionService()->clearSelection();
+			g_dataModel->getSelectionService()->addSelected(newinst);
 		}
 	}
 }

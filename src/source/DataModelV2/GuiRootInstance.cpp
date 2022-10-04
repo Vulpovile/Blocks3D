@@ -507,8 +507,8 @@ void GuiRootInstance::update()
 		button4->disabled = true;
 		button5->disabled = true;
 		button6->disabled = true;
-		for(size_t i = 0; i < g_selectedInstances.size(); i++)
-			if(g_selectedInstances.at(i)->canDelete)
+		for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
+			if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 			{
 				button->disabled = false;
 				button2->disabled = false;

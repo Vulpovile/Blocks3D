@@ -40,12 +40,12 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 	sprintf_s(scoreTxt, "%d", score);
 	properties.push_back(createPGI("Gameplay",
 		"InitialTimerValue",
-		"The ammount of time in seconds the player has to complete this level.\r\n\r\nPut 0 if time is limitless.",
+		"The amount of time in seconds the player has to complete this level.\r\n\r\nPut 0 if time is limitless.",
 		(LPARAM)timerTxt,
 		PIT_EDIT));
 	properties.push_back(createPGI("Gameplay",
 		"InitialScoreValue",
-		"The ammount of points the player starts with.",
+		"The amount of points the player starts with.",
 		(LPARAM)scoreTxt,
 		PIT_EDIT));
 	return properties;

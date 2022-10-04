@@ -16,7 +16,39 @@
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 IDB_BITMAP1        BITMAP         "Parts.bmp"
 
-
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+1 VERSIONINFO
+    FILEVERSION     0,0,106,0
+    PRODUCTVERSION  0,0,106,0
+    FILEOS          VOS__WINDOWS32
+    FILETYPE        VFT_APP
+    FILESUBTYPE     VFT2_UNKNOWN
+    FILEFLAGSMASK   0
+    FILEFLAGS       0
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "100901B5"
+        {
+            VALUE "Comments", ""
+            VALUE "CompanyName", "Blocks3D Team"
+            VALUE "FileDescription", "Blocks 3D"
+            VALUE "FileVersion", "v0.0.106.0"
+            VALUE "InternalName", "Blocks3D"
+            VALUE "LegalCopyright", "Blocks3D Team - 2022"
+            VALUE "LegalTrademarks", ""
+            VALUE "OriginalFilename", "Blocks3D.exe"
+            VALUE "PrivateBuild", ""
+            VALUE "ProductName", "Blocks3D"
+            VALUE "ProductVersion", "v0.0.106.0"
+            VALUE "SpecialBuild", ""
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x1009, 0x01B5
+    }
+}
 
 //
 // Dialog resources
@@ -49,5 +81,5 @@ IDI_ICON1          ICON           "FatB3dIcon.ico"
 //
 #ifndef _DEBUG
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-1				RT_MANIFEST    ".\\Blocks3D.exe.manifest"
+1				MANIFEST    ".\\Blocks3D.exe.manifest"
 #endif
