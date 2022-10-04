@@ -36,8 +36,6 @@
 *.user
 *.pdb
 *.idb
-*.manifest
-*.htm
 *.res
 *.ilk
 *.dep

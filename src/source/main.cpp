@@ -148,7 +148,9 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 int main(int argc, char** argv) {
+#ifndef _DEBUG
 	try{
+#endif
 		hresult = OleInitialize(NULL);
 
 /*		IInternetSecurityManager *pSecurityMgr;
@@ -214,10 +216,12 @@ int main(int argc, char** argv) {
 		Globals::mainHwnd = hwndMain;
 		Application app = Application(hwndMain);
 		app.run();	
+#ifndef _DEBUG
 	}
 	catch(...)
 	{
 		OnError(-1);
 	}
+#endif
     return 0;
 }

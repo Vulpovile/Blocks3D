@@ -353,7 +353,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		}
 		for(int i = 0; i < 6; i++)
 		{
-			_dataModel->getEngine()->step(sdt*2);
+			_dataModel->getEngine()->step(0.1F);
 		}
 		onLogic();
 		
