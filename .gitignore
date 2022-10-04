@@ -58,3 +58,4 @@ UpgradeLog.XML
 
 #Redist
 !Installer/Redist/*
+UpgradeLog.htm

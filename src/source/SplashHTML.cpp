@@ -1,13 +1,14 @@
 #include "DataModelV2/LevelInstance.h"
 #include "Globals.h"
 #include "SplashHTML.h"
+#include "Application.h"
 #include <windows.h>
 #include <MsHTML.h>
 #include <Exdisp.h>
 #include <ExDispid.h>
 #include <shlwapi.h>
 
-void SplashHTMLContainer()
+HWND SplashHTMLContainer()
 {
 	HWND invisWindowHandle = CreateWindowEx(WS_EX_TOOLWINDOW,
 	      "htmlWindow",
@@ -24,10 +25,13 @@ void SplashHTMLContainer()
 	printf("Creating Window HWND: %u\n", invisWindowHandle);
 	ShowWindow(invisWindowHandle, 1);
 	UpdateWindow(invisWindowHandle);
+	return invisWindowHandle;
 }
-int SplashHTMLLoad(std::string strHTML)
+void PH()
+//int SplashHTMLLoad(std::string strHTML)
 {
-	IHTMLDocument2 *document = new IHTMLDocument2{}; // Declared earlier in the code
+	SplashHTMLContainer();
+	IHTMLDocument2 *document; // Declared earlier in the code
     BSTR bstr = SysAllocString(OLESTR("Written by IHTMLDocument2::write()."));
     // Creates a new one-dimensional array
     SAFEARRAY *psaStrings = SafeArrayCreateVector(VT_VARIANT, 0, 1);
@@ -39,20 +43,19 @@ int SplashHTMLLoad(std::string strHTML)
     param->vt = VT_BSTR;
     param->bstrVal = bstr;
     hr = SafeArrayUnaccessData(psaStrings);
-    hr = document->write(psaStrings);
+    //hr = document->write(psaStrings);
 cleanup:
     // SafeArrayDestroy calls SysFreeString for each BSTR
     if (psaStrings != NULL) {
         SafeArrayDestroy(psaStrings);
     }
-	return 0;
 }
-int PLACEHOLDER(std::wstring strHTML)
+int SplashHTMLLoad(std::string strHTML)
 {
-	//CreateHTMLContainer();
-	printf("%s \n", strHTML.c_str());
-    CoInitialize(NULL);
+	HWND splashContainer = SplashHTMLContainer();
 
+	SHANDLE_PTR browserHWND;
+	HWND parentResultSplash;
     HRESULT InstanciateIEResult;
     HRESULT NavigateResult;
     HRESULT ShowBrowserResult;
@@ -69,7 +72,7 @@ int PLACEHOLDER(std::wstring strHTML)
 
     if (browser)
     {
-		BSTR URL = SysAllocString(L"about:blank");
+		BSTR URL = SysAllocString(L"http://google.com");
 		browser->put_AddressBar(false);
 		browser->put_ToolBar(false);
 		browser->put_TheaterMode(false);
@@ -78,10 +81,14 @@ int PLACEHOLDER(std::wstring strHTML)
 		browser->Navigate(URL, &empty, &empty, &empty, &empty);
         SysFreeString(URL);
 
+        ShowBrowserResult = browser->get_HWND(&browserHWND);
         ShowBrowserResult = browser->put_Visible(VARIANT_TRUE);
         browser->Release();
+
+		parentResultSplash = SetParent((HWND)&browserHWND, splashContainer);
     }
 
+	printf("%s \n%u \n%u \n", strHTML.c_str(), (HWND)&browserHWND, parentResultSplash);
     CoUninitialize();
     return 0;
 }
