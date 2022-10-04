@@ -161,21 +161,22 @@ void Application::deleteInstance()
 {
 	if(_dataModel->getSelectionService()->getSelection().size() > 0)
 	{
-		size_t undeletable = 0;
-		while(_dataModel->getSelectionService()->getSelection().size() > undeletable)
+		std::vector<Instance *> selection = _dataModel->getSelectionService()->getSelection();
+		std::vector<Instance *> toDelete;
+		for(size_t i = 0; i < selection.size(); i++) {
+			if(selection[i]->canDelete) {
+				toDelete.push_back(selection[i]);
+			}
+		}
+		if(toDelete.size() > 0)
 		{
-			if(_dataModel->getSelectionService()->getSelection()[0]->canDelete)
-			{
-				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
-				Instance* selectedInstance = g_dataModel->getSelectionService()->getSelection()[0];
-				_dataModel->getSelectionService()->removeChild(selectedInstance);
+			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+			for(size_t i = 0; i < toDelete.size(); i++) {
+				Instance* selectedInstance = toDelete[i];
+				_dataModel->getSelectionService()->removeSelected(selectedInstance);
 				selectedInstance->setParent(NULL);
 				delete selectedInstance;
 				selectedInstance = NULL;
-			}
-			else
-			{
-				undeletable++;
 			}
 		}
 	}

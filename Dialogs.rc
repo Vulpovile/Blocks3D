@@ -7,6 +7,14 @@
 #include <richedit.h>
 #include "src/include/resource.h"
 
+#define APP_GENER 0
+#define APP_MAJOR 0
+#define APP_MINOR 106
+#define APP_PATCH 2
+#define APP_VER_STRING vAPP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
+#define STRING(s) #s
+
+
 
 
 
@@ -18,8 +26,8 @@ IDB_BITMAP1        BITMAP         "Parts.bmp"
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 1 VERSIONINFO
-    FILEVERSION     0,0,106,1
-    PRODUCTVERSION  0,0,106,1
+    FILEVERSION     APP_GENER,APP_MAJOR,APP_MINOR,APP_PATCH
+    PRODUCTVERSION  APP_GENER,APP_MAJOR,APP_MINOR,APP_PATCH
     FILEOS          VOS__WINDOWS32
     FILETYPE        VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -33,14 +41,14 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "Comments", ""
             VALUE "CompanyName", "Blocks3D Team"
             VALUE "FileDescription", "Blocks 3D"
-            VALUE "FileVersion", "v0.0.106.1"
+            VALUE "FileVersion", STRING(APP_VER_STRING)
             VALUE "InternalName", "Blocks3D"
             VALUE "LegalCopyright", "Blocks3D Team - 2022"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "Blocks3D.exe"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", "Blocks3D"
-            VALUE "ProductVersion", "v0.0.106.1"
+            VALUE "ProductVersion", STRING(APP_VER_STRING)
             VALUE "SpecialBuild", ""
         }
     }
