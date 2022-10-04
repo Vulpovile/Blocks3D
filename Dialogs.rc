@@ -11,9 +11,12 @@
 #define APP_MAJOR 0
 #define APP_MINOR 106
 #define APP_PATCH 2
-#define APP_VER_STRING vAPP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
-#define STRING(s) #s
+#define APP_VER_STRING APP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
 
+#define VER_PREFIX( N ) v##N
+#define HSTR( N ) #N
+#define STR( N ) HSTR( N )
+#define VER_STR( N ) STR( VER_PREFIX( N ) )
 
 
 
@@ -41,14 +44,14 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "Comments", ""
             VALUE "CompanyName", "Blocks3D Team"
             VALUE "FileDescription", "Blocks 3D"
-            VALUE "FileVersion", STRING(APP_VER_STRING)
+            VALUE "FileVersion", VER_STR(APP_VER_STRING)
             VALUE "InternalName", "Blocks3D"
             VALUE "LegalCopyright", "Blocks3D Team - 2022"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "Blocks3D.exe"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", "Blocks3D"
-            VALUE "ProductVersion", STRING(APP_VER_STRING)
+            VALUE "ProductVersion", VER_STR(APP_VER_STRING)
             VALUE "SpecialBuild", ""
         }
     }
