@@ -25,7 +25,7 @@
 #include "PropertyWindow.h"
 #include <commctrl.h>
 #include "StringFunctions.h"
-#include "../../SplashHTML.h"
+#include "SplashHTML.h"
 
 #include "Listener/GUDButtonListener.h"
 #include "Listener/ModeSelectionListener.h"
