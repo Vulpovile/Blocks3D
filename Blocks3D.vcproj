@@ -3,7 +3,8 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Blocks3D"
-	ProjectGUID="{8D509AE8-DE30-4EDA-A20F-A47AA7A83379}"
+	ProjectGUID="{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
+	RootNamespace="Blocks3D"
 	>
 	<Platforms>
 		<Platform
@@ -20,6 +21,7 @@
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
+			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			>
@@ -48,9 +50,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;.\src\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/Blocks3D.pch"
 				AssemblerListingLocation=".\Release/"
@@ -72,8 +75,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile=".\Release/Blocks3D.exe"
+				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib ode.lib OPCODE.lib Ole32.lib"
+				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
@@ -116,6 +119,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			ManagedExtensions="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -141,17 +145,19 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;C:\libraries\ode-0.5\include\drawstuff&quot;;.\src\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				MinimalRebuild="false"
+				BasicRuntimeChecks="0"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile=".\Debug/Blocks3D.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -166,13 +172,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile=".\Debug/Blocks3D.exe"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib ode.lib OPCODE.lib"
+				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -204,6 +210,26 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<AssemblyReference
+			RelativePath="System.dll"
+			AssemblyName="System, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.Data.dll"
+			AssemblyName="System.Data, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=x86"
+		/>
+		<AssemblyReference
+			RelativePath="System.Drawing.dll"
+			AssemblyName="System.Drawing, Version=2.0.0.0, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.Windows.Forms.dll"
+			AssemblyName="System.Windows.Forms, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
+		<AssemblyReference
+			RelativePath="System.XML.dll"
+			AssemblyName="System.Xml, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -211,37 +237,701 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="main.cpp"
+				RelativePath=".\src\source\Application.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\src\source\AudioPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\ax.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\BrowserCallHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\CameraController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\ErrorFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\Globals.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\IEBrowser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\IEDispatcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\Mouse.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\propertyGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\PropertyWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\Renderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\StringFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\TextureHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\WindowFunctions.cpp"
+				>
+			</File>
+			<Filter
+				Name="Tool"
+				>
+				<File
+					RelativePath=".\src\source\Tool\ArrowTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Tool\SurfaceTool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Tool\Tool.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Listener"
+				>
+				<File
+					RelativePath=".\src\source\Listener\ButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\CameraButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\DeleteListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\GUDButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\MenuButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\ModeSelectionListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\RotateButtonListener.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Listener\ToolbarListener.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModelV2"
+				>
+				<File
+					RelativePath=".\src\source\DataModelV2\DataModelInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\GroupInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\Instance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\LevelInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\PartInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\PVInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModel\SelectionService.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\WorkspaceInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\source\DataModelV2\BaseButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\BaseGuiInstance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\GuiRootInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\ImageButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\TextButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV2\ToggleImageButtonInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\source\XplicitNgine\XplicitNgine.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\source\Properties\BoolProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\Properties\Property.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\src\include\Application.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\AudioPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\ax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\BrowserCallHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\CameraController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Enum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\ErrorFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Faces.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\IEBrowser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\IEDispatcher.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Mouse.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\propertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\PropertyWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\Renderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\StringFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\TextureHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\win32Defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\WindowFunctions.h"
+				>
+			</File>
+			<Filter
+				Name="RapidXML"
+				>
+				<File
+					RelativePath=".\src\include\rapidxml\rapidxml.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\rapidxml\rapidxml_iterators.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\rapidxml\rapidxml_print.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\rapidxml\rapidxml_utils.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Listener"
+				>
+				<File
+					RelativePath=".\src\include\Listener\ButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\CameraButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\DeleteListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\GUDButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\MenuButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\ModeSelectionListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\RotateButtonListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Listener\ToolbarListener.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModel\WorkspaceInstance.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Tool"
+				>
+				<File
+					RelativePath=".\src\include\Tool\ArrowTool.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Tool\SurfaceTool.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Tool\Tool.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModelV2"
+				>
+				<File
+					RelativePath=".\src\include\DataModelV2\DataModelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\GroupInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\Instance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\LevelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\PartInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\PVInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\WorkspaceInstance.h"
+					>
+				</File>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseGuiInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\GuiRootInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ImageButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\TextButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ToggleImageButtonInstance.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="XplicitNgine"
+					>
+					<File
+						RelativePath=".\src\include\XplicitNgine\XplicitNgine.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Properties"
+				>
+				<File
+					RelativePath=".\src\include\Properties\BoolProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Properties\Property.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
+			<File
+				RelativePath=".\Blocks3D.exe.manifest"
+				>
+			</File>
+			<File
+				RelativePath=".\Dialogs.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\icon1.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\Parts.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\roblox_RN1_icon.ico"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Dialogs.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

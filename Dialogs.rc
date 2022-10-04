@@ -5,7 +5,18 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <richedit.h>
-#include "resource.h" //Should not have to do this...
+#include "src/include/resource.h"
+
+#define APP_GENER 0
+#define APP_MAJOR 0
+#define APP_MINOR 106
+#define APP_PATCH 2
+#define APP_VER_STRING APP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
+
+#define VER_PREFIX( N ) v##N
+#define HSTR( N ) #N
+#define STR( N ) HSTR( N )
+#define VER_STR( N ) STR( VER_PREFIX( N ) )
 
 
 
@@ -16,7 +27,39 @@
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 IDB_BITMAP1        BITMAP         "Parts.bmp"
 
-
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+1 VERSIONINFO
+    FILEVERSION     APP_GENER,APP_MAJOR,APP_MINOR,APP_PATCH
+    PRODUCTVERSION  APP_GENER,APP_MAJOR,APP_MINOR,APP_PATCH
+    FILEOS          VOS__WINDOWS32
+    FILETYPE        VFT_APP
+    FILESUBTYPE     VFT2_UNKNOWN
+    FILEFLAGSMASK   0
+    FILEFLAGS       0
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "100901B5"
+        {
+            VALUE "Comments", ""
+            VALUE "CompanyName", "Blocks3D Team"
+            VALUE "FileDescription", "Blocks 3D"
+            VALUE "FileVersion", VER_STR(APP_VER_STRING)
+            VALUE "InternalName", "Blocks3D"
+            VALUE "LegalCopyright", "Blocks3D Team - 2022"
+            VALUE "LegalTrademarks", ""
+            VALUE "OriginalFilename", "Blocks3D.exe"
+            VALUE "PrivateBuild", ""
+            VALUE "ProductName", "Blocks3D"
+            VALUE "ProductVersion", VER_STR(APP_VER_STRING)
+            VALUE "SpecialBuild", ""
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x1009, 0x01B5
+    }
+}
 
 //
 // Dialog resources
@@ -41,3 +84,13 @@ FONT 8, "Ms Shell Dlg"
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 IDI_ICON1          ICON           "FatB3dIcon.ico"
+
+
+
+//
+// Manifest resources
+//
+#ifndef _DEBUG
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+1				MANIFEST    ".\\Blocks3D.exe.manifest"
+#endif

@@ -1,14 +1,15 @@
 ;InnoSetupVersion=5.4.3
+#define AppVer GetFileVersion('..\Blocks3D.exe')
 
 [Setup]
 AppName=Blocks3D
+AppVersion=v{#AppVer}
 AppId={{4C5DF268-0208-4CDE-A7F0-65F7E2CB5067}
-AppVersion=v0_0_104_5
 AppPublisherURL=http://blocks3d.com/
 AppSupportURL=http://blocks3d.com/
 AppUpdatesURL=http://blocks3d.com/
 DefaultDirName={%localappdata}\Blocks3D
-OutputBaseFilename=Blocks3D_Setup_{#SetupSetting("AppVersion")}
+OutputBaseFilename=Blocks3D_Setup_v{#AppVer}
 Compression=lzma2
 PrivilegesRequired=lowest
 WizardImageFile=setup.bmp

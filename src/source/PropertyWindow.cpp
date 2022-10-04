@@ -1,16 +1,10 @@
 #define _WINSOCKAPI_
 #include <windows.h>
 #include "WindowFunctions.h"
-#include "../../resource.h"
+#include "resource.h"
 #include "PropertyWindow.h"
-#include "Globals.h"
 #include "strsafe.h"
 #include "Application.h"
-
-/*typedef struct typPRGP {
-    Instance* instance;   // Declare member types
-    Property &prop;
-} PRGP;*/
 
 std::vector<PROPGRIDITEM> prop;
 std::vector<Instance*> children;
@@ -177,8 +171,8 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
 					CHAR  ListItem[256];
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
-					propWind->ClearProperties();
-					g_usableApp->selectInstance(children.at(ItemIndex),propWind);
+					g_dataModel->getSelectionService()->clearSelection();
+					g_dataModel->getSelectionService()->addSelected(children.at(ItemIndex));
 				}
 			}
 		break;
@@ -208,13 +202,18 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0; 
 }
 
-void PropertyWindow::refreshExplorer(Instance* selectedInstance)
+void PropertyWindow::clearExplorer()
 {
+	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
+	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+}
+
+void PropertyWindow::refreshExplorer(std::vector<Instance*> selectedInstances)
+{
+	Instance * instance = selectedInstances[0];
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
 	parent = NULL;
 	children.clear();
-	//g_selectedInstances.clear();
-	//for (unsigned int i=0;i<g_selectedInstances.size();i++) {
 	children.push_back(selectedInstance);
 	SendMessage(_explorerComboBox, CB_ADDSTRING, 0, (LPARAM)selectedInstance->name.c_str()); 
 	if(selectedInstance->getParent() != NULL)
@@ -226,7 +225,6 @@ void PropertyWindow::refreshExplorer(Instance* selectedInstance)
 		parent = selectedInstance->getParent();
 		children.push_back(selectedInstance->getParent());
 	}
-	//children = g_selectedInstances[i]->getChildren();
 
 	std::vector<Instance*> selectedChildren = selectedInstance->getChildren();
 	for(size_t z = 0; z < selectedChildren.size(); z++)
@@ -343,11 +341,17 @@ void PropertyWindow::_resize()
 	SetWindowPos(_explorerComboBox, NULL, 0, 0, rect.right, 400, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-void PropertyWindow::UpdateSelected(Instance * instance)
+void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 {
+	if(instances.size() <= 0)
+	{
+		ClearProperties();
+		return;
+	}
+	Instance * instance = instances[0];
 	PropGrid_ResetContent(_propGrid);
 	prop = instance->getProperties();
-	if (selectedInstance != instance)
+	//if (selectedInstance != instance)
 	{
 		selectedInstance = instance;
 		for(size_t i = 0; i < prop.size(); i++)
@@ -361,12 +365,13 @@ void PropertyWindow::UpdateSelected(Instance * instance)
 		PropGrid_ExpandAllCatalogs(_propGrid);
 		//SetWindowLongPtr(_propGrid,GWL_USERDATA,(LONG)this);
 
-		refreshExplorer(instance);
+		refreshExplorer(instances);
 		_resize();
 	}
 }
 
 void PropertyWindow::ClearProperties()
 {
+	clearExplorer();
 	PropGrid_ResetContent(_propGrid);
 }

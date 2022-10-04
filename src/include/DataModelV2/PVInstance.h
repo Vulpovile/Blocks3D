@@ -1,6 +1,7 @@
 #pragma once
 #include "instance.h"
 #include "enum.h"
+#include <ode/ode.h>
 
 class PVInstance :
 	public Instance

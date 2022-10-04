@@ -7,8 +7,8 @@ void CameraButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	AudioPlayer::playSound(cameraSound);
 	CoordinateFrame frame = g_usableApp->cameraController.getCamera()->getCoordinateFrame();
-	if(button->name == "CenterCam" && g_selectedInstances.size() > 0)
-		g_usableApp->cameraController.centerCamera(g_selectedInstances.at(0));
+	if(button->name == "CenterCam" && g_dataModel->getSelectionService()->getSelection().size() > 0)
+		g_usableApp->cameraController.centerCamera(g_dataModel->getSelectionService()->getSelection()[0]);
 	else if(button->name == "ZoomIn")
 		g_usableApp->cameraController.Zoom(1);
 	else if(button->name == "ZoomOut")

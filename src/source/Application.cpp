@@ -1,13 +1,14 @@
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
-#include "../../resource.h"
+#include "resource.h"
 #include "DataModelV2/Instance.h"
 #include "DataModelV2/PartInstance.h"
 #include "DataModelV2/TextButtonInstance.h"
 #include "DataModelV2/ImageButtonInstance.h"
 #include "DataModelV2/DataModelInstance.h"
 #include "DataModelV2/GuiRootInstance.h"
+#include "XplicitNgine/XplicitNgine.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
@@ -143,6 +144,11 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 
 }
 
+bool Application::viewportHasFocus()
+{
+	return GetActiveWindow() == this->_hWndMain;
+}
+
 void Application::navigateToolbox(std::string path)
 {
 	int len = path.size() + 1;
@@ -154,28 +160,29 @@ void Application::navigateToolbox(std::string path)
 
 void Application::deleteInstance()
 {
-	if(g_selectedInstances.size() > 0)
+	if(_dataModel->getSelectionService()->getSelection().size() > 0)
 	{
-		size_t undeletable = 0;
-		while(g_selectedInstances.size() > undeletable)
+		std::vector<Instance *> selection = _dataModel->getSelectionService()->getSelection();
+		std::vector<Instance *> toDelete;
+		for(size_t i = 0; i < selection.size(); i++) {
+			if(selection[i]->canDelete) {
+				toDelete.push_back(selection[i]);
+			}
+		}
+		if(toDelete.size() > 0)
 		{
-			if(g_selectedInstances.at(0)->canDelete)
-			{
-				AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
-				Instance* selectedInstance = g_selectedInstances.at(0);
+			AudioPlayer::playSound(GetFileInPath("/content/sounds/pageturn.wav"));
+			for(size_t i = 0; i < toDelete.size(); i++) {
+				Instance* selectedInstance = toDelete[i];
+				_dataModel->getSelectionService()->removeSelected(selectedInstance);
 				selectedInstance->setParent(NULL);
 				delete selectedInstance;
 				selectedInstance = NULL;
-				g_selectedInstances.erase(g_selectedInstances.begin());
-			}
-			else
-			{
-				undeletable++;
 			}
 		}
 	}
-	if(g_selectedInstances.size() == 0)
-		g_usableApp->_propWindow->ClearProperties();
+	if(_dataModel->getSelectionService()->getSelection().size() == 0)
+		_dataModel->getSelectionService()->addSelected(_dataModel);
 }
 
 
@@ -188,10 +195,9 @@ void Application::onInit()  {
 	_dataModel->setName("undefined");
 	_dataModel->font = g_fntdominant;
 	g_dataModel = _dataModel;
-	
-	//initGUI();
 
 #ifdef LEGACY_LOAD_G3DFUN_LEVEL
+	// Anchored this baseplate for XplicitNgine tests
 	PartInstance* test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
@@ -199,7 +205,8 @@ void Application::onInit()  {
 	test->setPosition(Vector3(0,0,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
-	
+	test->setAnchored(true);
+
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(.5F,1,.5F);
@@ -263,9 +270,6 @@ void Application::onInit()  {
 	test->setPosition(Vector3(-2,5,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	
-
-	
-
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3::gray();
@@ -285,6 +289,9 @@ void Application::onInit()  {
 	LevelInstance * level = g_dataModel->getLevel();
 	std::string GetCurrentSplash = level->SplashHTML;
 	SplashHTMLLoad(GetCurrentSplash);
+	
+	_dataModel->getSelectionService()->clearSelection();
+	_dataModel->getSelectionService()->addSelected(_dataModel);
 
 
 
@@ -297,85 +304,14 @@ void Application::onInit()  {
 	
 }
 
-
-
-
-
-
 void Application::onCleanup() {
     clearInstances();
 	sky->~Sky();
 }
 
-
-
-/*
-
-Class HyperSnapSolver
-
-function getCollisionDepth(Part colliding, part collider);
-function getFaceCollision(Part colliding, part collider);
-
-function eject(Part colliding, Part collider)
-{
-    if(!colliding.canCollide || !collider.canCollide)
-        return;
-    if(getCollisionDepth(colliding, collider) != 0)    {
-        int ejectMultiplier, ejectMultipliery = 1-(collider.Friction+colliding.Friction), ejectMultiplierz = 1-(collider.Friction/2+colliding.Friction/2);
-        if(colliding.Anchored)
-            ejectMultiplier = collider.elasticity;
-        int faceCollided = getFaceCollision(colliding, collider);
-        if(faceCollided % 3 == 1)
-        {
-            ejectMultipliery = ejectMultiplier;
-            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
-        }
-        else if(faceCollided % 3 == 2)
-        {
-            ejectMultiplierz = ejectMultiplier;
-            ejectMultiplier = 1-(collider.Friction+colliding.Friction/2);
-        }
-
-        collider.Velocity *= Vector3.new(colliding.Velocity.x*ejectMultiplier,colliding.Velocity.y*ejectMultipliery,colliding.Velocity.z)
-    }
+void Application::onLogic() {
+	
 }
-
-*/
-
-double grav = 0.32666666666666666666666666666667;
-void simGrav(PartInstance * collider)
-{
-	if(!collider->anchored)
-	{
-		collider->setPosition(collider->getPosition()+collider->getVelocity());
-		collider->setVelocity(collider->getVelocity()-Vector3(0,grav,0));
-	}
-}
-
-void eject(PartInstance * colliding, PartInstance * collider)
-{
-	if(colliding == collider || !colliding->canCollide || !collider->canCollide)
-		return;
-	if(G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(collider->getBox(), colliding->getBox()))
-		collider->setVelocity(collider->getVelocity().reflectionDirection(colliding->getCFrame().upVector())/1.3F);
-
-}
-
-
-
-void Application::onLogic() {	
-	//PhysicsStart
-	for_each (_dataModel->getWorkspace()->partObjects.begin(), _dataModel->getWorkspace()->partObjects.end(), simGrav);
-	for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
-	{
-		for(size_t j = 0; j < _dataModel->getWorkspace()->partObjects.size(); j++)
-		{
-			eject(_dataModel->getWorkspace()->partObjects[i], _dataModel->getWorkspace()->partObjects[j]);
-		}
-	}	
-}
-
-
 
 void Application::onNetwork() {
 	// Poll net messages here
@@ -387,15 +323,38 @@ void Application::onNetwork() {
 //	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 //}
 
-std::vector<Instance*> Application::getSelection()
-{
-	return g_selectedInstances;
-}
 void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 	if(_dataModel->isRunning())
+	{
+		// XplicitNgine Start
+		std::vector<PartInstance *> toDelete;
+		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
+		{
+			PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
+			if(partInstance->getPosition().y < -255)
+			{
+				toDelete.push_back(partInstance);
+			}
+			else 
+				_dataModel->getEngine()->createBody(partInstance);
+		}
+		while(toDelete.size() > 0)
+		{
+			PartInstance * p = toDelete.back();
+			toDelete.pop_back();
+			g_dataModel->getSelectionService()->removeSelected(p);
+			p->setParent(NULL);
+			delete p;
+		}
+		for(int i = 0; i < 6; i++)
+		{
+			_dataModel->getEngine()->step(0.1F);
+		}
 		onLogic();
 		
+	}
+
 	_dataModel->getGuiRoot()->update();
 
 	if(_dataModel->name != _title)
@@ -410,95 +369,29 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 }
 
-/*double getOSVersion() {
-    OSVERSIONINFO osvi;
-
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-    GetVersionEx(&osvi);
-	std::string version = Convert(osvi.dwMajorVersion) + "." + Convert(osvi.dwMinorVersion);
-	return ::atof(version.c_str());
-}*/
-/* 
-bool IsHolding(int button)
-{
-	return (GetKeyState(button) >> 1)>0;
-}
-
-*/
-
 void Application::onUserInput(UserInput* ui) {
 	if(mouseMoveState)
 	{
 		mouseMoveState = false;
 		tool->onMouseMoved(mouse);
 	}
-	/*
-	if(GetHoldKeyState(VK_LCONTROL))
-	{
-		if(GetHoldKeyState('D'))
-		{
-			_messageTime = System::time();
-			if(debugMode())
-				_message = "Debug Mode Disabled";
-			else
-				_message = "Debug Mode Enabled";
-			setDebugMode(!debugMode());
-		}
-	}
-	*/
+
 	if(GetHoldKeyState(VK_F8))
 	{
 		_dataModel->getGuiRoot()->setDebugMessage("FOV Set to 10", System::time());	
 	}
-	//}
 
-	//_dataModel->mousex = ui->getMouseX();
-	//_dataModel->mousey = ui->getMouseY();
 	mouse.setMouseDown((GetKeyState(VK_LBUTTON) & 0x100) != 0);
 
-	if (GetHoldKeyState(VK_LBUTTON)) {
-	/*	if (_dragging) {
-			PartInstance* part = NULL;
-			if(g_selectedInstances.size() > 0)
-				part = (PartInstance*) g_selectedInstances.at(0);
-		Ray dragRay = cameraController.getCamera()->worldRay(mouse.x, mouse.y, renderDevice->getViewport());
-		std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
-		for(size_t i = 0; i < instances.size(); i++)
-			{
-				if(PartInstance* moveTo = dynamic_cast<PartInstance*>(instances.at(i)))
-				{
-					float __time = testRay.intersectionTime(moveTo->getBox());
-					float __nearest=std::numeric_limits<float>::infinity();
-					if (__time != inf()) 
-					{
-						if (__nearest>__time)
-						{
-							// BROKEN
-							//Vector3 closest = (dragRay.closestPoint(moveTo->getPosition()) * 2);
-							//part->setPosition(closest);
-							//part->setPosition(Vector3(floor(closest.x),part->getPosition().y,floor(closest.z)));
-						}
-					}
-				}
-			}
-			Sleep(10);
-		}*/
-	}
-	// Camera KB Handling {
-		if (GetKPBool(VK_OEM_COMMA)) //Left
-			g_usableApp->cameraController.panLeft();
-		else if (GetKPBool(VK_OEM_PERIOD)) // Right
-			g_usableApp->cameraController.panRight();
-		else if (GetKPBool(0x49)) // Zoom In (I)
-			g_usableApp->cameraController.Zoom(1);
-		else if (GetKPBool(0x4F)) // Zoom Out (O)
-			g_usableApp->cameraController.Zoom(-1);
-	// }
-
-	//readMouseGUIInput();
-	// Add other key handling here
+	// Camera KB Handling
+	if (GetKPBool(VK_OEM_COMMA)) //Left
+		g_usableApp->cameraController.panLeft();
+	else if (GetKPBool(VK_OEM_PERIOD)) // Right
+		g_usableApp->cameraController.panRight();
+	else if (GetKPBool(0x49)) // Zoom In (I)
+		g_usableApp->cameraController.Zoom(1);
+	else if (GetKPBool(0x4F)) // Zoom Out (O)
+		g_usableApp->cameraController.Zoom(-1);
 }
 
 void Application::changeTool(Tool * newTool)
@@ -706,17 +599,15 @@ void Application::onGraphics(RenderDevice* rd) {
 
 
 	//Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
-	if(g_selectedInstances.size() > 0)
+
+	for(size_t i = 0; i < _dataModel->getSelectionService()->getSelection().size(); i++)
 	{
-		for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 		{
-			if(PartInstance* part = dynamic_cast<PartInstance*>(g_selectedInstances.at(i)))
-			{
-			Vector3 size = part->getSize();
-			Vector3 pos = part->getPosition();
-			drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
-			}
-		}
+		Vector3 size = part->getSize();
+		Vector3 pos = part->getPosition();
+		drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
+		}		
 	}
 	
 
@@ -796,11 +687,6 @@ void Application::onKeyPressed(int key)
 	{
 			_dataModel->getOpen();
 	}
-	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='A')
-	{
-		std::vector<Instance *> vec = _dataModel->getWorkspace()->getAllChildren();
-		g_selectedInstances.insert(g_selectedInstances.end(), vec.begin(), vec.end());
-	}
 	tool->onKeyDown(key);
 }
 void Application::onKeyUp(int key)
@@ -810,12 +696,6 @@ void Application::onKeyUp(int key)
 
 void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 {
-	//Removed set focus 
-
-
-	//std::cout << "Click: " << x << "," << y << std::endl;
-	
-	
 	bool onGUI = _dataModel->getGuiRoot()->mouseInGUI(renderDevice, x, y);
 	
 	
@@ -825,19 +705,6 @@ void Application::onMouseLeftPressed(HWND hwnd,int x,int y)
 	}
 }
 
-void Application::selectInstance(Instance* selectedInstance, PropertyWindow* propWindow)
-{
-	if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
-	{
-		printf("No control key hold \n");
-		g_selectedInstances.clear();
-	}
-	else printf("Control held\n");
-	if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),selectedInstance)==g_selectedInstances.end())
-		g_selectedInstances.push_back(selectedInstance);
-	propWindow->UpdateSelected(selectedInstance);
-
-}
 G3D::RenderDevice* Application::getRenderDevice()
 {
 	return renderDevice;
@@ -845,13 +712,9 @@ G3D::RenderDevice* Application::getRenderDevice()
 
 void Application::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x, int y)
 {
-	//std::cout << "Release: " << x << "," << y << std::endl;
 	_dataModel->getGuiRoot()->onMouseLeftUp(renderDevice, x, y);
 	_dragging = false;
 	tool->onButton1MouseUp(mouse);
-	//_message = "Dragging = false.";
-	//_messageTime = System::time();
-
 }
 
 void Application::onMouseRightPressed(int x,int y)
@@ -871,8 +734,6 @@ void Application::onMouseMoved(int x,int y)
 	mouse.y = y;
 	//tool->onMouseMoved(mouse);
 	mouseMoveState = true;
-	//_dataModel->mousex = x;
-	//_dataModel->mousey = y;
 
 }
 void Application::onMouseWheel(int x,int y,short delta)
@@ -951,6 +812,8 @@ void Application::run() {
 			RealTime rdt = timeStep;
 			SimTime  sdt = timeStep * rate;
 			SimTime  idt = desiredFrameDuration * rate;
+			
+			
 
 			onSimulation(rdt,sdt,idt);
 		m_simulationWatch.tock();

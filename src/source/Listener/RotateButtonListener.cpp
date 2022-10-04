@@ -5,9 +5,9 @@
 
 void RotateButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	if(g_selectedInstances.size() > 0)
+	if(g_dataModel->getSelectionService()->getSelection().size() > 0)
 	{
-		Instance* selectedInstance = g_selectedInstances.at(0);
+		Instance* selectedInstance = g_dataModel->getSelectionService()->getSelection()[0];
 		AudioPlayer::playSound(clickSound);
 		if(PartInstance* part = dynamic_cast<PartInstance*>(selectedInstance))
 		{

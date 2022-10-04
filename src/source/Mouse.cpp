@@ -112,31 +112,3 @@ void Mouse::setMouseDown(bool bval)
 {
 	mouseDown = bval;
 }
-
-
-
-				//bool found = false;
-				/*for(size_t i = 0; i < g_selectedInstances.size(); i++)
-				{
-					if(g_selectedInstances.at(i) == test)
-					{
-						found = true;
-						//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
-						//SetActiveWindow(_propWindow->_hwndProp);
-						//SetForegroundWindow(_propWindow->_hwndProp);
-						break;
-					}
-				}
-				if(!found)
-				{
-					selectedInstance = test;
-					//if(!GetHoldKeyState(VK_RCONTROL) && !GetHoldKeyState(VK_LCONTROL))
-						//g_selectedInstances.clear();
-					//if(std::find(g_selectedInstances.begin(), g_selectedInstances.end(),test)==g_selectedInstances.end())
-						//g_selectedInstances.push_back(test);
-				}
-				//selectInstance(test, _propWindow);
-				//_message = "Dragging = true.";
-				//_messageTime = System::time();
-				//_dragging = true;*/
-

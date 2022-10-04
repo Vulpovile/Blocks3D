@@ -2,8 +2,10 @@
 #include "WorkspaceInstance.h"
 #include "LevelInstance.h"
 #include "PartInstance.h"
+#include "SelectionService.h"
 #include "rapidxml/rapidxml.hpp"
 #include "GuiRootInstance.h"
+#include "XplicitNgine/XplicitNgine.h"
 
 class GuiRootInstance;
 
@@ -23,21 +25,18 @@ public:
 	void					drawMessage(RenderDevice*);
 	WorkspaceInstance*		getWorkspace();
 	LevelInstance *			getLevel();
+	XplicitNgine *			getEngine();
 	std::string				message;
 	std::string				_loadedFileName;
 	bool					showMessage;
 	G3D::GFontRef			font;
 	GuiRootInstance*		getGuiRoot();
-	//float					mousex;
-	//float					mousey;
-	//Vector2					getMousePos();
-	//void					setMousePos(int x,int y);
-	//void					setMousePos(Vector2 pos);
-	//bool					mouseButton1Down;
+	SelectionService*		getSelectionService();
 	PartInstance*			makePart();
 	void					clearLevel();
 	void					toggleRun();
 	bool					isRunning();
+	void					resetEngine();
 #if _DEBUG
 	void					modXMLLevel(float modY);
 #endif
@@ -53,5 +52,7 @@ private:
 	WorkspaceInstance*		workspace;
 	LevelInstance *			level;
 	GuiRootInstance*		guiRoot;
+	SelectionService*		selectionService;
 	bool					running;
+	XplicitNgine *			xplicitNgine;
 };

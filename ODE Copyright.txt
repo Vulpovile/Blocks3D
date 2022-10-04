@@ -1,0 +1,6 @@
+Open Dynamics Engine
+
+Copyright (c) 2001-2004,
+Russell L. Smith.
+
+All rights reserved.

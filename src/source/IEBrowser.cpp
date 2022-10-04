@@ -43,9 +43,9 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 		if(pDispParams->rgvarg->intVal < 0 || pDispParams->rgvarg->intVal > 7)
 			return S_OK;
 		Enum::Controller::Value cont = (Enum::Controller::Value)pDispParams->rgvarg->intVal;
-		for(size_t i = 0; i < g_selectedInstances.size(); i++)
+		for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 		{
-			if(PVInstance* part = dynamic_cast<PVInstance*>(g_selectedInstances.at(i)))
+			if(PVInstance* part = dynamic_cast<PVInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 			{
 				ding = true;
 				part->controller = cont;

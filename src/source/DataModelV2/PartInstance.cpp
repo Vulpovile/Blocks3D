@@ -8,6 +8,7 @@
 PartInstance::PartInstance(void)
 {
 	PVInstance::PVInstance();
+	physBody = NULL;
     glList = glGenLists(1);
 	name = "Unnamed PVItem";
 	className = "Part";
@@ -27,6 +28,13 @@ PartInstance::PartInstance(void)
 	shape = Enum::Shape::Block;
 }
 
+float PartInstance::getMass()
+{
+	if(shape == Enum::Shape::Block)
+		return size.x*size.y*size.z*0.7F;
+	else 
+		return 1.3333333333333333333333333333333F*(size.x/2)*(size.y/2)*(size.z/2)*0.7F;
+}
 
 Vector3 PartInstance::getVelocity()
 {
@@ -109,32 +117,34 @@ void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
 
 void PartInstance::setParent(Instance* prnt)
 {
+	g_dataModel->getEngine()->deleteBody(this);
 	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
-			std::cout << "Removed from partarray " << std::endl;
 			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
-			break;
 		}
 		cparent = cparent->getParent();
 	}
 	Instance::setParent(prnt);
-	while(parent != NULL)
+	cparent = getParent();
+	while(cparent != NULL)
 	{
-		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(parent))
+		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
 			workspace->partObjects.push_back(this);
 			break;
 		}
-		parent = parent->getParent();
+		cparent = cparent->getParent();
 	}
+		
 }
 
 PartInstance::PartInstance(const PartInstance &oinst)
 {
 	PVInstance::PVInstance(oinst);
+	physBody = NULL;
 	glList = glGenLists(1);
 	//name = oinst.name;
 	//className = "Part";
@@ -143,7 +153,7 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	setParent(oinst.parent);
 	anchored = oinst.anchored;
 	size = oinst.size;
-	setCFrame(oinst.cFrame);
+	setCFrameNoSync(oinst.cFrame);
 	color = oinst.color;
 	velocity = oinst.velocity;
 	rotVelocity = oinst.rotVelocity;
@@ -220,15 +230,32 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	cFrame = CoordinateFrame(cFrame.rotation, pos);
-	changed = true;
+	setCFrame(CoordinateFrame(cFrame.rotation, pos));
 }
+
+void PartInstance::setAnchored(bool anchored)
+{
+	this->anchored = anchored;
+	g_dataModel->getEngine()->deleteBody(this);
+}
+
+bool PartInstance::isAnchored()
+{
+	return this->anchored;
+}
+
 
 CoordinateFrame PartInstance::getCFrame()
 {
 	return cFrame;
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
+{
+	g_dataModel->getEngine()->updateBody(this, &coordinateFrame);
+	setCFrameNoSync(coordinateFrame);
+}
+
+void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;
@@ -279,7 +306,6 @@ void PartInstance::render(RenderDevice* rd) {
 		changed=false;
 		Vector3 renderSize = size/2;
 		glNewList(glList, GL_COMPILE);
-		//glScalef(0.5f,0.5f,0.5f);
 		renderShape(this->shape, renderSize, color);
 		renderSurface(TOP, this->top, renderSize, this->controller, color);
 		renderSurface(FRONT, this->front, renderSize, this->controller, color);
@@ -297,6 +323,16 @@ void PartInstance::render(RenderDevice* rd) {
 PartInstance::~PartInstance(void)
 {
 	glDeleteLists(glList, 1);
+	/*
+	// Causes some weird ODE error
+	// Someone, please look into this
+
+	dBodyDestroy(physBody);
+	for (int i = 0; i < 3; i++) {
+		if (physGeom[i] != NULL) 
+			dGeomDestroy(physGeom[i]);
+	}
+	*/
 }
 
 char pto[512];
@@ -335,7 +371,7 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	}
 	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
-		anchored= item->lpCurValue == TRUE;
+		setAnchored(item->lpCurValue == TRUE);
 	}
 	else if(strcmp(item->lpszPropName, "Offset") == 0)
 	{

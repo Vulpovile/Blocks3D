@@ -29,7 +29,8 @@ public:
 	//Variables
 	Color3 color;
 	bool canCollide;
-	bool anchored;
+	dBodyID physBody;
+	dGeomID physGeom[3];
 
 	//Getters
 	Vector3 getPosition();
@@ -47,10 +48,14 @@ public:
 	void setVelocity(Vector3);
 	void setRotVelocity(Vector3);
 	void setCFrame(CoordinateFrame);
+	void setCFrameNoSync(CoordinateFrame);
 	void setSize(Vector3);
 	void setShape(Enum::Shape::Value shape);
 	void setChanged();
 	void setSurface(int face, Enum::SurfaceType::Value surface);
+	void setAnchored(bool anchored);
+	bool isAnchored();
+	float getMass();
 
 	//Collision
 	bool collides(PartInstance * part);
@@ -60,6 +65,7 @@ public:
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 private:
+	bool anchored;
 	Vector3 position;
 	Vector3 size;
 	Vector3 velocity;

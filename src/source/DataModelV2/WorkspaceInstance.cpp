@@ -1,5 +1,6 @@
 #include "DataModelV2/WorkspaceInstance.h"
-
+#include "Globals.h"
+#include "Application.h"
 
 WorkspaceInstance::WorkspaceInstance(void)
 {
@@ -13,6 +14,11 @@ void WorkspaceInstance::clearChildren()
 {
 	partObjects.clear();
 	Instance::clearChildren();
+}
+
+void WorkspaceInstance::zoomToExtents()
+{
+	g_usableApp->cameraController.zoomExtents();
 }
 
 WorkspaceInstance::~WorkspaceInstance(void)
