@@ -323,6 +323,9 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 	if(_dataModel->isRunning())
 	{
+		LevelInstance* Level = _dataModel->getLevel();
+		Level->Step(sdt);
+
 		// XplicitNgine Start
 		std::vector<PartInstance *> toDelete;
 		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
