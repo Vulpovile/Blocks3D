@@ -328,7 +328,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		for(size_t i = 0; i < _dataModel->getWorkspace()->partObjects.size(); i++)
 		{
 			PartInstance* partInstance = _dataModel->getWorkspace()->partObjects[i];
-			if(partInstance->getPosition().y < -255)
+			if(partInstance->getPosition().y < -500)
 			{
 				toDelete.push_back(partInstance);
 			}
