@@ -343,9 +343,9 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			p->setParent(NULL);
 			delete p;
 		}
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 4; i++)
 		{
-			_dataModel->getEngine()->step(0.05F);
+			_dataModel->getEngine()->step(0.03F);
 		}
 		onLogic();
 		

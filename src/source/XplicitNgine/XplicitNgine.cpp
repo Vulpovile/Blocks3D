@@ -15,7 +15,7 @@ XplicitNgine::XplicitNgine()
 	physSpace = dHashSpaceCreate(0);
 	contactgroup = dJointGroupCreate(0);
 
-	dWorldSetGravity(physWorld, 0, -0.5, 0);
+	dWorldSetGravity(physWorld, 0, -9.8, 0);
 	dWorldSetAutoDisableFlag(physWorld, 1);
 	dWorldSetAutoDisableLinearThreshold(physWorld, 0.05F);
 	dWorldSetAutoDisableAngularThreshold(physWorld, 0.05F);
@@ -141,7 +141,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		}
 		
 		dMass mass;
-		mass.setBox(partSize.x, partSize.y, partSize.z, 0.7F);
+		mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
 		dBodySetMass(partInstance->physBody, &mass);
 
 		// Debug output
@@ -198,8 +198,9 @@ void XplicitNgine::step(float stepSize)
 {	
 	dJointGroupEmpty(contactgroup);
 	dSpaceCollide (physSpace,0,&collisionCallback);
-	//dWorldQuickStep(physWorld, stepSize);
-	dWorldStepFast1(physWorld, stepSize, 20);
+	dWorldQuickStep(physWorld, stepSize);
+	//dWorldStepFast1(physWorld, stepSize*2, 100);
+	//dWorldStep(physWorld, stepSize);
 }
 
 void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFrame)
