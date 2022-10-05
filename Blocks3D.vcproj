@@ -179,6 +179,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
 				SubSystem="1"
+				StackReserveSize="4194304"
 				TargetMachine="1"
 			/>
 			<Tool
