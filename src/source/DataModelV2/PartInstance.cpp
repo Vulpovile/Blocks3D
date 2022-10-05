@@ -259,7 +259,6 @@ void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;
-	changed = true;
 }
 
 bool PartInstance::collides(PartInstance * part)

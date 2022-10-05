@@ -40,6 +40,9 @@
 *.ilk
 *.dep
 
+# ResEditor files
+*.aps
+
 /Debug
 /Release
 stdout.txt
@@ -54,3 +57,4 @@ desktop.ini
 
 #Redist
 !Installer/Redist/*
+UpgradeLog.htm

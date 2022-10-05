@@ -15,7 +15,11 @@ XplicitNgine::XplicitNgine()
 	physSpace = dHashSpaceCreate(0);
 	contactgroup = dJointGroupCreate(0);
 
-	dWorldSetGravity(physWorld, 0, -0.5, 0);
+	dWorldSetGravity(physWorld, 0, -9.8, 0);
+	dWorldSetAutoDisableFlag(physWorld, 1);
+	dWorldSetAutoDisableLinearThreshold(physWorld, 0.05F);
+	dWorldSetAutoDisableAngularThreshold(physWorld, 0.05F);
+	dWorldSetAutoDisableSteps(physWorld, 400);
 
 	this->name = "PhysicsService";
 	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
@@ -70,8 +74,30 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 {
 	if(partInstance->physBody != NULL)
 	{
-		while(dBodyGetNumJoints(partInstance->physBody) > 0) {
-			dJointDestroy(dBodyGetJoint(partInstance->physBody, 0));
+		dBodyEnable(partInstance->physBody);
+		dGeomEnable(partInstance->physGeom[0]);
+		//createBody(partInstance);
+		//step(0.5F);
+		for(int i = 0; i < dBodyGetNumJoints(partInstance->physBody); i++) {
+			dBodyID b1 = dJointGetBody(dBodyGetJoint(partInstance->physBody, i), 0);
+			dBodyID b2 = dJointGetBody(dBodyGetJoint(partInstance->physBody, i), 1);
+			
+			if(b1 != NULL)
+			{
+				dBodyEnable(b1);
+				PartInstance * part = (PartInstance *)dBodyGetData(b1);
+				if(part != NULL)
+					dGeomEnable(part->physGeom[0]);
+			}
+
+			if(b2 != NULL)
+			{
+				dBodyEnable(b2);
+				PartInstance * part = (PartInstance *)dBodyGetData(b2);
+				if(part != NULL)
+					dGeomEnable(part->physGeom[0]);
+			}
+			dJointDestroy(dBodyGetJoint(partInstance->physBody, i));
 		}
 		dBodyDestroy(partInstance->physBody);
 		dGeomDestroy(partInstance->physGeom[0]);
@@ -83,19 +109,22 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 {
 	// calculate collisions
 	//dSpaceCollide (physSpace,0,&collisionCallback);
-    
+
+	Vector3 partSize = partInstance->getSize();
+	Vector3 partPosition = partInstance->getPosition();
 	if(partInstance->physBody == NULL) 
 	{
 		// init body
 		partInstance->physBody = dBodyCreate(physWorld);
+		dBodySetData(partInstance->physBody, partInstance);
 		
 		// Create geom
 		if(partInstance->shape == Enum::Shape::Block)
 		{
 			partInstance->physGeom[0] = dCreateBox(physSpace,
-					partInstance->getSize()[0],
-					partInstance->getSize()[1],
-					partInstance->getSize()[2]
+					partSize.x,
+					partSize.y,
+					partSize.z
 				);
 
 			dVector3 result;
@@ -108,11 +137,11 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		}
 		else
 		{
-			partInstance->physGeom[0] = dCreateSphere(physSpace, partInstance->getSize()[0]/2);
+			partInstance->physGeom[0] = dCreateSphere(physSpace, partSize[0]/2);
 		}
 		
 		dMass mass;
-		mass.setBox(partInstance->getSize().x, partInstance->getSize().y, partInstance->getSize().z, 0.7F);
+		mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
 		dBodySetMass(partInstance->physBody, &mass);
 
 		// Debug output
@@ -121,15 +150,15 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		// Create rigid body
 		//printf("[XplicitNgine] Created Geom for PartInstance\n");
 		dBodySetPosition(partInstance->physBody, 
-			partInstance->getPosition()[0],
-			partInstance->getPosition()[1],
-			partInstance->getPosition()[2]
+			partPosition.x,
+			partPosition.y,
+			partPosition.z
 		);
 
 		dGeomSetPosition(partInstance->physGeom[0], 
-			partInstance->getPosition()[0],
-			partInstance->getPosition()[1],
-			partInstance->getPosition()[2]);
+			partPosition.x,
+			partPosition.y,
+			partPosition.z);
 
 		Matrix3 g3dRot = partInstance->getCFrame().rotation;
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
@@ -167,9 +196,11 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 void XplicitNgine::step(float stepSize)
 {	
+	dJointGroupEmpty(contactgroup);
 	dSpaceCollide (physSpace,0,&collisionCallback);
 	dWorldQuickStep(physWorld, stepSize);
-	dJointGroupEmpty(contactgroup);
+	//dWorldStepFast1(physWorld, stepSize*2, 100);
+	//dWorldStep(physWorld, stepSize);
 }
 
 void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFrame)
@@ -183,6 +214,8 @@ void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFra
 			position[1],
 			position[2]
 		);
+		dBodyEnable(partInstance->physBody);
+		dGeomEnable(partInstance->physGeom[0]);
 
 		Matrix3 g3dRot = cFrame->rotation;
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
