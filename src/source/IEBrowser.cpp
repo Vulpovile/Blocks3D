@@ -2,7 +2,6 @@
 	#define WIN32_LEAN_AND_MEAN
 #endif
 
-
 #include <windows.h>
 #include <Commdlg.h>
 #include "IEBrowser.h"
@@ -11,6 +10,9 @@
 #include "ax.h"
 #include "Tool/SurfaceTool.h"
 #include "Application.h"
+#include "Enum.h"
+#include "ToolEnum.h"
+#include "VS2005CompatShim.h"
 
 HRESULT IEBrowser::doExternal(std::wstring funcName,
   DISPID dispIdMember,
@@ -30,9 +32,24 @@ HRESULT IEBrowser::doExternal(std::wstring funcName,
 	}
 	else if (funcName==L"ToggleHopperBin")
 	{
-		pVarResult->vt = VT_INT;
-		pVarResult->intVal = 5;
-		//MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+		MessageBox(NULL, "BOOP", "Boopity boop",MB_OK);
+
+		/*To-do Make enums in ToolEnum work with this properly, 
+		commented code is not fully tested.*/
+		/*MessageBox(NULL,
+				   std::to_string(pDispParams->rgvarg->intVal).c_str(),
+				   "Is it working?", 
+				   MB_OK);
+		Enum::Hopper::Value cont = (Enum::Hopper::Value)pDispParams->rgvarg->intVal;
+
+		switch (cont) 
+		{
+		case GameTool
+		case Grab
+			
+			break;
+		}*/
+		return S_OK;
 	}
 	else if (funcName==L"SetController")
 	{
