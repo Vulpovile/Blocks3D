@@ -16,6 +16,10 @@ XplicitNgine::XplicitNgine()
 	contactgroup = dJointGroupCreate(0);
 
 	dWorldSetGravity(physWorld, 0, -0.5, 0);
+	dWorldSetAutoDisableFlag(physWorld, 1);
+	dWorldSetAutoDisableLinearThreshold(physWorld, 0.05F);
+	dWorldSetAutoDisableAngularThreshold(physWorld, 0.05F);
+	dWorldSetAutoDisableSteps(physWorld, 400);
 
 	this->name = "PhysicsService";
 	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
@@ -70,8 +74,30 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 {
 	if(partInstance->physBody != NULL)
 	{
-		while(dBodyGetNumJoints(partInstance->physBody) > 0) {
-			dJointDestroy(dBodyGetJoint(partInstance->physBody, 0));
+		dBodyEnable(partInstance->physBody);
+		dGeomEnable(partInstance->physGeom[0]);
+		//createBody(partInstance);
+		//step(0.5F);
+		for(int i = 0; i < dBodyGetNumJoints(partInstance->physBody); i++) {
+			dBodyID b1 = dJointGetBody(dBodyGetJoint(partInstance->physBody, i), 0);
+			dBodyID b2 = dJointGetBody(dBodyGetJoint(partInstance->physBody, i), 1);
+			
+			if(b1 != NULL)
+			{
+				dBodyEnable(b1);
+				PartInstance * part = (PartInstance *)dBodyGetData(b1);
+				if(part != NULL)
+					dGeomEnable(part->physGeom[0]);
+			}
+
+			if(b2 != NULL)
+			{
+				dBodyEnable(b2);
+				PartInstance * part = (PartInstance *)dBodyGetData(b2);
+				if(part != NULL)
+					dGeomEnable(part->physGeom[0]);
+			}
+			dJointDestroy(dBodyGetJoint(partInstance->physBody, i));
 		}
 		dBodyDestroy(partInstance->physBody);
 		dGeomDestroy(partInstance->physGeom[0]);
@@ -90,6 +116,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 	{
 		// init body
 		partInstance->physBody = dBodyCreate(physWorld);
+		dBodySetData(partInstance->physBody, partInstance);
 		
 		// Create geom
 		if(partInstance->shape == Enum::Shape::Block)
@@ -169,9 +196,10 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 void XplicitNgine::step(float stepSize)
 {	
-	dSpaceCollide (physSpace,0,&collisionCallback);
-	dWorldQuickStep(physWorld, stepSize);
 	dJointGroupEmpty(contactgroup);
+	dSpaceCollide (physSpace,0,&collisionCallback);
+	//dWorldQuickStep(physWorld, stepSize);
+	dWorldStepFast1(physWorld, stepSize, 20);
 }
 
 void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFrame)
@@ -185,6 +213,8 @@ void XplicitNgine::updateBody(PartInstance *partInstance, CoordinateFrame * cFra
 			position[1],
 			position[2]
 		);
+		dBodyEnable(partInstance->physBody);
+		dGeomEnable(partInstance->physGeom[0]);
 
 		Matrix3 g3dRot = cFrame->rotation;
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
