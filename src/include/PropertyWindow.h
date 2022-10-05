@@ -1,6 +1,5 @@
 #pragma once
 #include "DataModelV2/Instance.h"
-#include <set>
 
 class PropertyWindow {
 public:
@@ -15,4 +14,5 @@ private:
 	HWND	_propGrid;
 	HWND	_explorerComboBox;
 	void	_resize();
+	void	clearExplorer();
 };
