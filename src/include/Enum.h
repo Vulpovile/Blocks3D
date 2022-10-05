@@ -20,4 +20,16 @@ namespace Enum
 			Player = 7, KeyboardRight = 1, KeyboardLeft = 2, Joypad1 = 3, Joypad2 = 4, Chase = 5, Flee = 6, None = 0
 		};
 	}
+	namespace ActionType
+	{
+		enum Value {
+			Nothing = 0, Pause = 1, Lose = 2, Draw = 3, Win = 4
+		};
+	}
+	namespace AffectType
+	{
+		enum Value {
+			NoChange = 0, Increase = 1, Decrease = 2
+		};
+	}
 }
