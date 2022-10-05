@@ -191,12 +191,12 @@ void LevelInstance::Step(SimTime sdt)
 				score -= 1;
 			break;
 	}
-	if (timer >= 0.1f){
+	if (timer >= 0.1f){ //Due to timing used this could cause the number go into negatives for one step
 		timer -= sdt;
 	}
 	else{
 		timer = 0.0f;
-		DataModelInstance* DataModel = (DataModelInstance*)getParent();
+		DataModelInstance* DataModel = (DataModelInstance*)getParent(); //If level parent gets changed to something other than Datamodel it could cause nasty data corruption bugs
 		switch(TimerUpAction)
 		{
 			case Enum::ActionType::Nothing:
