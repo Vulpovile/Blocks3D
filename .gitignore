@@ -40,6 +40,9 @@
 *.ilk
 *.dep
 
+# ResEditor files
+*.aps
+
 /Debug
 /Release
 stdout.txt
