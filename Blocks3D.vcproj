@@ -734,6 +734,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\ToolEnum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\VS2005CompatShim.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\win32Defines.h"
 				>
 			</File>
