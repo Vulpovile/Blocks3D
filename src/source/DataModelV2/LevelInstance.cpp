@@ -177,6 +177,32 @@ void LevelInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 		Instance::PropUpdate(pItem);
 }
 
+void LevelInstance::winCondition()
+{
+	DataModelInstance* DataModel = (DataModelInstance*)getParent(); //If level parent gets changed to something other than Datamodel it could cause nasty data corruption bugs
+	DataModel->setMessage(winMessage);
+	DataModel->toggleRun();
+}
+
+void LevelInstance::loseCondition()
+{
+	DataModelInstance* DataModel = (DataModelInstance*)getParent();
+	DataModel->setMessage(loseMessage);
+	DataModel->toggleRun();
+}
+
+void LevelInstance::pauseCondition()
+{
+	DataModelInstance* DataModel = (DataModelInstance*)getParent();
+	DataModel->toggleRun();
+}
+
+void LevelInstance::drawCondition()
+{
+	DataModelInstance* DataModel = (DataModelInstance*)getParent();
+	DataModel->toggleRun();
+}
+
 void LevelInstance::Step(SimTime sdt)
 {
 	switch(TimerAffectsScore)
@@ -196,24 +222,21 @@ void LevelInstance::Step(SimTime sdt)
 	}
 	else{
 		timer = 0.0f;
-		DataModelInstance* DataModel = (DataModelInstance*)getParent(); //If level parent gets changed to something other than Datamodel it could cause nasty data corruption bugs
 		switch(TimerUpAction)
 		{
 			case Enum::ActionType::Nothing:
 				break;
 			case Enum::ActionType::Pause:
-				DataModel->toggleRun();
+				pauseCondition();
 				break;
 			case Enum::ActionType::Lose:
-				DataModel->setMessage(loseMessage);
-				DataModel->toggleRun();
+				loseCondition();
 				break;
 			case Enum::ActionType::Draw:
-				DataModel->toggleRun();
+				drawCondition();
 				break;
 			case Enum::ActionType::Win:
-				DataModel->setMessage(winMessage);
-				DataModel->toggleRun();
+				winCondition();
 				break;
 		}
 	}

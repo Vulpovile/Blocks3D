@@ -17,5 +17,9 @@ public:
 	std::string winMessage;
 	std::string loseMessage;
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	void winCondition();
+	void loseCondition();
+	void pauseCondition();
+	void drawCondition();
 	void Step(SimTime sdt);
 };
