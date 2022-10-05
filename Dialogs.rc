@@ -10,7 +10,7 @@
 #define APP_GENER 0
 #define APP_MAJOR 0
 #define APP_MINOR 106
-#define APP_PATCH 3
+#define APP_PATCH 4
 #define APP_VER_STRING APP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
 
 #define VER_PREFIX( N ) v##N
