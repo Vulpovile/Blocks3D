@@ -498,6 +498,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ThumbnailGeneratorInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\WorkspaceInstance.cpp"
 					>
 					<FileConfiguration
@@ -860,6 +864,10 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\ThumbnailGeneratorInstance.h"
 					>
 				</File>
 				<File

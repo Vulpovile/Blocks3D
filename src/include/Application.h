@@ -48,6 +48,7 @@ class Application { // : public GApp {
 		void		setFocus(bool isFocused);
 		int			getMode();
 		void		unSetMode();
+		void toggleSky();
 		CameraController	cameraController;
 		UserInput*			userInput;
 		PropertyWindow*		_propWindow;
@@ -55,6 +56,7 @@ class Application { // : public GApp {
 		RenderDevice*		getRenderDevice();
 		void				selectInstance(Instance* selectedInstance,PropertyWindow* propWindow);
 		void				setMode(int mode);
+		SkyRef getSky();
 		
 		Tool * tool;
 		void changeTool(Tool *);
@@ -82,6 +84,7 @@ class Application { // : public GApp {
 		GAppSettings		_settings;
 		double lightProjX, lightProjY, lightProjNear, lightProjFar;
 		IEBrowser*		webBrowser;
+		bool _hideSky;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;

@@ -15,6 +15,7 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		AppendMenu(mainmenu, MF_STRING, 100, "New");
 		AppendMenu(mainmenu, MF_STRING, 101, "Open...");
 		AppendMenu(mainmenu, MF_STRING, 102, "Close");
+		AppendMenu(mainmenu, MF_STRING, 103, "ThumbnailGenerator::click");
 		AppendMenu(mainmenu, MF_SEPARATOR, 0, NULL);
 		POINT p;
 		GetCursorPos(&p);
@@ -31,6 +32,8 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		case 102:
 			g_usableApp->QuitApp();
 			break;
+		case 103:
+			g_dataModel->getThumbnailGenerator()->click("PNG", 256, 256, true);
 		}
 	}
 }

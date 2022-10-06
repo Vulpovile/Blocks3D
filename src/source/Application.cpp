@@ -117,8 +117,10 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	quit=false;
 	rightButtonHolding=false;
 	mouseOnScreen=false;
+
 	// GApp replacement
 	renderDevice = new RenderDevice();
+
 	if (window != NULL) {
 	renderDevice->init(window, NULL);
 	}
@@ -194,6 +196,7 @@ void Application::onInit()  {
 	_dataModel->setName("undefined");
 	_dataModel->font = g_fntdominant;
 	g_dataModel = _dataModel;
+	_hideSky = false;
 
 #ifdef LEGACY_LOAD_G3DFUN_LEVEL
 	// Anchored this baseplate for XplicitNgine tests
@@ -503,9 +506,6 @@ void Application::exitApplication()
     //endProgram = true;
 }
 
-
-
-
 void Application::onGraphics(RenderDevice* rd) {
 	
 	G3D::uint8 num = 0;
@@ -514,27 +514,17 @@ void Application::onGraphics(RenderDevice* rd) {
 	if (GetCursorPos(&mousepos))
 	{
 		POINT pointm = mousepos;
-	if (ScreenToClient(_hWndMain, &mousepos))
-	{
-		//mouseOnScreen = true;
-		//POINT pointm;
-		///GetCursorPos(&pointm);
-		if(_hwndRenderer != WindowFromPoint(pointm)) //OLD: mousepos.x < 1 || mousepos.y < 1 || mousepos.x >= rd->getViewport().width()-1 || mousepos.y >= rd->getViewport().height()-1
+		if (ScreenToClient(_hWndMain, &mousepos))
 		{
-			mouseOnScreen = false;
-			//ShowCursor(true);
-			//_window->setMouseVisible(true);
-			//rd->window()->setInputCaptureCount(0);
+			if(_hwndRenderer != WindowFromPoint(pointm))
+			{
+				mouseOnScreen = false;
+			}
+			else
+			{
+				mouseOnScreen = true;
+			}
 		}
-		else
-		{
-			mouseOnScreen = true;
-			//SetCursor(NULL);
-			//_window->setMouseVisible(false);
-			//rd->window()->setInputCaptureCount(1);
-		}
-		
-	}
 	}
 	
 	if(Globals::useMousePoint)
@@ -547,14 +537,18 @@ void Application::onGraphics(RenderDevice* rd) {
 	lighting.ambient = Color3(0.6F,0.6F,0.6F);
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
-    // Cyan background
-    //renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
+	// TODO: stick this into its own rendering thing
+	if(!_hideSky) {
+		renderDevice->clear(sky.isNull(), true, true);
+		if (sky.notNull()) sky->render(renderDevice, lighting);
+	} else {
+		printf("ThumbnailGenerator::click\n");
 
-    renderDevice->clear(sky.isNull(), true, true);
-    if (sky.notNull()) {
-        sky->render(renderDevice, lighting);
-    }
-	
+		rd->setColorClearValue(Color4(0.0f, 0.0f, 0.0f, 0.0f));
+		renderDevice->clear(true, true, true);
+		toggleSky();
+	}
+
     // Setup lighting
     renderDevice->enableLighting();
 
@@ -564,115 +558,47 @@ void Application::onGraphics(RenderDevice* rd) {
 	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor, true, true));
 	renderDevice->setAmbientLightColor(lighting.ambient);
 
-	//renderDevice->setBlendFunc(RenderDevice::BLEND_ONE, RenderDevice::BLEND_ONE);
-
-
-
 	renderDevice->setShininess(70);
 	renderDevice->setSpecularCoefficient(Color3(0.1F, 0.1F, 0.1F));
-	
-	//float   lightAmbient[]  = { 0.5F, 0.6F, 0.9F, 1.0F };
-    //float   lightDiffuse[]  = { 0.6F, 0.4F, 0.9F, 1.0F };
-    //float   lightSpecular[] = { 0.8F, 0.6F, 1.0F, 1.0F };
-
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lightAmbient);
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, lightDiffuse);
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightSpecular);
-	//glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 70);
-	
 
 	rd->beforePrimitive();
 	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	//if(_dataModel->getWorkspace() != NULL)
 	
 	_dataModel->getWorkspace()->render(rd);
-	//else throw std::exception("Workspace not found");
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
 
-
-	//Draw::box(G3D::Box(mouse.getPosition()-Vector3(2,0.5F,1),mouse.getPosition()+Vector3(2,0.5F,1)), rd, Color3::cyan(), Color4::clear());
-
 	for(size_t i = 0; i < _dataModel->getSelectionService()->getSelection().size(); i++)
 	{
 		if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 		{
-		Vector3 size = part->getSize();
-		Vector3 pos = part->getPosition();
-		drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
+			Vector3 size = part->getSize();
+			Vector3 pos = part->getPosition();
+			drawOutline(
+				Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2), 
+				Vector3(0-size.x/2,0-size.y/2,0-size.z/2), 
+				rd, 
+				lighting, 
+				Vector3(size.x/2, size.y/2, size.z/2), 
+				Vector3(pos.x, pos.y, pos.z), part->getCFrame()
+			);
 		}		
 	}
-	
-
-	//Vector3 gamepoint = Vector3(0, 5, 0);
-	//Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-	//float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-	//if(distance < 50 && distance > -50)
-	
-	//{
-	//	if(distance < 0)
-	//	distance = distance*-1;
-	//	fntdominant->draw3D(rd, "Testing", CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.04*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
-	//}
 
     renderDevice->disableLighting();
 
     if (sky.notNull()) {
         sky->renderLensFlare(renderDevice, lighting);
     }
+
 	renderDevice->push2D();
 		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
-		/*rd->pushState();
-			rd->beforePrimitive();
-
-			if(Globals::showMouse && mouseOnScreen)
-			{
-			glEnable( GL_TEXTURE_2D );
-			glEnable(GL_BLEND);// you enable blending function
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-			/*
-			std::vector<Instance*> instances = _dataModel->getWorkspace()->getAllChildren();
-			currentcursorid = cursorid;
-			for(size_t i = 0; i < instances.size(); i++)
-			{
-				if(PartInstance* test = dynamic_cast<PartInstance*>(instances.at(i)))
-				{
-					float time = cameraController.getCamera()->worldRay(_dataModel->mousex, _dataModel->mousey, renderDevice->getViewport()).intersectionTime(test->getBox());
-					//float time = testRay.intersectionTime(test->getBox());
-					if (time != inf()) 
-					{
-						currentcursorid = cursorOvrid;
-						break;
-					}
-					
-				}
-			}
-			*/
-			/*glBindTexture( GL_TEXTURE_2D, tool->getCursorId());
-
-			
-			glBegin( GL_QUADS );
-			glTexCoord2d(0.0,0.0);
-			glVertex2f(mousepos.x-64, mousepos.y-64);
-			glTexCoord2d( 1.0,0.0 );
-			glVertex2f(mousepos.x+64, mousepos.y-64);
-			glTexCoord2d(1.0,1.0 );
-			glVertex2f(mousepos.x+64, mousepos.y+64 );
-			glTexCoord2d( 0.0,1.0 );
-			glVertex2f( mousepos.x-64, mousepos.y+64 );
-			glEnd();
-
-			glDisable( GL_TEXTURE_2D );*/
-			//}
-
-			/*rd->afterPrimitive();
-		rd->popState();*/
 	renderDevice->pop2D();
 }
 
@@ -709,6 +635,16 @@ G3D::RenderDevice* Application::getRenderDevice()
 	return renderDevice;
 }
 
+G3D::SkyRef Application::getSky()
+{
+	return sky;
+}
+
+void Application::toggleSky()
+{
+	_hideSky = !_hideSky;
+}
+
 void Application::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x, int y)
 {
 	_dataModel->getGuiRoot()->onMouseLeftUp(renderDevice, x, y);
@@ -731,7 +667,6 @@ void Application::onMouseMoved(int x,int y)
 	mouse.oldy = mouse.y;
 	mouse.x = x;
 	mouse.y = y;
-	//tool->onMouseMoved(mouse);
 	mouseMoveState = true;
 
 }

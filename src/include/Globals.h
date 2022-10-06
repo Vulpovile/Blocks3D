@@ -29,6 +29,8 @@ extern bool running;
 extern DataModelInstance* g_dataModel;
 extern XplicitNgine* g_xplicitNgine;
 extern Application* g_usableApp;
+extern SkyRef g_sky;
+extern RenderDevice g_renderDevice;
 
 extern GFontRef g_fntdominant;
 extern GFontRef g_fntlighttrek;
