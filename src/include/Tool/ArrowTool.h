@@ -13,6 +13,7 @@ public:
 	void onSelect(Mouse mouse); 
 	void onKeyDown(int key);
 	void onKeyUp(int key);
+	void roundDeg(float &degree);
 private:
 	bool lctrlDown;
 	bool rctrlDown;
@@ -20,4 +21,5 @@ private:
 	int mouseDownStarty;
 	bool dragging;
 	bool mouseDown;
+	Vector3 draggingPartOffset;
 };
