@@ -254,8 +254,8 @@ CoordinateFrame PartInstance::getCFrame()
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
-	g_dataModel->getEngine()->updateBody(this, &coordinateFrame);
 	setCFrameNoSync(coordinateFrame);
+		g_dataModel->getEngine()->updateBody(this);
 }
 
 void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
