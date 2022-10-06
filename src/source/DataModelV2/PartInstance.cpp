@@ -14,6 +14,7 @@ PartInstance::PartInstance(void)
 	className = "Part";
 	canCollide = true;
 	anchored = false;
+	dragging = false;
 	size = Vector3(2,1,4);
 	setCFrame(CoordinateFrame(Vector3(0,0,0)));
 	color = Color3::gray();
@@ -26,6 +27,20 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+}
+
+bool PartInstance::isDragging()
+{
+	return dragging;
+}
+
+void PartInstance::setDragging(bool value)
+{
+	if (dragging != value)
+	{
+		dragging = value;
+		g_dataModel->getEngine()->resetBody(this);
+	}
 }
 
 float PartInstance::getMass()
@@ -206,10 +221,7 @@ void PartInstance::setSize(Vector3 newSize)
 	size = Vector3(sizex, sizey, sizez);
 
 	if(this->physBody != NULL)
-	{
-		g_dataModel->getEngine()->deleteBody(this);
-		g_dataModel->getEngine()->createBody(this);
-	}
+		g_dataModel->getEngine()->resetBody(this);
 }
 Vector3 PartInstance::getSize()
 {
@@ -231,10 +243,8 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 		this->setSize(this->getSize());
 	}
 	if(this->physBody != NULL)
-	{
-		g_dataModel->getEngine()->deleteBody(this);
-		g_dataModel->getEngine()->createBody(this);
-	}
+		g_dataModel->getEngine()->resetBody(this);
+
 	changed = true;
 }
 
@@ -244,20 +254,14 @@ void PartInstance::setPosition(Vector3 pos)
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
 
 	if (anchored)
-	{
-		g_dataModel->getEngine()->deleteBody(this);
-		g_dataModel->getEngine()->createBody(this);
-	}
+		g_dataModel->getEngine()->resetBody(this);
 }
 
 void PartInstance::setAnchored(bool anchored)
 {
 	this->anchored = anchored;
 	if(this->physBody != NULL)
-	{
-		g_dataModel->getEngine()->deleteBody(this);
-		g_dataModel->getEngine()->createBody(this);
-	}
+		g_dataModel->getEngine()->resetBody(this);
 }
 
 bool PartInstance::isAnchored()
