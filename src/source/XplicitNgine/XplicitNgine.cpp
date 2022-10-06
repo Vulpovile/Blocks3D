@@ -1,13 +1,13 @@
 #include "XplicitNgine/XplicitNgine.h"
 #include "Globals.h"
 
-#define SIDE (0.5f)
-#define MASS (1.0)
+//#define SIDE (0.5f)
+//#define MASS (1.0)
 
 // constraints
-#define MAX_BODIES 65535
-#define OBJ_DENSITY (5.0)
-#define MAX_CONTACT_PER_BODY 4
+//#define MAX_BODIES 65535
+//#define OBJ_DENSITY (5.0)
+//#define MAX_CONTACT_PER_BODY 4
 
 XplicitNgine::XplicitNgine() 
 {
