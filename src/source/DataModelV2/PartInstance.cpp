@@ -242,6 +242,12 @@ void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
+
+	if (anchored)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 }
 
 void PartInstance::setAnchored(bool anchored)
