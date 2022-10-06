@@ -1,6 +1,6 @@
 #ifndef APP_GENER
 
-#define SNAPSHOT_VERSION
+//#define SNAPSHOT_VERSION
 
 #define APP_GENER 0
 #define APP_MAJOR 0
