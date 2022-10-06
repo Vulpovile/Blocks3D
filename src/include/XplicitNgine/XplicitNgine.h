@@ -15,5 +15,5 @@ public:
 	void step(float stepSize);
 	void createBody(PartInstance* partInstance);
 	void deleteBody(PartInstance* partInstance);
-	void updateBody(PartInstance* partInstance, CoordinateFrame * cFrame);
+	void updateBody(PartInstance* partInstance);
 };

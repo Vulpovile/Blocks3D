@@ -342,7 +342,8 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 		{
 			PartInstance * p = toDelete.back();
 			toDelete.pop_back();
-			g_dataModel->getSelectionService()->removeSelected(p);
+			if(g_dataModel->getSelectionService()->isSelected(p))
+				g_dataModel->getSelectionService()->removeSelected(p);
 			p->setParent(NULL);
 			delete p;
 		}
@@ -568,12 +569,12 @@ void Application::onGraphics(RenderDevice* rd) {
 
 
 
-	renderDevice->setShininess(70);
-	renderDevice->setSpecularCoefficient(Color3(0.1F, 0.1F, 0.1F));
+	//renderDevice->setShininess(70);
+	//renderDevice->setSpecularCoefficient(Color3(0.1F, 0.1F, 0.1F));
 	
-	//float   lightAmbient[]  = { 0.5F, 0.6F, 0.9F, 1.0F };
-    //float   lightDiffuse[]  = { 0.6F, 0.4F, 0.9F, 1.0F };
-    //float   lightSpecular[] = { 0.8F, 0.6F, 1.0F, 1.0F };
+	//float   lightAmbient[]  = { 0.5F, 0.5F, 0.5F, 1.0F };
+    //float   lightDiffuse[]  = { 0.6F, 0.6F, 0.6F, 1.0F };
+    //float   lightSpecular[] = { 0.8F, 0.8F, 0.8F, 1.0F };
 
 	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lightAmbient);
     //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, lightDiffuse);
