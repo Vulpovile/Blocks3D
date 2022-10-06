@@ -202,8 +202,8 @@ void PartInstance::setSize(Vector3 newSize)
 
 	size = Vector3(sizex, sizey, sizez);
 
-
-
+	g_dataModel->getEngine()->deleteBody(this);
+	g_dataModel->getEngine()->createBody(this);
 }
 Vector3 PartInstance::getSize()
 {
@@ -224,6 +224,8 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 		this->shape = shape;
 		this->setSize(this->getSize());
 	}
+	g_dataModel->getEngine()->deleteBody(this);
+	g_dataModel->getEngine()->createBody(this);
 	changed = true;
 }
 
@@ -231,12 +233,19 @@ void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
+
+	if (anchored)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 }
 
 void PartInstance::setAnchored(bool anchored)
 {
 	this->anchored = anchored;
 	g_dataModel->getEngine()->deleteBody(this);
+	g_dataModel->getEngine()->createBody(this);
 }
 
 bool PartInstance::isAnchored()
