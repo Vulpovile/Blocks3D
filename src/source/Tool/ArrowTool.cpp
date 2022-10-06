@@ -39,6 +39,14 @@ void ArrowTool::onButton1MouseUp(Mouse mouse)
 {
 	mouseDown = false;
 	dragging = false;
+
+	for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++) //This will later decide primary and move all parts according to primary
+	{
+		if(PartInstance * part = dynamic_cast<PartInstance *>(g_dataModel->getSelectionService()->getSelection()[i]))
+		{
+			part->setDragging(false);
+		}
+	}
 }
 
 void ArrowTool::onMouseMoved(Mouse mouse)
@@ -90,6 +98,7 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 				rot = rot.fromEulerAnglesXYZ( rotEulerAngles.x * (M_PI / 180), rotEulerAngles.y * (M_PI / 180), rotEulerAngles.z * (M_PI / 180) );
 
 				part->setPosition(vec);
+				part->setDragging(true);
 				part->setCFrame(CoordinateFrame(rot, vec));
 			}
 		}
