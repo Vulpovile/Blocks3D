@@ -11,6 +11,7 @@
 
 XplicitNgine::XplicitNgine() 
 {
+	
 	physWorld = dWorldCreate();
 	physSpace = dHashSpaceCreate(0);
 	contactgroup = dJointGroupCreate(0);
@@ -19,7 +20,7 @@ XplicitNgine::XplicitNgine()
 	dWorldSetAutoDisableFlag(physWorld, 1);
 	dWorldSetAutoDisableLinearThreshold(physWorld, 0.5F);
 	dWorldSetAutoDisableAngularThreshold(physWorld, 0.5F);
-	dWorldSetAutoDisableSteps(physWorld, 40);
+	dWorldSetAutoDisableSteps(physWorld, 20);
 
 	this->name = "PhysicsService";
 	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
@@ -39,6 +40,7 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 	
 	dBodyID b1 = dGeomGetBody(o1);
 	dBodyID b2 = dGeomGetBody(o2);
+
 	if (b1 && b2 && dAreConnected(b1, b2))
 		return;
 	
@@ -170,7 +172,6 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
 								g3dRot[1][0], g3dRot[1][1], g3dRot[1][2], 0,
 								g3dRot[2][0], g3dRot[2][1], g3dRot[2][2], 0};
-
 		dGeomSetRotation(partInstance->physGeom[0], rotation);
 		dBodySetRotation(partInstance->physBody, rotation);
 
