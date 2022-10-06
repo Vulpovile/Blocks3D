@@ -118,10 +118,13 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 	// calculate collisions
 	//dSpaceCollide (physSpace,0,&collisionCallback);
 
-	Vector3 partSize = partInstance->getSize();
-	Vector3 partPosition = partInstance->getPosition();
 	if(partInstance->physBody == NULL) 
 	{
+		
+		Vector3 partSize = partInstance->getSize();
+		Vector3 partPosition = partInstance->getPosition();
+		Vector3 velocity = partInstance->getVelocity();
+		Vector3 rotVelocity = partInstance->getRotVelocity();
 		// init body
 		partInstance->physBody = dBodyCreate(physWorld);
 		dBodySetData(partInstance->physBody, partInstance);
@@ -168,6 +171,9 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			partPosition.y,
 			partPosition.z);
 
+		dBodySetLinearVel(partInstance->physBody, velocity.x, velocity.y, velocity.z);
+		dBodySetAngularVel(partInstance->physBody, rotVelocity.x, rotVelocity.y, rotVelocity.z);
+
 		Matrix3 g3dRot = partInstance->getCFrame().rotation;
 		float rotation [12] = {	g3dRot[0][0], g3dRot[0][1], g3dRot[0][2], 0,
 								g3dRot[1][0], g3dRot[1][1], g3dRot[1][2], 0,
@@ -183,6 +189,12 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 	} else {
 		if(!partInstance->isAnchored())
 		{
+			const dReal* velocity = dBodyGetLinearVel(partInstance->physBody);
+			const dReal* rotVelocity = dBodyGetAngularVel(partInstance->physBody);
+			
+			partInstance->setVelocity(Vector3(velocity[0],velocity[1],velocity[2]));
+			partInstance->setRotVelocity(Vector3(rotVelocity[0],rotVelocity[1],rotVelocity[2]));
+
 			const dReal* physPosition = dBodyGetPosition(partInstance->physBody);
 			
 			// TODO: Rotation code
