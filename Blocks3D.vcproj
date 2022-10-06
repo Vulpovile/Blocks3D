@@ -49,7 +49,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="&quot;.\src\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
@@ -75,12 +79,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib ode.lib OPCODE.lib Ole32.lib"
+				AdditionalDependencies="Advapi32.lib Comctl32.lib Comdlg32.lib Shell32.lib ode.lib Ole32.lib"
 				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
 				SubSystem="2"
+				StackReserveSize="16777216"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				OptimizeForWindows98="2"
+				LinkTimeCodeGeneration="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -172,13 +181,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib ode.lib OPCODE.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib oded.lib"
 				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
 				SubSystem="1"
+				StackReserveSize="16777216"
 				TargetMachine="1"
 			/>
 			<Tool

@@ -117,7 +117,10 @@ void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
 
 void PartInstance::setParent(Instance* prnt)
 {
-	g_dataModel->getEngine()->deleteBody(this);
+	if(this->physBody != NULL)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+	}
 	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
@@ -202,8 +205,11 @@ void PartInstance::setSize(Vector3 newSize)
 
 	size = Vector3(sizex, sizey, sizez);
 
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 }
 Vector3 PartInstance::getSize()
 {
@@ -224,8 +230,11 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 		this->shape = shape;
 		this->setSize(this->getSize());
 	}
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 	changed = true;
 }
 
@@ -233,13 +242,22 @@ void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
+
+	if (anchored)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 }
 
 void PartInstance::setAnchored(bool anchored)
 {
 	this->anchored = anchored;
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+		g_dataModel->getEngine()->createBody(this);
+	}
 }
 
 bool PartInstance::isAnchored()
@@ -254,15 +272,14 @@ CoordinateFrame PartInstance::getCFrame()
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
-	g_dataModel->getEngine()->updateBody(this, &coordinateFrame);
 	setCFrameNoSync(coordinateFrame);
+		g_dataModel->getEngine()->updateBody(this);
 }
 
 void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
 {
 	cFrame = coordinateFrame;
 	position = coordinateFrame.translation;
-	changed = true;
 }
 
 bool PartInstance::collides(PartInstance * part)
