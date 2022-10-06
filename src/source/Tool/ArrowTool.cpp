@@ -96,9 +96,9 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 				roundDeg(rotEulerAngles.z);
 
 				rot = rot.fromEulerAnglesXYZ( rotEulerAngles.x * (M_PI / 180), rotEulerAngles.y * (M_PI / 180), rotEulerAngles.z * (M_PI / 180) );
-
-				part->setPosition(vec);
+				
 				part->setDragging(true);
+				part->setPosition(vec);
 				part->setCFrame(CoordinateFrame(rot, vec));
 			}
 		}
