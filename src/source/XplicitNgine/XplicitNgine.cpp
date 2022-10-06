@@ -15,11 +15,11 @@ XplicitNgine::XplicitNgine()
 	physSpace = dHashSpaceCreate(0);
 	contactgroup = dJointGroupCreate(0);
 
-	dWorldSetGravity(physWorld, 0, -9.8, 0);
+	dWorldSetGravity(physWorld, 0, -9.8F, 0);
 	dWorldSetAutoDisableFlag(physWorld, 1);
 	dWorldSetAutoDisableLinearThreshold(physWorld, 0.05F);
 	dWorldSetAutoDisableAngularThreshold(physWorld, 0.05F);
-	dWorldSetAutoDisableSteps(physWorld, 400);
+	dWorldSetAutoDisableSteps(physWorld, 40);
 
 	this->name = "PhysicsService";
 	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
@@ -52,7 +52,7 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 			// Define contact surface properties
 
 			contact[i].surface.bounce = 0.5; //Elasticity
-			contact[i].surface.mu = 0.3F; //Friction
+			contact[i].surface.mu = 0.4F; //Friction
 			contact[i].surface.slip1 = 0.0;
 			contact[i].surface.slip2 = 0.0;
 			contact[i].surface.soft_erp = 0.8F;
@@ -75,6 +75,8 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 	if(partInstance->physBody != NULL)
 	{
 		dBodyEnable(partInstance->physBody);
+		if(partInstance->isAnchored())
+			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 		dGeomEnable(partInstance->physGeom[0]);
 		//createBody(partInstance);
 		//step(0.5F);
