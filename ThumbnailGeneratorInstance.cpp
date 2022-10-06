@@ -15,10 +15,15 @@ ThumbnailGeneratorInstance::~ThumbnailGeneratorInstance(void) {}
 
 std::string ThumbnailGeneratorInstance::click(std::string fileType, int cx, int cy, bool hideSky)
 {
-	const G3D::GImage::Format format = G3D::GImage::stringToFormat(fileType);
-
+	// Important things we need
 	RenderDevice* rd = g_usableApp->getRenderDevice();
+	GuiRootInstance* guiRoot = g_dataModel->getGuiRoot();
+
+	const G3D::GImage::Format format = G3D::GImage::stringToFormat(fileType);
 	
+	// Hide the GUI
+	guiRoot->hideGui(true);
+
 	// Disable the sky
 	if(hideSky) 
 		g_usableApp->toggleSky();
@@ -37,6 +42,9 @@ std::string ThumbnailGeneratorInstance::click(std::string fileType, int cx, int 
 	std::string fileSave = "./click_output." + fileType;
 	std::ofstream out(fileSave.c_str(), std::ios::out | std::ios::binary);
 	out.write(reinterpret_cast<const char*>(binOut.getCArray()), binOut.length());
+
+	// Unhide GUI
+	guiRoot->hideGui(false);
 
 	return "boop!";
 }
