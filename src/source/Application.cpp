@@ -746,8 +746,6 @@ void Application::run() {
 			RealTime rdt = timeStep;
 			SimTime  sdt = timeStep * rate;
 			SimTime  idt = desiredFrameDuration * rate;
-			
-			
 
 			onSimulation(rdt,sdt,idt);
 		m_simulationWatch.tock();
