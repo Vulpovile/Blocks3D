@@ -4,8 +4,8 @@
 
 #define APP_GENER 0
 #define APP_MAJOR 0
-#define APP_MINOR 108
-#define APP_PATCH 0
+#define APP_MINOR 107
+#define APP_PATCH 1
 #define APP_VER_STRING APP_GENER.APP_MAJOR.APP_MINOR.APP_PATCH
 
 
