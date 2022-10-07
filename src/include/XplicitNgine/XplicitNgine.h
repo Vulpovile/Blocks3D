@@ -16,4 +16,5 @@ public:
 	void createBody(PartInstance* partInstance);
 	void deleteBody(PartInstance* partInstance);
 	void updateBody(PartInstance* partInstance);
+	void resetBody(PartInstance* partInstance);
 };

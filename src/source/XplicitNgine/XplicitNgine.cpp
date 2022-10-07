@@ -34,6 +34,12 @@ XplicitNgine::~XplicitNgine()
   dCloseODE();
 }
 
+void XplicitNgine::resetBody(PartInstance* partInstance)
+{
+	deleteBody(partInstance);
+	createBody(partInstance);
+}
+
 void collisionCallback(void *data, dGeomID o1, dGeomID o2) 
 {
 	int i,n;
@@ -78,7 +84,7 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 	{
 		dBodyEnable(partInstance->physBody);
 		dGeomEnable(partInstance->physGeom[0]);
-		if(partInstance->isAnchored())
+		if(partInstance->isAnchored() || partInstance->isDragging())
 		{
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 			dGeomEnable(partInstance->physGeom[0]);
@@ -183,11 +189,11 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 		//printf("[XplicitNgine] Created Body for PartInstance\n");
 		
-		if(!partInstance->isAnchored())
+		if(!partInstance->isAnchored() && !partInstance->isDragging())
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 
 	} else {
-		if(!partInstance->isAnchored())
+		if(!partInstance->isAnchored() && !partInstance->isDragging())
 		{
 			const dReal* velocity = dBodyGetLinearVel(partInstance->physBody);
 			const dReal* rotVelocity = dBodyGetAngularVel(partInstance->physBody);

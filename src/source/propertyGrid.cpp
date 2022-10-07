@@ -3917,7 +3917,7 @@ static BOOL Grid_OnGetSel(INT iItem)
 static VOID Grid_OnResetContent(VOID)
 {
     ListBox_ResetContent(g_lpInst->hwndListMap);
-
+	g_lpInst->lpCurrent = NULL;
     if (NULL != g_lpInst->hwndCtl1)
     {
         DestroyWindow(g_lpInst->hwndCtl1);
