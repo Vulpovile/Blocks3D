@@ -218,7 +218,7 @@ void LevelInstance::Step(SimTime sdt)
 				score -= 1;
 			break;
 	}
-	if (timer >= 0.1f){ //Due to timing used this could cause the number go into negatives for one step
+	if (timer >= sdt){
 		timer -= sdt;
 	}
 	else{

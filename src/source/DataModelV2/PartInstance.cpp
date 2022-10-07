@@ -14,6 +14,7 @@ PartInstance::PartInstance(void)
 	className = "Part";
 	canCollide = true;
 	anchored = false;
+	dragging = false;
 	size = Vector3(2,1,4);
 	setCFrame(CoordinateFrame(Vector3(0,0,0)));
 	color = Color3::gray();
@@ -26,6 +27,20 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+}
+
+bool PartInstance::isDragging()
+{
+	return dragging;
+}
+
+void PartInstance::setDragging(bool value)
+{
+	if (dragging != value)
+	{
+		dragging = value;
+		g_dataModel->getEngine()->resetBody(this);
+	}
 }
 
 float PartInstance::getMass()
@@ -117,7 +132,10 @@ void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
 
 void PartInstance::setParent(Instance* prnt)
 {
-	g_dataModel->getEngine()->deleteBody(this);
+	if(this->physBody != NULL)
+	{
+		g_dataModel->getEngine()->deleteBody(this);
+	}
 	Instance * cparent = getParent();
 	while(cparent != NULL)
 	{
@@ -202,8 +220,8 @@ void PartInstance::setSize(Vector3 newSize)
 
 	size = Vector3(sizex, sizey, sizez);
 
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+		g_dataModel->getEngine()->resetBody(this);
 }
 Vector3 PartInstance::getSize()
 {
@@ -224,8 +242,9 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 		this->shape = shape;
 		this->setSize(this->getSize());
 	}
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+		g_dataModel->getEngine()->resetBody(this);
+
 	changed = true;
 }
 
@@ -235,17 +254,14 @@ void PartInstance::setPosition(Vector3 pos)
 	setCFrame(CoordinateFrame(cFrame.rotation, pos));
 
 	if (anchored)
-	{
-		g_dataModel->getEngine()->deleteBody(this);
-		g_dataModel->getEngine()->createBody(this);
-	}
+		g_dataModel->getEngine()->resetBody(this);
 }
 
 void PartInstance::setAnchored(bool anchored)
 {
 	this->anchored = anchored;
-	g_dataModel->getEngine()->deleteBody(this);
-	g_dataModel->getEngine()->createBody(this);
+	if(this->physBody != NULL)
+		g_dataModel->getEngine()->resetBody(this);
 }
 
 bool PartInstance::isAnchored()
@@ -260,8 +276,8 @@ CoordinateFrame PartInstance::getCFrame()
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
-	g_dataModel->getEngine()->updateBody(this, &coordinateFrame);
 	setCFrameNoSync(coordinateFrame);
+		g_dataModel->getEngine()->updateBody(this);
 }
 
 void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)

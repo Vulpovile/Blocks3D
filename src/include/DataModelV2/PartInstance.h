@@ -56,11 +56,13 @@ public:
 	void setAnchored(bool anchored);
 	bool isAnchored();
 	float getMass();
+	bool isDragging();
+	void setDragging(bool value);
 
 	//Collision
 	bool collides(PartInstance * part);
 	bool collides(Box);
-
+	
 	//Properties
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
@@ -71,6 +73,7 @@ private:
 	Vector3 velocity;
 	Vector3 rotVelocity;
 	bool changed;
+	bool dragging;
 	Box itemBox;
 	GLuint glList;
 };
