@@ -74,6 +74,7 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	CreateDirectory(tempPath.c_str(), NULL);
 	
 	_hWndMain = parentWindow;
+	_hideSky = false;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
 
@@ -548,13 +549,17 @@ void Application::onGraphics(RenderDevice* rd) {
 	lighting.ambient = Color3(0.6F,0.6F,0.6F);
     renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
-    // Cyan background
-    //renderDevice->setColorClearValue(Color3(0.0f, 0.5f, 1.0f));
+	// TODO: stick this into its own rendering thing
+	if(!_hideSky) {
+		renderDevice->clear(sky.isNull(), true, true);
+		if (sky.notNull()) sky->render(renderDevice, lighting);
+	} else {
+		printf("ThumbnailGenerator::click\n");
 
-    renderDevice->clear(sky.isNull(), true, true);
-    if (sky.notNull()) {
-        sky->render(renderDevice, lighting);
-    }
+		rd->setColorClearValue(Color4(0.0f, 0.0f, 0.0f, 0.0f));
+		renderDevice->clear(true, true, true);
+		toggleSky();
+	}
 	
     // Setup lighting
     renderDevice->enableLighting();
@@ -861,6 +866,16 @@ void Application::resizeWithParent(HWND parentWindow)
 	Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
 	renderDevice->setViewport(viewportRect);
 
+}
+
+G3D::SkyRef Application::getSky()
+{
+	return sky;
+}
+
+void Application::toggleSky()
+{
+	_hideSky = !_hideSky;
 }
 
 void Application::QuitApp()
