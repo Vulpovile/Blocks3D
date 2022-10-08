@@ -111,6 +111,8 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	_settings.writeLicenseFile = false;
 	_settings.logFilename = tempPath + "/g3dlog.txt";
 	_settings.window.center = true; 
+	_settings.window.fsaaSamples = 8;
+
 	Win32Window* window = Win32Window::create(_settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);
 	ShowWindow(_hWndMain, SW_SHOW);
@@ -868,6 +870,7 @@ void Application::resizeWithParent(HWND parentWindow)
 
 }
 
+// These should be moved into a "Lighting" class
 G3D::SkyRef Application::getSky()
 {
 	return sky;
@@ -876,6 +879,13 @@ G3D::SkyRef Application::getSky()
 void Application::toggleSky()
 {
 	_hideSky = !_hideSky;
+}
+
+void Application::resize3DView(int w, int h)
+{
+	Rect2D newViewport = Rect2D::xywh(0, 0, w, h);
+	renderDevice->notifyResize(w, h);
+	renderDevice->setViewport(newViewport);
 }
 
 void Application::QuitApp()

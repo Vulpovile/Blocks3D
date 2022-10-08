@@ -1,6 +1,7 @@
 #include "DataModelV2/ThumbnailGeneratorInstance.h"
 #include "Application.h"
 #include "Globals.h"
+#include "base64.h"
 #include <fstream>
 
 ThumbnailGeneratorInstance::ThumbnailGeneratorInstance(void)
@@ -13,39 +14,37 @@ ThumbnailGeneratorInstance::ThumbnailGeneratorInstance(void)
 
 ThumbnailGeneratorInstance::~ThumbnailGeneratorInstance(void) {}
 
+/*
+ * TODO:
+ * Move functions like toggleSky into their own "Lighting" instance
+ * Make this headless, and allow for resolutions greater than the screen resolution
+*/
 std::string ThumbnailGeneratorInstance::click(std::string fileType, int cx, int cy, bool hideSky)
 {
-	// Important things we need
 	RenderDevice* rd = g_usableApp->getRenderDevice();
 	GuiRootInstance* guiRoot = g_dataModel->getGuiRoot();
-
 	const G3D::GImage::Format format = G3D::GImage::stringToFormat(fileType);
-	
-	// Hide the GUI
-	guiRoot->hideGui(true);
+	int prevWidth = rd->width();
+	int prevHeight = rd->height();
+	G3D::GImage imgBuffer(cx, cy, 4);
+	G3D::BinaryOutput binOut;
 
-	// Disable the sky
+	guiRoot->hideGui(true);
+	g_usableApp->resize3DView(cx, cy);
+
 	if(hideSky) 
 		g_usableApp->toggleSky();
 	
-	// Update graphics
 	g_usableApp->onGraphics(rd);
-
-	// Sky SHOULD be gone now, and alpha channel should be present
-	G3D::GImage imgBuffer(cx, cy, 4);
 	rd->screenshotPic(imgBuffer, true, hideSky);
-	
-	G3D::BinaryOutput binOut;
 	imgBuffer.encode(format, binOut);
 
-	// Temporary file saving
-	std::string fileSave = "./click_output." + fileType;
-	std::ofstream out(fileSave.c_str(), std::ios::out | std::ios::binary);
-	out.write(reinterpret_cast<const char*>(binOut.getCArray()), binOut.length());
-
-	// Unhide GUI
+	// Convert to Base64 string
+	std::string base64ImgStr = base64_encode(reinterpret_cast<const unsigned char*>(binOut.getCArray()), binOut.length(), false);
+	
 	guiRoot->hideGui(false);
+	g_usableApp->resize3DView(prevWidth, prevHeight);
 
-	return "boop!";
+	return base64ImgStr;
 }
 

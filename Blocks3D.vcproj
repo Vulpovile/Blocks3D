@@ -670,6 +670,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Helpers"
+				>
+				<File
+					RelativePath=".\src\source\base64.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -924,6 +932,14 @@
 				</File>
 				<File
 					RelativePath=".\src\include\Properties\Property.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Helpers"
+				>
+				<File
+					RelativePath=".\src\include\base64.h"
 					>
 				</File>
 			</Filter>
