@@ -17,10 +17,6 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		AppendMenu(mainmenu, MF_STRING, 102, "Close");
 		AppendMenu(mainmenu, MF_SEPARATOR, 0, NULL);
 		
-		// Temporary
-		// AppendMenu(mainmenu, MF_STRING, 103, "ThumbnailGenerator::click hideSky = true");
-		// AppendMenu(mainmenu, MF_STRING, 104, "ThumbnailGenerator::click hideSky = false");
-		
 		POINT p;
 		GetCursorPos(&p);
 		int menuClick = TrackPopupMenu(mainmenu, TPM_LEFTBUTTON | TPM_RETURNCMD, p.x, p.y, 0, Globals::mainHwnd, 0);
@@ -36,17 +32,6 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		case 102:
 			g_usableApp->QuitApp();
 			break;
-		
-		/*
-		// These are only here for future reference
-		case 103:
-			g_dataModel->getThumbnailGenerator()->click("PNG", 256, 256, true);
-			break;
-		case 104:
-			g_dataModel->getThumbnailGenerator()->click("JPEG", 105, 70, false);
-			break;
-		*/
-
 		}
 	}
 }
