@@ -108,7 +108,9 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	_settings.writeLicenseFile = false;
 	_settings.logFilename = tempPath + "/g3dlog.txt";
 	_settings.window.center = true; 
-	_settings.window.fsaaSamples = 8;
+	
+	// Needs to be enabled if "B3DCCService" (still need to finalize that name)
+	//_settings.window.fsaaSamples = 8;
 
 	Win32Window* window = Win32Window::create(_settings.window,_hwndRenderer);
 	ShowWindow(_hwndRenderer, SW_SHOW);

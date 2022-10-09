@@ -7,7 +7,6 @@
 #include "IEBrowser.h"
 #include "Mouse.h"
 #include "Tool/Tool.h"
-//#include "GuiRoot.h"
 
 class TextButtonInstance;
 class ImageButtonInstance;
