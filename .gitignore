@@ -58,3 +58,5 @@ desktop.ini
 #Redist
 !Installer/Redist/*
 UpgradeLog.htm
+click_output.JPEG
+click_output.PNG

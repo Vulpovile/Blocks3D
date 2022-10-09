@@ -2,7 +2,6 @@
 #include "Application.h"
 
 int Globals::surfaceId = 2;
-//bool Globals::showMouse = true;
 bool Globals::useMousePoint = false;
 std::vector<Instance*> postRenderStack = std::vector<Instance*>();
 

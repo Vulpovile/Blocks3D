@@ -1,14 +1,6 @@
 #include "XplicitNgine/XplicitNgine.h"
 #include "Globals.h"
 
-//#define SIDE (0.5f)
-//#define MASS (1.0)
-
-// constraints
-//#define MAX_BODIES 65535
-//#define OBJ_DENSITY (5.0)
-//#define MAX_CONTACT_PER_BODY 4
-
 XplicitNgine::XplicitNgine() 
 {
 	
@@ -23,7 +15,6 @@ XplicitNgine::XplicitNgine()
 	dWorldSetAutoDisableSteps(physWorld, 20);
 
 	this->name = "PhysicsService";
-	//dGeomID ground_geom = dCreatePlane(physSpace, 0, 1, 0, 0);
 }
 
 XplicitNgine::~XplicitNgine() 
@@ -58,7 +49,6 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 			contact[i].surface.mode = dContactBounce | dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
 
 			// Define contact surface properties
-
 			contact[i].surface.bounce = 0.5; //Elasticity
 			contact[i].surface.mu = 0.4F; //Friction
 			contact[i].surface.slip1 = 0.0;
@@ -121,9 +111,6 @@ void XplicitNgine::deleteBody(PartInstance* partInstance)
 
 void XplicitNgine::createBody(PartInstance* partInstance)
 {
-	// calculate collisions
-	//dSpaceCollide (physSpace,0,&collisionCallback);
-
 	if(partInstance->physBody == NULL) 
 	{
 		
@@ -131,6 +118,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		Vector3 partPosition = partInstance->getPosition();
 		Vector3 velocity = partInstance->getVelocity();
 		Vector3 rotVelocity = partInstance->getRotVelocity();
+		
 		// init body
 		partInstance->physBody = dBodyCreate(physWorld);
 		dBodySetData(partInstance->physBody, partInstance);
@@ -146,11 +134,6 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 			dVector3 result;
 			dGeomBoxGetLengths(partInstance->physGeom[0], result);
-			//printf("[XplicitNgine] Part Geom Size: %.1f, %.1f, %.1f\n", 
-			//	result[0], 
-			//	result[1], 
-			//	result[2]
-			//);
 		}
 		else
 		{
@@ -161,11 +144,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
 		dBodySetMass(partInstance->physBody, &mass);
 
-		// Debug output
-		
-
 		// Create rigid body
-		//printf("[XplicitNgine] Created Geom for PartInstance\n");
 		dBodySetPosition(partInstance->physBody, 
 			partPosition.x,
 			partPosition.y,
@@ -187,8 +166,6 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		dGeomSetRotation(partInstance->physGeom[0], rotation);
 		dBodySetRotation(partInstance->physBody, rotation);
 
-		//printf("[XplicitNgine] Created Body for PartInstance\n");
-		
 		if(!partInstance->isAnchored() && !partInstance->isDragging())
 			dGeomSetBody(partInstance->physGeom[0], partInstance->physBody);
 
@@ -203,10 +180,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 
 			const dReal* physPosition = dBodyGetPosition(partInstance->physBody);
 			
-			// TODO: Rotation code
-			// Probably should be done AFTER we get physics KINDA working!!!
 			const dReal* physRotation = dGeomGetRotation(partInstance->physGeom[0]);
-			//partInstance->setPosition(Vector3(physPosition[0], physPosition[1], physPosition[2]));
 			partInstance->setCFrameNoSync(CoordinateFrame(
 				Matrix3(physRotation[0],physRotation[1],physRotation[2],
 						physRotation[4],physRotation[5],physRotation[6],
@@ -214,9 +188,6 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 				Vector3(physPosition[0], physPosition[1], physPosition[2])));
 		}
 	}
-//STEP SHOULD NOT BE HERE!
-	//dWorldQuickStep(physWorld, stepSize);
-	//dJointGroupEmpty(contactgroup);
 }
 
 void XplicitNgine::step(float stepSize)
@@ -224,8 +195,6 @@ void XplicitNgine::step(float stepSize)
 	dJointGroupEmpty(contactgroup);
 	dSpaceCollide (physSpace,0,&collisionCallback);
 	dWorldQuickStep(physWorld, stepSize);
-	//dWorldStepFast1(physWorld, stepSize*2, 100);
-	//dWorldStep(physWorld, stepSize);
 }
 
 void XplicitNgine::updateBody(PartInstance *partInstance)

@@ -73,7 +73,6 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		break;
 		case WM_DRAWITEM:
 			{
-				std::cout << "Drawing?" << "\r\n";
 				COLORREF clrBackground;
 				COLORREF clrForeground;
 				TEXTMETRIC tm;

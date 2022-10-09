@@ -2,6 +2,7 @@
 #include "DataModelV2/GuiRootInstance.h"
 #include "DataModelV2/ToggleImageButtonInstance.h"
 #include "DataModelV2/DataModelInstance.h"
+#include "DataModelV2/ThumbnailGeneratorInstance.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -20,14 +21,11 @@ DataModelInstance::DataModelInstance(void)
 	workspace = new WorkspaceInstance();
 	guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
+	thumbnailGenerator = new ThumbnailGeneratorInstance();
+
 	selectionService = new SelectionService();
 	selectionService->setPropertyWindow(g_usableApp->_propWindow);
-	//children.push_back(workspace);
-	//children.push_back(level);
 	className = "dataModel";
-	//mousex = 0;
-	//mousey = 0;
-	//mouseButton1Down = false;
 	showMessage = false;
 	canDelete = false;
 	_modY=0;
@@ -651,4 +649,9 @@ SelectionService* DataModelInstance::getSelectionService()
 LevelInstance* DataModelInstance::getLevel()
 {
 	return level;
+}
+
+ThumbnailGeneratorInstance* DataModelInstance::getThumbnailGenerator()
+{
+	return thumbnailGenerator;
 }

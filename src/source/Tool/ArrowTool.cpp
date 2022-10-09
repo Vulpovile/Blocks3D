@@ -105,7 +105,6 @@ void ArrowTool::onMouseMoved(Mouse mouse)
 		return;
 	}
 	PartInstance * target = mouse.getTarget();
-	//if(target == NULL)
 }
 void ArrowTool::onSelect(Mouse mouse)
 {

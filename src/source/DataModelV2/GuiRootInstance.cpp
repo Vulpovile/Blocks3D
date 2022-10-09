@@ -43,6 +43,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 {
 	g_fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
 	g_fntlighttrek = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+	_hideGui = false;
 
 	//Bottom Left
 	TextButtonInstance* button = makeTextButton();
@@ -434,6 +435,7 @@ void GuiRootInstance::setDebugMessage(std::string msg, G3D::RealTime msgTime)
 
 void GuiRootInstance::renderGUI(G3D::RenderDevice* rd, double fps)
 {
+	if(_hideGui) return;
 	//TODO--Move these to their own instance
 
 	std::stringstream stream;
@@ -538,4 +540,8 @@ void GuiRootInstance::onMouseLeftUp(G3D::RenderDevice* renderDevice, int x,int y
 			}
 		}
 	}
+}
+
+void GuiRootInstance::hideGui(bool doHide) {
+	_hideGui = doHide;
 }

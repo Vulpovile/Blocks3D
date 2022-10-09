@@ -16,6 +16,7 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		AppendMenu(mainmenu, MF_STRING, 101, "Open...");
 		AppendMenu(mainmenu, MF_STRING, 102, "Close");
 		AppendMenu(mainmenu, MF_SEPARATOR, 0, NULL);
+		
 		POINT p;
 		GetCursorPos(&p);
 		int menuClick = TrackPopupMenu(mainmenu, TPM_LEFTBUTTON | TPM_RETURNCMD, p.x, p.y, 0, Globals::mainHwnd, 0);

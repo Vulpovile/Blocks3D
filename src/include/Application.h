@@ -7,7 +7,6 @@
 #include "IEBrowser.h"
 #include "Mouse.h"
 #include "Tool/Tool.h"
-//#include "GuiRoot.h"
 
 class TextButtonInstance;
 class ImageButtonInstance;
@@ -48,14 +47,18 @@ class Application { // : public GApp {
 		void		setFocus(bool isFocused);
 		int			getMode();
 		void		unSetMode();
+
+		void toggleSky();
 		CameraController	cameraController;
 		UserInput*			userInput;
 		PropertyWindow*		_propWindow;
-		void generateShadowMap(const CoordinateFrame& lightViewMatrix) const;
+		void				generateShadowMap(const CoordinateFrame& lightViewMatrix) const;
 		RenderDevice*		getRenderDevice();
 		void				selectInstance(Instance* selectedInstance,PropertyWindow* propWindow);
 		void				setMode(int mode);
-		
+		SkyRef				getSky();
+		void				resize3DView(int w, int h);		
+
 		Tool * tool;
 		void changeTool(Tool *);
 		Mouse mouse;
@@ -82,6 +85,7 @@ class Application { // : public GApp {
 		GAppSettings		_settings;
 		double lightProjX, lightProjY, lightProjNear, lightProjFar;
 		IEBrowser*		webBrowser;
+		bool _hideSky;
 	protected:
 		Stopwatch           m_graphicsWatch;
 		Stopwatch           m_logicWatch;

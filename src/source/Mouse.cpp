@@ -20,7 +20,6 @@ void eprt(PartInstance * instance)
 			{
 				nearest=time;
 				selectedInstance = instance;
-				//This is where dead code below was
 			}
 		}
 }
@@ -30,7 +29,6 @@ PartInstance * Mouse::getTarget()
 	selectedInstance = NULL;
 	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
 	nearest=std::numeric_limits<float>::infinity();
-	//Vector3 camPos = g_usableApp->cameraController.getCamera()->getCoordinateFrame().translation;
 	for_each (g_dataModel->getWorkspace()->partObjects.begin(), g_dataModel->getWorkspace()->partObjects.end(), eprt);
 	return selectedInstance;
 }

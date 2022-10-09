@@ -6,7 +6,6 @@
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	//CoordinateFrame frame = g_usableApp->g3dCamera.getCoordinateFrame();
 	int mode = g_usableApp->getMode();
 
 	std::vector<Instance*> instances_2D = g_dataModel->getGuiRoot()->getAllChildren();

@@ -2,6 +2,7 @@
 #include "WorkspaceInstance.h"
 #include "LevelInstance.h"
 #include "PartInstance.h"
+#include "ThumbnailGeneratorInstance.h"
 #include "SelectionService.h"
 #include "rapidxml/rapidxml.hpp"
 #include "GuiRootInstance.h"
@@ -23,9 +24,12 @@ public:
 	bool					load(const char* filename,bool clearObjects);	
 	bool					readXMLFileStream(std::ifstream* file);
 	void					drawMessage(RenderDevice*);
-	WorkspaceInstance*		getWorkspace();
-	LevelInstance *			getLevel();
-	XplicitNgine *			getEngine();
+	
+	WorkspaceInstance*				getWorkspace();
+	LevelInstance*					getLevel();
+	XplicitNgine*					getEngine();
+	ThumbnailGeneratorInstance*		getThumbnailGenerator();
+
 	std::string				message;
 	std::string				_loadedFileName;
 	bool					showMessage;
@@ -50,9 +54,10 @@ private:
 	bool					_legacyLoad;
 	float					_modY;
 	WorkspaceInstance*		workspace;
-	LevelInstance *			level;
+	LevelInstance*			level;
 	GuiRootInstance*		guiRoot;
 	SelectionService*		selectionService;
+	ThumbnailGeneratorInstance * thumbnailGenerator;
 	bool					running;
 	XplicitNgine *			xplicitNgine;
 };

@@ -63,12 +63,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK ToolboxProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    //Application *app = (Application *)GetWindowLongPtr(hwnd, GWL_USERDATA);
 	MessageBox(NULL, (LPCSTR)wParam, (LPCSTR)lParam, 1);
-	//if (app==NULL)
-	//{
-		//return DefWindowProc(hwnd, msg, wParam, lParam);
-	//}
 	switch(msg)
     {
 		case WM_SIZE:
@@ -152,24 +147,11 @@ int main(int argc, char** argv) {
 	try{
 #endif
 		hresult = OleInitialize(NULL);
-
-/*		IInternetSecurityManager *pSecurityMgr;
-		IInternetZoneManager *pZoneMgr;
-		LPCWSTR site1 = SysAllocString(L"http://www.androdome.com");
-
-		hr = CoCreateInstance(CLSID_InternetSecurityManager, NULL, CLSCTX_INPROC_SERVER, IID_IInternetSecurityManager, (void**)&pSecurityMgr);
-
-		pSecurityMgr->SetZoneMapping((DWORD)2, site1, (DWORD)0); // 2 = Trusted Site, site1 is the URL to add, and 0 is to create the entry.
-*/
-		
-
-
 		if (!AXRegister())
 			return 0;
 
 			
 		INITCOMMONCONTROLSEX icc;
-//		WNDCLASSEX wcx;
 
 		/* Initialize common controls. Also needed for MANIFEST's */
 
@@ -179,10 +161,6 @@ int main(int argc, char** argv) {
 		InitCommonControlsEx(&icc);
 
 		AudioPlayer::init();
-		/* GAppSettings settings;
-		settings.window.resizable = true;
-		settings.writeLicenseFile = false;
-		settings.window.center = true; */
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))

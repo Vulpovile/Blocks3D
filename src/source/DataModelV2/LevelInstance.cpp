@@ -5,6 +5,7 @@ LevelInstance::LevelInstance(void)
 {
 	Instance::Instance();
 	name = "Level";
+	className = "LevelService";
 	winMessage = "You Won!";
 	loseMessage = "You Lost. Try Again";
 	timer = 60.0F;

@@ -506,6 +506,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ThumbnailGeneratorInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\WorkspaceInstance.cpp"
 					>
 					<FileConfiguration
@@ -663,6 +667,14 @@
 				</File>
 				<File
 					RelativePath=".\src\source\Properties\Property.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Helpers"
+				>
+				<File
+					RelativePath=".\src\source\base64.cpp"
 					>
 				</File>
 			</Filter>
@@ -867,6 +879,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV2\ThumbnailGeneratorInstance.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV2\WorkspaceInstance.h"
 					>
 				</File>
@@ -916,6 +932,14 @@
 				</File>
 				<File
 					RelativePath=".\src\include\Properties\Property.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Helpers"
+				>
+				<File
+					RelativePath=".\src\include\base64.h"
 					>
 				</File>
 			</Filter>
