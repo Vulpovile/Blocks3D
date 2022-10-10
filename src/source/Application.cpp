@@ -548,6 +548,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	_dataModel->getWorkspace()->render(rd);
+	_dataModel->getWorkspace()->renderName(rd);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
