@@ -33,6 +33,14 @@ void Instance::render(RenderDevice* rd)
 	}
 }
 
+void Instance::renderName(RenderDevice* rd)
+{
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		children[i]->renderName(rd);
+	}
+}
+
 void Instance::update()
 {
 }
