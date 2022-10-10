@@ -16,6 +16,7 @@ public:
 	//Rendering
 	virtual void PartInstance::postRender(RenderDevice* rd);
 	virtual void render(RenderDevice*);
+	virtual void renderName(RenderDevice*);
 	
 	//Surfaces
 	Enum::SurfaceType::Value top;
