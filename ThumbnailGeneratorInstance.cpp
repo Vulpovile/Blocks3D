@@ -21,9 +21,15 @@ ThumbnailGeneratorInstance::~ThumbnailGeneratorInstance(void) {}
 */
 std::string ThumbnailGeneratorInstance::click(std::string fileType, int cx, int cy, bool hideSky)
 {
+	if(!G3D::GImage::supportedFormat(fileType)) {
+		printf("%s is not a valid fileType.", fileType);
+		return "";
+	}
+
 	RenderDevice* rd = g_usableApp->getRenderDevice();
 	GuiRootInstance* guiRoot = g_dataModel->getGuiRoot();
 	const G3D::GImage::Format format = G3D::GImage::stringToFormat(fileType);
+
 	int prevWidth = rd->width();
 	int prevHeight = rd->height();
 	G3D::GImage imgBuffer(cx, cy, 4);
