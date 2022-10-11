@@ -8,10 +8,7 @@ Mouse::Mouse()
 	x = y = 0;
 }
 
-Mouse::~Mouse() 
-{
-
-}
+Mouse::~Mouse() {}
 
 PartInstance * selectedInstance = NULL;
 Ray testRay;
