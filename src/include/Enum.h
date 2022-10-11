@@ -32,4 +32,10 @@ namespace Enum
 			NoChange = 0, Increase = 1, Decrease = 2
 		};
 	}
+	namespace Sound
+	{
+		enum Value {
+			NoSound = 0, Victory = 1, Boing = 2
+		};
+	}
 }

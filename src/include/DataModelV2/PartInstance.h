@@ -24,13 +24,24 @@ public:
 	Enum::SurfaceType::Value back;
 	Enum::SurfaceType::Value left;
 	Enum::SurfaceType::Value bottom;
+
+	//Shapes
 	Enum::Shape::Value shape;
+
+	//OnTocuh
+	Enum::ActionType::Value OnTouchAction;
+	Enum::Sound::Value OnTouchSound;
 
 	//Variables
 	Color3 color;
 	bool canCollide;
 	dBodyID physBody;
 	dGeomID physGeom[3];
+	bool singleShot;
+	int touchesToTrigger;
+	int uniqueObjectsToTrigger;
+	int changeScore;
+	int changeTimer;
 
 	//Getters
 	Vector3 getPosition();
