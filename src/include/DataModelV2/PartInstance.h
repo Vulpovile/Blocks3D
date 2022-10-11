@@ -30,18 +30,13 @@ public:
 
 	//OnTocuh
 	Enum::ActionType::Value OnTouchAction;
-	Enum::Sound::Value OnTouchSound;
+	Enum::Sound::Value OnTouchSound;	
 
 	//Variables
 	Color3 color;
 	bool canCollide;
 	dBodyID physBody;
 	dGeomID physGeom[3];
-	bool singleShot;
-	int touchesToTrigger;
-	int uniqueObjectsToTrigger;
-	int changeScore;
-	int changeTimer;
 
 	//Getters
 	Vector3 getPosition();
@@ -52,6 +47,13 @@ public:
 	Sphere getSphere();
 	Box getScaledBox();
 	CoordinateFrame getCFrame();
+
+	//OnTouch Getters
+	bool isSingleShot();
+	int getTouchesToTrigger();
+	int getUniqueObjectsToTrigger();
+	int getChangeScore();
+	float getChangeTimer();
 
 	//Setters
 	void setParent(Instance* parent);
@@ -74,6 +76,9 @@ public:
 	bool collides(PartInstance * part);
 	bool collides(Box);
 	
+	// onTouch
+	void onTouch();
+
 	//Properties
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
@@ -87,4 +92,12 @@ private:
 	bool dragging;
 	Box itemBox;
 	GLuint glList;
+
+	// OnTouch
+	bool singleShot;
+	int touchesToTrigger;
+	int uniqueObjectsToTrigger;
+	int changeScore;
+	float changeTimer;
+	bool _touchedOnce;
 };

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip>
 #include "Faces.h"
+#include "AudioPlayer.h"
+#include "StringFunctions.h"
 
 PartInstance::PartInstance(void)
 {
@@ -27,6 +29,7 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+	_touchedOnce = false;
 
 	// OnTouch
 	singleShot = true;
@@ -34,6 +37,7 @@ PartInstance::PartInstance(void)
 	uniqueObjectsToTrigger = 1;
 	changeScore = 0;
 	changeTimer = 0;
+	singleShot = true;
 }
 
 bool PartInstance::isDragging()
@@ -65,6 +69,32 @@ Vector3 PartInstance::getVelocity()
 Vector3 PartInstance::getRotVelocity()
 {
 	return rotVelocity;
+}
+
+// OnTouch
+bool PartInstance::isSingleShot()
+{
+	return singleShot;
+}
+
+int PartInstance::getTouchesToTrigger()
+{
+	return touchesToTrigger;
+}
+
+int PartInstance::getUniqueObjectsToTrigger()
+{
+	return uniqueObjectsToTrigger;
+}
+
+int PartInstance::getChangeScore()
+{
+	return changeScore;
+}
+
+float PartInstance::getChangeTimer()
+{
+	return changeTimer;
 }
 
 void PartInstance::setVelocity(Vector3 v)
@@ -197,6 +227,8 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	changeTimer = oinst.changeTimer;
 	OnTouchAction = oinst.OnTouchAction;
 	OnTouchSound = oinst.OnTouchSound;
+	singleShot = oinst.singleShot;
+	_touchedOnce = false;
 }
 
 void PartInstance::setSize(Vector3 newSize)
@@ -459,6 +491,46 @@ static Enum::Sound::Value EnumOnTouchSoundType(TCHAR* option)
 	return Enum::Sound::NoSound;
 }
 
+void PartInstance::onTouch()
+{
+	if(singleShot && _touchedOnce)
+		return;
+
+	if(singleShot && !_touchedOnce)
+		_touchedOnce = true;
+
+	g_dataModel->getLevel()->score += changeScore;
+	g_dataModel->getLevel()->timer += changeTimer;
+
+	switch(OnTouchAction)
+	{
+		case Enum::ActionType::Nothing:
+			break;
+		case Enum::ActionType::Pause:
+			break;
+		case Enum::ActionType::Lose:
+			g_dataModel->getLevel()->loseCondition();
+			break;
+		case Enum::ActionType::Draw:
+			break;
+		case Enum::ActionType::Win:
+			g_dataModel->getLevel()->winCondition();
+			break;
+	}
+
+	switch(OnTouchSound)
+	{
+		case Enum::Sound::NoSound:
+			break;
+		case Enum::Sound::Victory:
+			AudioPlayer::playSound(GetFileInPath("/content/sounds/victory.wav"));
+			break;
+		case Enum::Sound::Boing:
+			AudioPlayer::playSound(GetFileInPath("/content/sounds/boing.wav"));
+			break;
+	}
+}
+
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	setChanged();
@@ -526,9 +598,25 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	{
 		OnTouchSound = EnumOnTouchSoundType((TCHAR*)item->lpCurValue);
 	}
+	else if (strcmp(item->lpszPropName, "ChangeScore") == 0)
+	{
+		changeScore = atoi((LPSTR)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "ChangeTimer") == 0)
+	{
+		changeTimer = atof((LPSTR)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "SingleShot") == 0)
+	{
+		singleShot = item->lpCurValue == TRUE;
+	}
 	else PVInstance::PropUpdate(item);
 }
 
+// This needs to be changed, buffer size of 12 is way too small
+// Crash occurs if you put a huge number in
+char changeTimerTxt[12];
+char changeScoreTxt[12];
 std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
@@ -580,6 +668,25 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)strSoundType(OnTouchSound),
 		PIT_COMBO,
 		TEXT("NoSound\0Victory\0Boing\0")
+		));
+
+		sprintf_s(changeScoreTxt, "%d", changeScore);
+		sprintf_s(changeTimerTxt, "%g", changeTimer);
+	properties.push_back(createPGI("OnTouch",
+		"ChangeScore",
+		"How the score is affected when touched",
+		(LPARAM)changeScoreTxt,
+		PIT_EDIT));
+	properties.push_back(createPGI("OnTouch",
+		"ChangeTimer",
+		"How the timer is affected when touched",
+		(LPARAM)changeTimerTxt,
+		PIT_EDIT));
+	properties.push_back(createPGI("OnTouch",
+		"SingleShot",
+		"Whether or not Action happens only once",
+		(LPARAM)singleShot,
+		PIT_CHECK
 		));
 	return properties;
 }
