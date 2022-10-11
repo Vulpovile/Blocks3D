@@ -83,9 +83,9 @@ MousePoint Mouse::getPositionAndPart(std::vector<Instance *> ignore)
 		
 	// A crude implementation of stud snapping
 	Vector3 pSz = currPart->getSize();
-	pos.x = (ceil(pos.x / 1) * 1);
-	pos.y = (ceil(pos.y / 1) * 1);
-	pos.z = (ceil(pos.z / 1) * 1);
+	pos.x = ceil(pos.x);
+	pos.y = ceil(pos.y);
+	pos.z = ceil(pos.z);
 
 	return MousePoint(pos, currPart);
 }
