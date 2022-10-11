@@ -3,25 +3,28 @@
 #include "Globals.h"
 #include <math.h>
 
-Mouse::Mouse(){
+Mouse::Mouse()
+{
 	x = y = 0;
 }
-Mouse::~Mouse(){}
+
+Mouse::~Mouse() 
+{
+
+}
 
 PartInstance * selectedInstance = NULL;
 Ray testRay;
-float nearest=std::numeric_limits<float>::infinity();
+float nearest = std::numeric_limits<float>::infinity();
+
 void eprt(PartInstance * instance)
 {
-		float time = testRay.intersectionTime(instance->getBox());
-		if (time != inf()) 
-		{
-			if (nearest>time)
-			{
-				nearest=time;
-				selectedInstance = instance;
-			}
-		}
+	float time = testRay.intersectionTime(instance->getBox());
+	if (time != inf() && nearest > time) 
+	{
+		nearest = time;
+		selectedInstance = instance;
+	}
 }
 
 PartInstance * Mouse::getTarget()
@@ -46,6 +49,7 @@ G3D::Ray Mouse::getLastRay()
 
 double getVectorDistance(Vector3 vector1, Vector3 vector2)
 {
+	// what the
 	return pow(pow((double)vector1.x - (double)vector2.x, 2) + pow((double)vector1.y - (double)vector2.y, 2) + pow((double)vector1.z - (double)vector2.z, 2), 0.5);
 }
 
@@ -53,28 +57,28 @@ MousePoint Mouse::getPositionAndPart(std::vector<Instance *> ignore)
 {
 	testRay = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
 	PartInstance * currPart = NULL;
-	Vector3 pos = testRay.closestPoint(Vector3(0,0,0));
-	nearest=std::numeric_limits<float>::infinity();
+	Vector3 pos = testRay.closestPoint(Vector3(0, 0, 0));
+	nearest = std::numeric_limits<float>::infinity();
+	
 	for(size_t i = 0; i < g_dataModel->getWorkspace()->partObjects.size(); i++)
 	{
 		PartInstance * p = g_dataModel->getWorkspace()->partObjects[i];
-		if(std::find(ignore.begin(), ignore.end(), p) != ignore.end())
+		
+		if (std::find(ignore.begin(), ignore.end(), p) != ignore.end())
 			continue;
+		
 		float newdistance = testRay.intersectionTime(p->getBox()); //testRay.distance(inter);
-		if(G3D::isFinite(newdistance))
-        {
-			if(nearest > abs(newdistance))
-            {
-                nearest = newdistance;
-                pos = testRay.origin+(testRay.direction*nearest);
-				currPart = p;
-            }
-        }
+		if (G3D::isFinite(newdistance) && nearest > abs(newdistance))
+        	{
+			nearest = newdistance;
+                	pos = testRay.origin + (testRay.direction * nearest);
+			currPart = p;
+        	}
 	}
 
 	// A scuffed fix for moving
-	if(currPart == NULL) {
-		if(PartInstance * part = dynamic_cast<PartInstance *>(ignore[0]))
+	if (currPart == NULL) {
+		if (PartInstance * part = dynamic_cast<PartInstance *>(ignore[0]))
 		{
 			return MousePoint(part->getPosition(), part);
 		}
