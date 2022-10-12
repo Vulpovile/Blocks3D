@@ -71,10 +71,15 @@ SoundService::~SoundService(void)
 {
 }
 
-void SoundService::playSound(SoundInstance* sound)
+void SoundService::playSound(Instance* sound)
 {
-	std::string soundId = sound->getSoundId();
-	AudioPlayer::playSound(GetFileInPath(soundId));
+	// Try to dynamic_cast it to SoundInstance
+	SoundInstance* sndInst = dynamic_cast<SoundInstance*>(sound);
+	if(sndInst != NULL)
+	{
+		std::string soundId = sndInst->getSoundId();
+		AudioPlayer::playSound(GetFileInPath(soundId));
+	}
 }
 
 float SoundService::getMusicVolume()

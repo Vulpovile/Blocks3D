@@ -10,7 +10,7 @@ public:
 	~SoundService(void);
 
 	float getMusicVolume();
-	void playSound(SoundInstance* sound);
+	void playSound(Instance* sound);
 private:
 	float musicVolume;
 };

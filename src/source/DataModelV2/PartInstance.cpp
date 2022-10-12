@@ -525,10 +525,10 @@ void PartInstance::onTouch()
 		case Enum::Sound::NoSound:
 			break;
 		case Enum::Sound::Victory:
-			sndService->playSound(dynamic_cast<SoundInstance*>(sndService->findFirstChild("Victory")));
+			sndService->playSound(sndService->findFirstChild("Victory"));
 			break;
 		case Enum::Sound::Boing:
-			sndService->playSound(dynamic_cast<SoundInstance*>(sndService->findFirstChild("Boing")));
+			sndService->playSound(sndService->findFirstChild("Boing"));
 			break;
 	}
 }
