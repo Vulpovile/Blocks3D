@@ -8,6 +8,8 @@ SoundService::SoundService()
 	name = "SoundService";
 	className = "SoundService";
 	musicVolume = 0.3f;
+	listicon = 8;
+	canDelete = false;
 
 	// Create stock sounds
 	SoundInstance* stockSound = new SoundInstance();

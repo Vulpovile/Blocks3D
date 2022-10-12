@@ -35,7 +35,9 @@ namespace Enum
 	namespace Sound
 	{
 		enum Value {
-			NoSound = 0, Victory = 1, Boing = 2
+			NoSound = 0, Victory = 1, Boing = 2, Bomb = 3, 
+			Ping = 4, Break = 5, Splat = 6, Swoosh = 7, 
+			Snap = 8, Page = 9
 		};
 	}
 }

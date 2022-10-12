@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
-#define NUM_SOUNDS 10
+#define NUM_SOUNDS 32
 static SDL_AudioSpec fmt;
 static bool initiated = false;
 
@@ -23,7 +23,7 @@ void AudioPlayer::init()
 	initiated = true;
 	extern void mixaudio(void *unused, Uint8 *stream, int len);
 	fmt.freq = 22050;
-    fmt.format = AUDIO_S16;
+    fmt.format = AUDIO_S16LSB;
     fmt.channels = 2;
     fmt.samples = 1024;        /* A good value for games */
     fmt.callback = mixaudio;

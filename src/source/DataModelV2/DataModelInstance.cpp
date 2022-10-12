@@ -32,6 +32,7 @@ DataModelInstance::DataModelInstance(void)
 	_modY=0;
 	workspace->setParent(this);
 	level->setParent(this);
+	soundService->setParent(this);
 
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;

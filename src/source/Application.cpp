@@ -130,6 +130,8 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 		return;
 	}
 
+	AudioPlayer::init();
+
     _window = renderDevice->window();
     _window->makeCurrent();
 	

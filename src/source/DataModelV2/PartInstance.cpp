@@ -476,6 +476,20 @@ static TCHAR* strSoundType(int option)
 			return "Victory";
 		case Enum::Sound::Boing:
 			return "Boing";
+		case Enum::Sound::Splat:
+			return "Splat";
+		case Enum::Sound::Snap:
+			return "Snap";
+		case Enum::Sound::Bomb:
+			return "Bomb";
+		case Enum::Sound::Break:
+			return "Break";
+		case Enum::Sound::Ping:
+			return "Ping";
+		case Enum::Sound::Swoosh:
+			return "Swoosh";
+		case Enum::Sound::Page:
+			return "Page";
 	}
 	return "NoSound";
 }
@@ -488,6 +502,21 @@ static Enum::Sound::Value EnumOnTouchSoundType(TCHAR* option)
 		return Enum::Sound::Victory;
 	if(strcmp("Boing", option) == 0)
 		return Enum::Sound::Boing;
+	if(strcmp("Splat", option) == 0)
+		return Enum::Sound::Splat;
+	if(strcmp("Bomb", option) == 0)
+		return Enum::Sound::Bomb;
+	if(strcmp("Break", option) == 0)
+		return Enum::Sound::Break;
+	if(strcmp("Swoosh", option) == 0)
+		return Enum::Sound::Swoosh;
+	if(strcmp("Page", option) == 0)
+		return Enum::Sound::Page;
+	if(strcmp("Ping", option) == 0)
+		return Enum::Sound::Ping;
+	if(strcmp("Snap", option) == 0)
+		return Enum::Sound::Snap;
+
 	return Enum::Sound::NoSound;
 }
 
@@ -529,6 +558,27 @@ void PartInstance::onTouch()
 			break;
 		case Enum::Sound::Boing:
 			sndService->playSound(sndService->findFirstChild("Boing"));
+			break;
+		case Enum::Sound::Break:
+			sndService->playSound(sndService->findFirstChild("Break"));
+			break;
+		case Enum::Sound::Snap:
+			sndService->playSound(sndService->findFirstChild("Snap"));
+			break;
+		case Enum::Sound::Bomb:
+			sndService->playSound(sndService->findFirstChild("Bomb"));
+			break;
+		case Enum::Sound::Splat:
+			sndService->playSound(sndService->findFirstChild("Splat"));
+			break;
+		case Enum::Sound::Page:
+			sndService->playSound(sndService->findFirstChild("Page"));
+			break;
+		case Enum::Sound::Ping:
+			sndService->playSound(sndService->findFirstChild("Ping"));
+			break;
+		case Enum::Sound::Swoosh:
+			sndService->playSound(sndService->findFirstChild("Swoosh"));
 			break;
 	}
 }
@@ -669,7 +719,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		"What sound plays when touched",
 		(LPARAM)strSoundType(OnTouchSound),
 		PIT_COMBO,
-		TEXT("NoSound\0Victory\0Boing\0")
+		TEXT("NoSound\0Victory\0Boing\0Break\0Snap\0Bomb\0Splat\0Page\0Ping\0Swoosh\0")
 		));
 
 		sprintf_s(changeScoreTxt, "%d", changeScore);

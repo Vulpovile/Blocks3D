@@ -159,8 +159,6 @@ int main(int argc, char** argv) {
 		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
 					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
 		InitCommonControlsEx(&icc);
-
-		AudioPlayer::init();
 		HMODULE hThisInstance = GetModuleHandle(NULL);
 
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))

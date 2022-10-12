@@ -5,6 +5,7 @@ SoundInstance::SoundInstance()
 {
 	name = "Sound";
 	className = "Sound";
+	listicon = 8;
 
 	soundVolume = 0.5;
 	soundId = "";
