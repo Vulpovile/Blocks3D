@@ -39,7 +39,7 @@ std::string ThumbnailGeneratorInstance::click(std::string fileType, int cx, int 
 	g_usableApp->resize3DView(cx, cy);
 
 	if(hideSky) 
-		g_usableApp->toggleSky();
+		g_dataModel->getLighting()->suppressSky(true);
 	
 	g_usableApp->onGraphics(rd);
 	rd->screenshotPic(imgBuffer, true, hideSky);

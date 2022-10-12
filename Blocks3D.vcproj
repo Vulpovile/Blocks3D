@@ -458,6 +458,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\source\DataModelV2\LightingInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\PartInstance.cpp"
 					>
 					<FileConfiguration
@@ -872,6 +876,10 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\LevelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\LightingInstance.h"
 					>
 				</File>
 				<File

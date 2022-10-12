@@ -593,7 +593,11 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	setChanged();
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
-		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
+		color = Color3(
+			GetRValue(item->lpCurValue)/255.0F,
+			GetGValue(item->lpCurValue)/255.0F,
+			GetBValue(item->lpCurValue)/255.0F
+		);
 	}
 	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{

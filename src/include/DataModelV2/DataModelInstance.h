@@ -9,6 +9,7 @@
 #include "ThumbnailGeneratorInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
 #include "SoundService.h"
+#include "LightingInstance.h"
 
 // Libraries 
 #include "rapidxml/rapidxml.hpp"
@@ -36,6 +37,7 @@ public:
 	XplicitNgine*					getEngine();
 	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 	SoundService*					getSoundService();
+	LightingInstance*				getLighting();
 
 	std::string				message;
 	std::string				_loadedFileName;
@@ -69,7 +71,7 @@ private:
 	ThumbnailGeneratorInstance* thumbnailGenerator;
 	XplicitNgine*			xplicitNgine;
 	SoundService*			soundService;
-
+	LightingInstance*		lightingInstance;
 	bool					running;
 	
 };

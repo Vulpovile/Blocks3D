@@ -140,6 +140,7 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 		));
 	return properties;
 }
+
 void LevelInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 {
 	if(strcmp(pItem->lpszPropName, "InitialTimerValue") == 0)

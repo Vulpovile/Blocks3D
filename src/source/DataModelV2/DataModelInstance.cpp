@@ -1,8 +1,12 @@
 #include <string>
+
+// Instances
 #include "DataModelV2/GuiRootInstance.h"
 #include "DataModelV2/ToggleImageButtonInstance.h"
 #include "DataModelV2/DataModelInstance.h"
 #include "DataModelV2/ThumbnailGeneratorInstance.h"
+#include "DataModelV2/LightingInstance.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -23,6 +27,7 @@ DataModelInstance::DataModelInstance(void)
 	level = new LevelInstance();
 	thumbnailGenerator = new ThumbnailGeneratorInstance();
 	soundService = new SoundService();
+	lightingInstance = new LightingInstance();
 
 	selectionService = new SelectionService();
 	selectionService->setPropertyWindow(g_usableApp->_propWindow);
@@ -30,9 +35,12 @@ DataModelInstance::DataModelInstance(void)
 	showMessage = false;
 	canDelete = false;
 	_modY=0;
+
+	// Parent stuff
 	workspace->setParent(this);
 	level->setParent(this);
 	soundService->setParent(this);
+	lightingInstance->setParent(this);
 
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
@@ -662,4 +670,9 @@ ThumbnailGeneratorInstance* DataModelInstance::getThumbnailGenerator()
 SoundService* DataModelInstance::getSoundService()
 {
 	return soundService;
+}
+
+LightingInstance* DataModelInstance::getLighting()
+{
+	return lightingInstance;
 }
