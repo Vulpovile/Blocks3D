@@ -14,14 +14,15 @@
 using namespace std;
 using namespace rapidxml;
 
-
 DataModelInstance::DataModelInstance(void)
 {
+	// Instances
 	Instance::Instance();
 	workspace = new WorkspaceInstance();
 	guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
 	thumbnailGenerator = new ThumbnailGeneratorInstance();
+	soundService = new SoundService();
 
 	selectionService = new SelectionService();
 	selectionService->setPropertyWindow(g_usableApp->_propWindow);
@@ -31,6 +32,7 @@ DataModelInstance::DataModelInstance(void)
 	_modY=0;
 	workspace->setParent(this);
 	level->setParent(this);
+
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
 	running = false;
@@ -654,4 +656,9 @@ LevelInstance* DataModelInstance::getLevel()
 ThumbnailGeneratorInstance* DataModelInstance::getThumbnailGenerator()
 {
 	return thumbnailGenerator;
+}
+
+SoundService* DataModelInstance::getSoundService()
+{
+	return soundService;
 }

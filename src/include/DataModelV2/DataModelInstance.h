@@ -1,12 +1,17 @@
 #pragma once
+
+// Instances
 #include "WorkspaceInstance.h"
 #include "LevelInstance.h"
 #include "PartInstance.h"
-#include "ThumbnailGeneratorInstance.h"
 #include "SelectionService.h"
-#include "rapidxml/rapidxml.hpp"
 #include "GuiRootInstance.h"
+#include "ThumbnailGeneratorInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
+#include "SoundService.h"
+
+// Libraries 
+#include "rapidxml/rapidxml.hpp"
 
 class GuiRootInstance;
 
@@ -25,10 +30,12 @@ public:
 	bool					readXMLFileStream(std::ifstream* file);
 	void					drawMessage(RenderDevice*);
 	
+	// Instance getters
 	WorkspaceInstance*				getWorkspace();
 	LevelInstance*					getLevel();
 	XplicitNgine*					getEngine();
 	ThumbnailGeneratorInstance*		getThumbnailGenerator();
+	SoundService*					getSoundService();
 
 	std::string				message;
 	std::string				_loadedFileName;
@@ -53,11 +60,16 @@ private:
 	std::string				_errMsg;
 	bool					_legacyLoad;
 	float					_modY;
+	
+	// Instances
 	WorkspaceInstance*		workspace;
 	LevelInstance*			level;
 	GuiRootInstance*		guiRoot;
 	SelectionService*		selectionService;
-	ThumbnailGeneratorInstance * thumbnailGenerator;
+	ThumbnailGeneratorInstance* thumbnailGenerator;
+	XplicitNgine*			xplicitNgine;
+	SoundService*			soundService;
+
 	bool					running;
-	XplicitNgine *			xplicitNgine;
+	
 };

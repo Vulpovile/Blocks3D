@@ -518,15 +518,17 @@ void PartInstance::onTouch()
 			break;
 	}
 
+	SoundService* sndService = g_dataModel->getSoundService();
+
 	switch(OnTouchSound)
 	{
 		case Enum::Sound::NoSound:
 			break;
 		case Enum::Sound::Victory:
-			AudioPlayer::playSound(GetFileInPath("/content/sounds/victory.wav"));
+			sndService->playSound(dynamic_cast<SoundInstance*>(sndService->findFirstChild("Victory")));
 			break;
 		case Enum::Sound::Boing:
-			AudioPlayer::playSound(GetFileInPath("/content/sounds/boing.wav"));
+			sndService->playSound(dynamic_cast<SoundInstance*>(sndService->findFirstChild("Boing")));
 			break;
 	}
 }
