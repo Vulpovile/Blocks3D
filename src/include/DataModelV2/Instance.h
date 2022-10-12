@@ -12,6 +12,7 @@ public:
 	virtual ~Instance(void);
 	std::string name;
 	virtual void render(RenderDevice*);
+	virtual void renderName(RenderDevice*);
 	virtual void update();
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();

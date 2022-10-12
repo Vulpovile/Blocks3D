@@ -108,6 +108,11 @@ void PartInstance::setRotVelocity(Vector3 v)
 
 void PartInstance::postRender(RenderDevice *rd)
 {
+	// possibly descard this function...
+}
+
+void PartInstance::renderName(RenderDevice *rd)
+{
 	if(!nameShown)
 		return;
 	G3D::GFontRef fnt = NULL;
