@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip>
 #include "Faces.h"
+#include "AudioPlayer.h"
+#include "StringFunctions.h"
 
 PartInstance::PartInstance(void)
 {
@@ -27,6 +29,15 @@ PartInstance::PartInstance(void)
 	left = Enum::SurfaceType::Smooth;
 	bottom = Enum::SurfaceType::Smooth;
 	shape = Enum::Shape::Block;
+	_touchedOnce = false;
+
+	// OnTouch
+	singleShot = true;
+	touchesToTrigger = 1;
+	uniqueObjectsToTrigger = 1;
+	changeScore = 0;
+	changeTimer = 0;
+	singleShot = true;
 }
 
 bool PartInstance::isDragging()
@@ -58,6 +69,32 @@ Vector3 PartInstance::getVelocity()
 Vector3 PartInstance::getRotVelocity()
 {
 	return rotVelocity;
+}
+
+// OnTouch
+bool PartInstance::isSingleShot()
+{
+	return singleShot;
+}
+
+int PartInstance::getTouchesToTrigger()
+{
+	return touchesToTrigger;
+}
+
+int PartInstance::getUniqueObjectsToTrigger()
+{
+	return uniqueObjectsToTrigger;
+}
+
+int PartInstance::getChangeScore()
+{
+	return changeScore;
+}
+
+float PartInstance::getChangeTimer()
+{
+	return changeTimer;
 }
 
 void PartInstance::setVelocity(Vector3 v)
@@ -169,8 +206,6 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	PVInstance::PVInstance(oinst);
 	physBody = NULL;
 	glList = glGenLists(1);
-	//name = oinst.name;
-	//className = "Part";
 	name = oinst.name;
 	canCollide = oinst.canCollide;
 	setParent(oinst.parent);
@@ -188,6 +223,17 @@ PartInstance::PartInstance(const PartInstance &oinst)
 	bottom = oinst.bottom;
 	shape = oinst.shape;
 	changed = true;
+
+	// OnTouch
+	singleShot = oinst.singleShot;
+	touchesToTrigger = oinst.touchesToTrigger;
+	uniqueObjectsToTrigger = oinst.uniqueObjectsToTrigger;
+	changeScore = oinst.changeScore;
+	changeTimer = oinst.changeTimer;
+	OnTouchAction = oinst.OnTouchAction;
+	OnTouchSound = oinst.OnTouchSound;
+	singleShot = oinst.singleShot;
+	_touchedOnce = false;
 }
 
 void PartInstance::setSize(Vector3 newSize)
@@ -368,6 +414,7 @@ char pto[512];
 char pto2[512];
 #include <sstream>
 
+// Shape
 static Enum::Shape::Value strEnum(TCHAR* shape)
 {
 	if(strcmp("Block", shape) == 0)
@@ -391,12 +438,166 @@ static TCHAR* enumStr(int shape)
 	return "Block";
 }
 
+// ActionType
+static TCHAR* strActionType(int option)
+{
+	switch(option)
+	{
+		case Enum::ActionType::Nothing:
+			return "Nothing";
+		case Enum::ActionType::Pause:
+			return "Pause";
+		case Enum::ActionType::Lose:
+			return "Lose";
+		case Enum::ActionType::Draw:
+			return "Draw";
+		case Enum::ActionType::Win:
+			return "Win";
+	}
+	return "Nothing";
+}
+
+static Enum::ActionType::Value EnumOnTouchActionType(TCHAR* option)
+{
+	if(strcmp("Nothing", option) == 0)
+		return Enum::ActionType::Nothing;
+	if(strcmp("Pause", option) == 0)
+		return Enum::ActionType::Pause;
+	if(strcmp("Lose", option) == 0)
+		return Enum::ActionType::Lose;
+	if(strcmp("Draw", option) == 0)
+		return Enum::ActionType::Draw;
+	return Enum::ActionType::Win;
+}
+
+// SoundType
+static TCHAR* strSoundType(int option)
+{
+	switch(option)
+	{
+		case Enum::Sound::NoSound:
+			return "NoSound";
+		case Enum::Sound::Victory:
+			return "Victory";
+		case Enum::Sound::Boing:
+			return "Boing";
+		case Enum::Sound::Splat:
+			return "Splat";
+		case Enum::Sound::Snap:
+			return "Snap";
+		case Enum::Sound::Bomb:
+			return "Bomb";
+		case Enum::Sound::Break:
+			return "Break";
+		case Enum::Sound::Ping:
+			return "Ping";
+		case Enum::Sound::Swoosh:
+			return "Swoosh";
+		case Enum::Sound::Page:
+			return "Page";
+	}
+	return "NoSound";
+}
+
+static Enum::Sound::Value EnumOnTouchSoundType(TCHAR* option)
+{
+	if(strcmp("Nothing", option) == 0)
+		return Enum::Sound::NoSound;
+	if(strcmp("Victory", option) == 0)
+		return Enum::Sound::Victory;
+	if(strcmp("Boing", option) == 0)
+		return Enum::Sound::Boing;
+	if(strcmp("Splat", option) == 0)
+		return Enum::Sound::Splat;
+	if(strcmp("Bomb", option) == 0)
+		return Enum::Sound::Bomb;
+	if(strcmp("Break", option) == 0)
+		return Enum::Sound::Break;
+	if(strcmp("Swoosh", option) == 0)
+		return Enum::Sound::Swoosh;
+	if(strcmp("Page", option) == 0)
+		return Enum::Sound::Page;
+	if(strcmp("Ping", option) == 0)
+		return Enum::Sound::Ping;
+	if(strcmp("Snap", option) == 0)
+		return Enum::Sound::Snap;
+
+	return Enum::Sound::NoSound;
+}
+
+void PartInstance::onTouch()
+{
+	if(singleShot && _touchedOnce)
+		return;
+
+	if(singleShot && !_touchedOnce)
+		_touchedOnce = true;
+
+	g_dataModel->getLevel()->score += changeScore;
+	g_dataModel->getLevel()->timer += changeTimer;
+
+	switch(OnTouchAction)
+	{
+		case Enum::ActionType::Nothing:
+			break;
+		case Enum::ActionType::Pause:
+			break;
+		case Enum::ActionType::Lose:
+			g_dataModel->getLevel()->loseCondition();
+			break;
+		case Enum::ActionType::Draw:
+			break;
+		case Enum::ActionType::Win:
+			g_dataModel->getLevel()->winCondition();
+			break;
+	}
+
+	SoundService* sndService = g_dataModel->getSoundService();
+
+	switch(OnTouchSound)
+	{
+		case Enum::Sound::NoSound:
+			break;
+		case Enum::Sound::Victory:
+			sndService->playSound(sndService->findFirstChild("Victory"));
+			break;
+		case Enum::Sound::Boing:
+			sndService->playSound(sndService->findFirstChild("Boing"));
+			break;
+		case Enum::Sound::Break:
+			sndService->playSound(sndService->findFirstChild("Break"));
+			break;
+		case Enum::Sound::Snap:
+			sndService->playSound(sndService->findFirstChild("Snap"));
+			break;
+		case Enum::Sound::Bomb:
+			sndService->playSound(sndService->findFirstChild("Bomb"));
+			break;
+		case Enum::Sound::Splat:
+			sndService->playSound(sndService->findFirstChild("Splat"));
+			break;
+		case Enum::Sound::Page:
+			sndService->playSound(sndService->findFirstChild("Page"));
+			break;
+		case Enum::Sound::Ping:
+			sndService->playSound(sndService->findFirstChild("Ping"));
+			break;
+		case Enum::Sound::Swoosh:
+			sndService->playSound(sndService->findFirstChild("Swoosh"));
+			break;
+	}
+}
+
 void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 {
 	setChanged();
 	if(strcmp(item->lpszPropName, "Color3") == 0)
 	{
-		color = Color3(GetRValue(item->lpCurValue)/255.0F,GetGValue(item->lpCurValue)/255.0F,GetBValue(item->lpCurValue)/255.0F);
+		color = Color3(
+			GetRValue(item->lpCurValue)/255.0F,
+			GetGValue(item->lpCurValue)/255.0F,
+			GetBValue(item->lpCurValue)/255.0F
+		);
 	}
 	else if(strcmp(item->lpszPropName, "Anchored") == 0)
 	{
@@ -417,13 +618,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 				ss.ignore();
 		}
 
-		//if(vect.size() != 3)
-		//{
-			//sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
-			//LPCSTR str = LPCSTR(pto);
-			//item->lpCurValue = (LPARAM)str;
-		//}
-		//else
 		if(vect.size() == 3)
 		{
 			Vector3 pos(vect.at(0),vect.at(1),vect.at(2));
@@ -446,13 +640,6 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 				ss.ignore();
 		}
 
-		/*if(vect.size() != 3)
-		{
-			sprintf(pto, "%g, %g, %g", cFrame.translation.x, cFrame.translation.y, cFrame.translation.z, "what");
-			LPCSTR str = LPCSTR(pto);
-			item->lpCurValue = (LPARAM)str;
-		}
-		else*/
 		if(vect.size() == 3)
 		{
 			Vector3 size(vect.at(0),vect.at(1),vect.at(2));
@@ -464,51 +651,103 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 		printf("%s", enumStr(strEnum((TCHAR*)item->lpCurValue)));
 		setShape(strEnum((TCHAR*)item->lpCurValue));
 	}
+	else if(strcmp(item->lpszPropName, "Action") == 0)
+	{
+		OnTouchAction = EnumOnTouchActionType((TCHAR*)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "Sound") == 0)
+	{
+		OnTouchSound = EnumOnTouchSoundType((TCHAR*)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "ChangeScore") == 0)
+	{
+		changeScore = atoi((LPSTR)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "ChangeTimer") == 0)
+	{
+		changeTimer = atof((LPSTR)item->lpCurValue);
+	}
+	else if (strcmp(item->lpszPropName, "SingleShot") == 0)
+	{
+		singleShot = item->lpCurValue == TRUE;
+	}
 	else PVInstance::PropUpdate(item);
 }
 
+// This needs to be changed, buffer size of 12 is way too small
+// Crash occurs if you put a huge number in
+char changeTimerTxt[12];
+char changeScoreTxt[12];
 std::vector<PROPGRIDITEM> PartInstance::getProperties()
 {
 	std::vector<PROPGRIDITEM> properties = PVInstance::getProperties();
 
 
-	properties.push_back(createPGI(
-		"Properties",
+	properties.push_back(createPGI("Properties",
 		"Color3",
 		"The color of the selected part",
 		RGB((color.r*255),(color.g*255),(color.b*255)),
 		PIT_COLOR
 		));
-	properties.push_back(createPGI(
-		"Item",
+	properties.push_back(createPGI("Item",
 		"Anchored",
 		"Whether the block can move or not",
 		(LPARAM)anchored,
 		PIT_CHECK
 		));
 	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
-	properties.push_back(createPGI(
-		"Item",
+	properties.push_back(createPGI("Item",
 		"Offset",
 		"The position of the object in the workspace",
 		(LPARAM)pto,
 		PIT_EDIT
 		));
 	sprintf_s(pto2, "%g, %g, %g", size.x, size.y, size.z);
-	properties.push_back(createPGI(
-		"Item",
+	properties.push_back(createPGI("Item",
 		"Size",
-		"The position of the object in the workspace",
+		"The size of the object in the workspace",
 		(LPARAM)pto2,
 		PIT_EDIT
 		));
-	properties.push_back(createPGI(
-		"Item",
+	properties.push_back(createPGI("Item",
 		"Shape",
 		"The shape of the object in the workspace",
 		(LPARAM)enumStr(shape),
 		PIT_COMBO,
 		TEXT("Ball\0Block\0Cylinder\0")
+		));
+	properties.push_back(createPGI("OnTouch",
+		"Action",
+		"What action is taken when touched",
+		(LPARAM)strActionType(OnTouchAction),
+		PIT_COMBO,
+		TEXT("Nothing\0Pause\0Lose\0Draw\0Win\0")
+		));
+	properties.push_back(createPGI("OnTouch",
+		"Sound",
+		"What sound plays when touched",
+		(LPARAM)strSoundType(OnTouchSound),
+		PIT_COMBO,
+		TEXT("NoSound\0Victory\0Boing\0Break\0Snap\0Bomb\0Splat\0Page\0Ping\0Swoosh\0")
+		));
+
+		sprintf_s(changeScoreTxt, "%d", changeScore);
+		sprintf_s(changeTimerTxt, "%g", changeTimer);
+	properties.push_back(createPGI("OnTouch",
+		"ChangeScore",
+		"How the score is affected when touched",
+		(LPARAM)changeScoreTxt,
+		PIT_EDIT));
+	properties.push_back(createPGI("OnTouch",
+		"ChangeTimer",
+		"How the timer is affected when touched",
+		(LPARAM)changeTimerTxt,
+		PIT_EDIT));
+	properties.push_back(createPGI("OnTouch",
+		"SingleShot",
+		"Whether or not Action happens only once",
+		(LPARAM)singleShot,
+		PIT_CHECK
 		));
 	return properties;
 }

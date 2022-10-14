@@ -123,7 +123,7 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 		(LPARAM)scoreTxt,
 		PIT_EDIT));
 
-		properties.push_back(createPGI("Gameplay",
+	properties.push_back(createPGI("Gameplay",
 		"TimerUpAction",
 		"Some temporary string here",
 		(LPARAM)strActionType(TimerUpAction),
@@ -131,7 +131,7 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 		TEXT("Nothing\0Pause\0Lose\0Draw\0Win\0")
 		));
 
-		properties.push_back(createPGI("Gameplay",
+	properties.push_back(createPGI("Gameplay",
 		"TimerAffectsScore",
 		"Some temporary string here",
 		(LPARAM)strAffectType(TimerAffectsScore),
@@ -140,6 +140,7 @@ std::vector<PROPGRIDITEM> LevelInstance::getProperties()
 		));
 	return properties;
 }
+
 void LevelInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 {
 	if(strcmp(pItem->lpszPropName, "InitialTimerValue") == 0)

@@ -71,7 +71,6 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 	CreateDirectory(tempPath.c_str(), NULL);
 	
 	_hWndMain = parentWindow;
-	_hideSky = false;
 
 	HMODULE hThisInstance = GetModuleHandle(NULL);
 
@@ -129,6 +128,8 @@ Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(setti
 		MessageBox(NULL,"Window not found!","Error",MB_OK | MB_ICONSTOP);
 		return;
 	}
+
+	AudioPlayer::init();
 
     _window = renderDevice->window();
     _window->makeCurrent();
@@ -294,7 +295,6 @@ void Application::onInit()  {
 
 void Application::onCleanup() {
     clearInstances();
-	sky->~Sky();
 }
 
 void Application::onLogic() {
@@ -407,89 +407,9 @@ int Application::getMode()
 	return _mode;
 }
 
-
-void Application::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c)
-{
-	rd->disableLighting();
-	Color3 outline = Color3::cyan();
-	float offsetSize = 0.05F;
-	//X
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	//Y
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-
-	//Z
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	
-	if(_mode == ARROWS)
-	{
-		
-		AABox box;
-		c.toWorldSpace(Box(from, to)).getBounds(box);
-		float max = box.high().y - pos.y;
-
-		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
-		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
-		
-		max = box.high().x - pos.x;
-
-		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
-
-		max = box.high().z - pos.z;
-
-		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
-
-
-
-	}
-	else if(_mode == RESIZE)
-	{
-		Color3 sphereColor = outline;
-		Vector3 gamepoint = pos;
-		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 200)
-		{
-			
-			float multiplier = distance * 0.025F/2;
-			if(multiplier < 0.25F)
-				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-
-			position = pos + (c.rightVector()*((size.x)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-
-			position = pos + (c.upVector()*((size.y)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-		}
-	}
-	rd->enableLighting();
-}
-
 void Application::exitApplication()
 {
 }
-
-
-
 
 void Application::onGraphics(RenderDevice* rd) {
 	
@@ -519,57 +439,11 @@ void Application::onGraphics(RenderDevice* rd) {
 		ScreenToClient(_hWndMain, &mousepos);
 	}
 	
-    LightingParameters lighting(G3D::toSeconds(2, 00, 00, PM));
-	lighting.ambient = Color3(0.6F,0.6F,0.6F);
-    renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
+	renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
-	// TODO: stick this into its own rendering thing
-	if(!_hideSky) {
-		renderDevice->clear(sky.isNull(), true, true);
-		if (sky.notNull()) sky->render(renderDevice, lighting);
-	} else {
-		rd->setColorClearValue(Color4(0.0f, 0.0f, 0.0f, 0.0f));
-		renderDevice->clear(true, true, true);
-		toggleSky();
-	}
-	
-    // Setup lighting
-    renderDevice->enableLighting();
+	// Moved a lot of code to lighting
+	g_dataModel->getLighting()->update();
 
-	renderDevice->setShadeMode(RenderDevice::SHADE_SMOOTH);
-	renderDevice->setAmbientLightColor(Color3(1,1,1));
-
-	renderDevice->setLight(0, GLight::directional(lighting.lightDirection, lighting.lightColor, true, true));
-	renderDevice->setAmbientLightColor(lighting.ambient);
-
-	rd->beforePrimitive();
-	CoordinateFrame forDraw = rd->getObjectToWorldMatrix();
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	_dataModel->getWorkspace()->render(rd);
-	_dataModel->getWorkspace()->renderName(rd);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	rd->setObjectToWorldMatrix(forDraw);
-	rd->afterPrimitive();
-
-	for(size_t i = 0; i < _dataModel->getSelectionService()->getSelection().size(); i++)
-	{
-		if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
-		{
-		Vector3 size = part->getSize();
-		Vector3 pos = part->getPosition();
-		drawOutline(Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,Vector3(0-size.x/2,0-size.y/2,0-size.z/2), rd, lighting, Vector3(size.x/2, size.y/2, size.z/2), Vector3(pos.x, pos.y, pos.z), part->getCFrame());
-		}		
-	}
-
-    renderDevice->disableLighting();
-
-    if (sky.notNull()) {
-        sky->renderLensFlare(renderDevice, lighting);
-    }
 	renderDevice->push2D();
 		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
 	renderDevice->pop2D();
@@ -653,7 +527,6 @@ void Application::run() {
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");
-    sky = Sky::create(NULL, ExePath() + "/content/sky/");
 	RealTime	now=0, lastTime=0;
 	double		simTimeRate = 1.0f;
 	float		fps=30.0f;
@@ -730,17 +603,6 @@ void Application::resizeWithParent(HWND parentWindow)
 	Rect2D viewportRect = Rect2D::xywh(0,0,viewWidth,viewHeight);
 	renderDevice->setViewport(viewportRect);
 
-}
-
-// These should be moved into a "Lighting" class
-G3D::SkyRef Application::getSky()
-{
-	return sky;
-}
-
-void Application::toggleSky()
-{
-	_hideSky = !_hideSky;
 }
 
 void Application::resize3DView(int w, int h)

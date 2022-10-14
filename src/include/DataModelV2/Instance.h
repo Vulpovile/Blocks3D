@@ -2,7 +2,6 @@
 #include <G3DAll.h>
 #include "propertyGrid.h"
 #include "map"
-//#include "Properties/BoolProperty.h"
 
 class Instance
 {

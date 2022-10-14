@@ -157,6 +157,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->name = "edit";
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(250, 0);
@@ -171,6 +173,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->name = "view";
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(375, 0);
@@ -185,6 +189,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->name = "insert";
+	button->setButtonListener(menuListener);
 
 	button = makeTextButton();
 	button->boxBegin = Vector2(500, 0);
@@ -199,7 +205,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-
+	button->name = "format";
+	button->setButtonListener(menuListener);
 
 	//Menu
 	button = makeTextButton();

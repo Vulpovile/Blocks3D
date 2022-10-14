@@ -37,10 +37,12 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 	
 	dBodyID b1 = dGeomGetBody(o1);
 	dBodyID b2 = dGeomGetBody(o2);
-
+	
 	if (b1 && b2 && dAreConnected(b1, b2))
 		return;
 	
+	
+
 	const int N = 4;
 	dContact contact[N];
 	n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
@@ -62,8 +64,17 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 				g_xplicitNgine->contactgroup,
 				contact+i
 			);
-
+			
 			dJointAttach (c,b1,b2);
+			
+			if(b1 != NULL) 
+			{
+				PartInstance* touched = (PartInstance*)dGeomGetData(o2);
+				if(touched != NULL) 
+				{
+					touched->onTouch();
+				}
+			}
 		}
 	}
 }
@@ -123,6 +134,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		partInstance->physBody = dBodyCreate(physWorld);
 		dBodySetData(partInstance->physBody, partInstance);
 		
+		
 		// Create geom
 		if(partInstance->shape == Enum::Shape::Block)
 		{
@@ -140,6 +152,9 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			partInstance->physGeom[0] = dCreateSphere(physSpace, partSize[0]/2);
 		}
 		
+		if(partInstance->physGeom[0])
+			dGeomSetData(partInstance->physGeom[0], partInstance);
+
 		dMass mass;
 		mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
 		dBodySetMass(partInstance->physBody, &mass);

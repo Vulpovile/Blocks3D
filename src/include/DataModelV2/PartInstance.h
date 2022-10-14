@@ -17,7 +17,7 @@ public:
 	virtual void PartInstance::postRender(RenderDevice* rd);
 	virtual void render(RenderDevice*);
 	virtual void renderName(RenderDevice*);
-	
+
 	//Surfaces
 	Enum::SurfaceType::Value top;
 	Enum::SurfaceType::Value front;
@@ -25,7 +25,13 @@ public:
 	Enum::SurfaceType::Value back;
 	Enum::SurfaceType::Value left;
 	Enum::SurfaceType::Value bottom;
+
+	//Shapes
 	Enum::Shape::Value shape;
+
+	//OnTocuh
+	Enum::ActionType::Value OnTouchAction;
+	Enum::Sound::Value OnTouchSound;	
 
 	//Variables
 	Color3 color;
@@ -42,6 +48,13 @@ public:
 	Sphere getSphere();
 	Box getScaledBox();
 	CoordinateFrame getCFrame();
+
+	//OnTouch Getters
+	bool isSingleShot();
+	int getTouchesToTrigger();
+	int getUniqueObjectsToTrigger();
+	int getChangeScore();
+	float getChangeTimer();
 
 	//Setters
 	void setParent(Instance* parent);
@@ -64,6 +77,9 @@ public:
 	bool collides(PartInstance * part);
 	bool collides(Box);
 	
+	// onTouch
+	void onTouch();
+
 	//Properties
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
@@ -77,4 +93,12 @@ private:
 	bool dragging;
 	Box itemBox;
 	GLuint glList;
+
+	// OnTouch
+	bool singleShot;
+	int touchesToTrigger;
+	int uniqueObjectsToTrigger;
+	int changeScore;
+	float changeTimer;
+	bool _touchedOnce;
 };

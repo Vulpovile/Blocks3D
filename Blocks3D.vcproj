@@ -458,6 +458,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\source\DataModelV2\LightingInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\PartInstance.cpp"
 					>
 					<FileConfiguration
@@ -503,6 +507,14 @@
 				</File>
 				<File
 					RelativePath=".\src\source\DataModel\SelectionService.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\SoundInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\SoundService.cpp"
 					>
 				</File>
 				<File
@@ -867,6 +879,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV2\LightingInstance.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV2\PartInstance.h"
 					>
 				</File>
@@ -876,6 +892,14 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\SoundInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\SoundService.h"
 					>
 				</File>
 				<File

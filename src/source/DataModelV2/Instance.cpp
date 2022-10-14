@@ -20,10 +20,7 @@ Instance::Instance(const Instance &oinst)
 	className = oinst.className;
 	canDelete = oinst.canDelete;
 	listicon = oinst.listicon;
-	//setParent(oinst.parent);
 }
-
-
 
 void Instance::render(RenderDevice* rd)
 {
