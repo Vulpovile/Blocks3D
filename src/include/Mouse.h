@@ -27,8 +27,10 @@ public:
 	bool isMouseOnScreen();
 	bool isMouseDown();
 	void setMouseDown(bool mouseDown);
-	G3D::Ray * getRay();
+	G3D::Ray getRay();
 	G3D::Ray getLastRay();
+	G3D::Plane getPlane();
+	G3D::Plane getInversePlane();
 private:
 	bool mouseDown;
 };

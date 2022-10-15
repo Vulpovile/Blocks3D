@@ -156,24 +156,10 @@ void LightingInstance::update()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
+
+	g_dataModel->getSelectionService()->render(rd);
+	g_usableApp->tool->render(rd, g_usableApp->mouse);
 	
-	// Draw outlines
-	for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
-	{
-		if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
-		{
-			Vector3 size = part->getSize();
-			Vector3 pos = part->getPosition();
-			drawOutlines(
-				Vector3(0+size.x/2, 0+size.y/2, 0+size.z/2) ,
-				Vector3(0-size.x/2,0-size.y/2,0-size.z/2), 
-				rd,
-				Vector3(size.x/2, size.y/2, size.z/2), 
-				Vector3(pos.x, pos.y, pos.z), 
-				part->getCFrame()
-			);
-		}		
-	}
 
     rd->disableLighting();
 
@@ -186,75 +172,4 @@ void LightingInstance::drawEffects()
     if (sky.notNull()) {
         sky->renderLensFlare(rd, lighting);
     }
-}
-
-void LightingInstance::drawOutlines(Vector3 from, Vector3 to, RenderDevice* rd, Vector3 size, Vector3 pos, CoordinateFrame c)
-{
-	Color3 outline = Color3::cyan();
-	float offsetSize = 0.05F;
-	
-	//X
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, from.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, to.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, to.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x - offsetSize, from.y + offsetSize, to.z + offsetSize), Vector3(to.x + offsetSize, from.y - offsetSize, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	//Y
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.1, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.1, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
-
-	//Z
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(from.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, from.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, to.y + offsetSize, from.z - offsetSize), Vector3(to.x - offsetSize, to.y - offsetSize, to.z + offsetSize))), rd, outline, Color4::clear()); 
-	
-	if(g_usableApp->getMode() == ARROWS)
-	{
-		AABox box;
-		c.toWorldSpace(Box(from, to)).getBounds(box);
-		float max = box.high().y - pos.y;
-
-		Draw::arrow(pos, Vector3(0, 1.5+max, 0), rd);
-		Draw::arrow(pos, Vector3(0, (-1.5)-max, 0), rd);
-		
-		max = box.high().x - pos.x;
-
-		Draw::arrow(pos, Vector3(1.5+max, 0, 0), rd);
-		Draw::arrow(pos, Vector3((-1.5)-max, 0, 0), rd);
-
-		max = box.high().z - pos.z;
-
-		Draw::arrow(pos, Vector3(0, 0, 1.5+max), rd);
-		Draw::arrow(pos, Vector3(0, 0, (-1.5)-max), rd);
-	}
-	else if(g_usableApp->getMode() == RESIZE)
-	{
-		Color3 sphereColor = outline;
-		Vector3 gamepoint = pos;
-		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
-		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
-		if(distance < 200)
-		{
-			
-			float multiplier = distance * 0.025F/2;
-			if(multiplier < 0.25F)
-				multiplier = 0.25F;
-			Vector3 position = pos + (c.lookVector()*((size.z)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.lookVector()*((size.z)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-
-			position = pos + (c.rightVector()*((size.x)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.rightVector()*((size.x)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-
-			position = pos + (c.upVector()*((size.y)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-			position = pos - (c.upVector()*((size.y)+1));
-			Draw::sphere(Sphere(position, multiplier), rd, sphereColor, Color4::clear());
-		}
-	}
 }

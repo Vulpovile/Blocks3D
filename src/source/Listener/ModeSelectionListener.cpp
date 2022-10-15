@@ -3,9 +3,11 @@
 #include "Listener/ModeSelectionListener.h"
 #include "Application.h"
 #include "Tool/ArrowTool.h"
+#include "Tool/DraggerTool.h"
 
 void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 {
+	//CoordinateFrame frame = g_usableApp->g3dCamera.getCoordinateFrame();
 	int mode = g_usableApp->getMode();
 
 	std::vector<Instance*> instances_2D = g_dataModel->getGuiRoot()->getAllChildren();
@@ -22,7 +24,12 @@ void ModeSelectionListener::onButton1MouseClick(BaseButtonInstance* button)
 	if(button->name == "Cursor")
 		g_usableApp->changeTool(new ArrowTool());
 	else if(button->name == "Resize")
+	{
 		g_usableApp->setMode(RESIZE);
+	}
 	else if(button->name == "Arrows")
-		g_usableApp->setMode(ARROWS);
+	{	
+		g_usableApp->changeTool(new DraggerTool());
+		g_usableApp->setMode(NULL);
+	}
 }

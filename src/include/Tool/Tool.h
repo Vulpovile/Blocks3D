@@ -26,6 +26,7 @@ public:
 	virtual void onMouseScroll(Mouse);//Kinda
 	virtual void onKeyDown(int);//yes
 	virtual void onKeyUp(int);//yes
+	virtual void render(RenderDevice * rd, Mouse mouse);//yes
 	//virtual int getCursorId();//yes
 protected:
 	//virtual void setCursor(std::string);
