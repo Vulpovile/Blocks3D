@@ -776,6 +776,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\versioning.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\VS2005CompatShim.h"
 				>
 			</File>
