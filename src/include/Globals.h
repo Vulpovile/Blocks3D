@@ -17,8 +17,6 @@ public:
 	static const int major;
 	static const int minor;
 	static const int patch;
-	static G3D::TextureRef surface;
-	static int surfaceId;
 	static const std::string g_appName;
 	static COLORREF g_acrCustClr[16]; //Will be dynamic later
 	static HWND mainHwnd;
