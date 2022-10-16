@@ -21,7 +21,7 @@ Type: filesandordirs; Name: "{app}"
 
 [Files]
 Source: "Redist\vcredist_x86.exe"; DestDir: "{tmp}"; Flags: ignoreversion 
-Source: "Redist\vcredist_x64.exe"; DestDir: "{tmp}"; Check: "IsWin64"; Flags: ignoreversion 
+;Source: "Redist\vcredist_x64.exe"; DestDir: "{tmp}"; Check: "IsWin64"; Flags: ignoreversion 
 Source: "..\content\*"; DestDir: "{app}\content"; Flags: ignoreversion recursesubdirs
 Source: "..\SDL.DLL"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "..\Blocks3D.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
@@ -31,7 +31,7 @@ Source: "..\Blocks3D.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe"; Parameters: "/q"; Tasks: instvc; 
-Filename: "{tmp}\vcredist_x64.exe"; Parameters: "/q"; Tasks: instvc; Check: "IsWin64";
+;Filename: "{tmp}\vcredist_x64.exe"; Parameters: "/q"; Tasks: instvc; Check: "IsWin64";
 Filename: "iexplore.exe"; Parameters: "http://www.blocks3d.com/FirstInstall"; Description: Start playing Blocks3D; Flags: shellexec postinstall nowait skipifsilent
 
 [Icons]
