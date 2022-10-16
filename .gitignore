@@ -39,6 +39,8 @@
 *.res
 *.ilk
 *.dep
+*.bin
+*.7z
 
 # ResEditor files
 *.aps
