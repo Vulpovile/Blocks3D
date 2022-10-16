@@ -27,7 +27,6 @@ public:
 	void suppressSky(bool doSuppress);
 	void update();
 	void drawEffects();
-	void drawOutlines(Vector3 from, Vector3 to, RenderDevice* rd, Vector3 size, Vector3 pos, CoordinateFrame c);
 
 	// Properties
 	void PropUpdate(LPPROPGRIDITEM &pItem);

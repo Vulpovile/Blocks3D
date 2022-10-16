@@ -15,6 +15,7 @@ public:
 	void removeSelected(Instance * instance);
 	void addSelected(const std::vector<Instance *> &instances);
 	void setPropertyWindow(PropertyWindow * propertyWindow);
+	void render(RenderDevice * rd);
 private:
 	std::vector<Instance *> selection;
 	PropertyWindow * propertyWindow;

@@ -2,7 +2,6 @@
 
 Tool::Tool(void)
 {
-
 }
 
 Tool::~Tool(void)
@@ -21,3 +20,4 @@ void Tool::onDeselect(Mouse mouse){}
 void Tool::onMouseScroll(Mouse mouse){}
 void Tool::onKeyDown(int key){}
 void Tool::onKeyUp(int key){}
+void Tool::render(RenderDevice * rd, Mouse mouse){}

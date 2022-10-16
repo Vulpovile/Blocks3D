@@ -33,14 +33,30 @@ PartInstance * Mouse::getTarget()
 	return selectedInstance;
 }
 
-G3D::Ray * Mouse::getRay()
+G3D::Ray Mouse::getRay()
 {
-	return &g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	return g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
 }
 
 G3D::Ray Mouse::getLastRay()
 {
 	return testRay;
+}
+
+G3D::Plane Mouse::getPlane()
+{
+	G3D::Ray ray = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	Vector3 origin = Vector3(ray.origin.x, ray.origin.y, ray.origin.z);
+	Vector3 direction = -Vector3(ray.direction.x, ray.direction.y, ray.direction.z);
+	return G3D::Plane(origin, origin+Vector3(0,1,0), origin+direction);
+}
+
+G3D::Plane Mouse::getInversePlane()
+{
+	G3D::Ray ray = g_usableApp->cameraController.getCamera()->worldRay(x, y, g_usableApp->getRenderDevice()->getViewport());
+	Vector3 origin = Vector3(ray.origin.x, ray.origin.y, ray.origin.z);
+	Vector3 direction = Vector3(ray.direction.x, ray.direction.y, ray.direction.z);
+	return G3D::Plane(origin, origin+Vector3(0,1,0), origin+direction);
 }
 
 

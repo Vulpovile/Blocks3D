@@ -521,9 +521,7 @@ void Application::run() {
 	g_usableApp = this;
 	UpdateWindow(_hWndMain);
 
-    // Load objects here=
-	Globals::surface = Texture::fromFile(GetFileInPath("/content/images/surfacebr.png"));
-	Globals::surfaceId = Globals::surface->getOpenGLID();
+    // Load objects here
 	cameraSound = GetFileInPath("/content/sounds/SWITCH3.wav");
 	clickSound = GetFileInPath("/content/sounds/switch.wav");
 	dingSound = GetFileInPath("/content/sounds/electronicpingshort.wav");

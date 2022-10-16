@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 
-int Globals::surfaceId = 2;
 bool Globals::useMousePoint = false;
 std::vector<Instance*> postRenderStack = std::vector<Instance*>();
 
@@ -9,7 +8,6 @@ DataModelInstance* g_dataModel = NULL;
 XplicitNgine* g_xplicitNgine = NULL;
 
 bool running = false;
-G3D::TextureRef Globals::surface;
 POINT Globals::mousepoint;
 
 GFontRef g_fntdominant = NULL;

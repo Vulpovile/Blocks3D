@@ -9,11 +9,14 @@ AppPublisherURL=http://blocks3d.com/
 AppSupportURL=http://blocks3d.com/
 AppUpdatesURL=http://blocks3d.com/
 DefaultDirName={%localappdata}\Blocks3D
-OutputBaseFilename=Blocks3D_Setup_v{#AppVer}
+OutputBaseFilename=B3DSTP
 Compression=lzma2
 PrivilegesRequired=lowest
 WizardImageFile=setup.bmp
 DefaultGroupName=Blocks3D
+DiskSpanning=yes
+SlicesPerDisk=1
+DiskSliceSize=1457664
 
 
 [UninstallDelete]

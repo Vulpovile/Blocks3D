@@ -322,6 +322,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\source\Tool\DraggerTool.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\Tool\SurfaceTool.cpp"
 					>
 				</File>
@@ -506,7 +510,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\src\source\DataModel\SelectionService.cpp"
+					RelativePath=".\src\source\DataModelV2\SelectionService.cpp"
 					>
 				</File>
 				<File
@@ -772,6 +776,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\versioning.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\VS2005CompatShim.h"
 				>
 			</File>
@@ -848,6 +856,10 @@
 				>
 				<File
 					RelativePath=".\src\include\Tool\ArrowTool.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Tool\DraggerTool.h"
 					>
 				</File>
 				<File
