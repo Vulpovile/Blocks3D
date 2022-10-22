@@ -90,6 +90,15 @@ std::vector<PROPGRIDITEM> PVInstance::getProperties()
 
 	return properties;
 }
+
+void PVInstance::makeJoints()
+{
+	for(size_t i = 0; i < children.size(); i++)
+	{
+
+	}
+}
+
 void PVInstance::PropUpdate(LPPROPGRIDITEM &pItem)
 {
 	if(strcmp(pItem->lpszPropName, "NameShown") == 0)

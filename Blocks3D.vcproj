@@ -675,14 +675,22 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Properties"
+				Name="PropertiesV2"
 				>
 				<File
-					RelativePath=".\src\source\Properties\BoolProperty.cpp"
+					RelativePath=".\src\source\PropertiesV2\BaseProperty.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\source\Properties\Property.cpp"
+					RelativePath=".\src\source\PropertiesV2\BoolProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\PropertiesV2\Property.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\PropertiesV2\StringProperty.cpp"
 					>
 				</File>
 			</Filter>
@@ -960,14 +968,22 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Properties"
+				Name="PropertiesV2"
 				>
 				<File
-					RelativePath=".\src\include\Properties\BoolProperty.h"
+					RelativePath=".\src\include\PropertiesV2\BaseProperty.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\Properties\Property.h"
+					RelativePath=".\src\include\PropertiesV2\BoolProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\PropertiesV2\Property.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\PropertiesV2\StringProperty.h"
 					>
 				</File>
 			</Filter>

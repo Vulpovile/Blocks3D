@@ -16,6 +16,7 @@ public:
 	bool nameShown;
 	bool controllerFlagShown;
 	Enum::Controller::Value controller;
+	virtual void makeJoints();
 protected:
 	CoordinateFrame cFrame;
 	static G3D::Color3 getControllerColor(int controller)

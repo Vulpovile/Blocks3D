@@ -1,6 +1,7 @@
 #pragma once
 #include <G3DAll.h>
 #include "propertyGrid.h"
+#include "PropertiesV2/StringProperty.h"
 #include "map"
 
 class Instance
@@ -26,12 +27,18 @@ public:
 	void clearChildren();
 	Instance* getParent();
 	virtual Instance* clone() const { return new Instance(*this); }
+	//Deprecated
 	virtual std::vector<PROPGRIDITEM> getProperties();
+	//Deprecated
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+
+	virtual std::vector<BaseProperty> collectProperties();
+
 	int listicon;
 protected:
 	std::string className;
 	Instance* parent;  // Another pointer.
+	//Deprecated
 	PROPGRIDITEM createPGI(LPSTR catalog, LPSTR propName, LPSTR propDesc, LPARAM curVal, INT type, TCHAR choices[] = NULL);
 private:
 	static const std::map<std::string, Instance> g_logLevelsDescriptions;
