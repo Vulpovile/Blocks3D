@@ -80,10 +80,10 @@ std::vector<PROPGRIDITEM> Instance::getProperties()
 }
 
 
-std::vector<BaseProperty> Instance::collectProperties()
+std::vector<Property *> Instance::collectProperties()
 {
-	std::vector<BaseProperty> properties;
-	properties.push_back(StringProperty("Name", "The name of this instance", "Properties", name, this, &Instance::setName));
+	std::vector<Property *> properties;
+	properties.push_back(new StringProperty("Name", "The name of this instance", "Properties", name, this, &Instance::setName));
 	return properties;
 }
 

@@ -6,7 +6,7 @@
 #include "strsafe.h"
 #include "Application.h"
 
-std::vector<PROPGRIDITEM> prop;
+std::vector<Property*> prop;
 std::vector<Instance*> children;
 Instance * selectedInstance;
 Instance * parent = NULL;
@@ -349,13 +349,13 @@ void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 	}
 	Instance * instance = instances[0];
 	PropGrid_ResetContent(_propGrid);
-	prop = instance->getProperties();
+	prop = instance->collectProperties();
 	//if (selectedInstance != instance)
 	{
 		selectedInstance = instance;
 		for(size_t i = 0; i < prop.size(); i++)
 		{
-			::PROPGRIDITEM item = prop.at(i);
+			::PROPGRIDITEM item = prop.at(i)->getPropGridItem();
 			PropGrid_AddItem(_propGrid, &item);
 			//PRGP propgp;
 			//propgp.instance = instance;

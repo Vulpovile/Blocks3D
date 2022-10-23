@@ -1,20 +1,20 @@
 #pragma once
 #include "Property.h"
 
-class BoolProperty : public Property<bool>
+class BoolProperty : public Property
 {
 public:
 	typedef void (Instance::*instanceSetter)(bool); 
 	//Win32 why
-	~BoolProperty(void){};
+	~BoolProperty(void);
 	BoolProperty(LPSTR name, LPSTR desc, LPSTR catalog, bool value, Instance * owner, instanceSetter setterFunc)
-	:Property(name, desc, catalog, value, owner) 
+	:Property(name, desc, catalog, (void*)value, owner) 
 	{
 		this->setterFunc = setterFunc;
 	}
 	const void setValue(bool val){
 		(_owner->*setterFunc)(val);
-		_value = val;
+		_value = (void *)val;
 	}
 	PROPGRIDITEM getPropGridItem();
 	void setProperty(LPPROPGRIDITEM &pItem);

@@ -678,10 +678,6 @@
 				Name="PropertiesV2"
 				>
 				<File
-					RelativePath=".\src\source\PropertiesV2\BaseProperty.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\source\PropertiesV2\BoolProperty.cpp"
 					>
 				</File>
@@ -970,10 +966,6 @@
 			<Filter
 				Name="PropertiesV2"
 				>
-				<File
-					RelativePath=".\src\include\PropertiesV2\BaseProperty.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\include\PropertiesV2\BoolProperty.h"
 					>

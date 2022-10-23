@@ -1,21 +1,35 @@
 #pragma once
-#include "PropertiesV2/BaseProperty.h"
+#include <G3DAll.h>
+#include "propertyGrid.h"
 
-template <typename T>
-class Property : public BaseProperty
+class Instance;
+
+class Property
 {
 public:
-	Property(LPSTR name, LPSTR desc, LPSTR catalog, T value, Instance * owner)
-	:BaseProperty(name, desc, catalog, owner)
-	{
+	Property(LPSTR name, LPSTR desc, LPSTR catalog, Instance * owner){
+		_name = name;
+		_desc = desc;
+		_catalog = catalog;
+		_owner = owner;
+	}
+	Property(LPSTR name, LPSTR desc, LPSTR catalog, void* value, Instance * owner){
+		_name = name;
+		_desc = desc;
+		_catalog = catalog;
+		_owner = owner;
 		_value = value;
 	}
-	~Property(void){};
-	const T getValue() {
+	~Property(void){}
+	const void* getValue() {
 		return _value;
 	}
 	virtual PROPGRIDITEM getPropGridItem();
 	virtual void setProperty(LPPROPGRIDITEM &pItem);
 protected:
-	T _value;
+	Instance* _owner;
+	LPSTR _name;
+	LPSTR _desc;
+	LPSTR _catalog;
+	void* _value;
 };

@@ -6,7 +6,7 @@ PROPGRIDITEM BoolProperty::getPropGridItem(){
 	pItem.lpszCatalog=_catalog;
 	pItem.lpszPropName=_name;
 	pItem.lpszPropDesc=_desc;
-	pItem.lpCurValue=_value;
+	pItem.lpCurValue=_value > 0;
 	pItem.iItemType=PIT_CHECK;
 	return pItem;
 }

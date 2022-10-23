@@ -32,7 +32,7 @@ public:
 	//Deprecated
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
 
-	virtual std::vector<BaseProperty> collectProperties();
+	virtual std::vector<Property *> collectProperties();
 
 	int listicon;
 protected:
