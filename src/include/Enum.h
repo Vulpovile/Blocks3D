@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <map>
 
 namespace Enum
 {
@@ -7,6 +9,30 @@ namespace Enum
 		enum Value {
 			Smooth = 0, Bumps = 1, Hinge = 2, Motor = 3, StepperMotor = 4, Spawn = 5
 		};
+		static std::pair<std::string, Value> map_data[] = {
+			std::make_pair("Smooth", Smooth),
+			std::make_pair("Bumps", Bumps),
+			std::make_pair("Hinge", Hinge),
+			std::make_pair("Motor", Motor),
+			std::make_pair("StepperMotor", StepperMotor),
+			std::make_pair("Spawn", Spawn)
+		};
+		static std::map<std::string, Value> nameMap(map_data,
+		map_data + sizeof map_data / sizeof map_data[0]);
+
+		static Value getByName(std::string name) {
+			if(nameMap.find(name) != nameMap.end()){
+				return nameMap[name];
+			}
+			return Smooth;
+		}
+
+		static std::string getName(Value value) {
+			for (std::map<std::string, Value>::iterator it = nameMap.begin(); it != nameMap.end(); ++it)
+				if (it->second == value)
+					return it->first;
+			return "";
+		}
 	}
 	namespace Shape
 	{

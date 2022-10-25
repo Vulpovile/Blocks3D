@@ -13,10 +13,13 @@ public:
 	virtual void postRender(RenderDevice* rd);
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	virtual std::vector<Property*> collectProperties();
 	bool nameShown;
 	bool controllerFlagShown;
 	Enum::Controller::Value controller;
 	virtual void makeJoints();
+	virtual void setNameShown(bool nameShown);
+	virtual void setControllerFlagShown(bool controllerFlagShown);
 protected:
 	CoordinateFrame cFrame;
 	static G3D::Color3 getControllerColor(int controller)

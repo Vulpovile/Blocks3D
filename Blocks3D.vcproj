@@ -267,6 +267,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\source\PropertiesV2\Color3Property.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\source\ErrorFunctions.cpp"
 				>
 			</File>
@@ -308,6 +312,10 @@
 			</File>
 			<File
 				RelativePath=".\src\source\TextureHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\source\PropertiesV2\Vector3Property.cpp"
 				>
 			</File>
 			<File
@@ -716,11 +724,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\Enum\B3DEnum.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\BrowserCallHandler.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\include\CameraController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\PropertiesV2\Color3Property.h"
 				>
 			</File>
 			<File
@@ -777,6 +793,10 @@
 			</File>
 			<File
 				RelativePath=".\src\include\ToolEnum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\PropertiesV2\Vector3Property.h"
 				>
 			</File>
 			<File

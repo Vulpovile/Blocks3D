@@ -24,6 +24,9 @@ public:
 	const void* getValue() {
 		return _value;
 	}
+	const LPSTR getName() {
+		return _name;
+	}
 	virtual PROPGRIDITEM getPropGridItem();
 	virtual void setProperty(LPPROPGRIDITEM &pItem);
 protected:

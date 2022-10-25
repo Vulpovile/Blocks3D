@@ -15,4 +15,5 @@ private:
 	HWND	_explorerComboBox;
 	void	_resize();
 	void	clearExplorer();
+	void	deleteProperties();
 };

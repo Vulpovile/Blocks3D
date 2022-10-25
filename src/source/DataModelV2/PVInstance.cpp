@@ -63,6 +63,33 @@ static Enum::Controller::Value strEnum(TCHAR * tval)
 }
 
 
+std::vector<Property *> PVInstance::collectProperties()
+{
+	std::vector<Property *> properties = Instance::collectProperties();
+	properties.push_back(new BoolProperty(
+								"NameShown", 
+								"This chooses whether the item name is shown", 
+								"Item", 
+								nameShown, 
+								this, 
+								(BoolProperty::instanceSetter)&PVInstance::setNameShown));
+	properties.push_back(new BoolProperty(
+								"ControllerFlagShown", 
+								"This chooses whether the item's ControllerFlag is shown",
+								"Item", 
+								controllerFlagShown, 
+								this, 
+								(BoolProperty::instanceSetter)&PVInstance::setControllerFlagShown));
+	return properties;
+}
+
+
+void PVInstance::setNameShown(bool nameShown){
+	this->nameShown = nameShown;
+}
+void PVInstance::setControllerFlagShown(bool controllerFlagShown){
+	this->controllerFlagShown = controllerFlagShown;
+}
 
 std::vector<PROPGRIDITEM> PVInstance::getProperties()
 {

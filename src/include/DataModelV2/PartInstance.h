@@ -1,6 +1,8 @@
 #pragma once
 #include "PVInstance.h"
 #include "Enum.h"
+#include "PropertiesV2/Color3Property.h"
+#include "PropertiesV2/Vector3Property.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
 
@@ -59,6 +61,7 @@ public:
 	//Setters
 	void setParent(Instance* parent);
 	void setPosition(Vector3);
+	void setColor(Color3 color);
 	void setVelocity(Vector3);
 	void setRotVelocity(Vector3);
 	void setCFrame(CoordinateFrame);
@@ -83,6 +86,7 @@ public:
 	//Properties
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	virtual std::vector<Property *> collectProperties();
 private:
 	bool anchored;
 	Vector3 position;

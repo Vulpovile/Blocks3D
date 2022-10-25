@@ -674,6 +674,49 @@ void PartInstance::PropUpdate(LPPROPGRIDITEM &item)
 	else PVInstance::PropUpdate(item);
 }
 
+void PartInstance::setColor(Color3 color)
+{
+	this->color = color;
+	changed = true;
+}
+
+std::vector<Property *> PartInstance::collectProperties()
+{
+	std::vector<Property *> properties = PVInstance::collectProperties();
+	properties.push_back(new Color3Property(
+								"Color3", 
+								"The color of the selected part", 
+								"Properties", 
+								color, 
+								this, 
+								(Color3Property::instanceSetter)&PartInstance::setColor));
+
+	properties.push_back(new BoolProperty(
+								"Anchored", 
+								"Whether the block can move or not", 
+								"Item", 
+								anchored, 
+								this, 
+								(BoolProperty::instanceSetter)&PartInstance::setAnchored));
+	
+	properties.push_back(new Vector3Property(
+								"Offset", 
+								"The position of the object in the workspace", 
+								"Item", 
+								position, 
+								this, 
+								(Vector3Property::instanceSetter)&PartInstance::setPosition));
+	
+	properties.push_back(new Vector3Property(
+								"Size", 
+								"The size of the object in the workspace", 
+								"Item", 
+								size, 
+								this, 
+								(Vector3Property::instanceSetter)&PartInstance::setSize));
+	return properties;
+}
+
 // This needs to be changed, buffer size of 12 is way too small
 // Crash occurs if you put a huge number in
 char changeTimerTxt[12];

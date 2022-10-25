@@ -186,8 +186,15 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         LPNMHDR pnm = (LPNMHDR)lParam;
                         LPNMPROPGRID lpnmp = (LPNMPROPGRID)pnm;
                         LPPROPGRIDITEM item = PropGrid_GetItemData(pnm->hwndFrom,lpnmp->iIndex);
-						selectedInstance->PropUpdate(item);
-						//propWind->UpdateSelected(selectedInstance);
+						for(size_t i = 0; i < prop.size(); i++)
+						{
+							if(strcmp(item->lpszPropName, prop[i]->getName()) == 0)
+							{
+								prop[i]->setProperty(item);
+							}
+						}
+						//selectedInstance->PropUpdate(item);
+						propWind->UpdateSelected(g_dataModel->getSelectionService()->getSelection());
                     }
 				}
                 break;
@@ -342,6 +349,7 @@ void PropertyWindow::_resize()
 
 void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 {
+	deleteProperties();
 	if(instances.size() <= 0)
 	{
 		ClearProperties();
@@ -371,6 +379,16 @@ void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 
 void PropertyWindow::ClearProperties()
 {
+	deleteProperties();
 	clearExplorer();
 	PropGrid_ResetContent(_propGrid);
+}
+
+void PropertyWindow::deleteProperties()
+{
+	while(prop.size() > 0) {
+		Property * toDelete = prop.back();
+		prop.pop_back();
+		delete toDelete;
+	}
 }
