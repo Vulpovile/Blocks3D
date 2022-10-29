@@ -1,11 +1,8 @@
 #pragma once
-#include <G3DAll.h>
-#include "win32Defines.h"
-#include "Faces.h"
-#include "DataModelV2/TextButtonInstance.h"
-#include "CameraController.h"
-#include "IEBrowser.h"
 #include "Tool/Tool.h"
+#include "IEBrowser.h"
+#include "CameraController.h"
+#include "DataModelV2/TextButtonInstance.h"
 
 class TextButtonInstance;
 class ImageButtonInstance;

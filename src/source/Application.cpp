@@ -1,4 +1,7 @@
+#include <G3DAll.h>
 #include "Application.h"
+#include "win32Defines.h"
+#include "Faces.h"
 
 #define LEGACY_LOAD_G3DFUN_LEVEL
 

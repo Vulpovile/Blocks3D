@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
+bool createWindowClass(const char* name, WNDPROC proc, HMODULE hInstance)
 {
 	WNDCLASSEX wc;
 	wc.cbSize        = sizeof(WNDCLASSEX);
@@ -19,13 +19,15 @@ bool createWindowClass(const char* name,WNDPROC proc,HMODULE hInstance)
 	wc.lpszMenuName  = NULL;
 	wc.lpszClassName = name;
 	wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-	if (!RegisterClassEx (&wc))
+
+	if (!RegisterClassEx(&wc))
 	{
 		stringstream errMsg;
-		errMsg<<"Failed to register " << name;
-		MessageBox(NULL, errMsg.str().c_str(),"Blocks3D Crash", MB_OK);
+		errMsg << "Failed to register " << name;
+		MessageBox(NULL, errMsg.str().c_str(), "Blocks3D Crash", MB_OK);
 		return false;
 	}
+
 	return true;
 }
 
