@@ -14,15 +14,8 @@
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
 #endif
-HWND hwnd;
 
 HRESULT hresult;
-OLECHAR dat = ((OLECHAR)"SayHello");
-OLECHAR * szMember = &dat;
-DISPID dispid;
-DISPPARAMS dispparamsNoArgs = {NULL, NULL, 0, 0};
-EXCEPINFO excepinfo;
-UINT nArgErr;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {

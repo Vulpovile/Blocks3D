@@ -112,12 +112,6 @@ Vector3 Mouse::getPosition(std::vector<Instance *> ignore)
 	return getPositionAndPart(ignore).position;
 }
 
-bool Mouse::isMouseOnScreen()
-{
-	//hm
-	return true;
-}
-
 bool Mouse::isMouseDown()
 {
 	return mouseDown;
