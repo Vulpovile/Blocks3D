@@ -9,7 +9,6 @@
 #include "WindowFunctions.h"
 #include "ax.h"
 #include <commctrl.h>
-#include "ErrorFunctions.h"
 
 #if G3D_VER < 61000
 	#error Requires G3D 6.10
