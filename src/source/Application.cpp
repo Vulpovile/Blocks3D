@@ -1,37 +1,5 @@
-#include <G3DAll.h>
-#include <initguid.h>
-#include <iomanip>
-#include "resource.h"
-#include "DataModelV2/Instance.h"
-#include "DataModelV2/PartInstance.h"
-#include "DataModelV2/TextButtonInstance.h"
-#include "DataModelV2/ImageButtonInstance.h"
-#include "DataModelV2/DataModelInstance.h"
-#include "DataModelV2/GuiRootInstance.h"
-#include "XplicitNgine/XplicitNgine.h"
-#include "CameraController.h"
-#include "AudioPlayer.h"
-#include "Globals.h"
 #include "Application.h"
-#include "win32Defines.h"
-#include "WindowFunctions.h"
-#include <limits.h>
-#include <mshtml.h>
-#include <exdisp.h>
-#include <vector>
-#include <string>
-#include "ax.h"
-#include <cguid.h>
-#include "PropertyWindow.h"
-#include <commctrl.h>
-#include "StringFunctions.h"
 
-#include "Listener/GUDButtonListener.h"
-#include "Listener/ModeSelectionListener.h"
-#include "Listener/DeleteListener.h"
-#include "Listener/CameraButtonListener.h"
-#include "Listener/RotateButtonListener.h"
-#include "Faces.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
 
 static bool mouseMovedBeginMotion = false;
@@ -67,7 +35,7 @@ void Application::setFocus(bool focus)
 Application::Application(HWND parentWindow) : _propWindow(NULL) { //: GApp(settings,window) {
 	
 
-	std::string tempPath = ((std::string)getenv("temp")) + "/"+g_appName;
+	std::string tempPath = ((std::string)getenv("temp")) + "/"+ g_appName;
 	CreateDirectory(tempPath.c_str(), NULL);
 	
 	_hWndMain = parentWindow;
