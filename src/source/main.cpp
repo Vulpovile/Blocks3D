@@ -7,6 +7,7 @@
 #include "resource.h"
 #include "Application.h"
 #include "WindowFunctions.h"
+#include "ErrorFunctions.h"
 #include "ax.h"
 #include <commctrl.h>
 
