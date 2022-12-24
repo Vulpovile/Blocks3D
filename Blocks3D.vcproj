@@ -267,10 +267,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\source\PropertiesV2\Color3Property.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\source\ErrorFunctions.cpp"
 				>
 			</File>
@@ -312,10 +308,6 @@
 			</File>
 			<File
 				RelativePath=".\src\source\TextureHandler.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\source\PropertiesV2\Vector3Property.cpp"
 				>
 			</File>
 			<File
@@ -690,11 +682,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\source\PropertiesV2\Color3Property.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\PropertiesV2\Property.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\source\PropertiesV2\StringProperty.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\PropertiesV2\Vector3Property.cpp"
 					>
 				</File>
 			</Filter>
@@ -724,19 +724,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\include\Enum\B3DEnum.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\include\BrowserCallHandler.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\include\CameraController.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\PropertiesV2\Color3Property.h"
 				>
 			</File>
 			<File
@@ -793,10 +785,6 @@
 			</File>
 			<File
 				RelativePath=".\src\include\ToolEnum.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\include\PropertiesV2\Vector3Property.h"
 				>
 			</File>
 			<File
@@ -991,11 +979,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\include\PropertiesV2\Color3Property.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\PropertiesV2\Property.h"
 					>
 				</File>
 				<File
 					RelativePath=".\src\include\PropertiesV2\StringProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\PropertiesV2\Vector3Property.h"
 					>
 				</File>
 			</Filter>
@@ -1004,6 +1000,14 @@
 				>
 				<File
 					RelativePath=".\src\include\base64.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="B3DEnum"
+				>
+				<File
+					RelativePath=".\src\include\Enum\B3DEnum.h"
 					>
 				</File>
 			</Filter>
