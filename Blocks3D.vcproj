@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="Blocks3D"
 	ProjectGUID="{6C4D6EEF-B1D1-456A-B850-92CAB17124BE}"
 	RootNamespace="Blocks3D"
@@ -440,6 +440,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\source\DataModelV2\JointsService.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\LevelInstance.cpp"
 					>
 					<FileConfiguration
@@ -511,6 +515,10 @@
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV2\SelectionService.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV2\SnapInstance.cpp"
 					>
 				</File>
 				<File
@@ -887,6 +895,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV2\JointsService.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV2\LevelInstance.h"
 					>
 				</File>
@@ -904,6 +916,10 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\SnapInstance.h"
 					>
 				</File>
 				<File

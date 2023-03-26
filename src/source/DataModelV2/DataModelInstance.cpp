@@ -28,6 +28,7 @@ DataModelInstance::DataModelInstance(void)
 	thumbnailGenerator = new ThumbnailGeneratorInstance();
 	soundService = new SoundService();
 	lightingInstance = new LightingInstance();
+	jointsService = new JointsService();
 
 	selectionService = new SelectionService();
 	selectionService->setPropertyWindow(g_usableApp->_propWindow);
@@ -41,6 +42,7 @@ DataModelInstance::DataModelInstance(void)
 	level->setParent(this);
 	soundService->setParent(this);
 	lightingInstance->setParent(this);
+	jointsService->setParent(this);
 
 	_loadedFileName="..//skooter.rbxm";
 	listicon = 5;
@@ -670,6 +672,11 @@ ThumbnailGeneratorInstance* DataModelInstance::getThumbnailGenerator()
 SoundService* DataModelInstance::getSoundService()
 {
 	return soundService;
+}
+
+JointsService* DataModelInstance::getJointsService()
+{
+	return jointsService;
 }
 
 LightingInstance* DataModelInstance::getLighting()

@@ -1,4 +1,5 @@
 #include "XplicitNgine/XplicitNgine.h"
+#include "DataModelV2/JointsService.h"
 #include "Globals.h"
 
 XplicitNgine::XplicitNgine() 
@@ -81,6 +82,7 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 
 void XplicitNgine::deleteBody(PartInstance* partInstance)
 {
+	g_dataModel->getJointsService()->destroyPartSnap(partInstance);
 	if(partInstance->physBody != NULL)
 	{
 		dBodyEnable(partInstance->physBody);
@@ -233,4 +235,22 @@ void XplicitNgine::updateBody(PartInstance *partInstance)
 
 		dBodySetRotation(partInstance->physBody, rotation);
 	}
+}
+
+
+void XplicitNgine::createJoint(PartInstance *part1, PartInstance *part2)
+{
+	printf("XplicitNgine::createJoint called\n");
+	if((part1->physBody != NULL) & (part2->physBody != NULL)){
+		printf("creating a fixed joint\n");
+		dJointID c = dJointCreateFixed(physWorld, 0);
+		dJointAttach(c, part1->physBody, part2->physBody);
+		dJointSetFixed(c);
+	}
+}
+
+void XplicitNgine::destroyJoint(PartInstance *part)
+{
+	for(int i = 0; i < dBodyGetNumJoints(part->physBody); i++)
+		dJointDestroy(dBodyGetJoint(part->physBody, i));
 }

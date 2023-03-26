@@ -10,6 +10,7 @@
 #include "XplicitNgine/XplicitNgine.h"
 #include "SoundService.h"
 #include "LightingInstance.h"
+#include "JointsService.h"
 
 // Libraries 
 #include "rapidxml/rapidxml.hpp"
@@ -37,6 +38,7 @@ public:
 	XplicitNgine*					getEngine();
 	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 	SoundService*					getSoundService();
+	JointsService*					getJointsService();
 	LightingInstance*				getLighting();
 
 	std::string				message;
@@ -72,6 +74,7 @@ private:
 	XplicitNgine*			xplicitNgine;
 	SoundService*			soundService;
 	LightingInstance*		lightingInstance;
+	JointsService*			jointsService;
 	bool					running;
 	
 };

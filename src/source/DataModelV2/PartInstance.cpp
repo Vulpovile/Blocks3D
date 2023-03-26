@@ -398,6 +398,7 @@ void PartInstance::render(RenderDevice* rd) {
 PartInstance::~PartInstance(void)
 {
 	glDeleteLists(glList, 1);
+
 	/*
 	// Causes some weird ODE error
 	// Someone, please look into this

@@ -9,6 +9,7 @@
 #include "DataModelV2/DataModelInstance.h"
 #include "DataModelV2/GuiRootInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
+#include "DataModelV2/JointsService.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
@@ -200,7 +201,12 @@ void Application::onInit()  {
 
 #ifdef LEGACY_LOAD_G3DFUN_LEVEL
 	// Anchored this baseplate for XplicitNgine tests
+	//XplicitNgine ngine;
 	PartInstance* test = makePart();
+	PartInstance* test2;
+	PartInstance* test3;
+	JointsService* JointsSvc = g_dataModel->getJointsService();
+
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
@@ -223,12 +229,12 @@ void Application::onInit()  {
 	test->setPosition(Vector3(10,1,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
-	test = makePart();
-	test->setParent(_dataModel->getWorkspace());
-	test->color = Color3::gray();
-	test->setSize(Vector3(4,1,2));
-	test->setPosition(Vector3(7,2,0));
-	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+	test2 = makePart();
+	test2->setParent(_dataModel->getWorkspace());
+	test2->color = Color3::red();
+	test2->setSize(Vector3(4,1,2));
+	test2->setPosition(Vector3(7,2,0));
+	test2->setSurface(TOP, Enum::SurfaceType::Bumps);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
@@ -237,12 +243,14 @@ void Application::onInit()  {
 	test->setPosition(Vector3(-7,2,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 
-	test = makePart();
-	test->setParent(_dataModel->getWorkspace());
-	test->color = Color3::gray();
-	test->setSize(Vector3(4,1,2));
-	test->setPosition(Vector3(4,3,0));
-	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+	test3 = makePart();
+	test3->setParent(_dataModel->getWorkspace());
+	test3->color = Color3::red();
+	test3->setSize(Vector3(4,1,2));
+	test3->setPosition(Vector3(4,3,0));
+	test3->setSurface(TOP, Enum::SurfaceType::Bumps);
+	JointsSvc->createSnap(test2, test3);
+
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
@@ -253,10 +261,11 @@ void Application::onInit()  {
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
-	test->color = Color3::gray();
+	test->color = Color3::red();
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+	JointsSvc->createSnap(test, test3);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
@@ -338,7 +347,6 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 			_dataModel->getEngine()->step(0.03F);
 		}
 		onLogic();
-		
 	}
 
 	_dataModel->getGuiRoot()->update();
