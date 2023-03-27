@@ -25,6 +25,7 @@ public:
 	void removeChild(Instance*);
 	void clearChildren();
 	Instance* getParent();
+	void remove();
 	virtual Instance* clone() const { return new Instance(*this); }
 	virtual std::vector<PROPGRIDITEM> getProperties();
 	virtual void PropUpdate(LPPROPGRIDITEM &pItem);

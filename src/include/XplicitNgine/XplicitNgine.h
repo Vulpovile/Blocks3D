@@ -17,6 +17,6 @@ public:
 	void deleteBody(PartInstance* partInstance);
 	void updateBody(PartInstance* partInstance);
 	void resetBody(PartInstance* partInstance);
-	void createJoint(PartInstance *part1, PartInstance *part2);
-	void destroyJoint(PartInstance *part);
+	dJointID createJoint(PartInstance *part1, PartInstance *part2);
+	void destroyJoints(PartInstance *part);
 };

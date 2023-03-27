@@ -238,7 +238,7 @@ void XplicitNgine::updateBody(PartInstance *partInstance)
 }
 
 
-void XplicitNgine::createJoint(PartInstance *part1, PartInstance *part2)
+dJointID XplicitNgine::createJoint(PartInstance *part1, PartInstance *part2)
 {
 	printf("XplicitNgine::createJoint called\n");
 	if((part1->physBody != NULL) & (part2->physBody != NULL)){
@@ -246,10 +246,12 @@ void XplicitNgine::createJoint(PartInstance *part1, PartInstance *part2)
 		dJointID c = dJointCreateFixed(physWorld, 0);
 		dJointAttach(c, part1->physBody, part2->physBody);
 		dJointSetFixed(c);
+		return c;
 	}
+	return NULL;
 }
 
-void XplicitNgine::destroyJoint(PartInstance *part)
+void XplicitNgine::destroyJoints(PartInstance *part)
 {
 	for(int i = 0; i < dBodyGetNumJoints(part->physBody); i++)
 		dJointDestroy(dBodyGetJoint(part->physBody, i));

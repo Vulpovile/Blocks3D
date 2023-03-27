@@ -87,6 +87,7 @@ Instance::~Instance(void)
 	{
 		delete children.at(i);
 	}
+	setParent(NULL);
 }
 
 void Instance::setName(std::string newName)
@@ -174,5 +175,7 @@ Instance* Instance::findFirstChild(std::string name)
 	return NULL;
 }
 
-
-
+void Instance::remove()
+{
+	delete this;
+}

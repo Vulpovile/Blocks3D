@@ -20,16 +20,15 @@ void JointsService::createSnap(PartInstance* Part1, PartInstance* Part2)
 	Snap->setParent(this);
 }
 
-//This is only for removing the Snap instance not for removing the joint
 void JointsService::destroyPartSnap(PartInstance* Part)
 {
 	std::vector<Instance* > children = getChildren();
 	for(size_t i = 0; i < children.size(); i++)
 	{
 		SnapInstance* Snap = (SnapInstance*)children.at(i);
-		if((Snap->Joint1 == Part) || (Snap->Joint2 == Part))
+		if((Snap->jPart1 == Part) || (Snap->jPart2 == Part))
 		{
-			removeChild(Snap);
+			Snap->remove();
 		}
 	}
 }
