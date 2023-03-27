@@ -20,10 +20,11 @@ XplicitNgine::XplicitNgine()
 
 XplicitNgine::~XplicitNgine() 
 {
-  dJointGroupDestroy (contactgroup);
-  dSpaceDestroy (physSpace);
-  dWorldDestroy (physWorld);
-  dCloseODE();
+	g_dataModel->getJointsService()->remove();
+	dJointGroupDestroy (contactgroup);
+	dSpaceDestroy (physSpace);
+	dWorldDestroy (physWorld);
+	dCloseODE();
 }
 
 void XplicitNgine::resetBody(PartInstance* partInstance)
