@@ -210,7 +210,7 @@ void Application::onInit()  {
 	test->setParent(_dataModel->getWorkspace());
 	test->color = Color3(0.2F,0.3F,1);
 	test->setSize(Vector3(24,1,24));
-	test->setPosition(Vector3(0,0,0));
+	test->setPosition(Vector3(0,-10,0));
 	test->setCFrame(test->getCFrame() * Matrix3::fromEulerAnglesXYZ(0,toRadians(0),toRadians(0)));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	test->setAnchored(true);
@@ -266,6 +266,7 @@ void Application::onInit()  {
 	test->setPosition(Vector3(1,4,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
 	JointsSvc->createSnap(test, test3);
+	//JointsSvc->solvePartSnap(test3, test);
 
 	test = makePart();
 	test->setParent(_dataModel->getWorkspace());
@@ -294,6 +295,8 @@ void Application::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(2,7,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
+
+	JointsSvc->solveWorkspaceSnaps();
 #else
 	_dataModel->debugGetOpen();
 #endif

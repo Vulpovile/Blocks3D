@@ -16,6 +16,7 @@ public:
 	virtual void update();
 	std::vector<Instance*> children; // All children.
 	std::string getClassName();
+	bool Instance::isA(std::string name);
 	Instance* findFirstChild(std::string);
 	std::vector<Instance* > getChildren();
 	std::vector<Instance* > getAllChildren();

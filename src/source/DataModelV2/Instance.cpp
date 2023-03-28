@@ -100,6 +100,13 @@ std::string Instance::getClassName()
 	return className;
 }
 
+bool Instance::isA(std::string name)
+{
+	if (className == name)
+		return true;
+	return false;
+}
+
 std::vector<Instance* > Instance::getChildren()
 {
 	return children;
