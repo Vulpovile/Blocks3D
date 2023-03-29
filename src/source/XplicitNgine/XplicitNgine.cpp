@@ -4,7 +4,6 @@
 
 XplicitNgine::XplicitNgine() 
 {
-	
 	physWorld = dWorldCreate();
 	physSpace = dHashSpaceCreate(0);
 	contactgroup = dJointGroupCreate(0);
@@ -159,7 +158,8 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 			dGeomSetData(partInstance->physGeom[0], partInstance);
 
 		dMass mass;
-		mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
+		mass.setBox(sqrt(partSize.x*20), sqrt(partSize.y*20), sqrt(partSize.z*20), 0.01F);
+		//mass.setBox(sqrt(partSize.x*2), sqrt(partSize.y*2), sqrt(partSize.z*2), 0.7F);
 		dBodySetMass(partInstance->physBody, &mass);
 
 		// Create rigid body

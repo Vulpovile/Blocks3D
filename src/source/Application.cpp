@@ -249,7 +249,7 @@ void Application::onInit()  {
 	test3->setSize(Vector3(4,1,2));
 	test3->setPosition(Vector3(4,3,0));
 	test3->setSurface(TOP, Enum::SurfaceType::Bumps);
-	JointsSvc->createSnap(test2, test3);
+	//JointsSvc->createSnap(test2, test3);
 
 
 	test = makePart();
@@ -265,7 +265,7 @@ void Application::onInit()  {
 	test->setSize(Vector3(4,1,2));
 	test->setPosition(Vector3(1,4,0));
 	test->setSurface(TOP, Enum::SurfaceType::Bumps);
-	JointsSvc->createSnap(test, test3);
+	//JointsSvc->createSnap(test, test3);
 	//JointsSvc->solvePartSnap(test3, test);
 
 	test = makePart();
