@@ -12,3 +12,4 @@ public:
 	void zoomToExtents();
 	std::vector<PartInstance *> partObjects;
 };
+

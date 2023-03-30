@@ -10,6 +10,7 @@
 #include "XplicitNgine/XplicitNgine.h"
 #include "SoundService.h"
 #include "LightingInstance.h"
+#include "RunServiceInstance.h"
 
 // Libraries 
 #include "rapidxml/rapidxml.hpp"
@@ -38,6 +39,7 @@ public:
 	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 	SoundService*					getSoundService();
 	LightingInstance*				getLighting();
+	RunService*						getRunService();
 
 	std::string				message;
 	std::string				_loadedFileName;
@@ -47,7 +49,7 @@ public:
 	SelectionService*		getSelectionService();
 	PartInstance*			makePart();
 	void					clearLevel();
-	void					toggleRun();
+	void					toggleRun(bool doRun);
 	bool					isRunning();
 	void					resetEngine();
 #if _DEBUG
@@ -72,6 +74,8 @@ private:
 	XplicitNgine*			xplicitNgine;
 	SoundService*			soundService;
 	LightingInstance*		lightingInstance;
+	RunService*				runService;
+
 	bool					running;
 	
 };

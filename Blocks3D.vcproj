@@ -510,6 +510,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\src\source\DataModelV2\RunServiceInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV2\SelectionService.cpp"
 					>
 				</File>
@@ -900,6 +904,10 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\PVInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV2\RunServiceInstance.h"
 					>
 				</File>
 				<File

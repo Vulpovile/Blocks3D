@@ -192,6 +192,8 @@ void Application::onInit()  {
 	tool = new Tool();
     // Called before Application::run() beings
 	cameraController.setFrame(Vector3(0,2,10));
+	cameraController.Zoom(-1);
+	
 	_dataModel = new DataModelInstance();
 	_dataModel->setParent(NULL);
 	_dataModel->setName("undefined");

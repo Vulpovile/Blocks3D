@@ -25,7 +25,10 @@ DataModelInstance::DataModelInstance(void)
 	workspace = new WorkspaceInstance();
 	guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
-	thumbnailGenerator = new ThumbnailGeneratorInstance();
+	runService = new RunService();
+
+	//thumbnailGenerator = new ThumbnailGeneratorInstance();
+	
 	soundService = new SoundService();
 	lightingInstance = new LightingInstance();
 
@@ -67,9 +70,10 @@ XplicitNgine * DataModelInstance::getEngine()
 	return xplicitNgine;
 }
 
-void DataModelInstance::toggleRun()
+// Please use RunService->run(); & RunService->pause(); instead
+void DataModelInstance::toggleRun(bool doRun)
 {
-	running = !running;
+	running = doRun;
 	//if(!running)
 		//resetEngine();
 }
@@ -90,7 +94,6 @@ void DataModelInstance::modXMLLevel(float modY)
 	_modY += modY;
 	clearLevel();
 	debugGetOpen();
-
 }
 #endif
 
@@ -642,6 +645,7 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 	}
 }
 
+// Instance getters
 WorkspaceInstance* DataModelInstance::getWorkspace()
 {
 	return workspace;
@@ -675,4 +679,9 @@ SoundService* DataModelInstance::getSoundService()
 LightingInstance* DataModelInstance::getLighting()
 {
 	return lightingInstance;
+}
+
+RunService* DataModelInstance::getRunService()
+{
+	return runService;
 }

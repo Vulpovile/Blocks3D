@@ -6,8 +6,12 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(button->name == "go")
 	{
-		g_dataModel->toggleRun();
-		((ToggleImageButtonInstance*)button)->checked = g_dataModel->isRunning();
+		bool isRunning = g_dataModel->isRunning();
+		if(isRunning)
+			g_dataModel->getRunService()->pause();
+		else
+			g_dataModel->getRunService()->run();
+		//((ToggleImageButtonInstance*)button)->checked = !isRunning;
 	}
 	else if(button->name == "file")
 	{
