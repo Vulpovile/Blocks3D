@@ -504,8 +504,12 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 		std::string tname = hname.substr(0, hname.length() - 5);
 		name = tname;
 		resetEngine();
+		//HACK: we need to reset JointsService but there is no good way to do it in XplicitNgine code
+		jointsService = new JointsService();
+		jointsService->setParent(this);
 		selectionService->clearSelection();
 		selectionService->addSelected(this);
+		jointsService->solveWorkspaceSnaps();
 		return true;
 	}
 	else
