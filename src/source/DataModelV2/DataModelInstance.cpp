@@ -515,6 +515,27 @@ bool DataModelInstance::load(const char* filename, bool clearObjects)
 	}
 }
 
+bool DataModelInstance::loadModel(const char* filename)
+{
+	ifstream levelFile(filename,ios::binary);
+	if (levelFile)
+	{
+		readXMLFileStream(&levelFile);
+
+		//resetEngine();
+		selectionService->clearSelection();
+		selectionService->addSelected(this);
+		return true;
+	}
+	else
+	{
+		std::stringstream msg;
+		msg << "Failed to load file:" << std::endl << filename << std::endl << strerror(errno);
+		MessageBoxStr(msg.str());
+		return false;
+	}
+}
+
 bool DataModelInstance::readXMLFileStream(std::ifstream* file)
 {
 	file->seekg(0,file->end);
@@ -584,6 +605,30 @@ bool DataModelInstance::getOpen()
 	}
 	return true;
 }
+
+bool DataModelInstance::getOpenModel()
+{
+	_modY=0;
+	OPENFILENAME of;
+	ZeroMemory( &of , sizeof( of));
+	of.lStructSize = sizeof(OPENFILENAME);
+	of.lpstrFilter = "Roblox Files\0*.rbxm;*.rbxl\0\0";
+	char szFile[512];
+	of.lpstrFile = szFile ;
+	of.lpstrFile[0]='\0';
+	of.nMaxFile=500;
+	of.lpstrTitle="Hello";
+	of.Flags = OFN_FILEMUSTEXIST;
+	ShowCursor(TRUE);
+	BOOL file = GetOpenFileName(&of);
+	if (file)
+	{
+		_loadedFileName = of.lpstrFile;
+		loadModel(of.lpstrFile);
+	}
+	return true;
+}
+
 void DataModelInstance::setMessage(std::string msg)
 {
 	message = msg;
