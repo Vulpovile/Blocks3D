@@ -185,6 +185,7 @@
 				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
 				SubSystem="1"

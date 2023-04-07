@@ -16,7 +16,11 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		}
 	if(cont)
 	{
-		AudioPlayer::playSound(dingSound);
+		
+		if(button->disabled == false){
+			AudioPlayer::playSound(dingSound);
+		}
+
 		if(button->name == "Duplicate")
 		{
 			std::vector<Instance*> newinst;
@@ -36,28 +40,31 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		}
 		else if(button->name == "Group")
 		{
-			GroupInstance * inst = new GroupInstance();
-			inst->setParent(g_dataModel->getWorkspace());
-			for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
-			{
-				if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
+			if (g_dataModel->getSelectionService()->getSelection().size() > 1){
+				GroupInstance * inst = new GroupInstance();
+				inst->setParent(g_dataModel->getWorkspace());
+				for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 				{
-					g_dataModel->getSelectionService()->getSelection()[i]->setParent(inst);
-					if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
+					if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 					{
-						inst->primaryPart = part;
+						g_dataModel->getSelectionService()->getSelection()[i]->setParent(inst);
+						if(PartInstance* part = dynamic_cast<PartInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
+						{
+							inst->primaryPart = part;
+						}
 					}
 				}
-			}
-			g_dataModel->getSelectionService()->clearSelection();
-			g_dataModel->getSelectionService()->addSelected(inst);
+				g_dataModel->getSelectionService()->clearSelection();
+				g_dataModel->getSelectionService()->addSelected(inst);
+			}			
 		}
 		else if(button->name == "UnGroup")
 		{
 			std::vector<Instance*> newinst;
 			for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
 			{
-				if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
+				Instance* selection = g_dataModel->getSelectionService()->getSelection()[i];
+				if(selection->canDelete && selection->getClassName() == "GroupInstance")
 				{
 					if(GroupInstance* model = dynamic_cast<GroupInstance*>(g_dataModel->getSelectionService()->getSelection()[i]))
 					{
