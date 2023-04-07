@@ -213,7 +213,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,215);
 	button->boxEnd = Vector2(80,235);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "Group";
@@ -229,7 +229,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,240);
 	button->boxEnd = Vector2(80,260);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "UnGroup";
@@ -245,7 +245,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,265);
 	button->boxEnd = Vector2(80,285);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "Duplicate";
@@ -520,11 +520,19 @@ void GuiRootInstance::update()
 			if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
 			{
 				button->disabled = false;
-				button2->disabled = false;
-				button3->disabled = false;
 				button4->disabled = false;
 				button5->disabled = false;
 				button6->disabled = false;
+				
+
+				if (g_dataModel->getSelectionService()->getSelection().size() > 1){
+					button2->disabled = false;
+				}
+
+				if (g_dataModel->getSelectionService()->getSelection()[i]->getClassName() == "GroupInstance"){
+					button3->disabled = false;
+				}
+
 				break;
 			}
 	}
