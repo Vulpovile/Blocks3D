@@ -72,15 +72,13 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
 			{
 				Instance* selection = SelectionSvc->getSelection()[i];
-				if(selection->canDelete && selection->getClassName() == "GroupInstance")
+
+				if(GroupInstance* model = dynamic_cast<GroupInstance*>(selection))
 				{
-					if(GroupInstance* model = dynamic_cast<GroupInstance*>(SelectionSvc->getSelection()[i]))
-					{
-						newinst = model->unGroup();
-						model->setParent(NULL);
-						delete model;
-						model = NULL;
-					}
+					newinst = model->unGroup();
+					model->setParent(NULL);
+					delete model;
+					model = NULL;
 				}
 			}
 			SelectionSvc->clearSelection();

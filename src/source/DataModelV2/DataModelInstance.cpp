@@ -471,7 +471,6 @@ bool DataModelInstance::scanXMLObject(xml_node<> * scanNode)
 				{
 					return false;
 				}
-
 			}
 		}
 		/*
