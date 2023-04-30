@@ -593,7 +593,7 @@ bool DataModelInstance::getOpen()
 	of.lpstrFile = szFile ;
 	of.lpstrFile[0]='\0';
 	of.nMaxFile=500;
-	of.lpstrTitle="Hello";
+	of.lpstrTitle="Open";
 	of.Flags = OFN_FILEMUSTEXIST;
 	ShowCursor(TRUE);
 	BOOL file = GetOpenFileName(&of);
@@ -616,7 +616,7 @@ bool DataModelInstance::getOpenModel()
 	of.lpstrFile = szFile ;
 	of.lpstrFile[0]='\0';
 	of.nMaxFile=500;
-	of.lpstrTitle="Hello";
+	of.lpstrTitle="Open";
 	of.Flags = OFN_FILEMUSTEXIST;
 	ShowCursor(TRUE);
 	BOOL file = GetOpenFileName(&of);

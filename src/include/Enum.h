@@ -37,7 +37,7 @@ namespace Enum
 		enum Value {
 			NoSound = 0, Victory = 1, Boing = 2, Bomb = 3, 
 			Ping = 4, Break = 5, Splat = 6, Swoosh = 7, 
-			Snap = 8, Page = 9
+			Snap = 8, Page = 9, Click = 10, Clock = 11, Step = 12, StepOn = 13,
 		};
 	}
 }

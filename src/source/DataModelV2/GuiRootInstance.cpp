@@ -6,6 +6,7 @@
 #include "DataModelV2/ImageButtonInstance.h"
 #include "DataModelV2/ToggleImageButtonInstance.h"
 #include "DataModelV2/GuiRootInstance.h"
+#include "DataModelV2/SelectionService.h"
 #include "DataModelV2/ImageButtonInstance.h"
 #include "Globals.h"
 #include "StringFunctions.h"
@@ -502,6 +503,9 @@ void GuiRootInstance::update()
 	Instance * obj3 = this->findFirstChild("UnGroup");
 	Instance * obj4 = this->findFirstChild("Rotate");
 	Instance * obj5 = this->findFirstChild("Tilt");
+
+	SelectionService* SelectionSvc = g_dataModel->getSelectionService();
+
 	if(obj != NULL && obj2 != NULL && obj3 != NULL && obj4 !=NULL && obj5 != NULL && obj6 != NULL)
 	{
 		BaseButtonInstance* button = (BaseButtonInstance*)obj;
@@ -516,8 +520,8 @@ void GuiRootInstance::update()
 		button4->disabled = true;
 		button5->disabled = true;
 		button6->disabled = true;
-		for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
-			if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
+		for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
+			if(SelectionSvc->getSelection()[i]->canDelete)
 			{
 				button->disabled = false;
 				button4->disabled = false;
@@ -525,11 +529,11 @@ void GuiRootInstance::update()
 				button6->disabled = false;
 				
 
-				if (g_dataModel->getSelectionService()->getSelection().size() > 1){
+				if (SelectionSvc->getSelection().size() > 1){
 					button2->disabled = false;
 				}
 
-				if (g_dataModel->getSelectionService()->getSelection()[i]->getClassName() == "GroupInstance"){
+				if (dynamic_cast<GroupInstance*>(SelectionSvc->getSelection()[i])){
 					button3->disabled = false;
 				}
 

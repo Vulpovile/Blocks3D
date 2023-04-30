@@ -8,6 +8,7 @@
 #include "DataModelV2/ImageButtonInstance.h"
 #include "DataModelV2/DataModelInstance.h"
 #include "DataModelV2/GuiRootInstance.h"
+#include "DataModelV2/SoundService.h"
 #include "XplicitNgine/XplicitNgine.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
@@ -512,7 +513,7 @@ void Application::onMouseWheel(int x,int y,short delta)
 	if (mouseOnScreen==true)
 	if (cameraController.onMouseWheel(x, y, delta))
 	{
-		AudioPlayer::playSound(cameraSound);
+		_dataModel->getSoundService()->playSound(_dataModel->getSoundService()->findFirstChild("Step"));
 	}
 	tool->onMouseScroll(mouse);
 }
