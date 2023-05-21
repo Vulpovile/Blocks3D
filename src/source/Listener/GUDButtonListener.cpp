@@ -7,12 +7,12 @@
 
 void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
-	SelectionService* SelectionSvc = g_dataModel->getSelectionService();
-	SoundService* SoundSvc = g_dataModel->getSoundService();
+	SelectionService* getSelectionService = g_dataModel->getSelectionService();
+	SoundService* getSoundService = g_dataModel->getSoundService();
 
 	bool cont = false;
-	for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
-		if(SelectionSvc->getSelection()[i]->canDelete)
+	for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
+		if(getSelectionService->getSelection()[i]->canDelete)
 		{
 			cont = true;	
 			break;
@@ -21,19 +21,19 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 	if (cont)
 	{
 		if(button->disabled == false){
-			SoundSvc->playSound(SoundSvc->findFirstChild("Ping"));
+			getSoundService->playSound(getSoundService->findFirstChild("Ping"));
 		}
 
 		if(button->name == "Duplicate")
 		{
 			std::vector<Instance*> newinst;
-			for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
+			for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
 			{
-				if(SelectionSvc->getSelection()[i]->canDelete)
+				if(getSelectionService->getSelection()[i]->canDelete)
 				{
-				Instance* tempinst = SelectionSvc->getSelection()[i];
+				Instance* tempinst = getSelectionService->getSelection()[i];
 				
-				Instance* clonedInstance = SelectionSvc->getSelection()[i]->clone();
+				Instance* clonedInstance = getSelectionService->getSelection()[i]->clone();
 
 				if (clonedInstance->getClassName() == "PVInstance"){
 					PartInstance* Part = dynamic_cast<PartInstance*>(clonedInstance);
@@ -43,35 +43,35 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 				newinst.push_back(clonedInstance);
 				}
 			}
-			SelectionSvc->clearSelection();
-			SelectionSvc->addSelected(newinst);
+			getSelectionService->clearSelection();
+			getSelectionService->addSelected(newinst);
 		}
 		else if(button->name == "Group")
 		{
-			if (SelectionSvc->getSelection().size() > 1){
+			if (getSelectionService->getSelection().size() > 1){
 				GroupInstance * inst = new GroupInstance();
 				inst->setParent(g_dataModel->getWorkspace());
-				for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
+				for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
 				{
-					if(SelectionSvc->getSelection()[i]->canDelete)
+					if(getSelectionService->getSelection()[i]->canDelete)
 					{
-						SelectionSvc->getSelection()[i]->setParent(inst);
-						if(PartInstance* part = dynamic_cast<PartInstance*>(SelectionSvc->getSelection()[i]))
+						getSelectionService->getSelection()[i]->setParent(inst);
+						if(PartInstance* part = dynamic_cast<PartInstance*>(getSelectionService->getSelection()[i]))
 						{
 							inst->primaryPart = part;
 						}
 					}
 				}
-				SelectionSvc->clearSelection();
-				SelectionSvc->addSelected(inst);
+				getSelectionService->clearSelection();
+				getSelectionService->addSelected(inst);
 			}			
 		}
 		else if(button->name == "UnGroup")
 		{
 			std::vector<Instance*> newinst;
-			for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
+			for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
 			{
-				Instance* selection = SelectionSvc->getSelection()[i];
+				Instance* selection = getSelectionService->getSelection()[i];
 
 				if(GroupInstance* model = dynamic_cast<GroupInstance*>(selection))
 				{
@@ -81,8 +81,8 @@ void GUDButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 					model = NULL;
 				}
 			}
-			SelectionSvc->clearSelection();
-			SelectionSvc->addSelected(newinst);
+			getSelectionService->clearSelection();
+			getSelectionService->addSelected(newinst);
 		}
 	}
 }

@@ -504,7 +504,7 @@ void GuiRootInstance::update()
 	Instance * obj4 = this->findFirstChild("Rotate");
 	Instance * obj5 = this->findFirstChild("Tilt");
 
-	SelectionService* SelectionSvc = g_dataModel->getSelectionService();
+	SelectionService* getSelectionService = g_dataModel->getSelectionService();
 
 	if(obj != NULL && obj2 != NULL && obj3 != NULL && obj4 !=NULL && obj5 != NULL && obj6 != NULL)
 	{
@@ -520,8 +520,8 @@ void GuiRootInstance::update()
 		button4->disabled = true;
 		button5->disabled = true;
 		button6->disabled = true;
-		for(size_t i = 0; i < SelectionSvc->getSelection().size(); i++)
-			if(SelectionSvc->getSelection()[i]->canDelete)
+		for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
+			if(getSelectionService->getSelection()[i]->canDelete)
 			{
 				button->disabled = false;
 				button4->disabled = false;
@@ -529,11 +529,11 @@ void GuiRootInstance::update()
 				button6->disabled = false;
 				
 
-				if (SelectionSvc->getSelection().size() > 1){
+				if (getSelectionService->getSelection().size() > 1){
 					button2->disabled = false;
 				}
 
-				if (dynamic_cast<GroupInstance*>(SelectionSvc->getSelection()[i])){
+				if (dynamic_cast<GroupInstance*>(getSelectionService->getSelection()[i])){
 					button3->disabled = false;
 				}
 
