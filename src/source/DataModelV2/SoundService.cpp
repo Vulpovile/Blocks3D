@@ -67,6 +67,30 @@ SoundService::SoundService()
 	stockSound->setName("Page");
 	stockSound->setSoundId("/content/sounds/pageturn.wav");
 	stockSound->setParent(this);
+
+	// Click
+	stockSound = new SoundInstance();
+	stockSound->setName("Click");
+	stockSound->setSoundId("/content/sounds/switch.wav");
+	stockSound->setParent(this);
+
+	// Clock
+	stockSound = new SoundInstance();
+	stockSound->setName("Clock");
+	stockSound->setSoundId("/content/sounds/clickfast.wav");
+	stockSound->setParent(this);
+
+	// Step
+	stockSound = new SoundInstance();
+	stockSound->setName("Step");
+	stockSound->setSoundId("/content/sounds/SWITCH3.wav");
+	stockSound->setParent(this);
+
+	// StepOn
+	stockSound = new SoundInstance();
+	stockSound->setName("StepOn");
+	stockSound->setSoundId("/content/sounds/flashbulb.wav");
+	stockSound->setParent(this);
 }
 
 SoundService::~SoundService(void)

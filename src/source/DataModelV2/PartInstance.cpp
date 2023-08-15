@@ -495,6 +495,14 @@ static TCHAR* strSoundType(int option)
 			return "Swoosh";
 		case Enum::Sound::Page:
 			return "Page";
+		case Enum::Sound::Click:
+			return "Click";
+		case Enum::Sound::Clock:
+			return "Clock";
+		case Enum::Sound::Step:
+			return "Step";
+		case Enum::Sound::StepOn:
+			return "StepOn";
 	}
 	return "NoSound";
 }
@@ -521,6 +529,14 @@ static Enum::Sound::Value EnumOnTouchSoundType(TCHAR* option)
 		return Enum::Sound::Ping;
 	if(strcmp("Snap", option) == 0)
 		return Enum::Sound::Snap;
+	if(strcmp("Click", option) == 0)
+		return Enum::Sound::Click;
+	if(strcmp("Clock", option) == 0)
+		return Enum::Sound::Clock;
+	if(strcmp("Step", option) == 0)
+		return Enum::Sound::Step;
+	if(strcmp("StepOn", option) == 0)
+		return Enum::Sound::StepOn;
 
 	return Enum::Sound::NoSound;
 }
@@ -584,6 +600,18 @@ void PartInstance::onTouch()
 			break;
 		case Enum::Sound::Swoosh:
 			sndService->playSound(sndService->findFirstChild("Swoosh"));
+			break;
+		case Enum::Sound::Click:
+			sndService->playSound(sndService->findFirstChild("Click"));
+			break;
+		case Enum::Sound::Clock:
+			sndService->playSound(sndService->findFirstChild("Clock"));
+			break;
+		case Enum::Sound::Step:
+			sndService->playSound(sndService->findFirstChild("Step"));
+			break;
+		case Enum::Sound::StepOn:
+			sndService->playSound(sndService->findFirstChild("StepOn"));
 			break;
 	}
 }
@@ -728,7 +756,7 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		"What sound plays when touched",
 		(LPARAM)strSoundType(OnTouchSound),
 		PIT_COMBO,
-		TEXT("NoSound\0Victory\0Boing\0Break\0Snap\0Bomb\0Splat\0Page\0Ping\0Swoosh\0")
+		TEXT("NoSound\0Victory\0Boing\0Break\0Snap\0Bomb\0Splat\0Page\0Ping\0Swoosh\0Click\0Clock\0Step\0StepOn")
 		));
 
 		sprintf_s(changeScoreTxt, "%d", changeScore);

@@ -49,4 +49,18 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 			break;
 		}
 	}
+	else if (button->name == "insert"){
+		HMENU mainmenu = CreatePopupMenu();
+		AppendMenu(mainmenu, MF_STRING, 104, "Model...");
+
+		POINT p;
+		GetCursorPos(&p);
+		int menuClick = TrackPopupMenu(mainmenu, TPM_LEFTBUTTON | TPM_RETURNCMD, p.x, p.y, 0, Globals::mainHwnd, 0);
+		switch (menuClick)
+		{
+		case 104:
+			g_dataModel->getOpenModel();
+			break;
+		}
+	}
 }

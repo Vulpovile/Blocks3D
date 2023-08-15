@@ -27,7 +27,9 @@ public:
 	void					clearMessage();
 	bool					debugGetOpen();
 	bool					getOpen();
+	bool                    getOpenModel();
 	bool					load(const char* filename,bool clearObjects);	
+	bool					loadModel(const char* filename);
 	bool					readXMLFileStream(std::ifstream* file);
 	void					drawMessage(RenderDevice*);
 	

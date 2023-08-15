@@ -6,6 +6,7 @@
 #include "DataModelV2/ImageButtonInstance.h"
 #include "DataModelV2/ToggleImageButtonInstance.h"
 #include "DataModelV2/GuiRootInstance.h"
+#include "DataModelV2/SelectionService.h"
 #include "DataModelV2/ImageButtonInstance.h"
 #include "Globals.h"
 #include "StringFunctions.h"
@@ -213,7 +214,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,215);
 	button->boxEnd = Vector2(80,235);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "Group";
@@ -229,7 +230,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,240);
 	button->boxEnd = Vector2(80,260);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "UnGroup";
@@ -245,7 +246,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->boxBegin = Vector2(0,265);
 	button->boxEnd = Vector2(80,285);
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3::white();
+	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->title = "Duplicate";
@@ -502,6 +503,9 @@ void GuiRootInstance::update()
 	Instance * obj3 = this->findFirstChild("UnGroup");
 	Instance * obj4 = this->findFirstChild("Rotate");
 	Instance * obj5 = this->findFirstChild("Tilt");
+
+	SelectionService* getSelectionService = g_dataModel->getSelectionService();
+
 	if(obj != NULL && obj2 != NULL && obj3 != NULL && obj4 !=NULL && obj5 != NULL && obj6 != NULL)
 	{
 		BaseButtonInstance* button = (BaseButtonInstance*)obj;
@@ -516,15 +520,23 @@ void GuiRootInstance::update()
 		button4->disabled = true;
 		button5->disabled = true;
 		button6->disabled = true;
-		for(size_t i = 0; i < g_dataModel->getSelectionService()->getSelection().size(); i++)
-			if(g_dataModel->getSelectionService()->getSelection()[i]->canDelete)
+		for(size_t i = 0; i < getSelectionService->getSelection().size(); i++)
+			if(getSelectionService->getSelection()[i]->canDelete)
 			{
 				button->disabled = false;
-				button2->disabled = false;
-				button3->disabled = false;
 				button4->disabled = false;
 				button5->disabled = false;
 				button6->disabled = false;
+				
+
+				if (getSelectionService->getSelection().size() > 1){
+					button2->disabled = false;
+				}
+
+				if (dynamic_cast<GroupInstance*>(getSelectionService->getSelection()[i])){
+					button3->disabled = false;
+				}
+
 				break;
 			}
 	}
