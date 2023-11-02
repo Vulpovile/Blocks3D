@@ -43,6 +43,14 @@ public:
 	virtual bool mouseHovered(float, float, RenderDevice* rd);
 	UDim2 position;
 	UDim2 size;	
+	static G3D::Color4 translucentBackdrop()
+	{
+		return G3D::Color4(0.60000002F, 0.60000002F, 0.60000002F, 0.60000002F);
+	}
+	static G3D::Color4 disabledFill()
+	{
+		return G3D::Color4(0.69999999F, 0.69999999F, 0.69999999F, 0.5F);
+	}
 protected:
 	bool mouseInArea(float, float, float, float, float, float);
 	class ButtonListener* listener;

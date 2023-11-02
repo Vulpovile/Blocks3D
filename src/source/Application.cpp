@@ -39,6 +39,7 @@ static bool mouseMovedBeginMotion = false;
 static POINT oldGlobalMouse;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
+float wasPropShown = 0;
 
 void Application::clearInstances()
 {
@@ -56,7 +57,7 @@ void Application::setFocus(bool focus)
 	if(_propWindow != NULL)
 		if(focus)
 		{
-			ShowWindow(_propWindow->_hwndProp, SW_SHOW);
+			//ShowWindow(_propWindow->_hwndProp, SW_SHOW);
 			SetWindowPos(_propWindow->_hwndProp, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 		}
 		else 
