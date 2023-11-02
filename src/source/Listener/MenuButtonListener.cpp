@@ -2,6 +2,9 @@
 #include "DataModelV2/ToggleImageButtonInstance.h"
 #include "Application.h"
 #include "Globals.h"
+
+bool menuOpen = false;
+
 void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 {
 	if(button->name == "go")
@@ -61,6 +64,24 @@ void MenuButtonListener::onButton1MouseClick(BaseButtonInstance* button)
 		case 104:
 			g_dataModel->getOpenModel();
 			break;
+		}
+	}
+	else if (button->name == "MENU")
+	{
+		menuOpen = !menuOpen;
+		ShowWindow(g_usableApp->_propWindow->_hwndProp, menuOpen);
+		if(TextButtonInstance* textButton = dynamic_cast<TextButtonInstance*>(button))
+		{
+			if(menuOpen)
+			{
+				textButton->textColor = Color3(0,1,1);
+				textButton->textColorOvr = Color3(0,1,1);
+			}
+			else
+			{
+				textButton->textColor = Color3::white();
+				textButton->textColorOvr = Color3::white();
+			}
 		}
 	}
 }

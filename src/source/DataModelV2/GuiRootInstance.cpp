@@ -221,6 +221,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->name = "Group";
 	button->setAllColorsSame();	
 	button->textColorDis = Color3(0.8F,0.8F,0.8F);
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
@@ -237,6 +238,7 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->name = "UnGroup";
 	button->setAllColorsSame();
 	button->textColorDis = Color3(0.8F,0.8F,0.8F);
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
@@ -252,11 +254,30 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->title = "Duplicate";
 	button->setAllColorsSame();
 	button->textColorDis = Color3(0.8F,0.8F,0.8F);
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->font = g_fntlighttrek;
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setParent(this);
 	button->name = "Duplicate";
 	button->setButtonListener(gud);
+
+	//g_fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+
+	button = makeTextButton();
+	button->boxBegin = Vector2(0,332);
+	button->boxEnd = Vector2(80,352);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textSize = 14;
+	button->title = "MENU";
+	button->setAllColorsSame();
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->font = g_fntlighttrek;
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setParent(this);
+	button->name = "MENU";
+	button->setButtonListener(menuListener);
 
 	ImageButtonInstance* instance = new ToggleImageButtonInstance(
 		Texture::fromFile(GetFileInPath("/content/images/Run.png")),
@@ -466,7 +487,7 @@ void GuiRootInstance::renderGUI(G3D::RenderDevice* rd, double fps)
 
 	//Tools menu
 	Draw::box(G3D::Box(Vector3(5, 210,0),Vector3(75, 210,0)),rd,Color4(0.6F,0.6F,0.6F,0.4F), Color4(0.6F,0.6F,0.6F,0.4F));
-	g_fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
+	
 
 	
 	//drawButtons(rd);

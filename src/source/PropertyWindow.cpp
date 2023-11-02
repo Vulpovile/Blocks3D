@@ -244,7 +244,7 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 			WS_EX_TOOLWINDOW,
 			"propHWND",
 			"PropertyGrid",
-			WS_VISIBLE | WS_POPUPWINDOW | WS_THICKFRAME | WS_CAPTION,
+			WS_POPUPWINDOW | WS_THICKFRAME | WS_CAPTION,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			300,

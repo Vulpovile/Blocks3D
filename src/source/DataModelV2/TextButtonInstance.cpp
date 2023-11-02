@@ -1,5 +1,5 @@
 #include "DataModelV2/TextButtonInstance.h"
-
+#include "DataModelV2/BaseGuiInstance.h"
 
 TextButtonInstance::TextButtonInstance(void)
 {
@@ -11,7 +11,7 @@ TextButtonInstance::TextButtonInstance(void)
 	title = "TextBox";
 	textColor = Color4(1, 1, 1, 1);
 	textOutlineColor = Color4(0, 0, 0, 0);
-	boxColor = Color4(0.6F,0.6F,0.6F,0.4F);
+	boxColor = BaseGuiInstance::translucentBackdrop();
 	boxOutlineColor = Color4(0, 0, 0, 0);
 	setAllColorsSame();
 	textSize = 12;
