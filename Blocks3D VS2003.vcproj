@@ -21,14 +21,14 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="0"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				WholeProgramOptimization="TRUE"
 				AdditionalIncludeDirectories="&quot;.\src\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;NO_SDL_MAIN;_ATL_STATIC_REGISTRY"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -97,7 +97,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;C:\libraries\ode-0.5\include\drawstuff&quot;;.\src\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_ATL_STATIC_REGISTRY;NO_SDL_MAIN"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
@@ -471,6 +471,12 @@
 					Name="XplicitNgine">
 					<File
 						RelativePath=".\src\source\XplicitNgine\XplicitNgine.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								Optimization="0"/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 			</Filter>

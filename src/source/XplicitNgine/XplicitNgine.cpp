@@ -51,12 +51,12 @@ void collisionCallback(void *data, dGeomID o1, dGeomID o2)
 			contact[i].surface.mode = dContactBounce | dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
 
 			// Define contact surface properties
-			contact[i].surface.bounce = 0.5; //Elasticity
+			contact[i].surface.bounce = 0.5F; //Elasticity
 			contact[i].surface.mu = 0.4F; //Friction
 			contact[i].surface.slip1 = 0.0;
 			contact[i].surface.slip2 = 0.0;
 			contact[i].surface.soft_erp = 0.8F;
-			contact[i].surface.soft_cfm = 0.01F;
+			contact[i].surface.soft_cfm = 0.005F;
 			
 			// Create joints
 			dJointID c = dJointCreateContact(
