@@ -723,14 +723,14 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		(LPARAM)anchored,
 		PIT_CHECK
 		));
-	sprintf_s(pto, "%g, %g, %g", position.x, position.y, position.z);
+	_snprintf(pto, 512, "%g, %g, %g", position.x, position.y, position.z);
 	properties.push_back(createPGI("Item",
 		"Offset",
 		"The position of the object in the workspace",
 		(LPARAM)pto,
 		PIT_EDIT
 		));
-	sprintf_s(pto2, "%g, %g, %g", size.x, size.y, size.z);
+	_snprintf(pto2, 512, "%g, %g, %g", size.x, size.y, size.z);
 	properties.push_back(createPGI("Item",
 		"Size",
 		"The size of the object in the workspace",
@@ -759,8 +759,8 @@ std::vector<PROPGRIDITEM> PartInstance::getProperties()
 		TEXT("NoSound\0Victory\0Boing\0Break\0Snap\0Bomb\0Splat\0Page\0Ping\0Swoosh\0Click\0Clock\0Step\0StepOn")
 		));
 
-		sprintf_s(changeScoreTxt, "%d", changeScore);
-		sprintf_s(changeTimerTxt, "%g", changeTimer);
+		_snprintf(changeScoreTxt, 12, "%d", changeScore);
+		_snprintf(changeTimerTxt, 12, "%g", changeTimer);
 	properties.push_back(createPGI("OnTouch",
 		"ChangeScore",
 		"How the score is affected when touched",

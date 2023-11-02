@@ -1,6 +1,6 @@
-#include <G3DAll.h>
 #pragma once
-
+#include <iostream>
+#include <string.h>
 class AudioPlayer
 {
 public:

@@ -142,6 +142,12 @@ LRESULT CALLBACK G3DProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 int main(int argc, char** argv) {
+	HINSTANCE hThisInstance = GetModuleHandle(NULL);
+	return WinMain(hThisInstance, NULL, NULL, 1);
+}
+
+int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow)
+{
 #ifndef _DEBUG
 	try{
 #endif
@@ -158,7 +164,6 @@ int main(int argc, char** argv) {
 		icc.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
 					   ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
 		InitCommonControlsEx(&icc);
-		HMODULE hThisInstance = GetModuleHandle(NULL);
 
 		if (!createWindowClass("mainHWND",WndProc,hThisInstance))
 			return false;

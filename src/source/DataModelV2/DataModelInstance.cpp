@@ -667,9 +667,9 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 			}
 		}
 		char brkc[12];
-		sprintf_s(brkc, "%d", brickCount);
+		_snprintf(brkc, 12, "%d", brickCount);
 		char instc[12];
-		sprintf_s(instc, "%d", instCount);
+		_snprintf(instc, 12, "%d", instCount);
 		message = "Bricks: ";
 		message += brkc;
 		message += "	Snaps: ";
