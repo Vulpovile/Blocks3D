@@ -36,7 +36,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "FileDescription", "Blocks 3D"
             VALUE "FileVersion", VER_STR(APP_VER_STRING)
             VALUE "InternalName", "Blocks3D"
-            VALUE "LegalCopyright", "Blocks3D Team - 2022"
+            VALUE "LegalCopyright", "Blocks3D Team 2018-2023"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "Blocks3D.exe"
             VALUE "PrivateBuild", ""
