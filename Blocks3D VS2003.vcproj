@@ -96,7 +96,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\libraries\ode-0.5\include\drawstuff&quot;;.\src\include"
+				AdditionalIncludeDirectories=".\src\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_ATL_STATIC_REGISTRY;NO_SDL_MAIN"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="0"
