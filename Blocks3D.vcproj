@@ -676,18 +676,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Properties"
-				>
-				<File
-					RelativePath=".\src\source\Properties\BoolProperty.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\source\Properties\Property.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Helpers"
 				>
 				<File
@@ -959,18 +947,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="Properties"
-				>
-				<File
-					RelativePath=".\src\include\Properties\BoolProperty.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\include\Properties\Property.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Helpers"
