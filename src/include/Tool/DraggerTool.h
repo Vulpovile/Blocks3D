@@ -20,6 +20,6 @@ private:
 	bool hasHandles;
 	int handleGrabbed;
 	Vector3 center;
-	Vector3 CenterOffset;
+	Vector3 centerOffset;
 	Sphere handles[6];
 };
