@@ -12,11 +12,14 @@ namespace B3D{
 		class ReflectionProperty
 		{
 		public:
+			//Could be private?
+			std::string key;
 			T * value;
 			ReflectionType type;
-			ReflectionProperty(T * value, ReflectionType type, ReflectionDataTable * containerTable);
+			ReflectionProperty(std::string key, T * value, ReflectionType type, ReflectionDataTable * containerTable);
 			ReflectionProperty(void);
 			~ReflectionProperty(void);
+			void dispose();
 		private:
 			std::string propertyName;
 			bool archivable;

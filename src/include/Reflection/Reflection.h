@@ -1,4 +1,6 @@
 #pragma once
+#include "ErrorFunctions.h"
+
 namespace B3D{
 	namespace Reflection{
 		enum ReflectionType {

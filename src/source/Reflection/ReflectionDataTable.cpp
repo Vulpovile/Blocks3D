@@ -14,9 +14,23 @@ ReflectionDataTable::ReflectionDataTable(void)
 
 ReflectionDataTable::~ReflectionDataTable(void)
 {
+	std::map<std::string, ReflectionProperty<void*>*>::iterator it;
+	for (it = propertyTable.begin(); it != propertyTable.end(); it++)
+	{
+		it->second->dispose();
+	}
 }
 
 std::string ReflectionDataTable::getClassName(void)
 {
 	return className;
+}
+
+void ReflectionDataTable::mapProperty(std::string key, ReflectionProperty<void*>* prop)
+{
+	if(propertyTable.find(key) != propertyTable.end())
+	{
+		throw std::string("Reflection error: Key") + key + std::string("already defined!");
+	}
+	propertyTable[key] = prop;
 }

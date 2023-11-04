@@ -6,7 +6,8 @@ Instance::Instance(std::string className)
 {
 	this->parent = NULL;
 	this->dataTable = new Reflection::ReflectionDataTable(this, className);
-	this->name = Reflection::ReflectionProperty<std::string>(new std::string("Default Game Instance"), Reflection::TYPE_STRING, dataTable);
+	this->name = Reflection::ReflectionProperty<std::string>("Name", new std::string("Level"), Reflection::TYPE_STRING, dataTable);
+	Reflection::ReflectionProperty<std::string>("Name", new std::string("Level"), Reflection::TYPE_STRING, dataTable);
 }
 
 Instance::Instance(void)

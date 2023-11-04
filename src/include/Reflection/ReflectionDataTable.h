@@ -15,10 +15,12 @@ namespace B3D{
 			~ReflectionDataTable(void);
 
 			std::string ReflectionDataTable::getClassName(void);
+
+			void mapProperty(std::string key, ReflectionProperty<void*>* prop);
 		private:
 			//Perhaps not stored here?
 			std::string className;
-			std::map<std::string, B3D::Reflection::ReflectionProperty<void*>*> propertyTable;
+			std::map<std::string, ReflectionProperty<void*>*> propertyTable;
 			Instance * parentInstance;
 		};
 	}
