@@ -369,7 +369,7 @@
 					RelativePath=".\src\source\DataModelV2\SoundService.cpp">
 				</File>
 				<File
-					RelativePath=".\ThumbnailGeneratorInstance.cpp">
+					RelativePath=".\src\source\DataModelV2\ThumbnailGeneratorInstance.cpp">
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV2\WorkspaceInstance.cpp">
