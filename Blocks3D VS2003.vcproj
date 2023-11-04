@@ -21,7 +21,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
@@ -481,15 +481,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Properties">
-				<File
-					RelativePath=".\src\source\Properties\BoolProperty.cpp">
-				</File>
-				<File
-					RelativePath=".\src\source\Properties\Property.cpp">
-				</File>
-			</Filter>
-			<Filter
 				Name="Helpers">
 				<File
 					RelativePath=".\src\source\base64.cpp">
@@ -693,15 +684,6 @@
 						RelativePath=".\src\include\XplicitNgine\XplicitNgine.h">
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="Properties">
-				<File
-					RelativePath=".\src\include\Properties\BoolProperty.h">
-				</File>
-				<File
-					RelativePath=".\src\include\Properties\Property.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="Helpers">
