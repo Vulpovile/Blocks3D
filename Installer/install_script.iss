@@ -1,4 +1,5 @@
 ;InnoSetupVersion=5.4.3
+;ONLY USE THIS IF YOU COMPILED WITH VISUAL STUDIO 2005!!!
 #define AppVer GetFileVersion('..\Blocks3D.exe')
 
 [Setup]
