@@ -683,6 +683,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Reflection"
+				>
+				<File
+					RelativePath=".\src\source\Reflection\ReflectionDataTable.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModelV3"
+				>
+				<File
+					RelativePath=".\src\source\DataModelV3\Instance.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -953,6 +969,34 @@
 				>
 				<File
 					RelativePath=".\src\include\base64.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Reflection"
+				>
+				<File
+					RelativePath=".\src\include\Reflection\Reflection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Reflection\ReflectionDataTable.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\Reflection\ReflectionProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\ReflectionProperty_imp.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DataModelV3"
+				>
+				<File
+					RelativePath=".\src\include\DataModelV3\Instance.h"
 					>
 				</File>
 			</Filter>

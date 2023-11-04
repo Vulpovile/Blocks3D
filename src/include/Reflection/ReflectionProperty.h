@@ -8,13 +8,13 @@ namespace B3D{
 	namespace Reflection{
 		class ReflectionDataTable;
 
-		template<typename T>
+		template<class T>
 		class ReflectionProperty
 		{
 		public:
 			T * value;
 			ReflectionType type;
-			ReflectionProperty(T * value, ReflectionType type, ReflectionDataTable * containerTable, bool archivable = true, bool locked = false, bool propertyHidden = false);
+			ReflectionProperty(T * value, ReflectionType type, ReflectionDataTable * containerTable);
 			ReflectionProperty(void);
 			~ReflectionProperty(void);
 		private:
@@ -26,3 +26,6 @@ namespace B3D{
 		};
 	}
 }
+
+//***really*** wanted to avoid implementing this inside of the header
+#include "ReflectionProperty_imp.h"

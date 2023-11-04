@@ -4,14 +4,13 @@
 #include <map>
 #include "ReflectionProperty.h"
 namespace B3D{
-	namespace Instance{
-		class Instance;
-	}
+	class Instance;
+
 	namespace Reflection{
 		class ReflectionDataTable
 		{
 		public:
-			ReflectionDataTable(Instance::Instance * parentInstance, std::string className);
+			ReflectionDataTable(Instance * parentInstance, std::string className);
 			ReflectionDataTable::ReflectionDataTable(void);
 			~ReflectionDataTable(void);
 
@@ -20,7 +19,7 @@ namespace B3D{
 			//Perhaps not stored here?
 			std::string className;
 			std::map<std::string, B3D::Reflection::ReflectionProperty<void*>*> propertyTable;
-			Instance::Instance * parentInstance;
+			Instance * parentInstance;
 		};
 	}
 }

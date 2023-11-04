@@ -1,8 +1,8 @@
-#include "Reflection\ReflectionDataTable.h"
+#include "Reflection/ReflectionDataTable.h"
 
 using namespace B3D::Reflection;
 
-ReflectionDataTable::ReflectionDataTable(B3D::Instance::Instance * parentInstance, std::string className)
+ReflectionDataTable::ReflectionDataTable(B3D::Instance * parentInstance, std::string className)
 {
 	this->parentInstance = parentInstance;
 	this->className = className;

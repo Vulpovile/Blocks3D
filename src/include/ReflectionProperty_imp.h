@@ -1,8 +1,7 @@
-#include "Reflection\ReflectionProperty.h"
 using namespace B3D::Reflection;
 
-template<typename T>
-ReflectionProperty<T>::ReflectionProperty(T * value, ReflectionType type, ReflectionDataTable * containerTable, bool archivable = true, bool locked = false, bool propertyHidden = false)
+template<class T>
+ReflectionProperty<T>::ReflectionProperty(T * value, ReflectionType type, ReflectionDataTable * containerTable)
 {
 	this->value = value;
 	this->type = type;
@@ -12,12 +11,12 @@ ReflectionProperty<T>::ReflectionProperty(T * value, ReflectionType type, Reflec
 	this->propertyHidden = propertyHidden;
 }
 
-template<typename T>
+template<class T>
 ReflectionProperty<T>::ReflectionProperty(void)
 {
 }
 
-template<typename T>
+template<class T>
 ReflectionProperty<T>::~ReflectionProperty(void)
 {
 }
