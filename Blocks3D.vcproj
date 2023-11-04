@@ -988,7 +988,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\ReflectionProperty_imp.h"
+					RelativePath=".\src\include\ReflectionProperty_impl.h"
 					>
 				</File>
 			</Filter>
