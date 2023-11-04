@@ -1,0 +1,1317 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Blocks3D - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP7E.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /I "src\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "NO_SDL_MAIN" /Fp"Debug/Blocks3D.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Application.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\AudioPlayer.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\ax.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\base64.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\BrowserCallHandler.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\CameraController.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\ErrorFunctions.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Globals.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\IEBrowser.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\IEDispatcher.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\main.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Mouse.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\propertyGrid.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\PropertyWindow.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Renderer.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\StringFunctions.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\TextureHandler.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\WindowFunctions.cpp"
+]
+Creating command line "cl.exe @E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP7E.tmp" 
+Creating temporary file "E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP7F.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Debug/Blocks3D.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\BaseButtonInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\DataModelInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\GroupInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\GuiRootInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\ImageButtonInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\Instance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\LevelInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\PartInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\PVInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\TextButtonInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\ToggleImageButtonInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\DataModelV2\WorkspaceInstance.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Tool\DraggerTool.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Reflection\ReflectionDataTable.cpp"
+"E:\Documents and Settings\Andreja\git\Blocks3D\src\source\Reflection\ReflectionProperty.cpp"
+]
+Creating command line "cl.exe @E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP7F.tmp" 
+Creating temporary file "E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP80.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/Blocks3D.pdb" /debug /machine:I386 /out:"Debug/Blocks3D.exe" /pdbtype:sept 
+".\Debug\Application.obj"
+".\Debug\AudioPlayer.obj"
+".\Debug\ax.obj"
+".\Debug\base64.obj"
+".\Debug\BrowserCallHandler.obj"
+".\Debug\CameraController.obj"
+".\Debug\ErrorFunctions.obj"
+".\Debug\Globals.obj"
+".\Debug\IEBrowser.obj"
+".\Debug\IEDispatcher.obj"
+".\Debug\main.obj"
+".\Debug\Mouse.obj"
+".\Debug\propertyGrid.obj"
+".\Debug\PropertyWindow.obj"
+".\Debug\Renderer.obj"
+".\Debug\StringFunctions.obj"
+".\Debug\TextureHandler.obj"
+".\Debug\WindowFunctions.obj"
+".\Debug\BaseButtonInstance.obj"
+".\Debug\BaseGuiInstance.obj"
+".\Debug\DataModelInstance.obj"
+".\Debug\GroupInstance.obj"
+".\Debug\GuiRootInstance.obj"
+".\Debug\ImageButtonInstance.obj"
+".\Debug\Instance.obj"
+".\Debug\LevelInstance.obj"
+".\Debug\LightingInstance.obj"
+".\Debug\PartInstance.obj"
+".\Debug\PVInstance.obj"
+".\Debug\SelectionService.obj"
+".\Debug\SoundInstance.obj"
+".\Debug\SoundService.obj"
+".\Debug\TextButtonInstance.obj"
+".\Debug\ToggleImageButtonInstance.obj"
+".\Debug\WorkspaceInstance.obj"
+".\Debug\XplicitNgine.obj"
+".\Debug\ArrowTool.obj"
+".\Debug\DraggerTool.obj"
+".\Debug\SurfaceTool.obj"
+".\Debug\Tool.obj"
+".\Debug\ReflectionDataTable.obj"
+".\Debug\ReflectionProperty.obj"
+".\Debug\ButtonListener.obj"
+".\Debug\CameraButtonListener.obj"
+".\Debug\DeleteListener.obj"
+".\Debug\GUDButtonListener.obj"
+".\Debug\MenuButtonListener.obj"
+".\Debug\ModeSelectionListener.obj"
+".\Debug\RotateButtonListener.obj"
+".\Debug\ToolbarListener.obj"
+]
+Creating command line "link.exe @E:\DOCUME~1\Andreja\LOCALS~1\Temp\RSP80.tmp"
+<h3>Output Window</h3>
+Compiling...
+Application.cpp
+e:\program files\microsoft visual studio\vc98\include\initguid.h(19) : fatal error C1189: #error :  initguid: must include objbase.h first.
+AudioPlayer.cpp
+ax.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+base64.cpp
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(134) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(137) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(140) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(141) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(144) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(145) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(150) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(151) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+e:\documents and settings\andreja\git\blocks3d\src\source\base64.cpp(152) : error C2039: 'push_back' : is not a member of 'basic_string<char,struct std::char_traits<char>,class std::allocator<char> >'
+BrowserCallHandler.cpp
+CameraController.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+ErrorFunctions.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+Globals.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+IEBrowser.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+IEDispatcher.cpp
+main.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+Mouse.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(310) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(320) : error C2039: 'size_t' : is not a member of 'std'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(385) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(417) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(448) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(476) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(579) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(599) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(639) : see reference to class template instantiation 'memory_pool<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(681) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(700) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(721) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(751) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(770) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(771) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(786) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(787) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2501: 'xml_node' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(788) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(790) : see reference to class template instantiation 'xml_base<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2501: 'xml_document' : missing storage-class or type specifiers
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(819) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(820) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(836) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(856) : error C2039: 'size_t' : is not a member of 'std'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(876) : see reference to class template instantiation 'xml_attribute<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1345) : error C2989: 'xml_node' : template class has already been defined as a non-template class
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(801) : see declaration of 'xml_node'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2143: syntax error : missing ',' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1358) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1738) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1774) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1813) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1814) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1881) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1939) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1940) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(1999) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2036) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2037) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2082) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2954: template definitions cannot nest
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2166) : error C2951: template declarations are only permitted at global or namespace scope
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ')' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2143: syntax error : missing ';' before '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2238: unexpected token(s) preceding ';'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : '<'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2167) : error C2059: syntax error : ')'
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2238) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+        e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2300) : see reference to class template instantiation 'xml_document<Ch>' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2308) : error C2039: 'lookup_whitespace' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2331) : error C2039: 'lookup_node_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2332) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2353) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2354) : error C2039: 'lookup_text' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2378) : error C2039: 'lookup_text_pure_no_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2379) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2401) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : ';'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2059: syntax error : '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2402) : error C2039: 'lookup_text_pure_with_ws' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2425) : error C2039: 'lookup_attribute_name' : is not a member of '`global namespace''
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2143: syntax error : missing ';' before '{'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2426) : error C2447: missing function header (old-style formal list?)
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2447) : error C2954: template definitions cannot nest
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2143: syntax error : missing ';' before '<'
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2734: 'lookup_tables' : const object must be initialized if not extern
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : error C2086: 'lookup_tables' : redefinition
+e:\documents and settings\andreja\git\blocks3d\src\include\rapidxml\rapidxml.hpp(2448) : fatal error C1003: error count exceeds 100; stopping compilation
+propertyGrid.cpp
+e:\documents and settings\andreja\git\blocks3d\src\source\propertygrid.cpp(58) : fatal error C1083: Cannot open include file: 'uxtheme.h': No such file or directory
+PropertyWindow.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+e:\documents and settings\andreja\git\blocks3d\src\source\propertywindow.cpp(6) : fatal error C1083: Cannot open include file: 'strsafe.h': No such file or directory
+Renderer.cpp
+e:\program files\microsoft visual studio\vc98\include\utility(26) : error C2079: 'second' uses undefined class 'Instance'
+        e:\program files\microsoft visual studio\vc98\include\xtree(28) : see reference to class template instantiation 'std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>' being compiled
+        e:\program files\microsoft visual studio\vc98\include\map(46) : see reference to class template instantiation 'std::_Tree<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,struct std::pair<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const ,class Instance>,struct std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >::_Kfn,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+        e:\documents and settings\andreja\git\blocks3d\src\include\datamodelv2\instance.h(37) : see reference to class template instantiation 'std::map<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class Instance,struct std::less<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > >,class std::allocator<class Instance> >' being compiled
+StringFunctions.cpp
+TextureHandler.cpp
+WindowFunctions.cpp
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+Blocks3D.exe - 728 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
