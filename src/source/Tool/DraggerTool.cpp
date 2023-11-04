@@ -57,7 +57,7 @@ void DraggerTool::onMouseMoved(Mouse mouse)
 						break;
 				}
 
-				CenterOffset = handles[handleGrabbed].center;
+				centerOffset = handles[handleGrabbed].center;
 
 				Vector3 intersection1 = ray.intersection(mouse.getPlane());
 				Vector3 intersection2 = ray.intersection(mouse.getInversePlane());
@@ -77,7 +77,7 @@ void DraggerTool::onMouseMoved(Mouse mouse)
 					if ( ((int)part->getSize().z)%2 == 1 )
 						intersection1.z += 0.5;
 
-					part->setPosition(intersection1 + (part->getPosition() - CenterOffset));
+					part->setPosition(intersection1 + (part->getPosition() - centerOffset));
 				}
 				else if(intersection2.isFinite())
 				{
@@ -90,7 +90,7 @@ void DraggerTool::onMouseMoved(Mouse mouse)
 
 					//intersection2.y = mouse.getInversePlane() + part->getSize().y/2 - 0.5;
 
-					part->setPosition(intersection2 + (part->getPosition() - CenterOffset));
+					part->setPosition(intersection2 + (part->getPosition() - centerOffset));
 				}
 
 				float offset = 2;

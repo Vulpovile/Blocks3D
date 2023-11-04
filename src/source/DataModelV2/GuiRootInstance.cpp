@@ -19,6 +19,16 @@
 #include "Listener/DeleteListener.h"
 #include "Listener/ToolbarListener.h"
 
+#ifndef _DEBUG
+	#if _MSC_VER== 1310
+		#define VS03_WORKAROUND &
+	#else
+		#define VS03_WORKAROUND
+	#endif
+#else
+	#define VS03_WORKAROUND
+#endif
+
 MenuButtonListener menuListener = MenuButtonListener();
 ToolbarListener toolbar = ToolbarListener();
 GUDButtonListener gud = GUDButtonListener();
@@ -280,13 +290,13 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	button->setButtonListener(menuListener);
 
 	ImageButtonInstance* instance = new ToggleImageButtonInstance(
-		Texture::fromFile(&GetFileInPath("/content/images/Run.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Run_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Run_dn.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Run.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Run_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Run_dn.png")),
 		NULL,		
-		Texture::fromFile(&GetFileInPath("/content/images/Stop.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Stop_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Stop_dn.png"))
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Stop.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Stop_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Stop_dn.png"))
 		);
 	instance->setButtonListener(menuListener);
 	instance->name = "go";
@@ -296,17 +306,17 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/ArrowTool.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/ArrowTool_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/ArrowTool_dn.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/ArrowTool_ds.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ArrowTool.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ArrowTool_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ArrowTool_dn.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ArrowTool_ds.png")));
 	instance->size = Vector2(50,50);
 	instance->position = Vector2(15, 90);
 	instance->setParent(this);
 	instance->name = "Cursor";
 	instance->setButtonListener(msl);
 
-	instance = makeImageButton(Texture::fromFile(&GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(&GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(&GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(&GetFileInPath("/content/images/ScaleTool_ds.png")));
+	instance = makeImageButton(Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ScaleTool.png")),Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ScaleTool_ovr.png")),Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ScaleTool_dn.png")),Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/ScaleTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(0, 140);
 	instance->setParent(this);
@@ -315,10 +325,10 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/MoveTool.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/MoveTool_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/MoveTool_dn.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/MoveTool_ds.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/MoveTool.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/MoveTool_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/MoveTool_dn.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/MoveTool_ds.png")));
 	instance->size = Vector2(40,40);
 	instance->position = Vector2(40, 140);
 	instance->setParent(this);
@@ -326,10 +336,10 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(msl);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionRotate.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionRotate_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionRotate.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionRotate_ovr.png")),
 		NULL,
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionRotate_ds.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionRotate_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(10, 175);
 	instance->setParent(this);
@@ -337,10 +347,10 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(rbl);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionTilt.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionTilt_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionTilt.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionTilt_ovr.png")),
 		NULL,
-		Texture::fromFile(&GetFileInPath("/content/images/SelectionTilt_ds.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionTilt_ds.png")));
 	instance->size = Vector2(30,30);
 	instance->position = Vector2(40, 175);
 	instance->setParent(this);
@@ -349,10 +359,10 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/Delete.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Delete_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Delete_dn.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/Delete_ds.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Delete.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Delete_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Delete_dn.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Delete_ds.png")));
 	instance->size = Vector2(40,46);
 	instance->position = Vector2(20, 284);
 	instance->setParent(this);
@@ -360,9 +370,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(delet);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomIn.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomIn_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomIn_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomIn.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomIn_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomIn_dn.png")));
 	instance->size = Vector2(34,25);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -372,9 +382,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomOut.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomOut_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraZoomOut_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomOut.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomOut_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraZoomOut_dn.png")));
 	instance->size = Vector2(34,26);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -384,9 +394,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanLeft.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanLeft_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanLeft_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanLeft.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanLeft_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanLeft_dn.png")));
 	instance->size = Vector2(34,34);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -396,9 +406,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanRight.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanRight_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraPanRight_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanRight.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanRight_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraPanRight_dn.png")));
 	instance->size = Vector2(34,34);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -408,9 +418,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraCenter.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraCenter_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraCenter_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraCenter.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraCenter_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraCenter_dn.png")));
 	instance->size = Vector2(34,20);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -420,9 +430,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltUp.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltUp_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltUp_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltUp.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltUp_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltUp_dn.png")));
 	instance->size = Vector2(24,24);
 	instance->floatBottom = true;
 	instance->floatRight = true;
@@ -432,9 +442,9 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	instance->setButtonListener(cam);
 
 	instance = makeImageButton(
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltDown.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltDown_ovr.png")),
-		Texture::fromFile(&GetFileInPath("/content/images/CameraTiltDown_dn.png")));
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltDown.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltDown_ovr.png")),
+		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/CameraTiltDown_dn.png")));
 	instance->size = Vector2(24,24);
 	instance->floatBottom = true;
 	instance->floatRight = true;
