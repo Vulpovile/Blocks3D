@@ -1,5 +1,6 @@
 #pragma once
 #include "Instance.h"
+#include "Enum.h"
 namespace B3D{
 class LevelInstance : public Instance
 {
@@ -17,8 +18,8 @@ class LevelInstance : public Instance
 
 		//Values
 		Reflection::ReflectionProperty<bool> highScoreIsGood;
-		Reflection::ReflectionProperty<int> timerUpAction;
-		Reflection::ReflectionProperty<int> timerAffectsScore;
+		Reflection::ReflectionProperty<Enum::ActionType::Value> timerUpAction;
+		Reflection::ReflectionProperty<Enum::AffectType::Value> timerAffectsScore;
 		Reflection::ReflectionProperty<bool> runOnOpen;
 		Reflection::ReflectionProperty<float> timer;
 		Reflection::ReflectionProperty<int> score;

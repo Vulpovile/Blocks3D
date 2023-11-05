@@ -6,11 +6,11 @@ using namespace B3D;
 // Instances
 //#include "WorkspaceInstance.h"
 #include "LevelInstance.h"
-//#include "PartInstance.h"
+#include "PartInstance.h"
 //#include "SelectionService.h"
 //#include "GuiRootInstance.h"
 //#include "ThumbnailGeneratorInstance.h"
-//#include "XplicitNgine/XplicitNgine.h"
+#include "XplicitNgine/XplicitNgine.h"
 //#include "SoundService.h"
 //#include "LightingInstance.h"
 
@@ -30,7 +30,7 @@ namespace B3D {
 		// Instance getters
 	//	WorkspaceInstance*				getWorkspace();
 		LevelInstance*					getLevel();
-	//	XplicitNgine*					getEngine();
+		XplicitNgine*					getEngine();
 	//	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 	//	SoundService*					getSoundService();
 	//	LightingInstance*				getLighting();
@@ -55,7 +55,7 @@ namespace B3D {
 	//	GuiRootInstance*		guiRoot;
 	//	SelectionService*		selectionService;
 	//	ThumbnailGeneratorInstance* thumbnailGenerator;
-	//	XplicitNgine*			xplicitNgine;
+		XplicitNgine*			xplicitNgine;
 	//	SoundService*			soundService;
 	//	LightingInstance*		lightingInstance;
 		bool					running;

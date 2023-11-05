@@ -45,12 +45,10 @@ void DataModelInstance::resetEngine()
 }
 */
 
-//TODO implement
-/*
 XplicitNgine * DataModelInstance::getEngine()
 {
 	return xplicitNgine;
-}*/
+}
 
 void DataModelInstance::toggleRun()
 {
@@ -316,11 +314,10 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 	return selectionService;
 }*/
 
-//TODO implement
-/*LevelInstance* DataModelInstance::getLevel()
+LevelInstance* DataModelInstance::getLevel()
 {
 	return level;
-}*/
+}
 
 //TODO implement
 /*ThumbnailGeneratorInstance* DataModelInstance::getThumbnailGenerator()

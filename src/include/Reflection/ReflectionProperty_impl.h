@@ -34,6 +34,7 @@ ReflectionProperty<T>::ReflectionProperty(void)
 template<class T>
 ReflectionProperty<T>::~ReflectionProperty(void)
 {
+	dispose();
 }
 
 template<class T>

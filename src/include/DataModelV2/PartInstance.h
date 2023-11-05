@@ -80,9 +80,8 @@ public:
 	// onTouch
 	void onTouch();
 
-	//Properties
-	virtual std::vector<PROPGRIDITEM> getProperties();
-	virtual void PropUpdate(LPPROPGRIDITEM &pItem);
+	std::vector<PROPGRIDITEM> getProperties();
+	void PropUpdate(LPPROPGRIDITEM &item);
 private:
 	bool anchored;
 	Vector3 position;

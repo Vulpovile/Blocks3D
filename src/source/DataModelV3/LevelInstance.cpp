@@ -1,6 +1,5 @@
 //#include "DataModelV3/DataModelInstance.h"
 #include "DataModelV3/LevelInstance.h"
-#include "Enum.h"
 using namespace B3D;
 
 LevelInstance::LevelInstance(void)
@@ -15,10 +14,10 @@ LevelInstance::LevelInstance(void)
 	score = Reflection::ReflectionProperty<int>("InitialScoreValue", 0, TYPE_INT, this->dataTable);
 	highScoreIsGood = Reflection::ReflectionProperty<bool>("HighScoreIsGood", false, TYPE_BOOLEAN, this->dataTable);
 	runOnOpen = Reflection::ReflectionProperty<bool>("RunOnOpen", false, TYPE_BOOLEAN, this->dataTable);
-	timerUpAction = Reflection::ReflectionProperty<int>("TimerUpAction", Enum::ActionType::Nothing, TYPE_ENUM, this->dataTable, 
+	timerUpAction = Reflection::ReflectionProperty<Enum::ActionType::Value>("TimerUpAction", Enum::ActionType::Nothing, TYPE_ENUM, this->dataTable, 
 		new EnumMeta(Enum::ActionType::LENGTH, Enum::ActionType::STR_TABLE));
-	timerAffectsScore = Reflection::ReflectionProperty<int>("TimerAffectsScore", Enum::AffectType::NoChange, TYPE_ENUM, this->dataTable, 
-		new EnumMeta(Enum::ActionType::LENGTH, Enum::ActionType::STR_TABLE));
+	timerAffectsScore = Reflection::ReflectionProperty<Enum::AffectType::Value>("TimerAffectsScore", Enum::AffectType::NoChange, TYPE_ENUM, this->dataTable, 
+		new EnumMeta(Enum::AffectType::LENGTH, Enum::AffectType::STR_TABLE));
 
 	canDelete = false;
 }
