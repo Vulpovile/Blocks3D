@@ -41,4 +41,9 @@ void ReflectionProperty<T>::dispose()
 {
 	delete value;
 	value = NULL;
+	if(this->extData != NULL)
+	{
+		delete extData;
+		extData = NULL;
+	}
 }
