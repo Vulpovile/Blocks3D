@@ -16,19 +16,22 @@ namespace B3D{
 			std::string key;
 			T * value;
 			ReflectionType type;
-			ReflectionProperty(std::string key, T * value, ReflectionType type, ReflectionDataTable * containerTable);
+			ReflectionProperty(std::string key, T * valuePtr, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false);
+			ReflectionProperty(std::string key, T defaultValue, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false);
 			ReflectionProperty(void);
 			~ReflectionProperty(void);
 			void dispose();
+
 		private:
 			std::string propertyName;
 			bool archivable;
 			bool locked;
 			bool propertyHidden;
+			void* extData;
 			ReflectionDataTable * containerTable;
 		};
 	}
 }
 
 //***really*** wanted to avoid implementing this inside of the header
-#include "ReflectionProperty_imp.h"
+#include "ReflectionProperty_impl.h"

@@ -5,14 +5,15 @@ using namespace B3D;
 Instance::Instance(std::string className)
 {
 	this->parent = NULL;
+	this->parentDataModel = NULL;
 	this->dataTable = new Reflection::ReflectionDataTable(this, className);
-	this->name = Reflection::ReflectionProperty<std::string>("Name", new std::string("Level"), Reflection::TYPE_STRING, dataTable);
-	Reflection::ReflectionProperty<std::string>("Name", new std::string("Level"), Reflection::TYPE_STRING, dataTable);
+	this->name = Reflection::ReflectionProperty<std::string>("Name", "Level", Reflection::TYPE_STRING, dataTable);
+	canDelete = true;
 }
 
 Instance::Instance(void)
 {
-	Instance::Instance("BaseInstance");
+	Instance::Instance("");
 }
 
 Instance::~Instance(void)
@@ -91,12 +92,18 @@ void Instance::setParent(Instance* newParent)
 	if(newParent != NULL)
 	{
 		newParent->addChild(this);
+		parentDataModel = newParent->getParentDataModel();
 	}
 }
 
 Instance* Instance::getParent()
 {
 	return parent;
+}
+
+DataModelInstance* Instance::getParentDataModel()
+{
+	return parentDataModel;
 }
 
 void Instance::addChild(Instance* newChild)

@@ -5,8 +5,11 @@
 #include "Reflection/ReflectionProperty.h"
 #include <G3DAll.h>
 
+
 namespace B3D
 {
+	class DataModelInstance;
+
 	class Instance
 	{
 	public:
@@ -33,9 +36,13 @@ namespace B3D
 		void removeChild(Instance*);
 		void clearChildren();
 		Instance* getParent();
+		DataModelInstance * getParentDataModel(void);
 
 		//Variables
 		Reflection::ReflectionProperty<std::string> name;
+		bool canDelete;
+
+
 		protected:
 		//Constructor
 		//Used specifically to identify an instance class by an instance class,
@@ -45,5 +52,6 @@ namespace B3D
 		//Variables
 		Reflection::ReflectionDataTable * dataTable;
 		Instance * parent;
+		DataModelInstance * parentDataModel;
 	};
 }

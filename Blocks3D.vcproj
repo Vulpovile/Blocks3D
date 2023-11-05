@@ -698,6 +698,10 @@
 					RelativePath=".\src\source\DataModelV3\Instance.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\LevelInstance.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -988,7 +992,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\include\ReflectionProperty_impl.h"
+					RelativePath=".\src\include\Reflection\ReflectionProperty_impl.h"
 					>
 				</File>
 			</Filter>
@@ -997,6 +1001,10 @@
 				>
 				<File
 					RelativePath=".\src\include\DataModelV3\Instance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\LevelInstance.h"
 					>
 				</File>
 			</Filter>
