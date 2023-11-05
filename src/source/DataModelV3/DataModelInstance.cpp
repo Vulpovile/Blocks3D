@@ -5,6 +5,8 @@ DataModelInstance::DataModelInstance(void)
 {
 	// Instances
 	Instance::Instance("DataModel");
+	name = "Level";
+
 	parentDataModel = this;
 	//workspace = new WorkspaceInstance();
 	//guiRoot = new GuiRootInstance();

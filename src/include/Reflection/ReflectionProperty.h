@@ -20,7 +20,18 @@ namespace B3D{
 			ReflectionProperty(std::string key, T defaultValue, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false);
 			ReflectionProperty(void);
 			~ReflectionProperty(void);
+			
+			T getValue();
+			T getValueClone();
+			T* getValuePtr();
+
+			void setValue(T);
+
 			void dispose();
+
+			//Too many
+			#include "ReflectionProperty_op_overload.h"
+
 
 		private:
 			std::string propertyName;

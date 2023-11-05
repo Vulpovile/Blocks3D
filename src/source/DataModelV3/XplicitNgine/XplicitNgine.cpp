@@ -22,7 +22,7 @@ XplicitNgine::XplicitNgine()
 	dWorldSetAutoDisableAngularThreshold(physWorld, 0.5F);
 	dWorldSetAutoDisableSteps(physWorld, 20);
 
-	*(this->name.value) = "PhysicsService";
+	this->name = "PhysicsService";
 }
 
 XplicitNgine::~XplicitNgine() 

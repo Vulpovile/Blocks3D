@@ -382,6 +382,9 @@
 				<File
 					RelativePath=".\src\include\Reflection\ReflectionProperty_impl.h">
 				</File>
+				<File
+					RelativePath=".\src\include\Reflection\ReflectionProperty_op_overload.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="DataModelV3"

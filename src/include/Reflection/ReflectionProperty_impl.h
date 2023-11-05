@@ -48,3 +48,26 @@ void ReflectionProperty<T>::dispose()
 		extData = NULL;
 	}
 }
+
+template<class T>
+T ReflectionProperty<T>::getValueClone()
+{
+	return T(value);
+}
+
+template<class T>
+T ReflectionProperty<T>::getValue()
+{
+	return *value;
+}
+
+template<class T>
+T* ReflectionProperty<T>::getValuePtr()
+{
+	return value;
+}
+
+template<class T>
+void ReflectionProperty<T>::setValue(T value){
+	this=value;
+}

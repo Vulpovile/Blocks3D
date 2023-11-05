@@ -17,7 +17,7 @@ PartInstance::PartInstance(void)
 {
 	PVInstance::PVInstance("Part");
 	
-	*(name.value) = "Unnamed PVItem";
+	name = "Unnamed PVItem";
 	canCollide = ReflectionProperty<bool>("CanCollide", true, TYPE_BOOLEAN, this->dataTable);
 	anchored = ReflectionProperty<bool>("Anchored", false, TYPE_BOOLEAN, this->dataTable);
 	size = ReflectionProperty<Vector3>("Size", Vector3(2,1,4), TYPE_VECTOR3, this->dataTable);
@@ -71,7 +71,7 @@ void PartInstance::setDragging(bool value)
 
 float PartInstance::getMass()
 {
-	if(*(shape.value) == Enum::Shape::Block)
+	if(shape == Enum::Shape::Block)
 		return size.value->x*size.value->y*size.value->z*0.7F;
 	else 
 		return 1.3333333333333333333333333333333F*(size.value->x/2)*(size.value->y/2)*(size.value->z/2)*0.7F;
@@ -79,46 +79,46 @@ float PartInstance::getMass()
 
 Vector3 PartInstance::getVelocity()
 {
-	return *(velocity.value);
+	return velocity.getValue();
 }
 Vector3 PartInstance::getRotVelocity()
 {
-	return *(rotVelocity.value);
+	return rotVelocity.getValue();
 }
 
 // OnTouch
 bool PartInstance::isSingleShot()
 {
-	return *(singleShot.value);
+	return singleShot.getValue();
 }
 
 int PartInstance::getTouchesToTrigger()
 {
-	return *(touchesToTrigger.value);
+	return touchesToTrigger.getValue();
 }
 
 int PartInstance::getUniqueObjectsToTrigger()
 {
-	return *(uniqueObjectsToTrigger.value);
+	return uniqueObjectsToTrigger.getValue();
 }
 
 int PartInstance::getChangeScore()
 {
-	return *(changeScore.value);
+	return changeScore.getValue();
 }
 
 float PartInstance::getChangeTimer()
 {
-	return *(changeTimer.value);
+	return changeTimer.getValue();
 }
 
 void PartInstance::setVelocity(Vector3 v)
 {
-	*(velocity.value) = v;
+	velocity = v;
 }
 void PartInstance::setRotVelocity(Vector3 v)
 {
-	*(rotVelocity.value) = v;
+	rotVelocity = v;
 }
 
 void PartInstance::postRender(RenderDevice *rd)
@@ -128,7 +128,7 @@ void PartInstance::postRender(RenderDevice *rd)
 
 void PartInstance::renderName(RenderDevice *rd)
 {
-	if(!*(nameShown.value))
+	if(!nameShown)
 		return;
 	G3D::GFontRef fnt = NULL;
 	Instance* dm = parent;
@@ -143,7 +143,7 @@ void PartInstance::renderName(RenderDevice *rd)
 	}
 	if(!fnt.isNull())
 	{
-		Vector3 gamepoint = *(position.value) + Vector3(0,1.5,0);
+		Vector3 gamepoint = position + Vector3(0,1.5,0);
 		Vector3 camerapoint = rd->getCameraToWorldMatrix().translation;
 		float distance = pow(pow((double)gamepoint.x - (double)camerapoint.x, 2) + pow((double)gamepoint.y - (double)camerapoint.y, 2) + pow((double)gamepoint.z - (double)camerapoint.z, 2), 0.5);
 		if(distance < 100 && distance > -100)
@@ -151,7 +151,7 @@ void PartInstance::renderName(RenderDevice *rd)
 			if(distance < 0)
 			distance = distance*-1;
 			glDisable(GL_DEPTH_TEST);
-			fnt->draw3D(rd, *(name.value), CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.03*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
+			fnt->draw3D(rd, name.getValue(), CoordinateFrame(rd->getCameraToWorldMatrix().rotation, gamepoint), 0.03*distance, Color3::yellow(), Color3::black(), G3D::GFont::XALIGN_CENTER, G3D::GFont::YALIGN_CENTER);
 			glEnable(GL_DEPTH_TEST);
 		}
 	}
@@ -167,22 +167,22 @@ void PartInstance::setSurface(int face, Enum::SurfaceType::Value surface)
 	switch(face)
 	{
 	case TOP:
-		*(top.value) = surface;
+		top = surface;
 		break;
 	case BOTTOM:
-		*(bottom.value) = surface;
+		bottom = surface;
 		break;
 	case LEFT:
-		*(left.value) = surface;
+		left = surface;
 		break;
 	case RIGHT:
-		*(right.value) = surface;
+		right = surface;
 		break;
 	case FRONT:
-		*(front.value) = surface;
+		front = surface;
 		break;
 	default:
-		*(back.value) = surface;
+		back = surface;
 	}
 	changed = true;
 }
@@ -243,7 +243,7 @@ void PartInstance::setSize(Vector3 newSize)
 	if(sizez > 512)
 		sizez = 512;
 
-	if(*(shape.value) != Enum::Shape::Block)
+	if(shape != Enum::Shape::Block)
 	{
 		int max = sizex;
 		if(sizey > max)
@@ -253,28 +253,28 @@ void PartInstance::setSize(Vector3 newSize)
 		sizex = sizey = sizez = max;
 	}
 
-	*(size.value) = Vector3(sizex, sizey, sizez);
+	size = Vector3(sizex, sizey, sizez);
 
 	if(this->physBody != NULL && getParentDataModel() != NULL)
 		getParentDataModel()->getEngine()->resetBody(this);
 }
 Vector3 PartInstance::getSize()
 {
-	return *(size.value);
+	return size.getValue();
 }
 Vector3 PartInstance::getPosition()
 {
-	return *(position.value);
+	return position.getValue();
 }
 void PartInstance::setShape(Enum::Shape::Value shape)
 {
 	switch(shape)
 	{
 	case Enum::Shape::Block:
-		*(this->shape.value) = shape;
+		this->shape = shape;
 		break;
 	default:
-		*(this->shape.value) = shape;
+		this->shape = shape;
 		this->setSize(this->getSize());
 	}
 	if(this->physBody != NULL && getParentDataModel() != NULL)
@@ -285,23 +285,23 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 
 void PartInstance::setPosition(Vector3 pos)
 {
-	*(position.value) = pos;
+	position = pos;
 	setCFrame(CoordinateFrame(cFrame.value->rotation, pos));
 
-	if (*(anchored.value) && getParentDataModel() != NULL)
+	if (anchored && getParentDataModel() != NULL)
 		getParentDataModel()->getEngine()->resetBody(this);
 }
 
 void PartInstance::setAnchored(bool anchored)
 {
-	*(this->anchored.value) = anchored;
+	this->anchored = anchored;
 	if(this->physBody != NULL && getParentDataModel() != NULL)
 		getParentDataModel()->getEngine()->resetBody(this);
 }
 
 bool PartInstance::isAnchored()
 {
-	return *(this->anchored.value);
+	return this->anchored.getValue();
 }
 
 
@@ -318,22 +318,22 @@ void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 
 void PartInstance::setCFrameNoSync(CoordinateFrame coordinateFrame)
 {
-	*(cFrame.value) = coordinateFrame;
-	*(position.value) = coordinateFrame.translation;
+	cFrame = coordinateFrame;
+	position = coordinateFrame.translation;
 }
 
 bool PartInstance::collides(PartInstance * part)
 {
-	if(*(shape.value) == Enum::Shape::Block)
+	if(shape == Enum::Shape::Block)
 	{
-		if(*(part->shape.value) == Enum::Shape::Block)
+		if(part->shape == Enum::Shape::Block)
 			return G3D::CollisionDetection::fixedSolidBoxIntersectsFixedSolidBox(getBox(), part->getBox());
 		else
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidBox(part->getSphere(), getBox());
 	}
 	else
 	{
-		if(*(part->shape.value) == Enum::Shape::Block)
+		if(part->shape == Enum::Shape::Block)
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidBox(getSphere(), part->getBox());
 		else
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidSphere(getSphere(), part->getSphere());
@@ -364,18 +364,18 @@ void PartInstance::render(RenderDevice* rd) {
  	if (changed)
 	{
 		changed=false;
-		Vector3 renderSize = *(size.value)/2;
+		Vector3 renderSize = size.getValue()/2;
 		glNewList(glList, GL_COMPILE);
-		renderShape(*(this->shape.value), renderSize, *(color.value));
-		renderSurface(TOP, *(this->top.value), renderSize, *(this->controller.value), *(color.value));
-		renderSurface(FRONT, *(this->front.value), renderSize, *(this->controller.value), *(color.value));
-		renderSurface(RIGHT, *(this->right.value), renderSize, *(this->controller.value), *(color.value));
-		renderSurface(BACK, *(this->back.value), renderSize, *(this->controller.value), *(color.value));
-		renderSurface(LEFT, *(this->left.value), renderSize, *(this->controller.value), *(color.value));
-		renderSurface(BOTTOM, *(this->bottom.value), renderSize, *(this->controller.value), *(color.value));
+		renderShape(this->shape.getValue(), renderSize, color.getValue());
+		renderSurface(TOP, this->top.getValue(), renderSize, this->controller.getValue(), color.getValue());
+		renderSurface(FRONT, this->front.getValue(), renderSize, this->controller.getValue(), color.getValue());
+		renderSurface(RIGHT, this->right.getValue(), renderSize, this->controller.getValue(), color.getValue());
+		renderSurface(BACK, this->back.getValue(), renderSize, this->controller.getValue(), color.getValue());
+		renderSurface(LEFT, this->left.getValue(), renderSize, this->controller.getValue(), color.getValue());
+		renderSurface(BOTTOM, this->bottom.getValue(), renderSize, this->controller.getValue(), color.getValue());
 		glEndList();
 	}
-	rd->setObjectToWorldMatrix(*(cFrame.value));
+	rd->setObjectToWorldMatrix(cFrame.getValue());
 	glCallList(glList);
 	postRender(rd);
 }
@@ -399,16 +399,16 @@ void PartInstance::onTouch()
 {
 	if(getParentDataModel() == NULL)
 		return;
-	if(*(singleShot.value) && _touchedOnce)
+	if(singleShot && _touchedOnce)
 		return;
 
-	if(*(singleShot.value) && !_touchedOnce)
+	if(singleShot && !_touchedOnce)
 		_touchedOnce = true;
 
-	*(getParentDataModel()->getLevel()->score.value) += *(changeScore.value);
-	*(getParentDataModel()->getLevel()->timer.value) += *(changeTimer.value);
+	getParentDataModel()->getLevel()->score += changeScore.getValue();
+	getParentDataModel()->getLevel()->timer += changeTimer.getValue();
 
-	switch(*(onTouchAction.value))
+	switch(onTouchAction.getValue())
 	{
 		case Enum::ActionType::Nothing:
 			break;

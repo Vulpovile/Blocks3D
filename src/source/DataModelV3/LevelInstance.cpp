@@ -5,7 +5,7 @@ using namespace B3D;
 LevelInstance::LevelInstance(void)
 {
 	Instance::Instance("LevelService");
-	*name.value = "Level";
+	name = "Level";
 	
 	//Reflection values
 	winMessage = Reflection::ReflectionProperty<std::string>("WinMessage", "You Won!", TYPE_STRING, this->dataTable);
@@ -54,24 +54,24 @@ void LevelInstance::drawCondition()
 
 void LevelInstance::Step(SimTime sdt)
 {
-	switch(*timerAffectsScore.value)
+	switch(timerAffectsScore.getValue())
 	{
 		case Enum::AffectType::NoChange:
 			break;
 		case Enum::AffectType::Increase:
-			*score.value += 1;
+			score += 1;
 			break;
 		case Enum::AffectType::Decrease:
-			if (*score.value > 0)
-				*score.value -= 1;
+			if (score > 0)
+				score -= 1;
 			break;
 	}
-	if (*timer.value >= sdt){
-		*score.value -= sdt;
+	if (timer >= sdt){
+		score -= sdt;
 	}
 	else{
-		*timer.value = 0.0f;
-		switch(*timerUpAction.value)
+		timer = 0.0f;
+		switch(timerUpAction.getValue())
 		{
 			case Enum::ActionType::Nothing:
 				break;
