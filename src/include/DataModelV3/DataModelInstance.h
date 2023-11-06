@@ -4,15 +4,15 @@ using namespace B3D;
 #pragma once
 
 // Instances
-//#include "WorkspaceInstance.h"
+#include "WorkspaceInstance.h"
 #include "LevelInstance.h"
 #include "PartInstance.h"
-//#include "SelectionService.h"
+#include "SelectionService.h"
 //#include "GuiRootInstance.h"
 //#include "ThumbnailGeneratorInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
 //#include "SoundService.h"
-//#include "LightingInstance.h"
+#include "LightingInstance.h"
 
 // Libraries 
 //#include "rapidxml/rapidxml.hpp"
@@ -28,36 +28,35 @@ namespace B3D {
 		void					drawMessage(RenderDevice*);
 		
 		// Instance getters
-	//	WorkspaceInstance*				getWorkspace();
+		WorkspaceInstance*				getWorkspace();
 		LevelInstance*					getLevel();
 		XplicitNgine*					getEngine();
 	//	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 	//	SoundService*					getSoundService();
-	//	LightingInstance*				getLighting();
+		LightingInstance*				getLighting();
 
 		std::string				message;
 		bool					showMessage;
 	//Should probably not be here???
 		G3D::GFontRef			font;
 	//	GuiRootInstance*		getGuiRoot();
-	//	SelectionService*		getSelectionService();
-	//	PartInstance*			makePart();
+		SelectionService*		getSelectionService();
 		void					clearLevel();
 		void					toggleRun();
 		bool					isRunning();
-	//	void					resetEngine();
+		void					resetEngine();
 	private:
 		bool isBrickCount;
 		Color3 DataModelInstance::bcToRGB(short bc);
 		// Instances
-	//	WorkspaceInstance*		workspace;
+		WorkspaceInstance*		workspace;
 		LevelInstance*			level;
 	//	GuiRootInstance*		guiRoot;
-	//	SelectionService*		selectionService;
+		SelectionService*		selectionService;
 	//	ThumbnailGeneratorInstance* thumbnailGenerator;
 		XplicitNgine*			xplicitNgine;
 	//	SoundService*			soundService;
-	//	LightingInstance*		lightingInstance;
+		LightingInstance*		lightingInstance;
 		bool					running;
 		
 	};

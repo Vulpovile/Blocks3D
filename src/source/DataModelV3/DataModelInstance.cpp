@@ -8,44 +8,45 @@ DataModelInstance::DataModelInstance(void)
 	name = "Level";
 
 	parentDataModel = this;
-	//workspace = new WorkspaceInstance();
+	workspace = new WorkspaceInstance();
 	//guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
 	//thumbnailGenerator = new ThumbnailGeneratorInstance();
 	//soundService = new SoundService();
-	//lightingInstance = new LightingInstance();
+	lightingInstance = new LightingInstance();
 
-	//selectionService = new SelectionService();
+	selectionService = new SelectionService();
+
+	//TODO change how property window is either passed or accessed
 	//selectionService->setPropertyWindow(g_usableApp->_propWindow);
 	showMessage = false;
 	canDelete = false;
 
 	// Parent stuff
-	//workspace->setParent(this);
+	workspace->setParent(this);
 	level->setParent(this);
 	//soundService->setParent(this);
-	//lightingInstance->setParent(this);
+	lightingInstance->setParent(this);
 
 	running = false;
-	//xplicitNgine = NULL;
-	//resetEngine();
+	xplicitNgine = NULL;
+	resetEngine();
 }
 
 //TODO implement
-/*
+
 void DataModelInstance::resetEngine()
 {
 	if(xplicitNgine != NULL)
 		delete xplicitNgine;
 	xplicitNgine = new XplicitNgine();
-	g_xplicitNgine = xplicitNgine;
 	for(size_t i = 0; i < getWorkspace()->partObjects.size(); i++)
 	{
 		PartInstance* partInstance = getWorkspace()->partObjects[i];
 		partInstance->physBody = NULL;
 	}
 }
-*/
+
 
 XplicitNgine * DataModelInstance::getEngine()
 {
@@ -57,8 +58,8 @@ void DataModelInstance::toggleRun()
 	running = !running;
 	
 	//TODO implement (in RunService!!!)
-	//if(!running)
-		//resetEngine();
+	if(!running)
+		resetEngine();
 }
 
 bool DataModelInstance::isRunning()
@@ -68,8 +69,8 @@ bool DataModelInstance::isRunning()
 
 DataModelInstance::~DataModelInstance(void)
 {
-	//TODO implement
-	//delete xplicitNgine;
+	//TODO implement in run service
+	delete xplicitNgine;
 }
 
 void DataModelInstance::clearLevel()
@@ -88,6 +89,7 @@ void DataModelInstance::clearLevel()
 	workspace->clearChildren();*/
 }
 
+//TODO move elsewhere
 Color3 DataModelInstance::bcToRGB(short bc)
 {
 	switch(bc)
@@ -261,8 +263,7 @@ void DataModelInstance::setMessageBrickCount()
 
 void DataModelInstance::drawMessage(RenderDevice* rd)
 {
-	//TODO implement
-	/*if(isBrickCount)
+	if(isBrickCount)
 	{
 		int brickCount = 0;
 		int instCount = 0;
@@ -295,14 +296,13 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 		int height = width / 3;
 		Draw::box(Box(Vector3(x-(width/2), y-(height/2), 0), Vector3(x+(width/2), y+(height/2), 0)), rd, Color4::fromARGB(0x55B2B2B2), Color3::fromARGB(0xB2B2B2));
 		font->draw2D(rd, message, Vector2(x,y), height/8, Color3::white(), Color4::clear(), GFont::XALIGN_CENTER, GFont::YALIGN_CENTER);
-	}*/
+	}
 }
 
-//TODO implement
-/*WorkspaceInstance* DataModelInstance::getWorkspace()
+WorkspaceInstance* DataModelInstance::getWorkspace()
 {
 	return workspace;
-}*/
+}
 
 //TODO implement
 /*GuiRootInstance* DataModelInstance::getGuiRoot()
@@ -310,11 +310,10 @@ void DataModelInstance::drawMessage(RenderDevice* rd)
 	return guiRoot;
 }*/
 
-//TODO implement
-/*SelectionService* DataModelInstance::getSelectionService()
+SelectionService* DataModelInstance::getSelectionService()
 {
 	return selectionService;
-}*/
+}
 
 LevelInstance* DataModelInstance::getLevel()
 {
@@ -334,7 +333,7 @@ LevelInstance* DataModelInstance::getLevel()
 }*/
 
 //TODO implement
-/*LightingInstance* DataModelInstance::getLighting()
+LightingInstance* DataModelInstance::getLighting()
 {
 	return lightingInstance;
-}*/
+}

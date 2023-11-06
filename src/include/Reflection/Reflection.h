@@ -17,14 +17,16 @@ namespace B3D{
 		};
 
 		enum ReflectionType {
-			TYPE_INT = 0,
-			TYPE_FLOAT = 1,
-			TYPE_STRING = 2,
-			TYPE_VECTOR3 = 3,
-			TYPE_COLOR3 = 4,
-			TYPE_CFRAME = 5,
-			TYPE_BOOLEAN = 6,
-			TYPE_ENUM = 7
+			TYPE_INT,
+			TYPE_FLOAT,
+			TYPE_STRING,
+			TYPE_VECTOR3,
+			TYPE_COLOR3,
+			TYPE_COLOR4,
+			TYPE_CFRAME,
+			TYPE_BOOLEAN,
+			TYPE_ENUM,
+			LENGTH
 		};
 	}
 }

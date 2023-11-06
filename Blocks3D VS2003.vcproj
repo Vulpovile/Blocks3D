@@ -304,22 +304,10 @@
 				Name="DataModelV2"
 				Filter="">
 				<File
-					RelativePath=".\src\include\DataModelV2\BaseButtonInstance.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV2\BaseGuiInstance.h">
-				</File>
-				<File
 					RelativePath=".\src\include\DataModelV2\DataModelInstance.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\GroupInstance.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV2\GuiRootInstance.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV2\ImageButtonInstance.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\Instance.h">
@@ -346,13 +334,7 @@
 					RelativePath=".\src\include\DataModelV2\SoundService.h">
 				</File>
 				<File
-					RelativePath=".\src\include\DataModelV2\TextButtonInstance.h">
-				</File>
-				<File
 					RelativePath=".\src\include\DataModelV2\ThumbnailGeneratorInstance.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV2\ToggleImageButtonInstance.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV2\WorkspaceInstance.h">
@@ -360,6 +342,28 @@
 				<File
 					RelativePath=".\src\include\XplicitNgine\XplicitNgine.h">
 				</File>
+				<Filter
+					Name="Gui"
+					Filter="">
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\BaseGuiInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\GuiRootInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ImageButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\TextButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV2\ToggleImageButtonInstance.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Helpers">
@@ -402,10 +406,16 @@
 					RelativePath=".\src\include\DataModelV3\LevelInstance.h">
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV3\LightingInstance.h">
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV3\PartInstance.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV3\PVInstance.h">
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\SelectionService.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV3\WorkspaceInstance.h">
@@ -685,10 +695,40 @@
 					RelativePath=".\src\source\DataModelV3\LevelInstance.cpp">
 				</File>
 				<File
+					RelativePath=".\src\source\DataModelV3\LightingInstance.cpp">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV3\PartInstance.cpp">
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\PVInstance.cpp">
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SelectionService.cpp">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\WorkspaceInstance.cpp">
