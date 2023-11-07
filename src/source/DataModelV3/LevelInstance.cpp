@@ -1,4 +1,4 @@
-//#include "DataModelV3/DataModelInstance.h"
+#include "DataModelV3/DataModelInstance.h"
 #include "DataModelV3/LevelInstance.h"
 using namespace B3D;
 
@@ -28,28 +28,28 @@ LevelInstance::~LevelInstance(void)
 
 void LevelInstance::winCondition()
 {
-	//DataModelInstance* DataModel = (DataModelInstance*)getParent(); //If level parent gets changed to something other than Datamodel it could cause nasty data corruption bugs
-	//DataModel->setMessage(winMessage);
-	//DataModel->toggleRun();
+	DataModelInstance* DataModel = parentDataModel; //If level parent gets changed to something other than Datamodel it could cause nasty data corruption bugs
+	DataModel->setMessage(winMessage.getValue());
+	DataModel->toggleRun();
 }
 
 void LevelInstance::loseCondition()
 {
-	//DataModelInstance* DataModel = (DataModelInstance*)getParent();
-	//DataModel->setMessage(loseMessage);
-	//DataModel->toggleRun();
+	DataModelInstance* DataModel = parentDataModel;
+	DataModel->setMessage(loseMessage.getValue());
+	DataModel->toggleRun();
 }
 
 void LevelInstance::pauseCondition()
 {
-	//DataModelInstance* DataModel = (DataModelInstance*)getParent();
-	//DataModel->toggleRun();
+	DataModelInstance* DataModel = parentDataModel;
+	DataModel->toggleRun();
 }
 
 void LevelInstance::drawCondition()
 {
-	//DataModelInstance* DataModel = (DataModelInstance*)getParent();
-	//DataModel->toggleRun();
+	DataModelInstance* DataModel = parentDataModel;
+	DataModel->toggleRun();
 }
 
 void LevelInstance::Step(SimTime sdt)

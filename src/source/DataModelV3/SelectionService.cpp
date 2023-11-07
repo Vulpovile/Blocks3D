@@ -99,7 +99,7 @@ void SelectionService::drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, V
 	//Y
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, from.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize - 0.2, from.z - offsetSize))), rd, outline, Color4::clear()); 
-	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.1, to.z - offsetSize))), rd, outline, Color4::clear()); 
+	Draw::box(c.toWorldSpace(Box(Vector3(to.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(to.x - offsetSize, to.y + offsetSize-0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
 	Draw::box(c.toWorldSpace(Box(Vector3(from.x + offsetSize, from.y - offsetSize + 0.2, to.z + offsetSize), Vector3(from.x - offsetSize, to.y + offsetSize - 0.2, to.z - offsetSize))), rd, outline, Color4::clear()); 
 
 	//Z

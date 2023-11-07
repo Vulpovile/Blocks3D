@@ -695,12 +695,142 @@
 				Name="DataModelV3"
 				>
 				<File
+					RelativePath=".\src\source\DataModelV3\DataModelInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\GroupInstance.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV3\Instance.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\LevelInstance.cpp"
 					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\LightingInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\PartInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\PVInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SelectionService.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SoundInstance.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SoundService.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\WorkspaceInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\XplicitNgine\XplicitNgine.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
@@ -1000,11 +1130,47 @@
 				Name="DataModelV3"
 				>
 				<File
+					RelativePath=".\src\include\DataModelV3\DataModelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\GroupInstance.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV3\Instance.h"
 					>
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV3\LevelInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\LightingInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\PartInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\PVInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\SoundInstance.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\SoundService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\WorkspaceInstance.h"
 					>
 				</File>
 			</Filter>

@@ -5,6 +5,7 @@
 			<assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"/>
 		</dependentAssembly>
 	</dependency>
+	<!--This should generally not be specified, but XP's VS2005 won't update automatically-->
 	<dependency>
 		<dependentAssembly>
 			<assemblyIdentity type="win32" name="Microsoft.VC80.CRT" version="8.0.50727.6195" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
