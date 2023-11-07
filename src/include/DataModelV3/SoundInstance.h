@@ -22,9 +22,9 @@ namespace B3D{
 		// Functions
 		void play();
 	private:
-		float soundVolume;
-		std::string soundId;
-		bool playOnRemove;
-		bool looped;
+		Reflection::ReflectionProperty<float> soundVolume;
+		Reflection::ReflectionProperty<std::string> soundId;
+		Reflection::ReflectionProperty<bool> playOnRemove;
+		Reflection::ReflectionProperty<bool> looped;
 	};
 }

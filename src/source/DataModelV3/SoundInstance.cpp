@@ -2,15 +2,16 @@
 #include "DataModelV3/DataModelInstance.h"
 
 using namespace B3D;
+using namespace Reflection;
 
 SoundInstance::SoundInstance()
 {
+	Instance::Instance("Sound");
 	name = "Sound";
-
-	soundVolume = 0.5;
-	soundId = "";
-	playOnRemove = false;
-	looped = false;
+	soundVolume = Reflection::ReflectionProperty<float>("SoundVolume", 0.5F, TYPE_FLOAT, this->dataTable);
+	soundId = Reflection::ReflectionProperty<std::string>("SoundID", "", TYPE_STRING, this->dataTable);
+	playOnRemove = Reflection::ReflectionProperty<bool>("PlayOnRemove", false, TYPE_BOOLEAN, this->dataTable);
+	looped = Reflection::ReflectionProperty<bool>("Looped", false, TYPE_BOOLEAN, this->dataTable);
 }
 
 SoundInstance::~SoundInstance(void)
@@ -28,22 +29,22 @@ void SoundInstance::play()
 // Getters
 float SoundInstance::getSoundVolume()
 {
-	return soundVolume;
+	return soundVolume.getValue();
 }
 
 bool SoundInstance::isPlayedOnRemove()
 {
-	return playOnRemove;
+	return playOnRemove.getValue();
 }
 
 std::string SoundInstance::getSoundId()
 {
-	return soundId;
+	return soundId.getValue();
 }
 
 bool SoundInstance::isLooped()
 {
-	return looped;
+	return looped.getValue();
 }
 
 // Setters
