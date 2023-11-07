@@ -11,7 +11,7 @@ using namespace B3D;
 //#include "GuiRootInstance.h"
 //#include "ThumbnailGeneratorInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
-//#include "SoundService.h"
+#include "SoundService.h"
 #include "LightingInstance.h"
 
 // Libraries 
@@ -32,7 +32,7 @@ namespace B3D {
 		LevelInstance*					getLevel();
 		XplicitNgine*					getEngine();
 	//	ThumbnailGeneratorInstance*		getThumbnailGenerator();
-	//	SoundService*					getSoundService();
+		SoundService*					getSoundService();
 		LightingInstance*				getLighting();
 
 		std::string				message;
@@ -55,7 +55,7 @@ namespace B3D {
 		SelectionService*		selectionService;
 	//	ThumbnailGeneratorInstance* thumbnailGenerator;
 		XplicitNgine*			xplicitNgine;
-	//	SoundService*			soundService;
+		SoundService*			soundService;
 		LightingInstance*		lightingInstance;
 		bool					running;
 		

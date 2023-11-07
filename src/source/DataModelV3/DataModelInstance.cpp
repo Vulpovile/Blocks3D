@@ -12,7 +12,7 @@ DataModelInstance::DataModelInstance(void)
 	//guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
 	//thumbnailGenerator = new ThumbnailGeneratorInstance();
-	//soundService = new SoundService();
+	soundService = new SoundService();
 	lightingInstance = new LightingInstance();
 
 	selectionService = new SelectionService();
@@ -25,7 +25,7 @@ DataModelInstance::DataModelInstance(void)
 	// Parent stuff
 	workspace->setParent(this);
 	level->setParent(this);
-	//soundService->setParent(this);
+	soundService->setParent(this);
 	lightingInstance->setParent(this);
 
 	running = false;
@@ -326,11 +326,11 @@ LevelInstance* DataModelInstance::getLevel()
 	return thumbnailGenerator;
 }*/
 
-//TODO implement
-/*SoundService* DataModelInstance::getSoundService()
+
+SoundService* DataModelInstance::getSoundService()
 {
 	return soundService;
-}*/
+}
 
 //TODO implement
 LightingInstance* DataModelInstance::getLighting()
