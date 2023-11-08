@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 
+// This class exists so that B3D compiles on VS 2003.
+
 template<class T>
 std::string toString(const T &value)
 {

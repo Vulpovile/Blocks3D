@@ -810,28 +810,78 @@
 					RelativePath=".\src\source\DataModelV3\WorkspaceInstance.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\src\source\DataModelV3\XplicitNgine\XplicitNgine.cpp"
+				<Filter
+					Name="XplicitNgine"
 					>
-					<FileConfiguration
-						Name="Release|Win32"
+					<File
+						RelativePath=".\src\source\DataModelV3\XplicitNgine\XplicitNgine.cpp"
 						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\BaseButtonInstance.cpp"
 						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\BaseGuiInstance.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)\$(InputName)1.obj"
+								XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\GuiRootInstance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\ImageButtonInstance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\TextButtonInstance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\ToggleImageButtonInstance.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1173,6 +1223,42 @@
 					RelativePath=".\src\include\DataModelV3\WorkspaceInstance.h"
 					>
 				</File>
+				<Filter
+					Name="Gui"
+					>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\BaseButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\BaseGuiInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\GuiRootInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\ImageButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\TextButtonInstance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\ToggleImageButtonInstance.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="XplicitNgin"
+					>
+					<File
+						RelativePath=".\src\include\DataModelV3\XplicitNgine\XplicitNgine.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
