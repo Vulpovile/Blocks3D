@@ -91,13 +91,13 @@ TextButtonInstance* makeToolbarTextButton(std::string title, std::string name, V
 
 TextButtonInstance* makeLeftMenuTextButton(std::string title, Vector2 boxBegin, Vector2 boxEnd) {
 	TextButtonInstance* button = makeBaseTextButton(title, boxBegin, boxEnd);
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textOutlineColor = Color4(0.6F,0.6F,0.6F,0.5F);
 	button->textColor = Color3(0,1,1);
 	button->boxColor = Color4::clear();
 	button->textSize = 12;
 	button->name = title;	
 	button->setAllColorsSame();
-	button->textColorDis = Color3(0.8F,0.8F,0.8F);
+	button->textColorDis = Color3(0.65F,0.65F,0.65F);
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->setButtonListener(gud);
@@ -216,8 +216,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionRotate_ovr.png")),
 		NULL,
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionRotate_ds.png")));
-	instance->size = Vector2(30,30);
-	instance->position = Vector2(10, 175);
+	instance->size = Vector2(27,27);
+	instance->position = Vector2(17, 180);
 	instance->setParent(this);
 	instance->name = "Rotate";
 	instance->setButtonListener(rbl);
@@ -227,8 +227,8 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionTilt_ovr.png")),
 		NULL,
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/SelectionTilt_ds.png")));
-	instance->size = Vector2(30,30);
-	instance->position = Vector2(40, 175);
+	instance->size = Vector2(20 ,20);
+	instance->position = Vector2(42, 183);
 	instance->setParent(this);
 	instance->name = "Tilt";
 	instance->setButtonListener(rbl);
