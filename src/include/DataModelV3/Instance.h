@@ -1,5 +1,4 @@
 #pragma once
-#define WINVER	0x0400
 #include "Reflection/Reflection.h"
 #include "Reflection/ReflectionDataTable.h"
 #include "Reflection/ReflectionProperty.h"

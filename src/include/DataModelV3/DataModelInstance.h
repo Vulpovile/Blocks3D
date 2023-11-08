@@ -8,7 +8,7 @@ using namespace B3D;
 #include "LevelInstance.h"
 #include "PartInstance.h"
 #include "SelectionService.h"
-//#include "GuiRootInstance.h"
+#include "Gui/GuiRootInstance.h"
 //#include "ThumbnailGeneratorInstance.h"
 #include "XplicitNgine/XplicitNgine.h"
 #include "SoundService.h"
@@ -39,7 +39,7 @@ namespace B3D {
 		bool					showMessage;
 	//Should probably not be here???
 		G3D::GFontRef			font;
-	//	GuiRootInstance*		getGuiRoot();
+		GuiRootInstance*		getGuiRoot();
 		SelectionService*		getSelectionService();
 		void					clearLevel();
 		void					toggleRun();
@@ -51,7 +51,7 @@ namespace B3D {
 		// Instances
 		WorkspaceInstance*		workspace;
 		LevelInstance*			level;
-	//	GuiRootInstance*		guiRoot;
+		GuiRootInstance*		guiRoot;
 		SelectionService*		selectionService;
 	//	ThumbnailGeneratorInstance* thumbnailGenerator;
 		XplicitNgine*			xplicitNgine;

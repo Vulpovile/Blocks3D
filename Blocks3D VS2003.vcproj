@@ -429,6 +429,28 @@
 				<File
 					RelativePath=".\src\include\DataModelV3\XplicitNgine\XplicitNgine.h">
 				</File>
+				<Filter
+					Name="Gui"
+					Filter="">
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\BaseButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\BaseGuiInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\GuiRootInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\ImageButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\TextButtonInstance.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\Gui\ToggleImageButtonInstance.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -788,6 +810,100 @@
 							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
+				<Filter
+					Name="Gui"
+					Filter="">
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\BaseButtonInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\BaseGuiInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\GuiRootInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\ImageButtonInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\TextButtonInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\Gui\ToggleImageButtonInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

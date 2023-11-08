@@ -9,7 +9,7 @@ DataModelInstance::DataModelInstance(void)
 
 	parentDataModel = this;
 	workspace = new WorkspaceInstance();
-	//guiRoot = new GuiRootInstance();
+	guiRoot = new GuiRootInstance();
 	level = new LevelInstance();
 	//thumbnailGenerator = new ThumbnailGeneratorInstance();
 	soundService = new SoundService();
@@ -27,6 +27,7 @@ DataModelInstance::DataModelInstance(void)
 	level->setParent(this);
 	soundService->setParent(this);
 	lightingInstance->setParent(this);
+	guiRoot->setParent(this);
 
 	running = false;
 	xplicitNgine = NULL;
@@ -305,10 +306,10 @@ WorkspaceInstance* DataModelInstance::getWorkspace()
 }
 
 //TODO implement
-/*GuiRootInstance* DataModelInstance::getGuiRoot()
+GuiRootInstance* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;
-}*/
+}
 
 SelectionService* DataModelInstance::getSelectionService()
 {
