@@ -50,6 +50,60 @@ TextButtonInstance* GuiRootInstance::makeTextButton()
 	TextButtonInstance* part = new TextButtonInstance();
 	return part;
 }
+
+// Modnark here, I'm not a fan of having these functions, but until we make a proper "factory" it'll have to do.
+TextButtonInstance* makeBaseTextButton(std::string title, Vector2 boxBegin, Vector2 boxEnd) {
+	TextButtonInstance* button = new TextButtonInstance();
+	button->boxBegin = boxBegin;
+	button->boxEnd = boxEnd;
+	button->title = title;
+	button->font = GFont::fromFile(GetFileInPath("/content/font/lighttrek.fnt"));
+	return button;
+}
+
+TextButtonInstance* makeMenuTextButton(std::string title, Vector2 boxBegin, Vector2 boxEnd) {
+	TextButtonInstance* button = makeBaseTextButton(title, boxBegin, boxEnd);
+	button->floatBottom = true;
+	button->textColor = Color3(0,255,255);
+	button->textOutlineColor = Color4::clear();
+	button->fontLocationRelativeTo = Vector2(10, 3);
+	button->setAllColorsSame();
+	button->boxOutlineColorOvr = Color3(0,255,255);
+	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
+	button->setButtonListener(toolbar);
+	toolbar.addButtonRef(button);	
+	return button;
+}
+
+TextButtonInstance* makeToolbarTextButton(std::string title, std::string name, Vector2 boxBegin, Vector2 boxEnd) {
+	TextButtonInstance* button = makeBaseTextButton(title, boxBegin, boxEnd);
+	button->textColor = Color3::white();
+	button->boxColor = Color4::clear();
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->name = name;
+	button->textSize = 16;
+	button->setAllColorsSame();
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->setButtonListener(menuListener);
+	return button;
+}
+
+TextButtonInstance* makeLeftMenuTextButton(std::string title, Vector2 boxBegin, Vector2 boxEnd) {
+	TextButtonInstance* button = makeBaseTextButton(title, boxBegin, boxEnd);
+	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
+	button->textColor = Color3(0,1,1);
+	button->boxColor = Color4::clear();
+	button->textSize = 12;
+	button->name = title;	
+	button->setAllColorsSame();
+	button->textColorDis = Color3(0.8F,0.8F,0.8F);
+	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
+	button->fontLocationRelativeTo = Vector2(10, 0);
+	button->setButtonListener(gud);
+	return button;
+}
+
 GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 {
 	g_fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));
@@ -57,230 +111,52 @@ GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
 	_hideGui = false;
 
 	//Bottom Left
-	TextButtonInstance* button = makeTextButton();
-	button->boxBegin = Vector2(0, -24);
-	button->boxEnd = Vector2(80, 0);
-	button->floatBottom = true;
+	TextButtonInstance* button = makeMenuTextButton("Hopper", Vector2(0, -24), Vector2(80, 0));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3(0,255,255);
-	button->textOutlineColor = Color4::clear();
-	button->title = "Hopper";
-	button->fontLocationRelativeTo = Vector2(10, 3);
-	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
-	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-	button->setButtonListener(toolbar);
-	toolbar.addButtonRef(button);
 
-	
-	button = makeTextButton();
-	button->boxBegin = Vector2(0, -48);
-	button->boxEnd = Vector2(80, -24);
-	button->floatBottom = true;
+	button = makeMenuTextButton("Controller", Vector2(0, -48), Vector2(80, -24));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3(0,255,255);
-	button->textOutlineColor = Color4::clear();
-	button->title = "Controller";
-	button->fontLocationRelativeTo = Vector2(10, 3);
-	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
-	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-	button->setButtonListener(toolbar);
-	toolbar.addButtonRef(button);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(0, -72);
-	button->boxEnd = Vector2(80, -48);
-	button->floatBottom = true;
+	button = makeMenuTextButton("Color", Vector2(0, -72), Vector2(80, -48));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3(0,255,255);
-	button->textOutlineColor = Color4::clear();
-	button->title = "Color";
-	button->fontLocationRelativeTo = Vector2(10, 3);
-	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
-	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-	button->setButtonListener(toolbar);
-	toolbar.addButtonRef(button);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(0, -96);
-	button->boxEnd = Vector2(80, -72);
-	button->floatBottom = true;
+	button = makeMenuTextButton("Surface", Vector2(0, -96), Vector2(80, -72));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3(0,255,255);
-	button->textOutlineColor = Color4::clear();
-	button->title = "Surface";
-	button->fontLocationRelativeTo = Vector2(10, 3);
-	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
-	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-	button->setButtonListener(toolbar);
-	toolbar.addButtonRef(button);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(0, -120);
-	button->boxEnd = Vector2(80, -96);
-	button->floatBottom = true;
+	button = makeMenuTextButton("Model", Vector2(0, -120), Vector2(80, -96));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3(0,255,255);
-	button->title = "Model";
-	button->selected = true;
-	button->fontLocationRelativeTo = Vector2(10, 3);
-	button->setAllColorsSame();
-	button->boxOutlineColorOvr = Color3(0,255,255);
-	button->boxColorDn = Color4(button->boxColor.r,button->boxColor.g,button->boxColor.b, 0.2F);
-	button->setButtonListener(toolbar);
-	toolbar.addButtonRef(button);
 
 	//Top bar
-	button = makeTextButton();
-	button->boxBegin = Vector2(0, 0);
-	button->boxEnd = Vector2(125, 25);
+	button = makeToolbarTextButton("File", "file", Vector2(0, 0), Vector2(125, 25));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3::white();
-	button->boxColor = Color4::clear();
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->title = "File";
-	button->textSize = 16;
-	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->name = "file";
-	button->setButtonListener(menuListener);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(125, 0);
-	button->boxEnd = Vector2(250, 25);
+	button = makeToolbarTextButton("Edit", "edit", Vector2(125, 0), Vector2(250, 25));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3::white();
-	button->boxColor = Color4::clear();
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->title = "Edit";
-	button->textSize = 16;
-	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->name = "edit";
-	button->setButtonListener(menuListener);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(250, 0);
-	button->boxEnd = Vector2(375, 25);
+	button = makeToolbarTextButton("View", "view", Vector2(250, 0), Vector2(375, 25));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3::white();
-	button->boxColor = Color4::clear();
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->title = "View";
-	button->textSize = 16;
-	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->name = "view";
-	button->setButtonListener(menuListener);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(375, 0);
-	button->boxEnd = Vector2(500, 25);
+	button = makeToolbarTextButton("Insert", "insert", Vector2(375, 0), Vector2(500, 25));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3::white();
-	button->boxColor = Color4::clear();
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->title = "Insert";
-	button->textSize = 16;
-	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->name = "insert";
-	button->setButtonListener(menuListener);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(500, 0);
-	button->boxEnd = Vector2(625, 25);
+	button = makeToolbarTextButton("Format", "format", Vector2(500, 0), Vector2(625, 25));
 	button->setParent(this);
-	button->font = g_fntlighttrek;
-	button->textColor = Color3::white();
-	button->boxColor = Color4::clear();
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->title = "Format";
-	button->textSize = 16;
-	button->fontLocationRelativeTo = Vector2(10, 0);
-	button->setAllColorsSame();
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->name = "format";
-	button->setButtonListener(menuListener);
 
 	//Menu
-	button = makeTextButton();
-	button->boxBegin = Vector2(0,215);
-	button->boxEnd = Vector2(80,235);
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3(0,1,1);
-	button->boxColor = Color4::clear();
-	button->textSize = 12;
-	button->title = "Group";
-	button->name = "Group";
-	button->setAllColorsSame();	
-	button->textColorDis = Color3(0.8F,0.8F,0.8F);
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->font = g_fntlighttrek;
-	button->fontLocationRelativeTo = Vector2(10, 0);
+	button = makeLeftMenuTextButton("Group", Vector2(0, 215), Vector2(80, 235));
 	button->setParent(this);
-	button->setButtonListener(gud);
-
-	button = makeTextButton();
-	button->boxBegin = Vector2(0,240);
-	button->boxEnd = Vector2(80,260);
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3(0,1,1);
-	button->boxColor = Color4::clear();
-	button->textSize = 12;
-	button->title = "UnGroup";
-	button->name = "UnGroup";
-	button->setAllColorsSame();
-	button->textColorDis = Color3(0.8F,0.8F,0.8F);
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->font = g_fntlighttrek;
-	button->fontLocationRelativeTo = Vector2(10, 0);
+	
+	button = makeLeftMenuTextButton("UnGroup", Vector2(0, 240), Vector2(80, 260));
 	button->setParent(this);
-	button->setButtonListener(gud);
 
-	button = makeTextButton();
-	button->boxBegin = Vector2(0,265);
-	button->boxEnd = Vector2(80,285);
-	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
-	button->textColor = Color3(0,1,1);
-	button->boxColor = Color4::clear();
-	button->textSize = 12;
-	button->title = "Duplicate";
-	button->setAllColorsSame();
-	button->textColorDis = Color3(0.8F,0.8F,0.8F);
-	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
-	button->font = g_fntlighttrek;
-	button->fontLocationRelativeTo = Vector2(10, 0);
+	button = makeLeftMenuTextButton("Duplicate", Vector2(0, 265), Vector2(80, 285));
 	button->setParent(this);
-	button->name = "Duplicate";
-	button->setButtonListener(gud);
 
-	//g_fntlighttrek->draw2D(rd,"MENU", Vector2(10,332), 14, Color3::white(), Color4(0.5F,0.5F,0.5F,0.5F));
-
-	button = makeTextButton();
-	button->boxBegin = Vector2(0,332);
-	button->boxEnd = Vector2(80,352);
+	button = makeBaseTextButton("MENU", Vector2(0,332), Vector2(80,352));
 	button->textOutlineColor = Color4(0.5F,0.5F,0.5F,0.5F);
 	button->textColor = Color3::white();
 	button->boxColor = Color4::clear();
 	button->textSize = 14;
-	button->title = "MENU";
 	button->setAllColorsSame();
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->font = g_fntlighttrek;
