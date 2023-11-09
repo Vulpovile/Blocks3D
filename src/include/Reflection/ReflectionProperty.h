@@ -14,7 +14,7 @@ namespace B3D{
 		public:
 			//Could be private?
 			std::string key;
-			T * value;
+			T value;
 			ReflectionType type;
 			ReflectionProperty(std::string key, T * valuePtr, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false);
 			ReflectionProperty(std::string key, T defaultValue, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false);

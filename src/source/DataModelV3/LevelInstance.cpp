@@ -2,9 +2,8 @@
 #include "DataModelV3/LevelInstance.h"
 using namespace B3D;
 
-LevelInstance::LevelInstance(void)
+LevelInstance::LevelInstance(void) : Instance("LevelService")
 {
-	Instance::Instance("LevelService");
 	name = "Level";
 	
 	//Reflection values

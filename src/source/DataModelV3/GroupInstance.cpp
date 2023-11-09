@@ -3,16 +3,16 @@
 using namespace B3D;
 
 
-GroupInstance::GroupInstance(std::string className)
+GroupInstance::GroupInstance(std::string className) : PVInstance(className)
 {
-	PVInstance::PVInstance(className);
 	name = "Model";
 	primaryPart = NULL;
 }
 
-GroupInstance::GroupInstance(void)
+GroupInstance::GroupInstance(void) : PVInstance("GroupInstance")
 {
-	GroupInstance::GroupInstance("Model");
+	name = "Model";
+	primaryPart = NULL;
 }
 
 GroupInstance::~GroupInstance(void)

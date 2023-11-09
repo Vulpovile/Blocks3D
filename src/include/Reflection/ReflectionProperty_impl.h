@@ -3,7 +3,8 @@ using namespace B3D::Reflection;
 template<class T>
 ReflectionProperty<T>::ReflectionProperty(std::string key, T * value, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false)
 {
-	this->value = value;
+	this->key = key;
+	this->value = T(value);
 	this->type = type;
 	this->containerTable = containerTable;
 	this->locked = locked;
@@ -16,7 +17,8 @@ ReflectionProperty<T>::ReflectionProperty(std::string key, T * value, Reflection
 template<class T>
 ReflectionProperty<T>::ReflectionProperty(std::string key, T value, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false)
 {
-	this->value = new T(value);
+	this->key = key;
+	this->value = T(value);
 	this->type = type;
 	this->containerTable = containerTable;
 	this->locked = locked;
@@ -40,9 +42,9 @@ ReflectionProperty<T>::~ReflectionProperty(void)
 template<class T>
 void ReflectionProperty<T>::dispose()
 {
-	delete value;
-	value = NULL;
-	if(this->extData != NULL)
+	//delete value;
+	//value = NULL;
+	if(extData)
 	{
 		delete extData;
 		extData = NULL;
@@ -58,16 +60,16 @@ T ReflectionProperty<T>::getValueClone()
 template<class T>
 T ReflectionProperty<T>::getValue()
 {
-	return *value;
+	return value;
 }
 
 template<class T>
 T* ReflectionProperty<T>::getValuePtr()
 {
-	return value;
+	return &value;
 }
 
 template<class T>
 void ReflectionProperty<T>::setValue(T value){
-	this=value;
+	value=T(value);
 }

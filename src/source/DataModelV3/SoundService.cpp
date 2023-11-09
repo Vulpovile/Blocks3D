@@ -3,9 +3,8 @@
 #include "AudioPlayer.h"
 
 using namespace B3D;
-SoundService::SoundService()
+SoundService::SoundService() : Instance("SoundService")
 {
-	Instance::Instance("SoundService");
 	name = "SoundService";
 	musicVolume = 0.3f;
 	canDelete = false;

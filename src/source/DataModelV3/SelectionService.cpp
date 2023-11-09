@@ -10,8 +10,7 @@
 
 using namespace B3D;
 
-SelectionService::SelectionService(void){
-	Instance::Instance();
+SelectionService::SelectionService(void) : Instance(){
 	mode = CURSOR;
 	// TODO Port PropertyWindow
 	//propertyWindow = NULL;

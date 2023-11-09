@@ -13,7 +13,12 @@ Instance::Instance(std::string className)
 
 Instance::Instance(void)
 {
-	Instance::Instance("");
+	//TODO split
+	this->parent = NULL;
+	this->parentDataModel = NULL;
+	this->dataTable = new Reflection::ReflectionDataTable(this, "");
+	this->name = Reflection::ReflectionProperty<std::string>("Name", "Level", Reflection::TYPE_STRING, dataTable);
+	canDelete = true;
 }
 
 Instance::~Instance(void)
@@ -27,6 +32,7 @@ Instance::~Instance(void)
 
 Instance::Instance(const Instance &oinst)
 {
+	printf("I *really* should not have been called yet!\n");
 	//CLONE WITH REFLECTION!!!
 }
 
@@ -53,7 +59,7 @@ void Instance::update()
 
 void Instance::setName(std::string newName)
 {
-	*name.value = newName;
+	name.setValue(newName);
 }
 
 std::string Instance::getClassName()
@@ -134,7 +140,7 @@ Instance* Instance::findFirstChild(std::string searchName)
 {
 	for(size_t i = 0; i < children.size(); i++)
 	{
-		if(children.at(i)->name.value->compare(searchName) == 0)
+		if(children.at(i)->name.value.compare(searchName) == 0)
 		{
 			return children.at(i);
 		}

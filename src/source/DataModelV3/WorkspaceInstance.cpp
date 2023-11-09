@@ -2,9 +2,8 @@
 
 using namespace B3D;
 
-WorkspaceInstance::WorkspaceInstance(void)
+WorkspaceInstance::WorkspaceInstance(void) : GroupInstance("Workspace")
 {
-	GroupInstance::GroupInstance("Workspace");
 	name = "Workspace";
 	canDelete = false;
 }

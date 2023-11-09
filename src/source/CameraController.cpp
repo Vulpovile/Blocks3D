@@ -1,10 +1,11 @@
 #include "CameraController.h"
 #include "win32Defines.h"
 #include <iostream>
-#include "DataModelV2/PartInstance.h"
+#include "DataModelV3/PartInstance.h"
 #include "Application.h"
 #include "AudioPlayer.h"
 
+using namespace B3D;
 
 
 CameraController::CameraController() :

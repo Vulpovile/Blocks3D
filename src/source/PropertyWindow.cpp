@@ -5,14 +5,16 @@
 #include "PropertyWindow.h"
 #include "strsafe.h"
 #include "Application.h"
+#include "propertyGrid.h"
 
-std::vector<PROPGRIDITEM> prop;
-std::vector<Instance*> children;
-Instance * selectedInstance;
-Instance * parent = NULL;
+//std::vector<PROPGRIDITEM> prop;
+//std::vector<B3D::Instance*> children;
+//Instance * selectedInstance;
+//Instance * parent = NULL;
 const int CX_BITMAP = 16;
 const int CY_BITMAP = 16;
 
+//TODO Re-Implement for DataModelV3
 
 HBITMAP CreateBitmapMask(HBITMAP hbmColour, COLORREF crTransparent)
 {
@@ -73,6 +75,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		break;
 		case WM_DRAWITEM:
 			{
+				/*
 				COLORREF clrBackground;
 				COLORREF clrForeground;
 				TEXTMETRIC tm;
@@ -147,7 +150,7 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				// If the item has the focus, draw the focus rectangle.
 				if (lpdis->itemState & ODS_FOCUS)
 					DrawFocusRect(lpdis->hDC, &lpdis->rcItem);
-
+				*/
 		    
 			}
 		break;
@@ -167,11 +170,11 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			{
 				if(HIWORD(wParam) == CBN_SELCHANGE)
 				{ 
-					int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+					/*int ItemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
 					CHAR  ListItem[256];
 					SendMessage((HWND) lParam, (UINT) CB_GETLBTEXT, (WPARAM) ItemIndex, (LPARAM) ListItem); 
 					g_dataModel->getSelectionService()->clearSelection();
-					g_dataModel->getSelectionService()->addSelected(children.at(ItemIndex));
+					g_dataModel->getSelectionService()->addSelected(children.at(ItemIndex));*/
 				}
 			}
 		break;
@@ -183,10 +186,10 @@ LRESULT CALLBACK PropProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 case PGN_PROPERTYCHANGE:
 				{
 					if (IDC_PROPERTYGRID==wParam) {
-                        LPNMHDR pnm = (LPNMHDR)lParam;
+                        /*LPNMHDR pnm = (LPNMHDR)lParam;
                         LPNMPROPGRID lpnmp = (LPNMPROPGRID)pnm;
                         LPPROPGRIDITEM item = PropGrid_GetItemData(pnm->hwndFrom,lpnmp->iIndex);
-						selectedInstance->PropUpdate(item);
+						selectedInstance->PropUpdate(item);*/
 						//propWind->UpdateSelected(selectedInstance);
                     }
 				}
@@ -209,7 +212,7 @@ void PropertyWindow::clearExplorer()
 
 void PropertyWindow::refreshExplorer(std::vector<Instance*> selectedInstances)
 {
-	Instance * instance = selectedInstances[0];
+	/*Instance * instance = selectedInstances[0];
 	SendMessage(_explorerComboBox,CB_RESETCONTENT,0,0); 
 	parent = NULL;
 	children.clear();
@@ -232,7 +235,7 @@ void PropertyWindow::refreshExplorer(std::vector<Instance*> selectedInstances)
 		SendMessage(_explorerComboBox,CB_ADDSTRING, 0,(LPARAM)selectedChildren.at(z)->name.c_str()); 
 	}
 	//g_usableApp->selectInstance(selectedInstance, this);
-	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);
+	SendMessage(_explorerComboBox,CB_SETCURSEL,0,(LPARAM)0);*/
 	//}
 }
 
@@ -273,42 +276,9 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 
 		_propGrid = New_PropertyGrid(_hwndProp,IDC_PROPERTYGRID);
 
-		/*PROPGRIDITEM pItem;
-		PropGrid_ItemInit(pItem);
-
-		pItem.lpszCatalog="Test";
-		pItem.lpszPropName="Offset";
-		pItem.lpszzCmbItems="What";
-		pItem.lpszPropDesc="Description";
-		pItem.lpCurValue=(LPARAM)"0, 0, 0";
-
-		pItem.iItemType=PIT_EDIT;
-
-		PROPGRIDITEM pItem2;
-		PropGrid_ItemInit(pItem2);
-
-		pItem2.lpszCatalog="Test";
-		pItem2.lpszPropName="s";
-		pItem2.lpszzCmbItems="itemlist\0itemlist2\0itemlist3";
-		pItem2.lpszPropDesc="";
-		pItem2.lpCurValue=0;
-
-		pItem2.iItemType=PIT_COMBO;
-
-		/*PROPGRIDITEM FauxExplorerItem;
-		PropGrid_ItemInit(FauxExplorerItem);
-		FauxExplorerItem.lpszCatalog="Test";
-		FauxExplorerItem.lpszPropName = "Editable Combo Field";
-		FauxExplorerItem.lpszzCmbItems = "Test1\0Test2\0Test3";
-		FauxExplorerItem.lpszPropDesc = "Press F4 to view drop down.";
-		FauxExplorerItem.iItemType = PIT_EDITCOMBO;
-		FauxExplorerItem.lpCurValue = 1;
-		PropGrid_AddItem(_propGrid, &FauxExplorerItem);*/
 
 		PropGrid_Enable(_propGrid,true);
 		ShowWindow(_propGrid,SW_SHOW);
-//		PropGrid_AddItem(_propGrid,&pItem);
-//		PropGrid_AddItem(_propGrid,&pItem2);
 		PropGrid_SetItemHeight(_propGrid,20);
 		PropGrid_ShowToolTips(_propGrid,TRUE);
 		PropGrid_ShowPropertyDescriptions(_propGrid,TRUE);
@@ -317,7 +287,6 @@ bool PropertyWindow::onCreate(int x, int y, int sx, int sy, HMODULE hThisInstanc
 		
 		SetWindowLongPtr(_hwndProp,GWL_USERDATA,(LONG)this);
 
-		//refreshExplorer();
 		_resize();
 
 		return true;
@@ -342,7 +311,7 @@ void PropertyWindow::_resize()
 
 void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 {
-	if(instances.size() <= 0)
+	/*if(instances.size() <= 0)
 	{
 		ClearProperties();
 		return;
@@ -366,7 +335,7 @@ void PropertyWindow::UpdateSelected(std::vector<Instance *> instances)
 
 		refreshExplorer(instances);
 		_resize();
-	}
+	}*/
 }
 
 void PropertyWindow::ClearProperties()

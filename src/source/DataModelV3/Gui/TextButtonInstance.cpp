@@ -1,9 +1,8 @@
 #include "DataModelV3/Gui/TextButtonInstance.h"
 #include "DataModelV3/Gui/BaseGuiInstance.h"
 using namespace B3D;
-TextButtonInstance::TextButtonInstance(void)
+TextButtonInstance::TextButtonInstance(void) : BaseButtonInstance()
 {
-	BaseButtonInstance::BaseButtonInstance();
 	boxBegin = Vector2(0,0);
 	boxEnd = Vector2(0,0);
 	fontLocationRelativeTo = Vector2(0,0);

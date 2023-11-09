@@ -2,14 +2,14 @@
 #include <initguid.h>
 #include <iomanip>
 #include "resource.h"
-#include "DataModelV2/Instance.h"
-#include "DataModelV2/PartInstance.h"
-#include "DataModelV2/TextButtonInstance.h"
-#include "DataModelV2/ImageButtonInstance.h"
-#include "DataModelV2/DataModelInstance.h"
-#include "DataModelV2/GuiRootInstance.h"
-#include "DataModelV2/SoundService.h"
-#include "XplicitNgine/XplicitNgine.h"
+#include "DataModelV3/Instance.h"
+#include "DataModelV3/PartInstance.h"
+#include "DataModelV3/Gui/TextButtonInstance.h"
+#include "DataModelV3/Gui/ImageButtonInstance.h"
+#include "DataModelV3/DataModelInstance.h"
+#include "DataModelV3/Gui/GuiRootInstance.h"
+#include "DataModelV3/SoundService.h"
+#include "DataModelV3/XplicitNgine/XplicitNgine.h"
 #include "CameraController.h"
 #include "AudioPlayer.h"
 #include "Globals.h"
@@ -27,11 +27,6 @@
 #include <commctrl.h>
 #include "StringFunctions.h"
 
-#include "Listener/GUDButtonListener.h"
-#include "Listener/ModeSelectionListener.h"
-#include "Listener/DeleteListener.h"
-#include "Listener/CameraButtonListener.h"
-#include "Listener/RotateButtonListener.h"
 #include "Faces.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
 
@@ -40,6 +35,8 @@ static POINT oldGlobalMouse;
 Vector2 oldMouse = Vector2(0,0);
 float moveRate = 0.5;
 float wasPropShown = 0;
+
+using namespace B3D;
 
 void Application::clearInstances()
 {
@@ -347,7 +344,7 @@ void Application::onSimulation(RealTime rdt, SimTime sdt, SimTime idt) {
 
 	if(_dataModel->name != _title)
 	{
-		_title = _dataModel->name;
+		_title = _dataModel->name.getValue();
 		std::string text = "Game \"" + _title + "\"";
 		SetWindowText(_hWndMain, text.c_str());
 		
@@ -444,7 +441,7 @@ void Application::onGraphics(RenderDevice* rd) {
 	renderDevice->setProjectionAndCameraMatrix(*cameraController.getCamera());
 	
 	// Moved a lot of code to lighting
-	g_dataModel->getLighting()->update();
+	_dataModel->getLighting()->update(renderDevice);
 
 	renderDevice->push2D();
 		_dataModel->getGuiRoot()->renderGUI(renderDevice, m_graphicsWatch.FPS());
@@ -459,7 +456,8 @@ void Application::onKeyPressed(int key)
 	}
 	if ((GetHoldKeyState(VK_LCONTROL) || GetHoldKeyState(VK_RCONTROL)) && key=='O')
 	{
-			_dataModel->getOpen();
+		MessageBoxA(_hWndMain, "Implement this!!!", "Not Implemented", MB_ICONHAND | MB_OK);
+//			_dataModel->getOpen();
 	}
 	tool->onKeyDown(key);
 }

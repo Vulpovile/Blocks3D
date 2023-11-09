@@ -1,5 +1,7 @@
 #include "Tool/SurfaceTool.h"
 #include "Application.h"
+using namespace B3D;
+
 SurfaceTool::SurfaceTool(int theSurface, int extraParam)
 {
 	surface = theSurface;

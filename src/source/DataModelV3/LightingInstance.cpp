@@ -6,9 +6,8 @@
 
 using namespace B3D;
 
-LightingInstance::LightingInstance(void)
+LightingInstance::LightingInstance(void) : Instance("Lighting")
 {
-	Instance::Instance("Lighting");
 	name = "Lighting";
 	canDelete = false;
 	_hideSky = false;

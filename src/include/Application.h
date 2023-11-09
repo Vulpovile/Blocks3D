@@ -1,16 +1,16 @@
 #pragma once
 #include <G3DAll.h>
 #include "PropertyWindow.h"
-#include "DataModelV2/TextButtonInstance.h"
-#include "DataModelV2/ImageButtonInstance.h"
+#include "DataModelV3/Gui/TextButtonInstance.h"
+#include "DataModelV3/Gui/ImageButtonInstance.h"
 #include "CameraController.h"
 #include "IEBrowser.h"
 #include "Mouse.h"
 #include "Tool/Tool.h"
 
-class TextButtonInstance;
-class ImageButtonInstance;
-class PartInstance;
+class B3D::TextButtonInstance;
+class B3D::ImageButtonInstance;
+class B3D::PartInstance;
 class CameraController;
 
 class Application { // : public GApp {

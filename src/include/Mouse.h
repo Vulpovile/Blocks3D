@@ -1,12 +1,12 @@
 #pragma once
-#include "DataModelV2/PartInstance.h"
+#include "DataModelV3/PartInstance.h"
 #pragma once
-#include "DataModelV2/WorkspaceInstance.h"
+#include "DataModelV3/WorkspaceInstance.h"
 
 struct MousePoint{
 	Vector3 position;
-	PartInstance * target;
-	MousePoint(Vector3 pos, PartInstance * targ)
+	B3D::PartInstance * target;
+	MousePoint(Vector3 pos, B3D::PartInstance * targ)
 	{
 		position = pos;
 		target = targ;
@@ -21,9 +21,9 @@ public:
 	~Mouse(void);
 	int x, y;
 	int oldx, oldy;
-	PartInstance * getTarget();
-	MousePoint getPositionAndPart(std::vector<Instance *> ignore = std::vector<Instance *>());
-	Vector3 getPosition(std::vector<Instance *> ignore = std::vector<Instance *>());
+	B3D::PartInstance * getTarget();
+	MousePoint getPositionAndPart(std::vector<B3D::Instance *> ignore = std::vector<B3D::Instance *>());
+	Vector3 getPosition(std::vector<B3D::Instance *> ignore = std::vector<B3D::Instance *>());
 	bool isMouseOnScreen();
 	bool isMouseDown();
 	void setMouseDown(bool mouseDown);

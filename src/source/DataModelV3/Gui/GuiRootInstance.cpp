@@ -89,7 +89,7 @@ TextButtonInstance* GuiRootInstance::makeTextButton()
 	TextButtonInstance* part = new TextButtonInstance();
 	return part;
 }
-GuiRootInstance::GuiRootInstance() : _message(""), _messageTime(0)
+GuiRootInstance::GuiRootInstance() : Instance(), _message(""), _messageTime(0)
 {
 	//AAAAAAA
 	fntdominant = GFont::fromFile(GetFileInPath("/content/font/dominant.fnt"));

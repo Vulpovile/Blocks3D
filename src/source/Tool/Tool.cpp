@@ -1,5 +1,5 @@
 #include "Tool/Tool.h"
-
+using namespace B3D;
 Tool::Tool(void)
 {
 }

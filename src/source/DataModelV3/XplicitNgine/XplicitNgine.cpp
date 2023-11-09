@@ -4,9 +4,8 @@
 
 using namespace B3D;
 
-XplicitNgine::XplicitNgine() 
+XplicitNgine::XplicitNgine() : Instance()
 {
-	
 	physWorld = dWorldCreate();
 	physSpace = dHashSpaceCreate(0);
 
@@ -146,7 +145,7 @@ void XplicitNgine::createBody(PartInstance* partInstance)
 		
 		
 		// Create geom
-		if(*(partInstance->shape.value) == Enum::Shape::Block)
+		if(partInstance->shape.value == Enum::Shape::Block)
 		{
 			partInstance->physGeom[0] = dCreateBox(physSpace,
 					partSize.x,

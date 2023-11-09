@@ -2,9 +2,8 @@
 
 //TODO ***what the hell***
 using namespace B3D;
-	ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
+ImageButtonInstance::ImageButtonInstance(G3D::TextureRef newImage, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL) : BaseButtonInstance()
 	{
-		BaseButtonInstance::BaseButtonInstance();
 		image = newImage;
 		openGLID = image->getOpenGLID();
 		image_ovr = overImage;

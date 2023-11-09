@@ -1,6 +1,8 @@
 #include "Tool/ArrowTool.h"
 #include "Application.h"
-#include "DataModelV2/SelectionService.h"
+#include "DataModelV3/SelectionService.h"
+
+using namespace B3D;
 
 ArrowTool::ArrowTool(void)
 {

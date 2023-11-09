@@ -13,10 +13,8 @@
 using namespace B3D;
 using namespace Reflection;
 
-PartInstance::PartInstance(void)
+PartInstance::PartInstance(void) : PVInstance("Part")
 {
-	PVInstance::PVInstance("Part");
-	
 	name = "Unnamed PVItem";
 	canCollide = ReflectionProperty<bool>("CanCollide", true, TYPE_BOOLEAN, this->dataTable);
 	anchored = ReflectionProperty<bool>("Anchored", false, TYPE_BOOLEAN, this->dataTable);
@@ -72,9 +70,9 @@ void PartInstance::setDragging(bool value)
 float PartInstance::getMass()
 {
 	if(shape == Enum::Shape::Block)
-		return size.value->x*size.value->y*size.value->z*0.7F;
+		return size.value.x*size.value.y*size.value.z*0.7F;
 	else 
-		return 1.3333333333333333333333333333333F*(size.value->x/2)*(size.value->y/2)*(size.value->z/2)*0.7F;
+		return 1.3333333333333333333333333333333F*(size.value.x/2)*(size.value.y/2)*(size.value.z/2)*0.7F;
 }
 
 Vector3 PartInstance::getVelocity()
@@ -286,7 +284,7 @@ void PartInstance::setShape(Enum::Shape::Value shape)
 void PartInstance::setPosition(Vector3 pos)
 {
 	position = pos;
-	setCFrame(CoordinateFrame(cFrame.value->rotation, pos));
+	setCFrame(CoordinateFrame(cFrame.value.rotation, pos));
 
 	if (anchored && getParentDataModel() != NULL)
 		getParentDataModel()->getEngine()->resetBody(this);
@@ -307,7 +305,7 @@ bool PartInstance::isAnchored()
 
 CoordinateFrame PartInstance::getCFrame()
 {
-	return cFrame.value->rotation;
+	return cFrame.value.rotation;
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
@@ -342,7 +340,7 @@ bool PartInstance::collides(PartInstance * part)
 
 Box PartInstance::getBox()
 {
-	Box box = Box(Vector3(size.value->x/2, size.value->y/2, size.value->z/2) ,Vector3(-size.value->x/2,-size.value->y/2,-size.value->z/2));
+	Box box = Box(Vector3(size.value.x/2, size.value.y/2, size.value.z/2) ,Vector3(-size.value.x/2,-size.value.y/2,-size.value.z/2));
 	CoordinateFrame c = getCFrame();
 	itemBox = c.toWorldSpace(box);
 	return itemBox;
@@ -350,7 +348,7 @@ Box PartInstance::getBox()
 
 Sphere PartInstance::getSphere()
 {
-	Sphere sphere = Sphere(Vector3(0,0,0), size.value->y/2);
+	Sphere sphere = Sphere(Vector3(0,0,0), size.value.y/2);
 	CoordinateFrame c = getCFrame();
 	return sphere;
 }

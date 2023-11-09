@@ -1,9 +1,8 @@
 #include "DataModelV3/Gui/BaseButtonInstance.h"
 using namespace B3D;
 
-BaseButtonInstance::BaseButtonInstance(void)
+BaseButtonInstance::BaseButtonInstance(void) : Instance()
 {
-	Instance::Instance();
 	actionCode = 0;
 }
 

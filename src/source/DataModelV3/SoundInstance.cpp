@@ -4,9 +4,8 @@
 using namespace B3D;
 using namespace Reflection;
 
-SoundInstance::SoundInstance()
+SoundInstance::SoundInstance(void) : Instance("Sound")
 {
-	Instance::Instance("Sound");
 	name = "Sound";
 	soundVolume = Reflection::ReflectionProperty<float>("SoundVolume", 0.5F, TYPE_FLOAT, this->dataTable);
 	soundId = Reflection::ReflectionProperty<std::string>("SoundID", "", TYPE_STRING, this->dataTable);

@@ -1,10 +1,10 @@
 #include "DataModelV3/DataModelInstance.h"
 using namespace B3D;
 
-DataModelInstance::DataModelInstance(void)
+DataModelInstance::DataModelInstance(void) : Instance("DataModel")
 {
 	// Instances
-	Instance::Instance("DataModel");
+	printf("I am DataModel and I will be created!\n");
 	name = "Level";
 
 	parentDataModel = this;
