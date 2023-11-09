@@ -379,6 +379,9 @@
 					RelativePath=".\src\include\DataModelV3\GroupInstance.h">
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV3\InputService.h">
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV3\Instance.h">
 				</File>
 				<File

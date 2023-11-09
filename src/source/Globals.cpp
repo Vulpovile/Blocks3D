@@ -5,7 +5,6 @@ bool Globals::useMousePoint = false;
 std::vector<Instance*> postRenderStack = std::vector<Instance*>();
 
 DataModelInstance* g_dataModel = NULL;
-XplicitNgine* g_xplicitNgine = NULL;
 
 bool running = false;
 POINT Globals::mousepoint;
