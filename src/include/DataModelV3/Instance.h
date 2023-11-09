@@ -22,7 +22,10 @@ namespace B3D
 		virtual void renderName(RenderDevice*);
 		virtual void update();
 		virtual void setParent(Instance*);
+
+		//TODO implement
 		virtual Instance* clone() const { return new Instance(*this); }
+		virtual void reflectionNotify(ReflectionProperty<void*>* property);
 		
 		//Functions
 		std::vector<Instance*> children; // All children.

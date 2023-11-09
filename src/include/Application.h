@@ -29,8 +29,6 @@ class Application { // : public GApp {
 		void			clearInstances();
 		void			navigateToolbox(std::string);
 		PartInstance*	makePart();
-		void			drawButtons(RenderDevice* rd);
-		void			drawOutline(Vector3 from, Vector3 to, RenderDevice* rd, LightingParameters lighting, Vector3 size, Vector3 pos, CoordinateFrame c);
 		void		deleteInstance();
 		void		run();
 		void		QuitApp();

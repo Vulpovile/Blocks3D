@@ -85,8 +85,7 @@ void LightingInstance::update(RenderDevice* rd)
 	rd->setObjectToWorldMatrix(forDraw);
 	rd->afterPrimitive();
 
-	// TODO implement
-	//parentDataModel->getSelectionService()->render(rd);
+	parentDataModel->getSelectionService()->render(rd);
 
 	// TODO Mouse and tool will be handled by datamodel
 	//g_usableApp->tool->render(rd, g_usableApp->mouse);

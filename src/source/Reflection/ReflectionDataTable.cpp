@@ -1,4 +1,5 @@
 #include "Reflection/ReflectionDataTable.h"
+#include "DataModelV3/Instance.h"
 
 using namespace B3D::Reflection;
 
@@ -24,6 +25,11 @@ ReflectionDataTable::~ReflectionDataTable(void)
 std::string ReflectionDataTable::getClassName(void)
 {
 	return className;
+}
+
+void ReflectionDataTable::notify(ReflectionProperty<void*>* prop)
+{
+	parentInstance->reflectionNotify(prop);
 }
 
 void ReflectionDataTable::mapProperty(std::string key, ReflectionProperty<void*>* prop)

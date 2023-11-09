@@ -10,7 +10,7 @@ void BaseButtonInstance::render(RenderDevice* rd)
 {
 	//TODO make mouse a member of datamodel
 	//Vector2 pos = Vector2(g_usableApp->mouse.x,g_usableApp->mouse.y);
-	//drawObj(rd, pos, g_usableApp->mouse.isMouseDown());
+	drawObj(rd, Vector2(0, 0), false);//g_usableApp->mouse.isMouseDown());
 	Instance::render(rd);
 }
 

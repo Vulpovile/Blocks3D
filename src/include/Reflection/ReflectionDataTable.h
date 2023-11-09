@@ -17,6 +17,7 @@ namespace B3D{
 			std::string ReflectionDataTable::getClassName(void);
 
 			void mapProperty(std::string key, ReflectionProperty<void*>* prop);
+			void notify(ReflectionProperty<void*>* prop);
 		private:
 			//Perhaps not stored here?
 			std::string className;

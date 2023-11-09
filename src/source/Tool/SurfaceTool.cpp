@@ -37,10 +37,10 @@ std::vector<G3D::Box> getSurfaces(PartInstance * part)
 
 void SurfaceTool::onButton1MouseDown(Mouse mouse)
 {
-	AudioPlayer::playSound(dingSound);
 	PartInstance * target = mouse.getTarget();
 	if(target != NULL)
 	{
+		AudioPlayer::playSound(dingSound);
 		G3D::Ray ray = mouse.getLastRay();
 		std::vector<G3D::Box> surfacesHit = getSurfaces(target);
 		int closest;

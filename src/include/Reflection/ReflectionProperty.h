@@ -26,6 +26,7 @@ namespace B3D{
 			T* getValuePtr();
 
 			void setValue(T);
+			void setValueNotify(T);
 
 			void dispose();
 

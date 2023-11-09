@@ -63,6 +63,7 @@ namespace B3D
 		void setChanged();
 		void setSurface(int face, Enum::SurfaceType::Value surface);
 		void setAnchored(bool anchored);
+		void reflectionNotify(ReflectionProperty<void*>* property);
 		bool isAnchored();
 		float getMass();
 		bool isDragging();

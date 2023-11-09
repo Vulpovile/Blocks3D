@@ -62,8 +62,7 @@ void PartInstance::setDragging(bool value)
 	if (dragging != value && getParentDataModel() != NULL)
 	{
 		dragging = value;
-		//TODO implement engine
-		//getParentDataModel()->getEngine()->resetBody(this);
+		getParentDataModel()->getEngine()->resetBody(this);
 	}
 }
 
@@ -189,23 +188,20 @@ void PartInstance::setParent(Instance* prnt)
 {
 	if(this->physBody != NULL && getParentDataModel() != NULL)
 	{
-		//TODO implement engine
-		//getParentDataModel()->getEngine()->deleteBody(this);
+		getParentDataModel()->getEngine()->deleteBody(this);
 	}
 	Instance * cparent = getParent();
-	//TODO implement workspace
-	/*while(cparent != NULL)
+	while(cparent != NULL)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
 		{
 			workspace->partObjects.erase(std::remove(workspace->partObjects.begin(), workspace->partObjects.end(), this), workspace->partObjects.end());
 		}
 		cparent = cparent->getParent();
-	}*/
+	}
 	Instance::setParent(prnt);
 	cparent = getParent();
-	//TODO implement workspace
-	/*
+	
 	while(cparent != NULL)
 	{
 		if(WorkspaceInstance* workspace = dynamic_cast<WorkspaceInstance*>(cparent))
@@ -214,8 +210,7 @@ void PartInstance::setParent(Instance* prnt)
 			break;
 		}
 		cparent = cparent->getParent();
-	}*/
-		
+	}
 }
 
 void PartInstance::setSize(Vector3 newSize)
@@ -305,7 +300,7 @@ bool PartInstance::isAnchored()
 
 CoordinateFrame PartInstance::getCFrame()
 {
-	return cFrame.value.rotation;
+	return cFrame.value;
 }
 void PartInstance::setCFrame(CoordinateFrame coordinateFrame)
 {
@@ -336,6 +331,12 @@ bool PartInstance::collides(PartInstance * part)
 		else
 			return G3D::CollisionDetection::fixedSolidSphereIntersectsFixedSolidSphere(getSphere(), part->getSphere());
 	}
+}
+
+
+void PartInstance::reflectionNotify(ReflectionProperty<void*>* property){
+	//TODO actually implement correctly
+	changed = true;
 }
 
 Box PartInstance::getBox()
@@ -422,11 +423,9 @@ void PartInstance::onTouch()
 			break;
 	}
 
-	//TODO implement SoundService
-	/*
 	SoundService* sndService = getParentDataModel()->getSoundService();
 
-	switch(OnTouchSound)
+	switch(OnTouchSound.getValue())
 	{
 		case Enum::Sound::NoSound:
 			break;
@@ -469,5 +468,5 @@ void PartInstance::onTouch()
 		case Enum::Sound::StepOn:
 			sndService->playSound(sndService->findFirstChild("StepOn"));
 			break;
-	}*/
+	}
 }

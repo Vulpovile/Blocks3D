@@ -1,4 +1,6 @@
 #include "DataModelV3/DataModelInstance.h"
+//TODO should this be here?
+#include "DataModelV3/Gui/ToggleImageButtonInstance.h"
 using namespace B3D;
 
 DataModelInstance::DataModelInstance(void) : Instance("DataModel")
@@ -33,8 +35,6 @@ DataModelInstance::DataModelInstance(void) : Instance("DataModel")
 	xplicitNgine = NULL;
 	resetEngine();
 }
-
-//TODO implement
 
 void DataModelInstance::resetEngine()
 {
@@ -77,8 +77,7 @@ DataModelInstance::~DataModelInstance(void)
 void DataModelInstance::clearLevel()
 {
 	running = false;
-	//TODO implement
-	/*Instance * goButton = this->getGuiRoot()->findFirstChild("go");
+	Instance * goButton = this->getGuiRoot()->findFirstChild("go");
 	if(goButton != NULL){
 		if(ToggleImageButtonInstance* goButtonReal = dynamic_cast<ToggleImageButtonInstance*>(goButton))
 		{
@@ -87,7 +86,7 @@ void DataModelInstance::clearLevel()
 	}
 	selectionService->clearSelection();
 	selectionService->addSelected(this);
-	workspace->clearChildren();*/
+	workspace->clearChildren();
 }
 
 //TODO move elsewhere
@@ -305,7 +304,6 @@ WorkspaceInstance* DataModelInstance::getWorkspace()
 	return workspace;
 }
 
-//TODO implement
 GuiRootInstance* DataModelInstance::getGuiRoot()
 {
 	return guiRoot;
@@ -333,7 +331,6 @@ SoundService* DataModelInstance::getSoundService()
 	return soundService;
 }
 
-//TODO implement
 LightingInstance* DataModelInstance::getLighting()
 {
 	return lightingInstance;

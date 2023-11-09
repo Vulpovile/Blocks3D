@@ -46,7 +46,8 @@ void ReflectionProperty<T>::dispose()
 	//value = NULL;
 	if(extData)
 	{
-		delete extData;
+		//TODO why???
+		//delete extData;
 		extData = NULL;
 	}
 }
@@ -72,4 +73,10 @@ T* ReflectionProperty<T>::getValuePtr()
 template<class T>
 void ReflectionProperty<T>::setValue(T value){
 	value=T(value);
+}
+
+template<class T>
+void ReflectionProperty<T>::setValueNotify(T value){
+	value=T(value);
+	containerTable->notify((ReflectionProperty<void*>*)this);
 }

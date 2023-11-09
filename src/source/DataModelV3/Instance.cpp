@@ -21,6 +21,7 @@ Instance::Instance(void)
 	canDelete = true;
 }
 
+
 Instance::~Instance(void)
 {
 	for(size_t i = 0; i < children.size(); i++)
@@ -34,6 +35,10 @@ Instance::Instance(const Instance &oinst)
 {
 	printf("I *really* should not have been called yet!\n");
 	//CLONE WITH REFLECTION!!!
+}
+
+
+void Instance::reflectionNotify(ReflectionProperty<void*> * property){
 }
 
 //Perhaps should be separated
