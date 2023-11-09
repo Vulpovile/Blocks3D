@@ -72,11 +72,11 @@ T* ReflectionProperty<T>::getValuePtr()
 
 template<class T>
 void ReflectionProperty<T>::setValue(T value){
-	value=T(value);
+	this->value=T(value);
 }
 
 template<class T>
 void ReflectionProperty<T>::setValueNotify(T value){
-	value=T(value);
+	this->value=T(value);
 	containerTable->notify((ReflectionProperty<void*>*)this);
 }
