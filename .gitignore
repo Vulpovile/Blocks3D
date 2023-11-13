@@ -40,7 +40,6 @@
 *.ilk
 *.dep
 *.bin
-*.7z
 
 # ResEditor files
 *.aps
@@ -51,8 +50,6 @@ stdout.txt
 log.txt
 *.suo
 *.suo
-G3DTest.suo
-G3DTest.suo
 stderr.txt
 desktop.ini
 *.db
@@ -62,3 +59,9 @@ desktop.ini
 UpgradeLog.htm
 click_output.JPEG
 click_output.PNG
+
+#Level Files
+*.b3dl
+*.b3dm
+*.rbxl
+*.rbxm

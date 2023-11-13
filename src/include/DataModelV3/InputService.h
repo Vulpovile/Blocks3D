@@ -4,8 +4,15 @@
 
 namespace B3D{
 	class InputService : public Instance{
+	public:
 		InputService(void);
 		InputService~(void);
-		pollKeyState(int key);
+		bool pollKeyState(char keyChar);
+		int pollMouseX();
+		int pollMouseY();
+		bool pollMouseButton(int button);
+	private:
+		int mouseX, mouseY;
+
 	}
 }

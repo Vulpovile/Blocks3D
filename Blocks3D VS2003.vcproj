@@ -400,6 +400,9 @@
 					RelativePath=".\src\include\DataModelV3\SelectionService.h">
 				</File>
 				<File
+					RelativePath=".\src\include\DataModelV3\SignalService.h">
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV3\SoundInstance.h">
 				</File>
 				<File
@@ -579,6 +582,9 @@
 							Name="VCCLCompilerTool"
 							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SignalService.cpp">
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\SoundInstance.cpp">

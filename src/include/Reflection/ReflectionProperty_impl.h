@@ -38,7 +38,27 @@ ReflectionProperty<T>::~ReflectionProperty(void)
 {
 	dispose();
 }
+/*
+template<class T>
+PROPGRIDITEM ReflectionProperty<T>::getProperty(void)
+{
+	//This will come from metadata
+	std::string metaCategory = "Item";
+	PROPGRIDITEM propGridItem = NULL;
+	switch(type){
+		
+	}
+	return propGridItem;
+}
 
+template<class T>
+void ReflectionProperty<T>::setProperty(void)
+{
+	switch(type){
+		
+	}
+}
+*/
 template<class T>
 void ReflectionProperty<T>::dispose()
 {

@@ -1,5 +1,7 @@
 #pragma once
 #include "Reflection.h"
+//#include <windows.h>
+//#include "propertyGrid.h"
 #include <iostream>
 #include <string>
 #include <typeinfo>
@@ -25,9 +27,11 @@ namespace B3D{
 			T getValueClone();
 			T* getValuePtr();
 
+			//PROPGRIDITEM ReflectionProperty<T>::getProperty(void);
+			//void ReflectionProperty<T>::setProperty(void);
+
 			void setValue(T);
 			void setValueNotify(T);
-
 			void dispose();
 
 			//Too many
