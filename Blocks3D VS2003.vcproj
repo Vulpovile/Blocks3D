@@ -246,6 +246,9 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl">
 			<File
+				RelativePath=".\src\include\AbstractedInput.h">
+			</File>
+			<File
 				RelativePath=".\src\include\Application.h">
 			</File>
 			<File
@@ -528,6 +531,9 @@
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\GroupInstance.cpp">
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\InputService.cpp">
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\Instance.cpp">

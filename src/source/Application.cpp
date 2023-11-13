@@ -1,3 +1,4 @@
+//TODO holy shit
 #include <G3DAll.h>
 #include <initguid.h>
 #include <iomanip>
@@ -29,12 +30,6 @@
 
 #include "Faces.h"
 #define LEGACY_LOAD_G3DFUN_LEVEL
-
-static bool mouseMovedBeginMotion = false;
-static POINT oldGlobalMouse;
-Vector2 oldMouse = Vector2(0,0);
-float moveRate = 0.5;
-float wasPropShown = 0;
 
 using namespace B3D;
 
@@ -499,7 +494,6 @@ void Application::onMouseRightUp(int x,int y)
 }
 void Application::onMouseMoved(int x,int y)
 {
-	oldMouse = Vector2(mouse.x, mouse.y);
 	mouse.oldx = mouse.x;
 	mouse.oldy = mouse.y;
 	mouse.x = x;

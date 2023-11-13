@@ -16,7 +16,6 @@ class CameraController;
 class Application { // : public GApp {
 	public:
 		Application(HWND parentWindow);
-		void Boop();
 		virtual			~Application() {}
 		virtual void	exitApplication();
 		virtual void	onInit();
@@ -72,13 +71,15 @@ class Application { // : public GApp {
 		HWND				_hwndToolbox;
 		HWND				_buttonTest;
 		HWND				_hwndRenderer;
+		//TODO make list
 		DataModelInstance*	_dataModel;
-		G3D::TextureRef		shadowMap;
 		std::string			_title;
+		//TODO deprecated?
 		bool				_dragging;
+		//TODO deprecated
 		int					_mode;
+		//Can be moved?
 		GAppSettings		_settings;
-		double lightProjX, lightProjY, lightProjNear, lightProjFar;
 		IEBrowser*		webBrowser;
 	protected:
 		Stopwatch           m_graphicsWatch;
