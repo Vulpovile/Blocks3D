@@ -19,6 +19,8 @@ DataModelInstance::DataModelInstance(void) : Instance("DataModel")
 
 	selectionService = new SelectionService();
 
+	signalService = new SignalService();
+
 	//TODO change how property window is either passed or accessed
 	//selectionService->setPropertyWindow(g_usableApp->_propWindow);
 	showMessage = false;
@@ -52,6 +54,11 @@ void DataModelInstance::resetEngine()
 XplicitNgine * DataModelInstance::getEngine()
 {
 	return xplicitNgine;
+}
+
+SignalService * DataModelInstance::getSignalService()
+{
+	return signalService;
 }
 
 void DataModelInstance::toggleRun()

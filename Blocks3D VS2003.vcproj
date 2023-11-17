@@ -297,6 +297,9 @@
 				RelativePath=".\src\include\resource.h">
 			</File>
 			<File
+				RelativePath=".\src\include\SignalTypes.h">
+			</File>
+			<File
 				RelativePath=".\src\include\StringFunctions.h">
 			</File>
 			<File

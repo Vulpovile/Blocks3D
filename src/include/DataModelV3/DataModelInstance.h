@@ -14,6 +14,8 @@ using namespace B3D;
 #include "SoundService.h"
 #include "LightingInstance.h"
 
+#include "SignalService.h"
+
 // Libraries 
 //#include "rapidxml/rapidxml.hpp"
 namespace B3D {
@@ -34,6 +36,7 @@ namespace B3D {
 	//	ThumbnailGeneratorInstance*		getThumbnailGenerator();
 		SoundService*					getSoundService();
 		LightingInstance*				getLighting();
+		SignalService *					getSignalService();
 
 		std::string				message;
 		bool					showMessage;
@@ -57,6 +60,8 @@ namespace B3D {
 		XplicitNgine*			xplicitNgine;
 		SoundService*			soundService;
 		LightingInstance*		lightingInstance;
+		SignalService *			signalService;
+
 		bool					running;
 		
 	};

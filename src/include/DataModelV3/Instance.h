@@ -3,6 +3,7 @@
 #include "Reflection/ReflectionDataTable.h"
 #include "Reflection/ReflectionProperty.h"
 #include <G3DAll.h>
+#include "SignalTypes.h"
 
 
 namespace B3D
@@ -44,6 +45,7 @@ namespace B3D
 		Reflection::ReflectionProperty<std::string> name;
 		bool canDelete;
 
+		virtual bool postMessage(SigMesg msgId, void* lParam, void* wParam);
 
 		protected:
 		//Constructor

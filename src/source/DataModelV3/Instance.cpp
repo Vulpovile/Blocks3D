@@ -152,3 +152,8 @@ Instance* Instance::findFirstChild(std::string searchName)
 	}
 	return NULL;
 }
+
+bool Instance::postMessage(SigMesg msgId, void* lParam, void* wParam){
+	//Consume
+	return false;
+}

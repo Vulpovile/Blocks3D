@@ -1,19 +1,24 @@
 #pragma once
 #include "Instance.h"
+#include "SignalTypes.h"
+#include <set>
+
 namespace B3D
 {
-	typedef unsigned short SigMesg;
-	const SigMesg OPT_DESTROY_LPARAM = 0x8000;
-	const SigMesg OPT_DESTROY_WPARAM = 0x4000;
 
 	class SignalService : public Instance
 	{
 	public:
 		SignalService(void);
 		~SignalService(void);
-		bool registerInstance(Instance * instance);
+		bool registerInstance(Instance * instance, SigMesg msgType);
+		bool revokeInstance(Instance * instance, SigMesg msgType);
 		bool revokeInstance(Instance * instance);
+		void revokeType(SigMesg msgType);
 		void revokeAll();
-		void dispatchSignal(SigMesg& msgId, void* lParam, void* wParam);
+		bool postMessage(SigMesg msgId, void* lParam, void* wParam);
+	private:
+		static const SigMesg MSG_MASK = 0x3F;
+		std::set<Instance *> messengerTable[SignalService::MSG_LENGTH];
 	};
 }
