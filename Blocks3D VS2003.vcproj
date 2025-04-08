@@ -283,6 +283,9 @@
 				RelativePath=".\src\include\IEDispatcher.h">
 			</File>
 			<File
+				RelativePath=".\src\include\MenuActions.h">
+			</File>
+			<File
 				RelativePath=".\src\include\Mouse.h">
 			</File>
 			<File
@@ -477,6 +480,9 @@
 			</File>
 			<File
 				RelativePath=".\src\source\main.cpp">
+			</File>
+			<File
+				RelativePath=".\src\source\MenuActions.cpp">
 			</File>
 			<File
 				RelativePath=".\src\source\Mouse.cpp">
