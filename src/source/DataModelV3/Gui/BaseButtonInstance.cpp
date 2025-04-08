@@ -32,15 +32,16 @@ void BaseButtonInstance::onMouseClick()
 {
 	if(callback != NULL)
 	{
-		callback(this->getParentDataModel(), this, NULL, NULL);
+		ActionParam param = {
+			this->getParentDataModel(),
+			this,
+			this->actionCode
+		};
+		callback(param);
 	}
-//	if(listener != NULL)
-//	{
-//		listener->onButton1MouseClick(this);
-//	}
 }
 
-void BaseButtonInstance::setCallback(void (*callback)(DataModelInstance * theDatamodel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam))
+void BaseButtonInstance::setCallback(void (*callback)(const ActionParam &actionParam))
 {
 	this->callback = callback;
 }

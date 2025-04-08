@@ -1,6 +1,7 @@
 #pragma once
 #include <G3DAll.h>
 #include "../Instance.h"
+#include "../../MenuActions.h"
 
 namespace B3D{
 	class BaseButtonInstance : public Instance
@@ -12,7 +13,7 @@ namespace B3D{
 		virtual void drawObj(RenderDevice* rd, Vector2 mousePos, bool mouseDown);
 		virtual bool mouseInButton(float, float, RenderDevice* rd);
 		virtual void onMouseClick();
-		virtual void setCallback(void (*callback)(DataModelInstance * theDatamodel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam));
+		virtual void setCallback(void (*callback)(const ActionParam &actionParam));
 		void setActionCode(int actionCode);
 		bool floatBottom;
 		bool floatRight;
@@ -22,6 +23,6 @@ namespace B3D{
 	protected:
 		int actionCode;
 		bool mouseInArea(float, float, float, float, float, float);
-		void (*callback)(DataModelInstance * theDatamodel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam);
+		void (*callback)(const ActionParam &actionParam);
 	};
 }

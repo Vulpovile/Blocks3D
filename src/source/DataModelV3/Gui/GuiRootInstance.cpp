@@ -22,10 +22,6 @@ using namespace B3D;
 	#define VS03_WORKAROUND
 #endif
 
-void menuCallback(DataModelInstance * theDataModel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam) {
-	MessageBoxA(NULL, "Tomato", "Tomato", MB_OK);
-}
-
 ImageButtonInstance* GuiRootInstance::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	//Oh come on
@@ -167,6 +163,7 @@ GuiRootInstance::GuiRootInstance() : Instance(), _message(""), _messageTime(0)
 		);
 	//TODO Define Action
 	instance->setCallback(&menuCallback);
+	instance->setActionCode(MENUBTN_GO);
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);

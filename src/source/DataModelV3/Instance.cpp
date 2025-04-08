@@ -103,7 +103,15 @@ void Instance::setParent(Instance* newParent)
 	if(newParent != NULL)
 	{
 		newParent->addChild(this);
-		parentDataModel = newParent->getParentDataModel();
+		updateParentDatamodel();
+	}
+}
+
+void Instance::updateParentDatamodel() {
+	parentDataModel = parent->getParentDataModel();
+	for(size_t i = 0; i < children.size(); i++)
+	{
+		children.at(i)->updateParentDatamodel();
 	}
 }
 
@@ -114,6 +122,9 @@ Instance* Instance::getParent()
 
 DataModelInstance* Instance::getParentDataModel()
 {
+	if(parentDataModel == NULL && parent != NULL) {
+		parentDataModel = parent->getParentDataModel();
+	}
 	return parentDataModel;
 }
 

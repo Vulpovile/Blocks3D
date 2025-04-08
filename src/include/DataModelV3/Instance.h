@@ -23,6 +23,7 @@ namespace B3D
 		virtual void renderName(RenderDevice*);
 		virtual void update();
 		virtual void setParent(Instance*);
+		virtual void updateParentDatamodel();
 
 		//TODO implement
 		virtual Instance* clone() const { return new Instance(*this); }
