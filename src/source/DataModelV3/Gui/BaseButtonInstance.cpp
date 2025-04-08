@@ -4,6 +4,7 @@ using namespace B3D;
 BaseButtonInstance::BaseButtonInstance(void) : Instance()
 {
 	actionCode = 0;
+	callback = NULL;
 }
 
 void BaseButtonInstance::render(RenderDevice* rd)
@@ -29,12 +30,20 @@ bool BaseButtonInstance::mouseInButton(float mousex, float mousey, RenderDevice*
 
 void BaseButtonInstance::onMouseClick()
 {
+	if(callback != NULL)
+	{
+		callback(this->getParentDataModel(), this, NULL, NULL);
+	}
 //	if(listener != NULL)
 //	{
 //		listener->onButton1MouseClick(this);
 //	}
 }
 
+void BaseButtonInstance::setCallback(void (*callback)(DataModelInstance * theDatamodel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam))
+{
+	this->callback = callback;
+}
 
 bool BaseButtonInstance::mouseInArea(float point1x, float point1y, float point2x, float point2y, float mousex, float mousey)
 {

@@ -22,6 +22,10 @@ using namespace B3D;
 	#define VS03_WORKAROUND
 #endif
 
+void menuCallback(DataModelInstance * theDataModel, BaseButtonInstance * theCaller, WPARAM wParam, LPARAM lParam) {
+	MessageBoxA(NULL, "Tomato", "Tomato", MB_OK);
+}
+
 ImageButtonInstance* GuiRootInstance::makeImageButton(G3D::TextureRef newImage = NULL, G3D::TextureRef overImage = NULL, G3D::TextureRef downImage = NULL, G3D::TextureRef disableImage = NULL)
 {
 	//Oh come on
@@ -65,7 +69,7 @@ TextButtonInstance* makeToolbarTextButton(std::string title, std::string name, V
 	button->fontLocationRelativeTo = Vector2(10, 0);
 	button->boxColorOvr = Color4(0.6F,0.6F,0.6F,0.4F);
 	button->setAllColorsSame();
-	//button->setButtonListener(menuListener);
+	button->setCallback(&menuCallback);
 	return button;
 }
 
@@ -150,7 +154,7 @@ GuiRootInstance::GuiRootInstance() : Instance(), _message(""), _messageTime(0)
 	button->setParent(this);
 	button->name = "MENU";
 	//TODO Define Action
-	//button->setButtonListener(menuListener);
+	button->setCallback(&menuCallback);
 
 	ImageButtonInstance* instance = new ToggleImageButtonInstance(
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Run.png")),
@@ -162,7 +166,7 @@ GuiRootInstance::GuiRootInstance() : Instance(), _message(""), _messageTime(0)
 		Texture::fromFile(VS03_WORKAROUND GetFileInPath("/content/images/Stop_dn.png"))
 		);
 	//TODO Define Action
-	//instance->setButtonListener(menuListener);
+	instance->setCallback(&menuCallback);
 	instance->name = "go";
 	instance->size = Vector2(65,65);
 	instance->position = Vector2(6.5, 25);
