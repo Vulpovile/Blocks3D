@@ -5,17 +5,6 @@
 namespace B3D{
 	namespace Reflection{
 		//I do not like this... Structs?
-		class EnumMeta	{
-		public:
-			EnumMeta(int maxLength, const char ** nameValues)
-			{
-				this->maxLength = maxLength;
-				this->nameValues = nameValues;
-			}
-			int maxLength;
-			const char ** nameValues;
-		};
-
 		enum ReflectionType {
 			TYPE_INT,
 			TYPE_FLOAT,
@@ -26,6 +15,7 @@ namespace B3D{
 			TYPE_CFRAME,
 			TYPE_BOOLEAN,
 			TYPE_ENUM,
+			TYPE_INVALID,
 			LENGTH
 		};
 	}

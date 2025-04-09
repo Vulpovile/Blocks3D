@@ -8,7 +8,7 @@ PVInstance::PVInstance(std::string className) : Instance(className)
 	nameShown = Reflection::ReflectionProperty<bool>("NameShown", false, TYPE_BOOLEAN, this->dataTable);
 	controllerFlagShown = Reflection::ReflectionProperty<bool>("ControllerFlagShown", true, TYPE_BOOLEAN, this->dataTable);
 	controller = Reflection::ReflectionProperty<Enum::Controller::Value>("Controller", Enum::Controller::None, TYPE_ENUM, this->dataTable,
-		(void*)new EnumMeta(Enum::Controller::LENGTH, Enum::Controller::STR_TABLE));
+		(void*)&Enum::Controller::ENUM_META);
 	cFrame = Reflection::ReflectionProperty<CoordinateFrame>("CFrame", CoordinateFrame(), TYPE_CFRAME, this->dataTable);
 
 }
@@ -20,7 +20,7 @@ PVInstance::PVInstance(void) : Instance("PVInstance")
 	nameShown = Reflection::ReflectionProperty<bool>("NameShown", false, TYPE_BOOLEAN, this->dataTable);
 	controllerFlagShown = Reflection::ReflectionProperty<bool>("ControllerFlagShown", true, TYPE_BOOLEAN, this->dataTable);
 	controller = Reflection::ReflectionProperty<Enum::Controller::Value>("Controller", Enum::Controller::None, TYPE_ENUM, this->dataTable,
-		(void*)new EnumMeta(Enum::Controller::LENGTH, Enum::Controller::STR_TABLE));
+		(void*)&Enum::Controller::ENUM_META);
 	cFrame = Reflection::ReflectionProperty<CoordinateFrame>("CFrame", CoordinateFrame(), TYPE_CFRAME, this->dataTable);
 
 }

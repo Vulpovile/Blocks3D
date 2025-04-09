@@ -24,19 +24,19 @@ PartInstance::PartInstance(void) : PVInstance("Part")
 	velocity = ReflectionProperty<Vector3>("Velocity", Vector3(0,0,0), TYPE_VECTOR3, this->dataTable);
 	rotVelocity = ReflectionProperty<Vector3>("RotVelocity", Vector3(0,0,0), TYPE_VECTOR3, this->dataTable);
 	top = ReflectionProperty<Enum::SurfaceType::Value>("TopSurface", Enum::SurfaceType::Bumps, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
     front = ReflectionProperty<Enum::SurfaceType::Value>("FrontSurface", Enum::SurfaceType::Smooth, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
     right = ReflectionProperty<Enum::SurfaceType::Value>("RightSurface", Enum::SurfaceType::Smooth, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
 	back = ReflectionProperty<Enum::SurfaceType::Value>("BackSurface", Enum::SurfaceType::Smooth, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
 	left = ReflectionProperty<Enum::SurfaceType::Value>("LeftSurface", Enum::SurfaceType::Smooth, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
 	bottom = ReflectionProperty<Enum::SurfaceType::Value>("BottomSurface", Enum::SurfaceType::Smooth, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::SurfaceType::LENGTH, Enum::SurfaceType::STR_TABLE));
+		(void*)&Enum::SurfaceType::ENUM_META);
 	shape = ReflectionProperty<Enum::Shape::Value>("Shape", Enum::Shape::Block, TYPE_ENUM, this->dataTable, 
-		(void*)new EnumMeta(Enum::Shape::LENGTH, Enum::Shape::STR_TABLE));
+		(void*)&Enum::Shape::ENUM_META);
 	
 	// OnTouch
 	singleShot = ReflectionProperty<bool>("SingleShot", true, TYPE_BOOLEAN, this->dataTable);
@@ -44,6 +44,12 @@ PartInstance::PartInstance(void) : PVInstance("Part")
 	uniqueObjectsToTrigger = ReflectionProperty<int>("UniqueObjectsToTrigger", 1, TYPE_INT, this->dataTable);
 	changeScore = ReflectionProperty<int>("ChangeScore", 0, TYPE_INT, this->dataTable);
 	changeTimer = ReflectionProperty<float>("ChangeTimer", 0.0f, TYPE_FLOAT, this->dataTable);
+
+	
+	onTouchAction = Reflection::ReflectionProperty<Enum::ActionType::Value>("OnTouchAction", Enum::ActionType::Nothing, TYPE_ENUM, this->dataTable,
+		(void*)&Enum::ActionType::ENUM_META);
+	onTouchSound = Reflection::ReflectionProperty<Enum::Sound::Value>("OnTouchSound", Enum::Sound::NoSound, TYPE_ENUM, this->dataTable,
+		(void*)&Enum::Sound::ENUM_META);	
 
 	// Non-Reflective Properties
 	physBody = NULL;
@@ -425,7 +431,7 @@ void PartInstance::onTouch()
 
 	SoundService* sndService = getParentDataModel()->getSoundService();
 
-	switch(OnTouchSound.getValue())
+	switch(onTouchSound.getValue())
 	{
 		case Enum::Sound::NoSound:
 			break;

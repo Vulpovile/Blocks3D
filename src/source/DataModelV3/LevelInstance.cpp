@@ -14,9 +14,9 @@ LevelInstance::LevelInstance(void) : Instance("LevelService")
 	highScoreIsGood = Reflection::ReflectionProperty<bool>("HighScoreIsGood", false, TYPE_BOOLEAN, this->dataTable);
 	runOnOpen = Reflection::ReflectionProperty<bool>("RunOnOpen", false, TYPE_BOOLEAN, this->dataTable);
 	timerUpAction = Reflection::ReflectionProperty<Enum::ActionType::Value>("TimerUpAction", Enum::ActionType::Nothing, TYPE_ENUM, this->dataTable, 
-		new EnumMeta(Enum::ActionType::LENGTH, Enum::ActionType::STR_TABLE));
+		(void*)&Enum::ActionType::ENUM_META);
 	timerAffectsScore = Reflection::ReflectionProperty<Enum::AffectType::Value>("TimerAffectsScore", Enum::AffectType::NoChange, TYPE_ENUM, this->dataTable, 
-		new EnumMeta(Enum::AffectType::LENGTH, Enum::AffectType::STR_TABLE));
+		(void*)&Enum::AffectType::ENUM_META);
 
 	canDelete = false;
 }

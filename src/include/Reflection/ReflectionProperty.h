@@ -32,7 +32,6 @@ namespace B3D{
 
 			void setValue(T);
 			void setValueNotify(T);
-			void dispose();
 
 			//Too many
 			#include "ReflectionProperty_op_overload.h"

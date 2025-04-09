@@ -1,6 +1,18 @@
 using namespace B3D::Reflection;
 
 template<class T>
+ReflectionProperty<T>::ReflectionProperty(void) {
+	this->key = "";
+	this->value = T();
+	this->type = TYPE_INVALID;
+	this->containerTable = NULL;
+	this->locked = false;
+	this->archivable = true;
+	this->propertyHidden = false;
+	this->extData = NULL;
+}
+
+template<class T>
 ReflectionProperty<T>::ReflectionProperty(std::string key, T * value, ReflectionType type, ReflectionDataTable * containerTable, void* extData = NULL, bool archivable = true, bool locked = false, bool propertyHidden = false)
 {
 	this->key = key;
@@ -29,14 +41,8 @@ ReflectionProperty<T>::ReflectionProperty(std::string key, T value, ReflectionTy
 }
 
 template<class T>
-ReflectionProperty<T>::ReflectionProperty(void)
-{
-}
-
-template<class T>
 ReflectionProperty<T>::~ReflectionProperty(void)
 {
-	dispose();
 }
 /*
 template<class T>
@@ -59,18 +65,6 @@ void ReflectionProperty<T>::setProperty(void)
 	}
 }
 */
-template<class T>
-void ReflectionProperty<T>::dispose()
-{
-	//delete value;
-	//value = NULL;
-	if(extData)
-	{
-		//TODO why???
-		//delete extData;
-		extData = NULL;
-	}
-}
 
 template<class T>
 T ReflectionProperty<T>::getValueClone()

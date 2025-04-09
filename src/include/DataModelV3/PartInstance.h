@@ -23,7 +23,7 @@ namespace B3D
 		Reflection::ReflectionProperty<Enum::Shape::Value> shape;
 		//OnTouch
 		Reflection::ReflectionProperty<Enum::ActionType::Value> onTouchAction;
-		Reflection::ReflectionProperty<Enum::Sound::Value> OnTouchSound;	
+		Reflection::ReflectionProperty<Enum::Sound::Value> onTouchSound;	
 
 		//Non-Reflective Variables
 		dBodyID physBody;

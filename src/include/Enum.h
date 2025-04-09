@@ -2,16 +2,22 @@
 
 namespace Enum
 {
+	struct EnumMeta {
+		int maxLength;
+		const char ** nameValues;
+	};
 	namespace SurfaceType
 	{
 		static const char* STR_TABLE[] = {
 			"Smooth", "Bumps", "Hinge", 
 			"Motor", "StepperMotor", "Spawn"
 		};
+		
 		enum Value {
 			Smooth = 0, Bumps = 1, Hinge = 2, Motor = 3, StepperMotor = 4, Spawn = 5, LENGTH = 6
-		};
-		
+		};		
+
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 	namespace Shape
 	{
@@ -21,6 +27,8 @@ namespace Enum
 		enum Value {
 			Ball = 0, Block = 1, Cylinder = 2, LENGTH = 3
 		};
+
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 	namespace Controller
 	{
@@ -31,6 +39,8 @@ namespace Enum
 		enum Value {
 			None = 0, KeyboardRight = 1, KeyboardLeft = 2, Joypad1 = 3, Joypad2 = 4, Chase = 5, Flee = 6, LENGTH=7
 		};
+		
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 	namespace ActionType
 	{
@@ -40,6 +50,8 @@ namespace Enum
 		enum Value {
 			Nothing = 0, Pause = 1, Lose = 2, Draw = 3, Win = 4, LENGTH = 5
 		};
+		
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 	namespace AffectType
 	{
@@ -49,6 +61,8 @@ namespace Enum
 		enum Value {
 			NoChange = 0, Increase = 1, Decrease = 2, LENGTH = 3
 		};
+		
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 	namespace Sound
 	{
@@ -63,5 +77,7 @@ namespace Enum
 			Snap = 8, Page = 9, Click = 10, Clock = 11, Step = 12, StepOn = 13,
 			LENGTH = 14
 		};
+		
+		static const EnumMeta ENUM_META = {LENGTH,	STR_TABLE};
 	}
 }
