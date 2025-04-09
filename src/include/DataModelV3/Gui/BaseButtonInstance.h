@@ -3,7 +3,7 @@
 #include "../Instance.h"
 #include "../../MenuActions.h"
 
-namespace B3D{
+namespace B3D {
 	class BaseButtonInstance : public Instance
 	{
 	public:
