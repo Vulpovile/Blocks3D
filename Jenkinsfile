@@ -17,8 +17,10 @@ pipeline {
 				"""
 			}
 		}
-		steps('Archive') {
-			archiveArtifacts artifacts: 'Installer\\Output\\Blocks3D_Setup_*,Installer\\Output\\B3DSTP*', fingerprint: true
+		stage('Archive') {
+			steps {
+				archiveArtifacts artifacts: 'Installer\\Output\\Blocks3D_Setup_*,Installer\\Output\\B3DSTP*', fingerprint: true
+			}
 		}
 	}
 }
