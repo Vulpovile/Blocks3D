@@ -54,7 +54,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;.\src\include&quot;"
+				AdditionalIncludeDirectories="C:\libraries\sdl\include;C:\libraries\ode\include;&quot;C:\libraries\g3d-6_10\include&quot;;.\src\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_ATL_STATIC_REGISTRY;NO_SDL_MAIN"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -83,6 +83,7 @@
 				OutputFile="./Blocks3D.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\libraries\ode\lib\releaselib;C:\libraries\sdl\lib\x86;&quot;C:\libraries\g3d-6_10\win32-vc8-lib&quot;"
 				ProgramDatabaseFile=".\Release/Blocks3D.pdb"
 				SubSystem="2"
 				StackReserveSize="16777216"
@@ -154,7 +155,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\src\include"
+				AdditionalIncludeDirectories="C:\libraries\ode\include;C:\libraries\sdl\include;&quot;C:\libraries\g3d-6_10\include&quot;;.\src\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_ATL_STATIC_REGISTRY;NO_SDL_MAIN"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -181,11 +182,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib oded.lib"
+				AdditionalDependencies="Advapi32.lib UxTheme.lib Comctl32.lib Comdlg32.lib Shell32.lib Urlmon.lib ole32.lib oleaut32.lib uuid.lib ode.lib"
 				OutputFile="./Blocks3D-Debug.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;C:\libraries\g3d-6_10\win32-vc8-lib&quot;;C:\libraries\sdl\lib\x86;C:\libraries\ode\lib\debuglib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Blocks3D.pdb"
 				SubSystem="1"
@@ -288,6 +289,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\source\MenuActions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\source\Mouse.cpp"
 				>
 			</File>
@@ -355,6 +360,10 @@
 				Name="DataModelV3"
 				>
 				<File
+					RelativePath=".\src\source\DataModelV3\ControllerService.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\source\DataModelV3\DataModelInstance.cpp"
 					>
 				</File>
@@ -421,6 +430,10 @@
 							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\source\DataModelV3\SignalService.cpp"
+					>
 				</File>
 				<File
 					RelativePath=".\src\source\DataModelV3\SoundInstance.cpp"
@@ -549,6 +562,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\src\include\AbstractedInput.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\Application.h"
 				>
 			</File>
@@ -593,6 +610,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\MenuActions.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\Mouse.h"
 				>
 			</File>
@@ -610,6 +631,10 @@
 			</File>
 			<File
 				RelativePath=".\src\include\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\SignalTypes.h"
 				>
 			</File>
 			<File
@@ -712,6 +737,10 @@
 				Name="DataModelV3"
 				>
 				<File
+					RelativePath=".\src\include\DataModelV3\ControllerService.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\include\DataModelV3\DataModelInstance.h"
 					>
 				</File>
@@ -741,6 +770,10 @@
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV3\SelectionService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\include\DataModelV3\SignalService.h"
 					>
 				</File>
 				<File

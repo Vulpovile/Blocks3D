@@ -1,0 +1,10 @@
+.navlist{
+	list-style: none;
+	padding-top: 0px;
+	margin-top: 0px;
+	padding-inline-start: 20px;
+}
+.navselected{
+	font-weight: bold;
+	list-style-image: url("../img/icon/shape_square.png");
+}

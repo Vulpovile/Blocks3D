@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel='stylesheet' href='navbar.css'>
+		<link rel='stylesheet' href='global.css'>
+	</head>
+	<script type="text/javascript">
+		function selectTab()
+		{
+			var hash = window.location.hash.substr(1);
+			var selected = document.getElementsByName(hash);
+			for(var i = 0; i < selected.length; i++) {
+				selected[i].className = "navtabselected"
+			}
+		}
+	</script>
+	<body onload="selectTab()">
+		<table id='headerTable'>
+			<tr>
+				<th class='corner' rowspan='2'>
+					<img src='../img/Logo180.gif' />
+				</th>
+				<th class='center'>
+					<h1>Blocks3D Developer Documentation</h1>
+				</th>
+			</tr>
+			<tr>
+				<td class='navtabs'>
+					<span class='navtab' name="home" onclick='window.top.location.href="../index.html"'>
+						Home
+					</span>
+					<span class='navtab' name="build" onclick='window.top.location.href="../build/index.html"'>
+						Build
+					</span>
+					<span class='navtab' name="standards" onclick='window.top.location.href="../standards/index.html"'>
+						Standards
+					</span>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
