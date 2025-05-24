@@ -389,7 +389,7 @@
 					RelativePath=".\src\include\DataModelV3\GroupInstance.h">
 				</File>
 				<File
-					RelativePath=".\src\include\DataModelV3\InputService.h">
+					RelativePath=".\src\include\DataModelV3\Gui\ImageButtonInstance.h">
 				</File>
 				<File
 					RelativePath=".\src\include\DataModelV3\Instance.h">
@@ -407,22 +407,10 @@
 					RelativePath=".\src\include\DataModelV3\PVInstance.h">
 				</File>
 				<File
-					RelativePath=".\src\include\DataModelV3\SelectionService.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV3\SignalService.h">
-				</File>
-				<File
 					RelativePath=".\src\include\DataModelV3\SoundInstance.h">
 				</File>
 				<File
-					RelativePath=".\src\include\DataModelV3\SoundService.h">
-				</File>
-				<File
 					RelativePath=".\src\include\DataModelV3\WorkspaceInstance.h">
-				</File>
-				<File
-					RelativePath=".\src\include\DataModelV3\XplicitNgine\XplicitNgine.h">
 				</File>
 				<Filter
 					Name="Gui"
@@ -437,13 +425,29 @@
 						RelativePath=".\src\include\DataModelV3\Gui\GuiRootInstance.h">
 					</File>
 					<File
-						RelativePath=".\src\include\DataModelV3\Gui\ImageButtonInstance.h">
-					</File>
-					<File
 						RelativePath=".\src\include\DataModelV3\Gui\TextButtonInstance.h">
 					</File>
 					<File
 						RelativePath=".\src\include\DataModelV3\Gui\ToggleImageButtonInstance.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Service"
+					Filter="">
+					<File
+						RelativePath=".\src\include\DataModelV3\ControllerService.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\SelectionService.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\SignalService.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\SoundService.h">
+					</File>
+					<File
+						RelativePath=".\src\include\DataModelV3\XplicitNgine\XplicitNgine.h">
 					</File>
 				</Filter>
 			</Filter>
@@ -543,9 +547,6 @@
 					RelativePath=".\src\source\DataModelV3\GroupInstance.cpp">
 				</File>
 				<File
-					RelativePath=".\src\source\DataModelV3\InputService.cpp">
-				</File>
-				<File
 					RelativePath=".\src\source\DataModelV3\Instance.cpp">
 				</File>
 				<File
@@ -579,30 +580,6 @@
 					RelativePath=".\src\source\DataModelV3\PVInstance.cpp">
 				</File>
 				<File
-					RelativePath=".\src\source\DataModelV3\SelectionService.cpp">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Relese (Dec ALPHA)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\source\DataModelV3\SignalService.cpp">
-				</File>
-				<File
 					RelativePath=".\src\source\DataModelV3\SoundInstance.cpp">
 					<FileConfiguration
 						Name="Release|Win32">
@@ -624,49 +601,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\src\source\DataModelV3\SoundService.cpp">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Relese (Dec ALPHA)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath=".\src\source\DataModelV3\WorkspaceInstance.cpp">
-				</File>
-				<File
-					RelativePath=".\src\source\DataModelV3\XplicitNgine\XplicitNgine.cpp">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Relese (Dec ALPHA)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
 				</File>
 				<Filter
 					Name="Gui"
@@ -778,6 +713,79 @@
 					</File>
 					<File
 						RelativePath=".\src\source\DataModelV3\Gui\ToggleImageButtonInstance.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Relese (Dec ALPHA)|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="Service"
+					Filter="">
+					<File
+						RelativePath=".\src\source\DataModelV3\ControllerService.cpp">
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\SelectionService.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Relese (Dec ALPHA)|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\SignalService.cpp">
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\SoundService.cpp">
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Relese (Dec ALPHA)|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\src\source\DataModelV3\XplicitNgine\XplicitNgine.cpp">
 						<FileConfiguration
 							Name="Release|Win32">
 							<Tool

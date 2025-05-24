@@ -15,10 +15,10 @@ namespace B3D{
 		}
 	};
 
-	class InputService : public Instance{
+	class ControllerService : public Instance{
 	public:
-		InputService(void);
-		~InputService(void);
+		ControllerService(void);
+		~ControllerService(void);
 
 		//Polling
 		int pollKeyState(unsigned char keyCode);

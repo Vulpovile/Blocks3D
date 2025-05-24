@@ -5,52 +5,52 @@
 
 using namespace B3D;
 
-InputService::InputService(void) : Instance()
+ControllerService::ControllerService(void) : Instance()
 {
-	name = "Mouse";
+	name = "ControllerService";
 }
 
-InputService::~InputService(void)
+ControllerService::~ControllerService(void)
 {
 }
 
 //Poll state
-int InputService::pollKeyState(unsigned char keyCode){
+int ControllerService::pollKeyState(unsigned char keyCode){
 	return GetHoldKeyState(keyCode);
 }
-int InputService::pollMouseX(){
+int ControllerService::pollMouseX(){
 	return mouseX;
 }
-int InputService::pollMouseY(){
+int ControllerService::pollMouseY(){
 	return mouseY;
 }
-int InputService::pollMouseButton(unsigned char button){
+int ControllerService::pollMouseButton(unsigned char button){
 	return GetHoldKeyState(button);
 }
-bool InputService::pollFocus(){
+bool ControllerService::pollFocus(){
 	return hasFocus;
 }
 
 
 //Update Input
-void InputService::updateMouse(int x, int y){
+void ControllerService::updateMouse(int x, int y){
 	mouseX = x;
 	mouseY = y;
 }
-void InputService::updateFocus(bool focus){
+void ControllerService::updateFocus(bool focus){
 	hasFocus = focus;
 }
 
 //Signal
-void InputService::signalKeyState(unsigned char keyCode, bool isDown){
+void ControllerService::signalKeyState(unsigned char keyCode, bool isDown){
 	SignalService * signalService = this->parentDataModel->getSignalService();
 	signalService->postMessage(MSG_KEY_STATE, (void*)keyCode, (void*)isDown);
 }
-void InputService::signalMouseButtonState(unsigned char button, bool isDown){
+void ControllerService::signalMouseButtonState(unsigned char button, bool isDown){
 	SignalService * signalService = this->parentDataModel->getSignalService();
 	signalService->postMessage(MSG_MOUSE_BUTTON_STATE, (void*)button, (void*)isDown);
 }
-void InputService::signalMouseWheelState(int step){
+void ControllerService::signalMouseWheelState(int step){
 	SignalService * signalService = this->parentDataModel->getSignalService();
 	signalService->postMessage(MSG_MOUSE_WHEEL_STEP, (void*)step, NULL);
 }

@@ -10,3 +10,6 @@ void menuCallback(const ActionParam &actionParam) {
 	}
 }
 
+void toolCallback(const ActionParam &actionParam) {
+	
+}
