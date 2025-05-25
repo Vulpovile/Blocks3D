@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Blocks3D Developer Documentation - Build Index
+		</title>
+		<link rel="stylesheet" href="../css/global.css">
+	</head>
+	<body>
+		<table id='maintbl' cellspacing='0'>
+			<tr>
+				<th id='maintblHeader' colspan=2>
+					<iframe class='fullframe' src="../frame/navbar.html#build" frameborder="0" scrolling="no"></iframe>
+				</th>
+			</tr>
+			<tr>
+				<td id='maintblSidebar'>
+					<iframe class='sideframe' src="../frame/sidebar.html#lib" frameborder="0"></iframe>
+				</td>
+				<td id='maintblContent'>
+					<!--Begin content-->
+						<h2 class='center'>Library Setup</h2>
+						<p>Blocks3D uses three main libraries:</p>
+						<ol>
+							<li><a href="#g3d">Graphics3D 6.10 *</a></li>
+							<li><a href="#sdl">SDL 1.2</a></li>
+							<li><a href="#ode">ODE 0.6</a></li>
+						</ol>
+						<p>You can download them at:</p>
+						<ol name="downloads">
+							<li><a href="https://sourceforge.net/projects/g3d/files/g3d-cpp/6.10/g3d-6_10_win32.exe/download">Graphics3D 6.10 - SourceForge *</a></li>
+							<li><a href="https://www.libsdl.org/release/SDL-devel-1.2.15-VC.zip">Win32 SDL 1.2.15 - LibSDL.org</a></li>
+							<li><a href="https://sourceforge.net/projects/opende/files/ODE/0.6/ode-src-0.6.zip/download">ODE 0.6 Source - SourceForge</a></li>
+						</ol>
+						<span class='subtext'>* For accuracy reasons, this is likely to change to an older G3D version in the future</span>
+						<p>
+							All of these are set up in their respective subfolder under C:\libraries. 
+							Setup is fairly quick and easy, though ODE 0.6 will need to be manually compiled.<br>
+							Let's start from easiest to hardest!
+						</p>
+						<h3 name='prerequisites'>Prerequisites</h3>
+						<p>
+							Ensure you have already either set up <a href='vs03.html'>Visual Studio 2003</a> or <a href='vs05.html'>Visual Studio 2005</a>.<br />
+							This mainly is a requirement for ODE, as SDL and Graphics3D will not need to be compiled.
+						</p>
+						<h3 name='g3d'>1. Graphics3D</h3>
+						<p>
+							Graphics3D has a simple installer. Default settings should work fine in general.<br />
+							Run the installer, and ensure the path is correct. <br />
+							The path should be the following:<br />
+							<span class='code'>
+								C:\libraries\g3d-6_10
+							</span><br />
+							and your windows look like this:<br />
+							<img src='img/lib/g3dinstaller.png' /> <img src='img/lib/g3doptions.png' /><br />
+							Proceed to install. <br />
+							If you see this dialog, you can disregard it, as Blocks3D has the library paths setup:<br>
+							<img src='img/lib/g3ddialog.png' /><br />
+							Graphics3D setup is now complete!
+						</p>
+						<h3 name='sdl'>2. SDL 1.2</h3>
+						<p>
+							SDL is also fairly simple, but does not have an installer. Instead, you have to extract it.
+							Under Windows, copy the SDL folder into <span class='code'>C:\libraries</span>:<br />
+							<img src='img/lib/sdlextract.png' /><br />
+							You will want to ensure that your SDL folder is named <span class='code'>sdl</span> and does not have a child SDL folder:<br />
+							<img src='img/lib/sdlrename.png' /><br />
+							SDL setup is now complete!
+						</p>
+						<h3 name='ode'>3. ODE 0.6</h3>
+						<p>
+							ODE 0.6 is a lot more complicated, and it does depend on what IDE you are going with, but in general the steps are identical across both Visual Studio 2003 and 2005.<br />
+							Ensure you have either of the two installed, and begin extracting the files.<br />
+							Create a new ode folder, and extract the contents out of it:<br />
+							<img src='img/lib/odefolder.png' /><br />
+							Ensure that it is indeed the contents, and not a parent folder:<br />
+							<img src='img/lib/odedir.png' /><br />
+							If it is the parent folder, simply copy them into the main directory.<br />
+							Now you'll want to navigate into the "build" directory, and select the version of Visual Studio you will be using:<br />
+							<img src='img/lib/odeversions.png' /><br />
+							Open up the solution file in your Visual Studio:<br />
+							<img src='img/lib/odesln.png' /><br />
+							Within Visual Studio, you will want to build ReleaseLib and DebugLib.<br />
+							Simply select one version to build:<br />
+							<img src='img/lib/odelibtypes.png' /><br />
+							and go to Build->Build Solution:<br />
+							<img src='img/lib/odebuild.png' /><br />
+							Then repeat for the next version.
+							You may also be able to save time by just building ode, rather than the entire solution, but YMMV.
+						</p>
+						<h3 name='end'>End Result</h3>
+						As the end result, you should now have a <span class='code'>C:\libraries</span> directories like so:<br />
+						<img src='img/lib/libdir.png' /><br />
+						and are now ready to build!
+						
+					<!--End content-->
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

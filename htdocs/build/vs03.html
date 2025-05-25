@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Blocks3D Developer Documentation - Build Index
+		</title>
+		<link rel="stylesheet" href="../css/global.css">
+	</head>
+	<body>
+		<table id='maintbl' cellspacing='0'>
+			<tr>
+				<th id='maintblHeader' colspan=2>
+					<iframe class='fullframe' src="../frame/navbar.html#build" frameborder="0" scrolling="no"></iframe>
+				</th>
+			</tr>
+			<tr>
+				<td id='maintblSidebar'>
+					<iframe class='sideframe' src="../frame/sidebar.html#vs03" frameborder="0"></iframe>
+				</td>
+				<td id='maintblContent'>
+					<!--Begin content-->
+						<h2 class='center'>Visual Studio .NET 2003 Setup</h2>
+						Visual Studio 2003 is fairly simple to set-up, but if you're only setting it up for Blocks3D you might want to make it ligher by only selecting useful programs.<br />
+						<strong>Warning - This setup can encounter some issues. Please refer to the <a href='#common'>Common Issues</a> section if you encounter one.</strong>
+						<h3 name='common'>Common Issues</h3>
+						<h4>1. Prerequisites not met and failing to install</h4>
+						<p>
+							If you tried to install prerequisites already, and are completely unable, there's a simple workaround<br />
+							This may happen on machines newer than Windows XP, or if you have already installed a newer .NET framework.
+							<h5>Resolution:</h5>
+							Ensure you have extracted the Visual Studio 2003 installation files to a known directory, rather than a temp folder. <br />
+							In this instance, they are under <span class='code'>C:\VS03</span>.<br />
+							In a command prompt, navigate to the Setup subdirectory of your installer files, in this case <span class='code'>C:\VS03\Setup</span>, and run the following command:<br />
+							<span class='code'>setup.exe /NO_BSLN_CHECK</span></br>
+							<img src='img/vs03/nobsln.png'><br />
+							This will bypass prerequisite checks, and you can continue installing Visual Studio.
+						</p>
+					<!--End content-->
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
