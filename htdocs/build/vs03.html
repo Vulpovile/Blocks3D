@@ -22,19 +22,81 @@
 						<h2 class='center'>Visual Studio .NET 2003 Setup</h2>
 						Visual Studio 2003 is fairly simple to set-up, but if you're only setting it up for Blocks3D you might want to make it ligher by only selecting useful programs.<br />
 						<strong>Warning - This setup can encounter some issues. Please refer to the <a href='#common'>Common Issues</a> section if you encounter one.</strong>
-						<h3 name='common'>Common Issues</h3>
-						<h4>1. Prerequisites not met and failing to install</h4>
+						<h2 id='common'>Common Issues</h2>
+						<h4 id='common1'>1. Prerequisites not met and failing to install</h4>
 						<p>
 							If you tried to install prerequisites already, and are completely unable, there's a simple workaround<br />
-							This may happen on machines newer than Windows XP, or if you have already installed a newer .NET framework.
-							<h5>Resolution:</h5>
-							Ensure you have extracted the Visual Studio 2003 installation files to a known directory, rather than a temp folder. <br />
+							This may happen on machines newer than Windows XP, or if you have already installed a newer .NET framework.<br /><br />
+							<strong>Resolution:</strong><br />
+							Ensure that in <a href="#install1">step 1</a> you have extracted the Visual Studio 2003 installation files to a known directory, rather than a temp folder. <br />
 							In this instance, they are under <span class='code'>C:\VS03</span>.<br />
 							In a command prompt, navigate to the Setup subdirectory of your installer files, in this case <span class='code'>C:\VS03\Setup</span>, and run the following command:<br />
-							<span class='code'>setup.exe /NO_BSLN_CHECK</span></br>
-							<img src='img/vs03/nobsln.png'><br />
-							This will bypass prerequisite checks, and you can continue installing Visual Studio.
+							<span class='code'>setup.exe /NO_BSLN_CHECK</span><br />
+							<img src='img/vs03/nobsln.png' /><br />
+							This will bypass prerequisite checks, and you can continue installing Visual Studio .NET 2003. This will start you from <a href="#install2">step 3</a>.
 						</p>
+						<h4>2. Cannot install on x64 based systems</h4>
+						<p>
+							Visual Studio .NET 2003 <i>can</i> install on x64 based systems, this is just some strange quirk in the installer.<br />
+							It only appears to occur on Linux WINE based systems, but on Windows it should work fine.<br /><br />
+							<strong>Resolution:</strong><br />
+							When using WINE, make sure you use a 32-bit WINE Prefix. If you somehow had this occur under windows... good luck.
+						</p>
+						<h2 id='install'>Installation</h2>
+						For the purpose of this installation, we are extracting insaller files to <span class='code'>C:\VS03</span>, but you can use any that work for you
+						
+						<h3 id='install1'>1. Run the Extractor</h3>
+						<p>
+							This step depends on your installation medium. Visual Studio .NET 2003 came on both CD and EXE formfactor. If you have a CD, you can skip this step and move on to <a href='#install2'>step 2</a>.<br />
+							Run the self-extracting executable and enter a path that you can remember:<br />
+							
+							<img src='img/vs03/vs03exe.png' /> 
+							<img src='img/vs03/unzip.png' /><br />
+							
+							When ready, press Unzip:<br />
+						</p>
+							<table>
+								<tr>
+									<td>
+										<img src='img/vs03/extract.png'  />
+									</td>
+									<td>
+										During this process, do NOT within the window, including the title bar.<br> The self-extractor is terrible and will cancel itself.<br />
+									</td>
+								</tr>
+							</table>
+						<p>
+							
+							Once complete, the setup should start itself. If not, you can navigate to the your folder and run setup.exe.
+						</p>	
+						<h3 id='install2'>2. Setup Prerequisites</h3>
+						<p>
+							Setup has now started, and first you will need to install prerequisites. Select option 1 on the list.<br />
+							You will be prompted about IIS and Frontpage extensions. We do not need these for Blocks3D, so click skip.<br />
+							<img src='img/vs03/installer.png' /> <img src='img/vs03/webprj.png' /><br />
+							
+							When you reach the prerequisites window, simply hit "Install Now!"<br />
+							<img src='img/vs03/prereq.png' /> <img src='img/vs03/prereqdone.png' /><br />
+							Everything should install successfully, and you will be able to proceed with the next step.<br />
+							
+							<strong>If something failed</strong>, you likely have a newer .NET framework or Windows installed. Refer to <a href='#common1'>Common Issue 1</a>.
+						</p>
+						<h3 id='install3'>3. Setup Visual Studio .NET 2003</h3>
+						<p>
+							You will be returned back into the main page. If you are coming from Common Issue 1, the Visual Studio installer will have already started. Otherwise, <br />
+							Select option 2. to start the main Visual Studio .NET 2003 installer:<br />
+							<img src='img/vs03/installer2.png' /><br />
+							
+							Accept the licence agreement, and you will be given a page with many options.<br />
+							Default options will work just fine, however if you only want Visual Studio .NET 2003 for Blocks3D, <br />
+							the only important option is the Visual C++ Language Tools. You can select options similar to below:<br />
+							<img src='img/vs03/options.png' /><br />
+							Now you can press "Install Now!"<br />
+							<img src='img/vs03/instnow.png' /><br />
+							<img src='img/vs03/instdone.png' /><br />
+							Now with the installation complete, you are ready to develop for Blocks3D!
+						</p>
+						
 					<!--End content-->
 				</td>
 			</tr>

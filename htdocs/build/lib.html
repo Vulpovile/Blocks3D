@@ -27,7 +27,7 @@
 							<li><a href="#ode">ODE 0.6</a></li>
 						</ol>
 						<p>You can download them at:</p>
-						<ol name="downloads">
+						<ol id="downloads">
 							<li><a href="https://sourceforge.net/projects/g3d/files/g3d-cpp/6.10/g3d-6_10_win32.exe/download">Graphics3D 6.10 - SourceForge *</a></li>
 							<li><a href="https://www.libsdl.org/release/SDL-devel-1.2.15-VC.zip">Win32 SDL 1.2.15 - LibSDL.org</a></li>
 							<li><a href="https://sourceforge.net/projects/opende/files/ODE/0.6/ode-src-0.6.zip/download">ODE 0.6 Source - SourceForge</a></li>
@@ -38,12 +38,12 @@
 							Setup is fairly quick and easy, though ODE 0.6 will need to be manually compiled.<br>
 							Let's start from easiest to hardest!
 						</p>
-						<h3 name='prerequisites'>Prerequisites</h3>
+						<h3 id='prerequisites'>Prerequisites</h3>
 						<p>
 							Ensure you have already either set up <a href='vs03.html'>Visual Studio 2003</a> or <a href='vs05.html'>Visual Studio 2005</a>.<br />
 							This mainly is a requirement for ODE, as SDL and Graphics3D will not need to be compiled.
 						</p>
-						<h3 name='g3d'>1. Graphics3D</h3>
+						<h3 id='g3d'>1. Graphics3D</h3>
 						<p>
 							Graphics3D has a simple installer. Default settings should work fine in general.<br />
 							Run the installer, and ensure the path is correct. <br />
@@ -58,7 +58,7 @@
 							<img src='img/lib/g3ddialog.png' /><br />
 							Graphics3D setup is now complete!
 						</p>
-						<h3 name='sdl'>2. SDL 1.2</h3>
+						<h3 id='sdl'>2. SDL 1.2</h3>
 						<p>
 							SDL is also fairly simple, but does not have an installer. Instead, you have to extract it.
 							Under Windows, copy the SDL folder into <span class='code'>C:\libraries</span>:<br />
@@ -67,7 +67,7 @@
 							<img src='img/lib/sdlrename.png' /><br />
 							SDL setup is now complete!
 						</p>
-						<h3 name='ode'>3. ODE 0.6</h3>
+						<h3 id='ode'>3. ODE 0.6</h3>
 						<p>
 							ODE 0.6 is a lot more complicated, and it does depend on what IDE you are going with, but in general the steps are identical across both Visual Studio 2003 and 2005.<br />
 							Ensure you have either of the two installed, and begin extracting the files.<br />
@@ -88,7 +88,7 @@
 							Then repeat for the next version.
 							You may also be able to save time by just building ode, rather than the entire solution, but YMMV.
 						</p>
-						<h3 name='end'>End Result</h3>
+						<h3 id='end'>End Result</h3>
 						As the end result, you should now have a <span class='code'>C:\libraries</span> directories like so:<br />
 						<img src='img/lib/libdir.png' /><br />
 						and are now ready to build!
