@@ -1,5 +1,7 @@
 body {
 	font-family: Helvetica, Verdana, Arial;
+	background-color: lightsteelblue;
+	overflow-y: none;
 }
 
 .navlist{

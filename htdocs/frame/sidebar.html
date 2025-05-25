@@ -9,31 +9,29 @@
 		function selectIndex()
 		{
 			var hash = window.location.hash.substr(1);
-			var selected = document.getElementsByName(hash);
-			for(var i = 0; i < selected.length; i++) {
-				selected[i].className = "navselected";
-			}
+			var selected = document.getElementById(hash);
+			selected.className = "navselected";
 		}
 	</script>
 	<body onload='selectIndex()'>
 		Home Pages
 		<ul class='navlist'>
-			<li name='home'><a href='javascript:window.top.location.href="../index.html"'>Home</a></li>
-			<li name='about'><a href='javascript:window.top.location.href="../about.html"'>About</a></li>
-			<li name='contributing'><a href='javascript:window.top.location.href="../contributing.html"'>Contributing</a></li>
+			<li id='home'><a href='javascript:window.top.location.href="../index.html"'>Home</a></li>
+			<li id='about'><a href='javascript:window.top.location.href="../about.html"'>About</a></li>
+			<li id='contributing'><a href='javascript:window.top.location.href="../contributing.html"'>Contributing</a></li>
 		</ul>
 		Build Setup Information
 		<ul class='navlist'>
-			<li name='build'><a href='javascript:window.top.location.href="../build/index.html"'>Build Index</a></li>
-			<li name='lib'><a href='javascript:window.top.location.href="../build/lib.html"'>Library Setup</a></li>
-			<li name='vs03'><a href='javascript:window.top.location.href="../build/vs03.html"'>VS 2003 Setup</a></li>
-			<li name='vs05'><a href='javascript:window.top.location.href="../build/vs05.html"'>VS 2005 Setup</a></li>
+			<li id='build'><a href='javascript:window.top.location.href="../build/index.html"'>Build Index</a></li>
+			<li id='vs03'><a href='javascript:window.top.location.href="../build/vs03.html"'>VS 2003 Setup</a></li>
+			<li id='vs05'><a href='javascript:window.top.location.href="../build/vs05.html"'>VS 2005 Setup</a></li>
+			<li id='lib'><a href='javascript:window.top.location.href="../build/lib.html"'>Library Setup</a></li>
 		</ul>
 		Coding Standards
 		<ul class='navlist'>
-			<li name='standards'><a href='javascript:window.top.location.href="../standards/index.html"'>Standards Index</a></li>
-			<li name='format'><a href='javascript:window.top.location.href="../standards/format.html"'>Formatting</a></li>
-			<li name='structure'><a href='javascript:window.top.location.href="../standards/structure.html"'>Directory Structure</a></li>
+			<li id='standards'><a href='javascript:window.top.location.href="../standards/index.html"'>Standards Index</a></li>
+			<li id='format'><a href='javascript:window.top.location.href="../standards/format.html"'>Formatting</a></li>
+			<li id='structure'><a href='javascript:window.top.location.href="../standards/structure.html"'>Directory Structure</a></li>
 		</ul>
 	</body>
 </html>

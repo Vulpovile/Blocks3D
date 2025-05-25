@@ -8,11 +8,10 @@
 		function selectTab()
 		{
 			var hash = window.location.hash.substr(1);
-			var selected = document.getElementsByName(hash);
-			for(var i = 0; i < selected.length; i++) {
-				selected[i].className = "navtabselected"
-			}
-		}
+			var selected = document.getElementById(hash);
+			selected.className = "navtabselected"
+		} 
+		
 	</script>
 	<body onload="selectTab()">
 		<table id='headerTable'>
@@ -26,13 +25,13 @@
 			</tr>
 			<tr>
 				<td class='navtabs'>
-					<span class='navtab' name="home" onclick='window.top.location.href="../index.html"'>
+					<span class='navtab' id="home" onclick='window.top.location.href="../index.html"'>
 						Home
 					</span>
-					<span class='navtab' name="build" onclick='window.top.location.href="../build/index.html"'>
+					<span class='navtab' id="build" onclick='window.top.location.href="../build/index.html"'>
 						Build
 					</span>
-					<span class='navtab' name="standards" onclick='window.top.location.href="../standards/index.html"'>
+					<span class='navtab' id="standards" onclick='window.top.location.href="../standards/index.html"'>
 						Standards
 					</span>
 				</td>
