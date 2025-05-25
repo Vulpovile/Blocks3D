@@ -1,0 +1,4 @@
+/* This isn't needed in IE5 and IE7 -- WTF MICROSOFT??? */
+.sideframe {
+	height: 640px;
+}
