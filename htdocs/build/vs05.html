@@ -22,8 +22,83 @@
 				</td>
 				<td id='maintblContent'>
 					<!--Begin content-->
-						<h2 class='center'>Build Tool Setup</h2>
-						[ Content Deleted ]
+					<h2 class='center'>Visual Studio 2005 Setup</h2>
+					<p>
+						Visual Studio 2005 is in general fairly simple to set up, but if using Express, you require the Platform SDK as well.<br />
+						This guide will cover installing Express, do note that the procedure is identical for every version, but you can skip installing the Platform SDK.<br /><br />
+						You can download the following items here:
+					</p>
+					
+					<table border>
+						<tr><th>Item</th><th>Microsoft Direct</th><th>Archive.org Mirror</th></tr>
+						<tr>
+							<td>Visual Studio 2005 Express</td>
+							<td class='center'>
+								<a href='http://go.microsoft.com/fwlink/?linkid=57034'>ISO</a> | <a href='http://go.microsoft.com/fwlink/?linkid=54766'>IMG</a>
+							</td>
+							<td class='center'>
+								<a href='http://web.archive.org/web/20180101222729/http://download.microsoft.com/download/A/9/1/A91D6B2B-A798-47DF-9C7E-A97854B7DD18/VC.iso'>
+									ISO
+							</a> 
+								| 
+								<a href='http://web.archive.org/web/20171027152724/http://download.microsoft.com/download/0/4/3/0434C5AF-8FB5-4D64-B8D8-E9BDF3C83152/VC.img'>
+									IMG
+								</a>
+							</td>
+						</tr>
+						<tr>
+						<td>Server 2003 Platform SDK</td>
+							<td class='center'>
+								<a href='https://www.microsoft.com/en-us/download/details.aspx?id=15656'>IMG</a>
+							</td>
+							<td class='center'>
+								<!--Good lord-->
+								<a href='http://web.archive.org/web/20210404094015if_/http://download.microsoft.com/download/7/5/e/75ec7f04-4c8c-4f38-b582-966e76602643/5.2.3790.1830.15.PlatformSDK_Svr2003SP1_rtm.img'>
+									IMG
+								</a>
+							</td>
+						</tr>
+					</table>
+					
+					<p>
+						These files will need to be extracted somehow. To accomplish this, we recommend <a href='http://www.7-zip.org/'>7-Zip</a>.
+					</p>
+					
+					<h2>Installation</h2>
+					<h3>1. Extract Installer</h3>
+					<p>
+						<img src='img/vs05/vs05iso.png' /> <img src='img/vs05/vs05extract.png' /><br />
+						<img src='img/vs05/vs05unzip.png' /> <img src='img/vs05/vs05unzipping.png' /><br />
+						<img src='img/vs05/setupdir.png' /><br />
+					</p>
+					<h3>2. Install Visual Studio 2005</h3>
+					<p>
+						<img src='img/vs05/options.png' /><br />
+						<img src='img/vs05/path.png' /> <img src='img/vs05/installprogress.png' /><br />
+					</p>
+					<h3>3. Extract Platform SDK</h3>
+					<p>
+						<img src='img/vs05/psdkimg.png' /> <img src='img/vs05/psdkextract.png' /><br />
+						<img src='img/vs05/psdkextract2.png' /> <img src='img/vs05/psdkextract3.png' /><br />
+						<img src='img/vs05/psdksetupdir.png' /><br />
+					</p>
+					<h3>4. Install Platform SDK</h3>
+					<p>
+						<img src='img/vs05/psdkinstaller.png' /><br />
+						<img src='img/vs05/psdktype.png' /> <img src='img/vs05/psdkpath.png' /><br />
+						<img src='img/vs05/psdkoptions.png' /><br />
+						<img src='img/vs05/psdkprogress.png' /> <img src='img/vs05/psdkcomplete.png' /><br />
+					</p>
+					<h3>5. Configure Platform SDK in Visual Studio</h3>
+					<p>
+						<img src='img/vs05/startvs.png' /><br />
+						<img src='img/vs05/vstoolsoptions.png' /><br />
+						<img src='img/vs05/cppdirs.png' /><br />
+						<img src='img/vs05/cppdirsnewentry.png' /> <img src='img/vs05/cppdirsdropdown.png' /><br />
+						<img src='img/vs05/cppdirsbin.png' /><br />
+						<img src='img/vs05/cppdirsinclude.png' /><br />
+						<img src='img/vs05/cppdirslib.png' /><br />
+					</p>
 					<!--End content-->
 				</td>
 			</tr>
