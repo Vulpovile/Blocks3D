@@ -67,37 +67,61 @@
 					<h2>Installation</h2>
 					<h3>1. Extract Installer</h3>
 					<p>
-						<img src='img/vs05/vs05iso.png' /> <img src='img/vs05/vs05extract.png' /><br />
-						<img src='img/vs05/vs05unzip.png' /> <img src='img/vs05/vs05unzipping.png' /><br />
-						<img src='img/vs05/setupdir.png' /><br />
+						This step depends on your installation medium. If you downloaded it from above, you should follow this, but if you have a CD you can skip this step and move on to <a href='#install2'>step 2</a>.<br />
+						Right click on your ISO or IMG, and click on 7-Zip->Extract files...:<br />
+						<img src='img/vs05/vs05iso.png' /> <img src='img/vs05/vs05extract.png' /><br /><br />
+						Extract it to a directory that you can find easily:<br />
+						<img src='img/vs05/vs05unzip.png' /> <img src='img/vs05/vs05unzipping.png' /><br /><br />
+						Now you are ready to start installing.
 					</p>
-					<h3>2. Install Visual Studio 2005</h3>
+					<h3 id="install2">2. Install Visual Studio 2005</h3>
 					<p>
-						<img src='img/vs05/options.png' /><br />
-						<img src='img/vs05/path.png' /> <img src='img/vs05/installprogress.png' /><br />
+						Open your Visual Studio installation directory, CD, or other medium, and run setup.exe:<br />
+						<img src='img/vs05/setupdir.png' /><br /><br />
+						Select the IDE, you do not need MSDN or SQL Server, but you can choose to install them if you wish:<br />
+						<img src='img/vs05/options.png' /><br /><br />
+						Use the default path when prompted, <strong>and be sure to note it down!</strong> You will be using it in the Platform SDK step!<br />
+						<img src='img/vs05/path.png' /> <img src='img/vs05/installprogress.png' /><br /><br />
+						If you are not installing Express edition, you can end here since it includes a platform SDK. Otherwise, proceed to step #3 and #4 to install the Platform SDK.
 					</p>
 					<h3>3. Extract Platform SDK</h3>
 					<p>
-						<img src='img/vs05/psdkimg.png' /> <img src='img/vs05/psdkextract.png' /><br />
-						<img src='img/vs05/psdkextract2.png' /> <img src='img/vs05/psdkextract3.png' /><br />
-						<img src='img/vs05/psdksetupdir.png' /><br />
+						Right click on the IMG file, and click on 7-Zip->Extract files...:<br />
+						<img src='img/vs05/psdkimg.png' /> <img src='img/vs05/psdkextract.png' /><br /><br />
+						Extract it to a directory that you can find easily:<br />
+						<img src='img/vs05/psdkextract2.png' /> <img src='img/vs05/psdkextract3.png' /><br /><br />
 					</p>
 					<h3>4. Install Platform SDK</h3>
 					<p>
-						<img src='img/vs05/psdkinstaller.png' /><br />
-						<img src='img/vs05/psdktype.png' /> <img src='img/vs05/psdkpath.png' /><br />
-						<img src='img/vs05/psdkoptions.png' /><br />
-						<img src='img/vs05/psdkprogress.png' /> <img src='img/vs05/psdkcomplete.png' /><br />
+						This and the next step are only really required on Express editions. Non-Free editions already include a Platform SDK, and can skip these steps.<br /><br />
+						Open the extracted Platform SDK directory, and run setup.exe:<br />
+						<img src='img/vs05/psdksetupdir.png' /><br /><br />
+						Click on Next and accept any agreements:<br />
+						<img src='img/vs05/psdkinstaller.png' /><br /><br />
+						Proceed with the installation, and set the installation type to Custom:<br />
+						<img src='img/vs05/psdktype.png' /><br /><br />
+						When you get to the path prompt, you are going to want to use the path you copied from the Visual Studio 2005 installer.<br />
+						To that path, you will want to append <span class='code'><strong>VC\PlatformSDK\</strong></span> to the end
+						Generally, these are going to be the resulting paths, but your system might differ:
 					</p>
-					<h3>5. Configure Platform SDK in Visual Studio</h3>
+					<table border>
+						<tr>
+							<th>Architecture</th><th>Default Path</th>
+						</tr>
+						<tr>
+							<td>x64</td><td>C:\Program Files (x86)\Microsoft Visual Studio 8\<strong>VC\PlatformSDK\</strong></td>
+						</tr>
+						<tr>
+							<td>x86</td><td>C:\Program Files\Microsoft Visual Studio 8\<strong>VC\PlatformSDK\</strong></td>
+						</tr>
+					</table>
 					<p>
-						<img src='img/vs05/startvs.png' /><br />
-						<img src='img/vs05/vstoolsoptions.png' /><br />
-						<img src='img/vs05/cppdirs.png' /><br />
-						<img src='img/vs05/cppdirsnewentry.png' /> <img src='img/vs05/cppdirsdropdown.png' /><br />
-						<img src='img/vs05/cppdirsbin.png' /><br />
-						<img src='img/vs05/cppdirsinclude.png' /><br />
-						<img src='img/vs05/cppdirslib.png' /><br />
+						<img src='img/vs05/psdkpath.png' /><br /><br />
+						In options, we recommend setting "Register Environment Variables" to install.<br />
+						<img src='img/vs05/psdkoptions.png' /><br /><br />
+						And now, proceed with the installation.<br />
+						<img src='img/vs05/psdkprogress.png' /> <img src='img/vs05/psdkcomplete.png' /><br /><br />
+						Your setup is now complete!
 					</p>
 					<!--End content-->
 				</td>
